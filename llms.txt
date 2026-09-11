@@ -167,12 +167,72 @@ bin/console cache:pool:clear --all  # Clear the runtime cache pools
 bin/console cache:clear             # Clear everything (needs write access to build and cache)
 ```
 
+In production the compiled container and the precompiled templates live in `var/build/{env}`
+and are read-only at request time, so run `eccube:cache:build` after deploying or changing
+templates. Never use `cache:clear --no-warmup` on a host where the web server cannot write to
+`var/build`: the container is not rebuilt and the next request fails with 500.
+
+### Permission Lanes
+
+EC-CUBE can run with the web server holding write access to only a small part of the tree.
+Every path the application writes to belongs to one of two lanes:
+
+- **Lane W** (owned by the web server, written during requests): `var/runtime/{env}`,
+  `var/sessions/{env}`, `var/log`, `html/upload/**` and the maintenance file
+  (`ECCUBE_MAINTENANCE_FILE_PATH`).
+- **Lane S** (owned by the CLI / SSH user, read-only for the web server): `var/build`,
+  `var/cache`, `app/template`, `html/user_data`, `app/Plugin`, `app/PluginData`, `app/proxy`,
+  `html/plugin`, `vendor`, `composer.json`, `composer.lock`, `app/keystore` and `.env`.
+
+Separating the lanes is **optional**; the default setup keeps a single user. The lane
+definitions live in `src/Eccube/Service/Permission/PermissionRequirementProvider.php`, and the
+rule for new code is simple: nothing that runs during a request may write to lane S. Runtime
+files go under `eccube_runtime_dir`; anything that changes lane S is a console command.
+
+`bin/console eccube:doctor:permissions` compares the expected lanes with the actual owners and
+modes and prints what to fix. The verdict is an estimate from uid, gid and permission bits
+(supplementary groups, ACLs and SELinux are not considered); the web server's uid is measured
+from files only the web server creates (session files first), so hit the site once before
+running it. Exit codes: `0` no NG, `1` at least one NG, `2` invalid option — WARN never
+changes the exit code, so a CI check should also assert `.web_server != null` and
+`.cli.uid != .web_server.uid` on the `--format=json` output.
+
+Pick the user from the lane you are touching: lane S commands (`eccube:cache:build`,
+`eccube:page:apply`, `eccube:plugin:*`, `eccube:env:set`, `eccube:keystore:generate`) run as
+the CLI user; lane W maintenance (`cache:pool:clear --all`) runs as the web server user
+(`sudo -u www-data bin/console ...`). Run `eccube:cache:build` after any `eccube:plugin:*`
+command — a running process cannot rebuild its own compiled container. A separated setup runs
+with `APP_ENV=prod`; in `dev` the kernel rebuilds the container during requests and needs write
+access to `var/cache` and `var/build`.
+
+Related environment variables: `ECCUBE_UMASK` (octal; empty by default so the OS / PHP-FPM
+umask applies, `0000` restores the 4.3 behaviour of 0777 / 0666), `ECCUBE_CLI_LOG_TO_FILE=0`
+(`var/log` is lane W, so CLI logging goes to the console), `ECCUBE_MAINTENANCE_FILE_PATH`
+(move it under `var/runtime` when separating), `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1`
+(0700 / 0600 keys; the default 0755 / 0644 lets the web server read them on hosts where the
+deploy user cannot `chgrp`) and `ECCUBE_PERMISSION_LANES=1` (switch for the Docker image
+entrypoint). `docker-compose.permission-lanes.yml` reproduces the separated setup locally
+(`--build` is required, and a PostgreSQL or MySQL service must be added).
+
+CI starts the separated setup and verifies it
+(`.github/workflows/permission-lanes-test.yml`): the lane boundaries, the
+`eccube:doctor:permissions` verdict, the read-only responses, and installing a plugin from the
+CLI. Behaviour that only shows up when the web server and the CLI have different uids and the
+app runs behind Apache (mod_php) — an environment variable missing from `PassEnv` reaching the
+CLI but not the web server, for instance — cannot be caught by unit tests. That setup pins
+`APP_ENV=prod`, whose session cookie uses `SameSite=None`, so the admin is unreachable over
+plain HTTP; the job talks to the self-signed HTTPS port (`4430`) instead. The operational
+guide (production permissions, deployment, upgrading from 4.3) is at
+https://doc4.ec-cube.net/permission .
+
 ### Content Management
 
 Pages, blocks and mail templates pair a database record with a Twig file, so they are managed
 through dedicated commands rather than by copying files. The same commands are the CLI
-alternative for admin screens that write outside the web server's lane. `apply` and `put` are
-idempotent upserts and support `--dry-run` and `--format=json`; `--body=-` reads from stdin.
+alternative for admin screens that write to lane S (see *Permission Lanes*). `apply` and `put`
+are idempotent upserts and support `--dry-run` and `--format=json`; `--body=-` reads from
+stdin. Exit code `3` means the change was applied but a manual step remains — typically
+`eccube:cache:build`, because the build directory is not writable by the current user.
 
 `eccube:page:*` and `eccube:block:*` provide `list`, `show`, `apply` and `remove`;
 `eccube:mail-template:*` provides `list`, `show`, `apply` and `remove`;

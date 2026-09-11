@@ -166,18 +166,31 @@ Twig の検索パスは **`app/template/...`（`eccube_theme_front_dir` / `eccub
 - 一部だけ差し込みたい場合は、コア改変や全文コピーより **テンプレートイベント**で挿入する方が壊れにくい（Skill `eccube-event-subscriber` / `eccube-twig-template`）。
 - XSS・`raw` の扱いは Skill `eccube-twig-template`。
 
+### 5. 実行時にレーン S へ書き込まない
+
+`app/Customize` のコードはリクエスト処理中に動く。Web サーバーと CLI の権限を分離した環境（Skill `eccube-permission-lanes`）では
+`app/template` / `html/user_data` / `.env` / `app/Customize` / `app/proxy` / `var/build` / `var/cache` / `app/keystore` は
+**CLI ユーザー所有で Web サーバーは読み取りのみ（レーン S）**。ここへ書くコードは分離した環境で `Permission denied` になる。
+
+- **リクエスト処理中に生成するファイルは `eccube_runtime_dir`（`var/runtime/{env}`）配下**に置く。アップロード物は既存の `html/upload/**`。
+  パスはパラメータ（`eccube_runtime_dir` 等）から解決し、`var/...` をリテラルで書かない。
+- レーン S を書き換える必要のある機能（テンプレートや設定の書き換え、生成コードの配置）は **`app/Customize/Command/` のコンソールコマンドとして実装する**
+  （Skill `eccube-command`）。管理画面から実行させたい場合も、画面はコマンドを案内するに留める。
+- `mkdir()` は `0755`。`0777` / `umask(0)` を書かない。
+- Web サーバーから書けるかどうかを `is_writable()` で判定しない（実行ユーザーから見た可否しか分からない）。
+
 ## よくある間違い
 
 - ❌ コア（`src/Eccube/`）を直接書き換える → ✅ `app/Customize/` で拡張・上書きし、アップグレード安全にする
 - ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけ `app/Plugin/`
 - ❌ 名前空間を `Plugin\{Code}\` と混同 → ✅ Customize は **`Customize\` ＝ `app/Customize/`**
-- ❌ エンティティ拡張の trait に `#[EntityExtension(対象::class)]` を付け忘れ → ✅ 付けないと proxy に乗らずカラムが認識されない
-- ❌ trait 追加後に proxy 再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
+- ❌ trait に `#[EntityExtension(対象::class)]` を付け忘れる／追加後に proxy を再生成しない → ✅ 付けて `bin/console eccube:generate:proxies`
 - ❌ カラム追加に ALTER マイグレーションを書く → ✅ 属性が源泉。`schema:update --force` が反映（マイグレーションは INSERT・型変更等に限る。Skill `eccube-migration`）
 - ❌ 既存フォームを直接改変 → ✅ `AbstractTypeExtension` ＋ `getExtendedTypes()`（`app/Customize/Form/Extension/`）で拡張
 - ❌ サービスを `#[AsDecorator]` で包む（コアの作法と不一致） → ✅ `services.yaml` で `decorates` ＋ `@.inner` 委譲
 - ❌ テンプレートを上書こうとしてコア原本側を編集 → ✅ `app/template/` に同じ相対パスで同名ファイルを置く（app 側が優先）
 - ❌ 上書きパスのテーマ名を間違える → ✅ フロントは `app/template/{ECCUBE_TEMPLATE_CODE}/`（既定 `default`）、管理画面は `app/template/admin/`
+- ❌ リクエスト処理中に `app/template` / `html/user_data` / `.env` / `var/build` へ書く → ✅ `eccube_runtime_dir` 配下に置くか、コンソールコマンドにする
 
 ## 実行・確認方法
 
@@ -187,7 +200,8 @@ Twig の検索パスは **`app/template/...`（`eccube_theme_front_dir` / `eccub
 bin/console eccube:generate:proxies      # エンティティ拡張(trait)を足したら proxy 再生成
 bin/console doctrine:schema:update --dump-sql   # 追加カラムの差分プレビュー
 bin/console doctrine:schema:update --force      # 属性差分を反映（単純なカラム追加）
-bin/console cache:clear                  # services.yaml / テンプレート上書きの反映確認
+bin/console cache:clear                  # services.yaml / テンプレート上書きの反映確認（dev）
+bin/console eccube:cache:build           # prod: コンパイル済みコンテナと事前コンパイル済みテンプレートを再生成
 bin/console doctrine:schema:validate     # スキーマ整合確認
 ```
 

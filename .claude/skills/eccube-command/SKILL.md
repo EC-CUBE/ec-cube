@@ -25,9 +25,15 @@ description: EC-CUBE 4.4 のコンソールコマンド（Symfony Console・#[As
   - 注: コマンドの場合 `parent::__construct()` の呼び出しが必須（後述）。トレイト経由で依存を渡したいときだけ
     `#[Required]` セッター注入を使う（`PluginCommandTrait` が `setPluginService()` 等で採用）。
 - **`configure()` で引数・オプションを宣言**する。`addArgument()` / `addOption()`、必要に応じて `setHelp()`。
-- **`execute(InputInterface $input, OutputInterface $output): int` に処理を書き、`int` を返す**。
-  正常終了は `0`、異常終了は非 0（`1` 等）。
-  `Command::SUCCESS` / `Command::FAILURE` 定数も使えるが、**EC-CUBE コアは一貫して `return 0;` のリテラルを使っている**ので踏襲する。
+- **`execute(InputInterface $input, OutputInterface $output): int` に処理を書き、`int` を返す**。終了コードの意味は固定:
+  - `0` = 正常終了（`Command::SUCCESS`。既存コマンドはリテラル `0` も使う）
+  - `1` = 失敗。本処理は完了していない（`Command::FAILURE`）
+  - `2` = 引数・オプション不正（`Command::INVALID`。`--format` の値不正など）
+  - **`3` = 本処理は完了したが手動操作が必要**（`EXIT_MANUAL_ACTION_REQUIRED`。`PluginCommandTrait` / `ContentCommandTrait` /
+    `CacheBuildCommand` / `EnvSetCommand` が定義）。キャッシュを削除できなかった・ビルドの再生成が別途要る・`.env.local.php` があって
+    変更が反映されない、など。**必要な操作（`bin/console eccube:cache:build` 等）を `$io->warning()` で必ず添える。**
+    `2` は `Command::INVALID` が使用済みのため避ける
+  - Symfony 標準の `cache:clear` 等に非ゼロを返させない。symfony/flex の auto-scripts が `composer install` を中断する
 - **出力は `SymfonyStyle`** を使う（`$io->success()` / `$io->error()` / `$io->comment()` / `$io->title()` 等）。
   低レベルに `$output->writeln()` を使う実装もあるが、ユーザ向けメッセージは `SymfonyStyle` に寄せる。
 - **業務ロジックはコマンドに直書きしない**。Service／Repository／PurchaseFlow へ委譲し、コマンドは
@@ -154,6 +160,80 @@ try {
 }
 ```
 
+### 書き込み系コマンド（`apply` / `--dry-run` / `--format=json` / 標準入力）
+
+ファイルや設定を書き換えるコマンドは `src/Eccube/Command/Content/*` の形に揃える（`ContentCommandTrait` を `use`）。
+CI・エージェントから扱えるよう、入出力と終了コードを機械可読にするのが目的。
+
+- **サブコマンドは `list` / `show` / `apply` / `remove`**（静的ファイルは `put`）。`new` / `edit` に分けず、**`apply` は upsert で冪等**にする
+  （指定しなかった項目は既存値を維持し、同じ入力を何度適用しても結果が同じ）。`show` は `apply` の逆操作
+  （`show --route=guide > guide.twig` → `apply --route=guide --body-file=guide.twig`）。
+- **`addWriteOptions()`** が `--body`（`-` で標準入力）/ `--body-file` / `--dry-run` / `--no-cache-clear` / `--format=table|json` を足す。
+  本文は `readBody()` で取る（`--body` と `--body-file` の同時指定はエラー。読み込み失敗の `false` を空文字列へ丸めない）。
+- **`--dry-run` は差分を表示して適用しない**。Service 側が `$dryRun` を受け取り、`ContentResult` に変更前後を載せる。
+- **`--format=json`** は `renderResult()` が `{"dry_run": bool, ...ContentResult}` を出力する。値不正は `Command::INVALID`。
+- **書き込み失敗は `ContentWriteException`** を受けて `reportWriteFailure()` に渡す（`eccube:doctor:permissions` を案内して `1`）。
+  権限を分離した構成では Web サーバーのユーザーで実行したときだけ失敗するため、実行ユーザーの誤りを最初に疑わせる。
+- 反映にキャッシュの削除が要るものは `clearContentCache()` を最後に呼び、`false` なら `EXIT_MANUAL_ACTION_REQUIRED`（`3`）。
+  削除できない理由と手順（`eccube:cache:build` / Web サーバーのユーザーで `cache:pool:clear`）はトレイトが案内する。
+- 分離した構成では**レーン W（`var/runtime` / `var/log`）へ CLI から書かない**。詳細は Skill `eccube-permission-lanes`。
+
+```php
+#[AsCommand(name: 'eccube:example:apply', description: '...')]
+final class ExampleApplyCommand extends Command
+{
+    use ContentCommandTrait;
+
+    protected function configure(): void
+    {
+        $this->addOption('key', null, InputOption::VALUE_REQUIRED, '登録・更新の鍵');
+        $this->addWriteOptions();   // --body / --body-file / --dry-run / --no-cache-clear / --format
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+        $format = (string) $input->getOption('format');
+        if (!$this->isValidFormat($format)) {
+            $this->invalidFormat($io);
+
+            return Command::INVALID;
+        }
+        try {
+            $body = $this->readBody($input);   // --body=- なら標準入力
+        } catch (\InvalidArgumentException $e) {
+            $io->error($e->getMessage());
+
+            return Command::INVALID;
+        }
+        $dryRun = (bool) $input->getOption('dry-run');
+        try {
+            $result = $this->exampleContentService->apply([...], $dryRun);   // ContentResult
+        } catch (ContentValidationException $e) {
+            $io->error($e->getErrors());
+
+            return Command::FAILURE;
+        } catch (ContentWriteException $e) {
+            return $this->reportWriteFailure($io, '保存できません', $e);
+        }
+        $this->renderResult($io, $output, $format, $result, $dryRun);
+        if ($dryRun || ContentStatus::Unchanged === $result->status || $input->getOption('no-cache-clear')) {
+            return Command::SUCCESS;
+        }
+
+        return $this->clearContentCache($io) ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
+    }
+}
+```
+
+### 子プロセスで `bin/console` を実行する
+
+`cache:clear` や `eccube:cache:build` を別プロセスで呼ぶときは **cwd に `kernel.project_dir` を渡し、`setTimeout(null)`** にする
+（`PluginCommandTrait::clearCache()` / `EnvSetCommand`）。cwd を省略するとプロジェクトルート以外から実行したときに `bin/console` を
+解決できず、`Process` の既定タイムアウト（60 秒）を超えると子プロセスが kill されてキャッシュが中途半端に消える。
+実行中のプロセスは自身のコンパイル済みコンテナを作り直せない（子が新しいコンテナを作ると親のディレクトリが消える）ため、
+コンテナの内容を変える操作の後は `eccube:cache:build` の実行を案内して `3` を返す。
+
 ### プラグイン／Customize のコマンド
 
 `#[AsCommand]` を付けて `app/Plugin/{Code}/Command/` または `app/Customize/Command/` に置くだけで、
@@ -175,7 +255,10 @@ try {
 - ❌ `execute()` に業務的な計算・判定・複数 Repository 横断処理を直書き → ✅ Service／Repository へ委譲し、コマンドは入出力と終了コードに徹する
 - ❌ コンストラクタで `parent::__construct()` を呼び忘れる → ✅ コマンドでは必須（呼ばないと実行時エラー）
 - ❌ サービス定義に手書きで `console.command` タグを足す → ✅ `#[AsCommand]` ＋ `autoconfigure` 任せ（手動登録不要）
-- ❌ `execute()` の戻り値を書かない／`void` にする → ✅ `int` を返す（正常 `0`、異常は非 0）
+- ❌ `execute()` の戻り値を書かない／`void` にする → ✅ `int` を返す（`0` 正常 / `1` 失敗 / `2` 引数不正 / `3` 完了したが手動操作が必要）
+- ❌ キャッシュ削除に失敗しても `$io->error()` を出して `return 0` → ✅ `3`（`EXIT_MANUAL_ACTION_REQUIRED`）と必要な操作の案内を返す
+- ❌ 書き込み系を `new` / `edit` に分ける、`--dry-run` / `--format=json` が無い → ✅ `apply`（upsert・冪等）＋ `ContentCommandTrait`
+- ❌ 子プロセスの `bin/console` を cwd 無し・既定タイムアウトで実行 → ✅ `kernel.project_dir` を cwd に、`setTimeout(null)`
 - ❌ ループ内で毎回 `flush()` してバッチが遅い → ✅ バッチサイズごとにまとめて `flush()`、端数も最後に flush
 - ❌ 「Symfony Scheduler で定期実行」と推測で書く → ✅ コアに機構は無い。OS の cron から `bin/console` を叩く前提で冪等に作る
 - ❌ コマンド名を独自の命名で付ける → ✅ `eccube:` 接頭辞のコロン区切り（既存コマンドに倣う）
@@ -190,6 +273,8 @@ bin/console list              # 登録済みコマンド一覧（自分のコマ
 bin/console list eccube       # eccube: 名前空間のコマンド一覧
 bin/console help <コマンド名>  # 引数・オプションの確認
 bin/console <コマンド名> --dry-run 等   # 副作用のあるバッチは小さい入力で試す
+bin/console <コマンド名> --format=json | jq .   # 機械可読出力の確認
+bin/console <コマンド名> ...; echo $?           # 終了コード (0 / 1 / 2 / 3) の確認
 ```
 
 新規コマンドが `bin/console list` に現れれば autoconfigure による登録は成功している。
