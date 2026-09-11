@@ -37,7 +37,7 @@
         "doctrine/instantiator": "^2.0",
         "doctrine/lexer": "^3.0",
         "doctrine/orm": "^3.0",
-        "doctrine/persistence": "^3",
+        "doctrine/persistence": "^4",
         "ec-cube/plugin-installer": "^2.0",
         "egulias/email-validator": "^4.0",
         "exercise/htmlpurifier-bundle": "^5.0",
