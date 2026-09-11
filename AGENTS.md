@@ -108,8 +108,15 @@ bin/console eccube:install
 
 #### Web サーバーと CLI の権限を分離した環境
 
-Web サーバー（`www-data`）と CLI（SSH ログインユーザー相当）の書き込み権限を分けた状態を再現するには、
-`docker-compose.permission-lanes.yml` を重ねる。`eccube:doctor:permissions` の動作確認に使う。
+書き込み先を **レーン W**（リクエスト処理中に書く。Web サーバー所有: `var/runtime`・`var/sessions`・`var/log`・`html/upload/**`）と
+**レーン S**（CLI へ移せる。CLI ユーザー所有で Web サーバーは読み取りのみ: `var/build`・`var/cache`・`app/template`・`html/user_data`・
+`app/Plugin`・`app/keystore`・`vendor`・`.env` 等）に分け、Web サーバーへ最小限の書き込み権限しか与えずに運用できる。
+**分離は任意で、既定は分離しない構成。** レーンの判断基準・実行ユーザーの選び方・`eccube:doctor:permissions` の読み方・
+実行時にレーン S へ書かないための実装規約は Skill `eccube-permission-lanes`
+（[`.claude/skills/eccube-permission-lanes/SKILL.md`](./.claude/skills/eccube-permission-lanes/SKILL.md)）。
+本番のパーミッション設定・デプロイ・4.3 からの移行手順の正本は https://doc4.ec-cube.net/permission （ここには書かない）。
+
+分離した状態を再現するには `docker-compose.permission-lanes.yml` を重ねる。
 
 ```bash
 # --build は必須。 公開イメージ (ghcr) には dockerbuild/docker-php-entrypoint のレーン分離が
@@ -121,50 +128,35 @@ curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web 
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
 
-レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`）は `www-data` 所有とし、
-共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
-本番の `sudo -u www-data` に相当する。
-`app/keystore` はレーン S。秘密鍵はデプロイ成果物で、Web サーバーから書き込めると署名鍵の
-差し替えを許すため読み取りのみとする。分離した構成では Web サーバーが実行時に鍵を生成できないため、
-アクセスを受ける前に `bin/console eccube:keystore:generate` で配置しておく。
+CLI の実行ユーザーは操作対象のレーンで決める（本番の `sudo -u www-data` に相当）。
 
 ```bash
 docker compose exec -u eccube   ec-cube bin/console eccube:cache:build        # レーン S を触る操作
 docker compose exec -u www-data ec-cube bin/console cache:pool:clear --all    # レーン W を触る操作
 ```
 
-`cache:clear` は `var/build` と `var/cache` の双方へ書き込む。3 分割ではどちらもレーン S のため
-CLI ユーザーなら成功する（Web サーバーのユーザーでは失敗する）。ただし `--no-warmup` を付けると
-コンパイル済みコンテナが再生成されず、次のリクエストで Web サーバーが 500 になる。
-コンパイル済みコンテナとテンプレートの再生成は `eccube:cache:build` を使う。
+- 分離した構成は `APP_ENV=prod` 固定（dev はリクエスト処理中にコンテナを再生成するため 500 になる）。
+  アクセスを受ける前に `eccube:cache:build` と `eccube:keystore:generate` を実行しておく。
+- `cache:clear --no-warmup` は使わない（コンパイル済みコンテナが再生成されず Web サーバーが 500 になる）。
+  `eccube:plugin:*` の後は `eccube:cache:build` を別途実行する。
+- 分離すると、レーン S へ書き込む管理画面の機能（プラグイン導入・有効化・無効化・アップデート・削除、
+  ページ/ブロック/メールテンプレート編集、CSS/JS 編集、ファイル管理、セキュリティ管理、テンプレート選択・追加）は
+  動作しなくなる。`ECCUBE_RESTRICT_FILE_UPLOAD=1` を設定すると、これらの画面は**読み取り専用**になり、現在の内容を
+  表示したまま保存・削除だけを無効化して代替の CLI コマンドを案内する（対応表は `app/config/eccube/packages/eccube.yaml` の
+  `eccube_restrict_file_upload_urls`）。未設定（既定）なら従来どおり、画面は動作し保存時に書き込みエラーになる。
+  テンプレートのアップロードは CLI 未整備。
+- 関連する環境変数: `ECCUBE_UMASK`（8 進数。既定は空で OS / PHP-FPM の既定に従う。`0000` で 4.3 以前と同じ
+  0777 / 0666）、`ECCUBE_CLI_LOG_TO_FILE=0`（`var/log` はレーン W のため CLI のログをコンソールへ寄せる）、
+  `ECCUBE_MAINTENANCE_FILE_PATH`（既定はプロジェクトルート直下。分離時は `var/runtime` 配下へ）、
+  `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1`（鍵を 0700 / 0600 にする。既定は Web サーバーが読めるよう 0755 / 0644）、
+  `ECCUBE_PERMISSION_LANES=1`（Docker イメージのエントリポイントがユーザーを分けるためのスイッチ）。
+  `docker-compose.permission-lanes.yml` では設定済み。
+- 既定モードと分離モードを切り替えるときは `docker compose ... down -v` でレーン W のボリュームを作り直す
+  （切り替え前の `www-data` の uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる）。
+- この構成は CI でも起動して検証する（`.github/workflows/permission-lanes-test.yml`。Playwright は
+  `permission-lanes-tests` project で `e2e/tests/permission-lanes.spec.ts` だけを実行し、HTTPS `4430` を使う）。
 
-`var/log` はレーン W のため、CLI からはログファイルへ書き込めない。ログの出力に失敗すると本来のエラーが
-ログ書き込みエラーへすり替わるため、分離した構成では `ECCUBE_CLI_LOG_TO_FILE=0` を設定し、CLI のログを
-コンソール出力に寄せる（記録が必要な場合はリダイレクトする）。未設定なら従来どおりファイルへ書く。
-`docker-compose.permission-lanes.yml` では既に設定済み。
-
-アプリケーションが作成するファイルの umask は環境変数 `ECCUBE_UMASK`（8 進数表記）で設定する。
-未設定なら OS / PHP-FPM の既定に従う（推奨）。Web サーバーと CLI が別ユーザーで、かつ双方が同じ
-ファイルへ書き込む必要がある環境では `0000` を設定すると 4.3 以前と同じ挙動（ディレクトリ 0777 /
-ファイル 0666）に戻せるが、同一サーバーの他ユーザーからも書き換え可能になる。
-
-鍵はディレクトリ 0755 / ファイル 0644 で作成する。Web サーバーは署名のために鍵を読む必要があり、
-所有者専用（0700 / 0600）にすると `chgrp` できない環境で読めなくなるため。同一サーバーの他ユーザーからも
-読ませたくない場合は `ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1` を設定する（この場合 Web サーバーへ
-読み取りを許す手当ては運用側で行う。`eccube:keystore:generate` は読めない状態を検出してエラーにする）。
-
-分離すると、`app/template` や `html/user_data`、`.env`、`app/Plugin` へ書き込む管理画面の機能
-（プラグイン導入・有効化・無効化・アップデート・削除、ページ/ブロック/メールテンプレート編集、
-CSS/JS 編集、ファイル管理、セキュリティ管理、テンプレート選択・追加）は動作しなくなる。
-下記の CLI が代替導線になる。テンプレートのアップロードは未整備。
-
-`ECCUBE_RESTRICT_FILE_UPLOAD=1` を設定すると、これらの画面は**読み取り専用**になる。現在の内容は
-表示したまま保存・削除の操作だけを無効化し、画面上に代替の CLI コマンドを案内する。書き込みを伴う
-リクエストはサーバー側で 403 を返すため、UI を経由しない経路も塞がる。対象の一覧は
-`app/config/eccube/packages/eccube.yaml` の `eccube_restrict_file_upload_urls`（ルート名 → CLI コマンド）。
-未設定（既定）なら従来どおり、画面は動作し保存時に書き込みエラーになる。
-
-`apply` / `put` は upsert で冪等。いずれも `--dry-run` / `--format=json` に対応し、
+分離した構成でレーン S を書き換える導線は下記の CLI。`apply` / `put` は upsert で冪等。いずれも `--dry-run` / `--format=json` に対応し、
 `--body=-` で標準入力から本文を読み込む。
 
 | 対象 | サブコマンド | 書き込み先 |
@@ -177,6 +169,7 @@ CSS/JS 編集、ファイル管理、セキュリティ管理、テンプレー�
 | `bin/console eccube:env:*` | `get` / `set` | `.env` |
 | `bin/console eccube:keystore:*` | `list` / `show` / `generate` | `app/keystore/**` |
 | `bin/console eccube:contents:*` | `export` / `import` | `app/contents/*.yaml`（書き出し）／上記の DB とファイル（取り込み） |
+| `bin/console eccube:plugin:*` | `install` / `enable` / `disable` / `uninstall` / `update` / `schema-update` | `app/Plugin` / `app/proxy` / `vendor` |
 
 ```bash
 bin/console eccube:page:list
@@ -192,7 +185,7 @@ bin/console eccube:keystore:generate      # 未生成の鍵だけを作る（冪
 ページ・ブロック・メールテンプレートの入力値の検証は管理画面と同じ FormType を通すため、
 重複チェックや twig の構文チェックも同じものが効く。
 `apply` / `remove` は build ディレクトリへ書き込めない場合、本処理を完了させたうえで終了コード `3` と
-`eccube:cache:build` の案内を返す。
+`eccube:cache:build` の案内を返す（`3` = 完了したが手動操作が必要。`eccube:plugin:*` / `eccube:cache:build` / `eccube:env:set` も同じ）。
 
 `html/` はドキュメントルートのため、`eccube:user-data:put` は管理画面のファイル管理と同じ
 ファイル名・拡張子の検証（`eccube_file_uploadable_extensions`）を通す。`.php` 等は配置できない。
@@ -234,14 +227,6 @@ app/contents/
   削除可能なブロック・メールテンプレート、どのページからも参照されていないレイアウトだけ
 - `html/user_data` は `customize.css` / `customize.js` 以外が `.gitignore` で除外されているため
   既定では扱わない。リポジトリ丸ごと管理する構成では `--include=user_data` を指定する
-
-既定モードと分離モードを切り替えるときはレーン W のボリュームを作り直す。切り替え前の `www-data` の
-uid で作成されたディレクトリが残り、切り替え後の Web サーバーから書き込めなくなる
-（例: `var/runtime/{env}/mcp-sessions`）。
-
-```bash
-docker compose ... down -v
-```
 
 ### テスト
 
@@ -288,12 +273,14 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 キャッシュは 3 つのディレクトリに分かれる。`var/build/{env}`（コンパイル済みコンテナ・ルーティング・
 メタデータ・prod の twig）と `var/cache/{env}`（翻訳カタログ・htmlpurifier）は CLI が生成し、
 リクエスト処理中は読み取りのみ。`var/runtime/{env}`（cache pool・mcp-sessions・事前コンパイル漏れの
-twig のフォールバック等）はリクエスト処理中に生成される。
+twig のフォールバック等）はリクエスト処理中に生成される。prod は `var/build/{env}/twig` を読み取り専用で
+優先するため、**prod でテンプレートを変えたら `eccube:cache:build`**（dev は `auto_reload` で自動反映）。
+権限を分離した環境での使い分けは上記「権限を分離した環境」と Skill `eccube-permission-lanes`。
 
 ```bash
-bin/console eccube:cache:build   # var/build を再生成（テンプレートの事前コンパイルを含む）
+bin/console eccube:cache:build   # var/build を再生成（テンプレートの事前コンパイルを含む）。デプロイ後・プラグイン操作後にも実行する
 bin/console cache:pool:clear --all   # 実行時キャッシュ（cache pool）を削除
-bin/console cache:clear          # 従来どおり全体を削除（build と cache の双方に書き込み権限が必要）
+bin/console cache:clear          # 従来どおり全体を削除（build と cache の双方に書き込み権限が必要。--no-warmup は付けない）
 
 # スキーマは Entity 属性が源泉。アップデートは 2 段構え:
 bin/console doctrine:schema:update --dump-sql        # 属性差分の SQL プレビュー
@@ -385,6 +372,7 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/eccube-customize/SKILL.md`](./.claude/skills/eccube-customize/SKILL.md) | `eccube-customize` |
 | CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/eccube-csv/SKILL.md`](./.claude/skills/eccube-csv/SKILL.md) | `eccube-csv` |
 | コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
+| 権限レーン（Web サーバー / CLI の書き込み分離・`eccube:doctor:permissions`・実行ユーザー） | [`.claude/skills/eccube-permission-lanes/SKILL.md`](./.claude/skills/eccube-permission-lanes/SKILL.md) | `eccube-permission-lanes` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/eccube-review-responsibility/SKILL.md`](./.claude/skills/eccube-review-responsibility/SKILL.md) | `eccube-review-responsibility` |
 
 > 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。

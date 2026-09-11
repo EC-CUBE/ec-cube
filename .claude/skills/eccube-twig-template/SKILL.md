@@ -68,6 +68,10 @@ class ExampleExtension extends AbstractExtension
 
 - **管理画面テンプレートを参照するときは `@admin` 名前空間**を付ける（例: `{{ include('@admin/...') }}`）。名前空間を忘れると探索先を誤る。
 - 上書きは `app/template/` 直下ではなく、**`admin/` か `default(テーマ)/` の正しいサブディレクトリ**に置く。
+- **変更しないテンプレートを `app/template/` にコピーしない**。`app/template/{theme}` は探索で `src/Eccube/Resource/template/default` より
+  優先されるため、内容が同じ写しがあるだけで upstream のテンプレート修正（脆弱性パッチを含む）が画面へ反映されなくなる。
+  管理画面・CLI（`eccube:page:apply` 等）の保存は本文が変わらない限り書き出さない（`*ContentService`）。コードで `dumpFile()` するときも同じ判定を入れる。
+  コアを直接カスタマイズして `git merge` で追従する運用では、`app/template` を使わず `src/Eccube/Resource/template/**` を編集する。
 - **ユーザーが編集できるテンプレート文字列（CMS コンテンツ・フリーエリア・メール本文等）を描画するときは Twig サンドボックスを通す**。
   文字列テンプレートは `template_from_string(...)` ＋ `sandboxed = true` で描画する（コアの定石。例: `default_frame.twig` の CMS メタタグ）。
   許可するタグ/フィルタ/関数はコアの `SecurityPolicyDecorator`（`src/Eccube/Twig/Sandbox/`）で制御されており、**サンドボックスを外すとテンプレートインジェクションになる**（過去の脆弱性修正の中心領域）。
@@ -98,6 +102,8 @@ public function onTemplateCart(TemplateEvent $event): void
 - ❌ **管理画面テンプレートだから安全**と油断して `|raw` する → ✅ admin 配下も XSS シンク（過去の XSS 修正は管理画面テンプレートに多い）。DB/入力由来の値は admin でも必ずエスケープする
 - ❌ テンプレートイベントにエンティティ永続化など業務処理を書く → ✅ 見た目調整のみ。業務は対応するコントローライベントへ
 - ❌ inline `<script>` に素の `json_encode` で埋める → ✅ `</script>` で XSS。`|json_encode_safe`（JSON-LD は `|json_ld`）を使う。属性値には不可
+- ❌ 変更しないコアテンプレートを `app/template/` にコピーして置く → ✅ 写しが upstream の修正を隠す。変えるものだけ置く
+- ❌ prod で `var/runtime/{env}/twig` を消して反映したつもりになる → ✅ 優先されるのは `var/build/{env}/twig`。`eccube:cache:build`
 
 ## 実行・確認方法
 
@@ -105,10 +111,16 @@ QA ツール（PHPUnit / PHPStan / PHP-CS-Fixer）の実行方法は AGENTS.md�
 
 ```bash
 bin/console lint:twig src/Eccube/Resource/template/   # Twig 構文チェック
-bin/console cache:clear                                # テンプレート変更の反映（var/cache/{env} クリア）
+bin/console eccube:cache:build                         # prod: テンプレートを事前コンパイルし直す（var/build/{env}/twig）
+bin/console cache:clear                                # 従来どおり全体を削除（build と cache の双方に書き込み権限が必要）
 ```
 
-- 上書きが効かない／変更が反映されない場合は、まず `cache:clear` と上書きパス・名前空間を疑う。
+- コンパイル済みテンプレートの置き場所は環境で異なる。**dev** は `auto_reload` が有効で `var/runtime/{env}/twig` に単層、
+  ファイルを直せばそのまま反映される。**prod** は `var/build/{env}/twig`（読み取り専用。`eccube:cache:build` が事前コンパイル）を優先し、
+  無いものだけ `var/runtime/{env}/twig` へ実行時にコンパイルする 2 層。**prod でテンプレートを変えたら `eccube:cache:build`**。
+  `var/runtime` 側だけ消しても build 側が優先されるため反映されない。
+- 上書きが効かない／変更が反映されない場合は、まず上記のキャッシュと上書きパス・名前空間を疑う。
+  権限を分離した構成では `cache:clear --no-warmup` を使わない（コンテナが再生成されず Web サーバーが 500 になる。Skill `eccube-permission-lanes`）。
 - `|raw` を追加・改修したら、その値の出所（ユーザー入力か固定か）を必ず確認する。
 
 ---
