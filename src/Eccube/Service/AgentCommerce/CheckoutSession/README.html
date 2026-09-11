@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce CheckoutSession — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce CheckoutSession — チェックアウト</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+ ／ 受注処理の詳細: <a href="../../PurchaseFlow/README.html">PurchaseFlow README</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>エージェントチェックアウトの<strong>見積〜確定（complete）</strong>を、プロトコル非依存の中立表現で束ねるサブドメインです。
+ エージェントはブラウザセッションを持たないため、通常購入のセッションに代わって本サブドメインの DTO がチェックアウトの状態を運びます。</p>
+ <p>実際の金額再計算・在庫引当は、ルート直下の <code>AgentCheckoutPurchaseFlowAdapter</code> が
+ <strong>通常購入と同一の shopping flow</strong> を使って行います（本サブドメインはその入出力と確定の段取りを担当）。</p>
+</section>
+
+<section data-section="dto" data-customer="true">
+ <h2>中立 DTO / enum</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCheckoutRequest</code></td><td>見積要求。明細（<code>AgentCheckoutLineItem[]</code>）と購入者/配送先住所（<code>AgentCheckoutAddress</code>）を保持。</td></tr>
+  <tr><td><code>AgentCheckoutLineItem</code></td><td>明細 1 行。プロトコル固有 Mapper が variant 識別子を <code>ProductClass.id</code> へ解決して組み立てる。</td></tr>
+  <tr><td><code>AgentCheckoutAddress</code></td><td>購入者/配送先住所。<code>prefId</code> は <code>mtb_pref.id</code>（1-47）。</td></tr>
+  <tr><td><code>AgentCheckoutResult</code></td><td>見積/確定の結果。再計算済み <code>Order</code> とビジネス系 <code>messages[]</code>。見積時は <code>Cart</code> も返す。</td></tr>
+  <tr><td><code>AgentCheckoutCompletionResult</code></td><td>complete 状態機械の結果。<code>status</code>（正規化）/ <code>actionData</code>（continue_url 等の原資）/ <code>messages</code>。</td></tr>
+  <tr><td><code>AgentCheckoutMessage</code> / <code>AgentCheckoutMessageLevel</code></td><td>ビジネス系メッセージ（HTTP 200 + <code>messages[]</code>）とそのレベル。</td></tr>
+ </table>
+</section>
+
+<section data-section="orchestration" data-customer="false">
+ <h2>オーケストレーションと会員解決<span class="dev-only">開発者向け</span></h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCheckoutCompletionService</code></td><td>complete を<strong>「中断 → 再開」する状態機械</strong>として実行するオーケストレータ。追加認証（EMV-3DS）や外部ハンドオフ（escalation）はエラーでなく正常な中間状態として扱う。在庫引当の保持/回収・正規化ステータス遷移・トランザクション境界を core に集約。</td></tr>
+  <tr><td><code>CustomerResolverInterface</code></td><td>セッションに紐づく会員（<code>Customer</code>）を解決する seam。OAuth2 トークン → Customer 解決（eccube-api4 依存）。</td></tr>
+  <tr><td><code>GuestCustomerResolver</code></td><td>標準実装。会員 ID 連携が実装されるまで常に <code>null</code>（ゲスト購入）を返す。</td></tr>
+ </table>
+ <div class="note">complete は冪等な単発呼び出しではなく<strong>複数回呼ばれる状態機械</strong>である。<code>prepare</code> で物理引当した在庫は <code>REQUIRES_ACTION</code>/<code>PENDING</code> では rollback せず保持し、<code>FAILED</code>/期限切れで rollback する。<code>StockReduceProcessor</code> の悲観ロックに対応するため各 complete を明示トランザクションで囲む。</div>
+ <ul>
+  <li><strong>状態別の再入</strong>: <code>COMPLETED</code> は短絡し副作用を再実行せず既存 <code>Order</code> を返す（冪等）。<code>REQUIRES_ACTION</code>/<code>IN_PROGRESS</code> からの再開 complete は在庫引当が初回で済んでいるため <code>prepare</code> を再実行しない。<code>CANCELED</code>/<code>EXPIRED</code> は確定不能でプロトコル系例外。</li>
+  <li><strong>決済ハンドラの有無で分岐</strong>: ハンドラ未登録（代引・無償等）は与信不要で直ちに commit。ハンドラありは <code>authorize</code> → <code>COMPLETED</code> の後にのみ <code>capture</code> し、capture 失敗は rollback して失敗扱い。</li>
+  <li><strong>失敗は <code>retryable</code> で分岐</strong>: card declined 等 <code>retryable=true</code> は <code>READY</code> へ戻して再 complete を許し、fraud 等 <code>retryable=false</code> は <code>CANCELED</code>。いずれも在庫は rollback する。prepare 段の在庫不足等ビジネス系エラーは status 据置で <code>messages[]</code> を返す。</li>
+ </ul>
+</section>
+
+</body>
+</html>
