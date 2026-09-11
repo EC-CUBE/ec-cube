@@ -56,8 +56,10 @@ test.describe('権限を分離した構成の管理画面', () => {
     const row = page.locator('tr[id^="ex-page-"]').filter({ hasText: CLI_PAGE_NAME }).first();
     await expect(row).toBeVisible();
 
-    // 削除リンクは押せない (a 要素のため disabled クラスと aria-disabled で無効化する)
-    const deleteLink = page.locator('a.btn-ec-delete[href*="/delete"]').first();
+    // 削除リンクは押せない (a 要素のため disabled クラスと aria-disabled で無効化する)。
+    // 削除のモーダルは行の内側にあるため row を起点に取る。 画面全体から取ると、
+    // 別のページの削除リンクを検証して通ってしまう
+    const deleteLink = row.locator('a.btn-ec-delete[href*="/delete"]');
     await expect(deleteLink).toHaveClass(/disabled/);
     await expect(deleteLink).toHaveAttribute('aria-disabled', 'true');
   });
@@ -133,7 +135,9 @@ test.describe('権限を分離した構成の管理画面', () => {
     const move = await page.request.post(`/${adminRoute}/content/file_manager`, {
       form: { mode: 'move' },
     });
-    expect(move.status()).not.toBe(403);
+    // FileController::index() は create / upload 以外を素通しして画面を返すため 200 になる。
+    // 「403 でない」だと 404 や 500 も通ってしまうので、 成功したことまで確かめる
+    expect(move.ok()).toBeTruthy();
   });
 
   test('安全なメソッドは通る', async ({ page }) => {
