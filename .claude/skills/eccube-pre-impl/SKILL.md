@@ -78,6 +78,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 **触るとき**: エンティティ・テーブル・カラム追加
 
 - ❌ カラムを足したので ALTER マイグレーションを書く → ✅ 属性を足すだけ（`schema:update` が反映）。マイグレーションは INSERT・型変更等に限る
+- ❌ CSV 出力対象（`Customer`/`Product`/`Order`）に業務カラムを足して `dtb_csv` に登録しない → ✅ 登録する。認証情報は除く
 - ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
 - ❌ 金額 getter の戻り値を int/float 扱い → ✅ DECIMAL は `?string`（getter は `string`）。型宣言・代入も合わせる
 - ❌ 金額を float で四則演算（丸め誤差）→ ✅ `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）で計算する
