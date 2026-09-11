@@ -53,6 +53,12 @@ jobs:
     uses: ./.github/workflows/plugin-test.yml
     with:
       php-versions: "['8.5']"
+  permission-lanes-test:
+    needs: [ unit-test, e2e-test ]
+    # Web サーバーと CLI の書き込み権限を分けた構成 (docker-compose.permission-lanes.yml) を
+    # 起動して検証する。 別 uid かつ Apache 経由でしか再現しない挙動 (読み取り専用モード・
+    # レーン境界・CLI 導線) は単体テストでは検出できない (#7072 Phase 6)。
+    uses: ./.github/workflows/permission-lanes-test.yml
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
@@ -65,7 +71,7 @@ jobs:
     # 全ジョブを直接 needs する。チェーン依存(success←throttling←plugin-test←unit-test)だと
     # 上流の failure が各ホップで skipped に化けて末端へ届かず、必須チェック success が
     # skipped=パス扱いとなって赤テストのまま auto-merge されてしまうため(#6840)。
-    needs: [ rector, phpstan, php-cs-fixer, unit-test, e2e-test, plugin-test, e2e-test-throttling, dockerbuild, agentic-commerce-e2e ]
+    needs: [ rector, phpstan, php-cs-fixer, unit-test, e2e-test, plugin-test, e2e-test-throttling, permission-lanes-test, dockerbuild, agentic-commerce-e2e ]
     # 上流が失敗しても success 自体は必ず実行する(skip させない)
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
