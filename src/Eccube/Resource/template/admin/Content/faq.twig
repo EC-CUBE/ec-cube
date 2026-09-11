@@ -1,0 +1,252 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['content', 'faq'] %}
+
+{# 表示順の並び替えは同一区分内でしか意味を持たないため、サイト共通で絞り込んだときだけ有効にする #}
+{% set sortable = faqType == 'common' %}
+{% set faqTypeLabels = {
+    'common': 'admin.content.faq.faq_type__common',
+    'product': 'admin.content.faq.faq_type__product',
+    'category': 'admin.content.faq.faq_type__category'
+} %}
+
+{% block title %}{{ 'admin.content.faq_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+
+{% block stylesheet %}
+    <style type="text/css">
+        li.list-group-item {
+            z-index: inherit !important;
+        }
+    </style>
+{% endblock %}
+
+{% block javascript %}
+    {% if sortable %}
+        <script>
+            $(function() {
+                // 初期表示時のsort noを保持.
+                // この一覧は表示順の昇順で並ぶため、昇順のまま上の行から順に割り当てる
+                // （降順で割り当てると再読込時に並びが反転する）。
+                var oldSortNos = [];
+                $('.sortable-item').each(function() {
+                    oldSortNos.push(parseInt(this.dataset.sortNo, 10));
+                });
+                oldSortNos.sort(function(a, b) {
+                    return a - b;
+                });
+                // 並び替え後にsort noを更新し、画面の表示順も書き換える
+                var updateSortNo = function() {
+                    var newSortNos = {};
+                    $('.sortable-item').each(function(i) {
+                        var sortNo = oldSortNos[i];
+                        newSortNos[this.dataset.id] = sortNo;
+                        this.dataset.sortNo = sortNo;
+                        $(this).find('.sort-no-value').text(sortNo);
+                    });
+                    $.ajax({
+                        url: '{{ url('admin_content_faq_sort_no_move') }}',
+                        type: 'POST',
+                        data: newSortNos
+                    }).always(function() {
+                        $(".modal-backdrop").remove();
+                    });
+                };
+                // 最初と最後の↑↓を再描画
+                var redrawDisableAllows = function() {
+                    var items = $('.sortable-item');
+                    items.find('a.action-up, a.action-down').removeClass('disabled');
+                    items.first().find('a.action-up').addClass('disabled');
+                    items.last().find('a.action-down').addClass('disabled');
+                };
+                // オーバレイ後, 表示順の更新を行う
+                var moveSortNo = function() {
+                    $('body').append($('<div class="modal-backdrop show"></div>'));
+                    updateSortNo();
+                    redrawDisableAllows();
+                };
+                // Drag and Drop
+                $('.sortable-container').sortable({
+                    items: '> .sortable-item',
+                    cursor: 'move',
+                    update: function(e, ui) {
+                        moveSortNo();
+                    }
+                });
+                // Up
+                $('.sortable-item').on('click', 'a.action-up', function(e) {
+                    e.preventDefault();
+                    var current = $(this).parents("li");
+                    if (current.prev().hasClass('sortable-item')) {
+                        current.prev().before(current);
+                        moveSortNo();
+                    }
+                });
+                // Down
+                $('.sortable-item').on('click', 'a.action-down', function(e) {
+                    e.preventDefault();
+                    var current = $(this).parents("li");
+                    if (current.next().hasClass('sortable-item')) {
+                        current.next().after(current);
+                        moveSortNo();
+                    }
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block main %}
+    <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="d-block mb-3">
+                    <a id="addNew" class="btn btn-ec-regular"
+                       href="{{ url('admin_content_faq_new') }}">{{ 'admin.common.create__new'|trans }}</a>
+                </div>
+                <div class="btn-group mb-3" role="group">
+                    <a class="btn btn-ec-sub{% if faqType is null %} active{% endif %}"
+                       href="{{ url('admin_content_faq') }}">{{ 'admin.content.faq.faq_type__all'|trans }}</a>
+                    {% for type, label in faqTypeLabels %}
+                        <a class="btn btn-ec-sub{% if faqType == type %} active{% endif %}"
+                           href="{{ url('admin_content_faq', {faq_type: type}) }}">{{ label|trans }}</a>
+                    {% endfor %}
+                </div>
+                <p class="text-muted">{{ 'admin.content.faq.display_limit_notice'|trans({'%count%': eccube_config.eccube_max_number_faq_get}) }}</p>
+                {# 並び替えができるのは「サイト共通」で絞り込んだときだけなので、
+                   既定表示（すべて）でも気付けるよう一覧の手前に案内を出す #}
+                {% if not sortable %}
+                    <p class="text-muted">{{ 'admin.content.faq.sort_no_notice'|trans }}</p>
+                {% endif %}
+                <div class="card rounded border-0 mb-4">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush mb-4{% if sortable %} sortable-container{% endif %}">
+                            <li class="list-group-item">
+                                <div class="row justify-content-around">
+                                    <div class="col-1"><strong>{{ 'admin.content.faq.sort_no'|trans }}</strong>
+                                    </div>
+                                    <div class="col-1"><strong>{{ 'admin.content.faq.faq_type'|trans }}</strong>
+                                    </div>
+                                    <div class="col-2"><strong>{{ 'admin.content.faq.linked_to'|trans }}</strong>
+                                    </div>
+                                    <div class="col-1"><strong>{{ 'admin.content.faq.display_status'|trans }}</strong>
+                                    </div>
+                                    <div class="col"><strong>{{ 'admin.content.faq.question'|trans }}</strong></div>
+                                </div>
+                            </li>
+                            {% for Faq in pagination %}
+                                {% if Faq.faqType == 'product' %}
+                                    {% set editUrl = url('admin_product_product_edit', {id: Faq.Product.id}) %}
+                                    {% set linkedTo = Faq.Product.name %}
+                                {% elseif Faq.faqType == 'category' %}
+                                    {% set editUrl = url('admin_product_category_faq', {id: Faq.Category.id}) %}
+                                    {% set linkedTo = Faq.Category.name %}
+                                {% else %}
+                                    {% set editUrl = url('admin_content_faq_edit', {id: Faq.id}) %}
+                                    {% set linkedTo = '' %}
+                                {% endif %}
+                                <li class="list-group-item{% if sortable %} sortable-item{% endif %}"
+                                    data-id="{{ Faq.id }}" data-sort-no="{{ Faq.sortNo }}">
+                                    <div class="row justify-content-around">
+                                        <div class="col-1 d-flex align-items-center">
+                                            {% if sortable %}<i class="fa fa-bars text-ec-gray me-2"></i>{% endif %}
+                                            <span class="sort-no-value">{{ Faq.sortNo }}</span></div>
+                                        <div class="col-1 d-flex align-items-center">{{ faqTypeLabels[Faq.faqType]|trans }}</div>
+                                        <div class="col-2 d-flex align-items-center">{{ linkedTo }}</div>
+                                        <div class="col-1 d-flex align-items-center">{{ Faq.visible ? 'admin.common.show'|trans : 'admin.common.hide'|trans }}</div>
+                                        <div class="col d-flex align-items-center"><a
+                                                    href="{{ editUrl }}">{{ Faq.question }}</a>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="row">
+                                                {% if sortable %}
+                                                    <div class="col px-0 text-center">
+                                                        <a class="btn btn-ec-actionIcon action-up{% if loop.first %} disabled{% endif %}"
+                                                           href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                           title="{{ 'admin.common.up'|trans }}">
+                                                            <i class="fa fa-arrow-up fa-lg text-secondary"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col px-0 text-center">
+                                                        <a class="btn btn-ec-actionIcon action-down{% if loop.last %} disabled{% endif %}"
+                                                           href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                           title="{{ 'admin.common.down'|trans }}">
+                                                            <i class="fa fa-arrow-down fa-lg text-secondary"></i>
+                                                        </a>
+                                                    </div>
+                                                {% endif %}
+                                                <div class="col px-0 text-center">
+                                                    <a class="btn btn-ec-actionIcon"
+                                                       href="{{ editUrl }}"
+                                                       data-bs-toggle="tooltip" data-bs-placement="top"
+                                                       title="{{ 'admin.common.edit'|trans }}">
+                                                        <i class="fa fa-pencil fa-lg text-secondary"></i>
+                                                    </a>
+                                                </div>
+                                                {% if Faq.faqType == 'common' %}
+                                                    <div class="col ps-0 text-center" data-bs-toggle="tooltip"
+                                                         data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon" data-bs-toggle="modal"
+                                                           data-bs-target="#delete_{{ Faq.id }}">
+                                                            <i class="fa fa-close fa-lg text-secondary"
+                                                               aria-hidden="true"></i>
+                                                        </a>
+                                                        <div class="modal fade" id="delete_{{ Faq.id }}" tabindex="-1"
+                                                             role="dialog"
+                                                             aria-labelledby="delete_{{ Faq.id }}" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title fw-bold">{{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                        <button class="btn-close" type="button"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close">
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body text-start">
+                                                                        <p class="text-start">{{ 'admin.common.delete_modal__message'|trans({'%name%': Faq.question}) }}</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-ec-sub" type="button"
+                                                                                data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
+                                                                        <a class="btn btn-ec-delete"
+                                                                           href="{{ url('admin_content_faq_delete', {id: Faq.id}) }}" {{ csrf_token_for_anchor() }}
+                                                                           data-method="delete"
+                                                                           data-confirm="false">{{ 'admin.common.delete'|trans }}</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {% if pagination.paginationData.pageCount > 1 %}
+                            <div class="row justify-content-md-center mb-4">
+                                {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_content_faq_page' } %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if sortable %}
+                    <p>{{ 'admin.common.drag_and_drop_description'|trans }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

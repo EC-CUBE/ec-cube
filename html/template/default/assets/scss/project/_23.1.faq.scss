@@ -1,0 +1,63 @@
+@import "../mixins/media";
+@import "../mixins/clearfix";
+
+/*
+FAQ
+
+商品詳細・商品一覧（カテゴリ）・FAQブロックで使用する「よくある質問」のスタイルです。
+質問と回答を Q./A. で区別し、回答は字下げして表示します。
+
+Styleguide 23.1
+*/
+
+.ec-faqRole {
+  padding: 40px 0 0;
+
+  @include media_desktop {
+    padding: 60px 0 0;
+  }
+
+  & &__list {
+    box-sizing: border-box;
+  }
+
+  & &__item {
+    width: 100%;
+    margin: 0;
+    padding: 16px 0;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
+  & &__question {
+    position: relative;
+    padding-left: 1.75em;
+    font-weight: bold;
+    margin-bottom: 8px;
+
+    &::before {
+      content: "Q.";
+      position: absolute;
+      left: 0;
+      color: #de5d50;
+      font-weight: bold;
+    }
+  }
+
+  & &__answer {
+    position: relative;
+    padding-left: 1.75em;
+    margin: 0;
+    color: #525263;
+
+    &::before {
+      content: "A.";
+      position: absolute;
+      left: 0;
+      color: #5b8bd8;
+      font-weight: bold;
+    }
+  }
+}

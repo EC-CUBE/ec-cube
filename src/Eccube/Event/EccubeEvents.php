@@ -77,6 +77,19 @@ final class EccubeEvents
     public const ADMIN_CONTENT_NEWS_DELETE_COMPLETE = 'admin.content.news.delete.complete';
 
     /**
+     * Admin/Content/FaqController
+     */
+    // index
+    public const ADMIN_CONTENT_FAQ_INDEX_INITIALIZE = 'admin.content.faq.index.initialize';
+
+    // edit
+    public const ADMIN_CONTENT_FAQ_EDIT_INITIALIZE = 'admin.content.faq.edit.initialize';
+    public const ADMIN_CONTENT_FAQ_EDIT_COMPLETE = 'admin.content.faq.edit.complete';
+
+    // delete
+    public const ADMIN_CONTENT_FAQ_DELETE_COMPLETE = 'admin.content.faq.delete.complete';
+
+    /**
      * Admin/Content/PageController
      */
     // index
