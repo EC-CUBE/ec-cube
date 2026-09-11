@@ -1,6 +1,6 @@
 ---
 name: eccube-formtype
-description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修するときの規約。「フォームを作って」「FormTypeを追加して」「入力項目を足して」「バリデーションを設定して」「検索フォームを作って」「既存フォームに項目を追加して」などと言われたとき、または src/Eccube/Form・app/Customize/Form 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修するときの規約。「フォームを作って」「FormTypeを追加して」「入力項目を足して」「バリデーションを設定して」「検索フォームを作って」「既存フォームに項目を追加して」などと言われたとき、またはフォームを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。
 ---
 
 # FormType 規約（EC-CUBE 4.4）
@@ -73,9 +73,5 @@ class ExampleType extends AbstractType
 
 ## よくある間違い
 
-- ❌ `getBlockPrefix()` の戻り値型を省略 → ✅ `: string` を付ける
-- ❌ 既存フォームをコアで直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張
-- ❌ 管理画面検索フォームで CSRF 無効化 → ✅ CSRF 保護を保つ
-- ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入
-- ❌ 既存フォームに二重送信防止/楽観ロック用の unmapped hidden を足し、サーバー側で値未送信を即エラー扱い → ✅ 値が空/未送信なら判定をスキップ（プログラム的 POST・既存テスト・外部連携を壊さない後方互換を保つ）
-- ❌ 共通 FormType(RepeatedPasswordType 等)を子で使い `options.constraints` を渡す（親が定義した制約が全置換され消える） → ✅ 親の制約一式も再掲して付与する
+このレイヤの「よくある間違い」6 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「FormType」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

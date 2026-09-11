@@ -1,6 +1,6 @@
 ---
 name: eccube-twig-template
-description: EC-CUBE 4.4 の Twig 拡張（Extension/Filter/Function）とテンプレートを実装・改修・点検するときの規約。「Twig拡張を作って」「フィルタ/関数を追加して」「テンプレートを上書きして」「このテンプレートを直して」「XSS/エスケープを確認して」「rawの使い方を点検して」などと言われたとき、または src/Eccube/Twig/Extension・app/template・Resource/template 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 の Twig 拡張（Extension/Filter/Function）とテンプレートを実装・改修・点検するときの規約。「Twig拡張を作って」「フィルタ/関数を追加して」「テンプレートを上書きして」「このテンプレートを直して」「XSS/エスケープを確認して」「rawの使い方を点検して」などと言われたとき、または Twig 拡張やテンプレートを作成・編集するとき（コア・app/template・プラグインのいずれでも）に使用する。
 ---
 
 # Twig 拡張・テンプレート規約（EC-CUBE 4.4）
@@ -88,16 +88,10 @@ public function onTemplateCart(TemplateEvent $event): void
 
 詳細なイベントの購読方法は Skill `eccube-event-subscriber` を参照。**テンプレートイベントは見た目の調整に使い、業務ロジック（永続化等）を書かない**。
 
-## よくある間違い（XSS・上書き — ツールでは検出しにくい観点）
+## よくある間違い
 
-- ❌ ユーザー入力・DB 値に `{{ value|raw }}` → ✅ `|raw` を外す。HTML が必要なら出力前にサニタイズ
-- ❌ JS の中に `{{ value }}`（HTML エスケープのみ）→ ✅ `{{ value|escape('js') }}`
-- ❌ `is_safe => ['html']` を付けた関数内で外部入力を未エスケープ連結 → ✅ `htmlspecialchars(..., ENT_QUOTES, 'UTF-8')`
-- ❌ HTML を返すフィルタに `is_safe` を付け忘れ → ✅ 付ける（さもないと二重エスケープで `&lt;` 等が表示される）
-- ❌ 上書きを `app/template/` 直下に置く / `@admin` 名前空間を付け忘れる → ✅ 正しいサブディレクトリ・名前空間に置く
-- ❌ **管理画面テンプレートだから安全**と油断して `|raw` する → ✅ admin 配下も XSS シンク（過去の XSS 修正は管理画面テンプレートに多い）。DB/入力由来の値は admin でも必ずエスケープする
-- ❌ テンプレートイベントにエンティティ永続化など業務処理を書く → ✅ 見た目調整のみ。業務は対応するコントローライベントへ
-- ❌ inline `<script>` に素の `json_encode` で埋める → ✅ `</script>` で XSS。`|json_encode_safe`（JSON-LD は `|json_ld`）を使う。属性値には不可
+このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「Twig / テンプレート」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

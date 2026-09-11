@@ -335,9 +335,11 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - エンティティ・コントローラ・フォーム・テンプレート・イベントサブスクライバを追加可能
 - メタデータはプラグイン内の `composer.json` で定義
 
-### app/Customize によるカスタマイズ
+### app/Customize によるカスタマイズ（**店舗向け**。本体開発では使わない）
 
-プロジェクト固有のコードはコア改変ではなく `app/Customize/` に置き、コアアップグレードの影響を避けます。
+**この節は店舗を構築する立場の話です。** 本体へのコントリビュートでは `src/Eccube/` を改修してください。
+
+店舗のプロジェクト固有コードはコア改変ではなく `app/Customize/` に置き、コアアップグレードの影響を避けます。
 
 - **エンティティ拡張**: Doctrine トレイトで既存エンティティにフィールド追加
 - **フォーム拡張**: Symfony FormTypeExtension で既存フォームにフィールド追加
@@ -363,11 +365,29 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 ## コーディング規約（レイヤ別・オンデマンド）
 
 レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が本文を直接持ちます。
-frontmatter の `description` がトリガ条件で、該当レイヤを触るときだけ発火・参照されます（常時読み込まない）。
 本文は純 Markdown なので GitHub でもそのまま読めます。
+
+### 作業の進め方（規約の読み込み）
+
+レイヤ規約は **作業開始時に該当 Skill を能動的に読む** と最も確実に活用できます。
+`description` による自動発火もあるが、設計相談から入る依頼（「〜を作りたい」「〜機能を追加したい」）では発火しないことがある。
+
+1. **設計・検討フェーズ** — 新規機能の相談・設計から始まる場合
+   - まず [`eccube-pre-impl`](./.claude/skills/eccube-pre-impl/SKILL.md) を読み、触るレイヤに対応する Skill を特定する
+   - 該当 Skill を **既存コードの調査より先に** 読み、制約・罠・実装パターンを把握してから設計する
+
+2. **実装フェーズ** — コードを書く直前
+   - 触るレイヤの Skill を再確認する（自動発火に頼らない）
+
+3. **レビューフェーズ** — 実装が一区切りついたら
+   - [`eccube-review-responsibility`](./.claude/skills/eccube-review-responsibility/SKILL.md) で責務分離・セキュリティ・レイヤ違反を横断点検
+
+**Skill に書いてあるもの**: 見ても分からない罠・理由・EC-CUBE 固有の判断基準。
+**Skill に書いていないもの**: 設定ファイルや `src/Eccube/` を見れば分かること（リンターが強制する規約など）。
 
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
+| 実装前チェックリスト（設計→実装の橋渡し） | [`.claude/skills/eccube-pre-impl/SKILL.md`](./.claude/skills/eccube-pre-impl/SKILL.md) | `eccube-pre-impl` |
 | PHPUnit テスト | [`.claude/skills/eccube-phpunit/SKILL.md`](./.claude/skills/eccube-phpunit/SKILL.md) | `eccube-phpunit` |
 | E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/eccube-e2e/SKILL.md`](./.claude/skills/eccube-e2e/SKILL.md) | `eccube-e2e` |
 | コントローラ（責務分離・Fat化防止） | [`.claude/skills/eccube-controller/SKILL.md`](./.claude/skills/eccube-controller/SKILL.md) | `eccube-controller` |
@@ -382,10 +402,11 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/eccube-plugin/SKILL.md`](./.claude/skills/eccube-plugin/SKILL.md) | `eccube-plugin` |
 | 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/eccube-purchase-flow/SKILL.md`](./.claude/skills/eccube-purchase-flow/SKILL.md) | `eccube-purchase-flow` |
 | メール（MailService・テンプレート・MailHistory） | [`.claude/skills/eccube-mail/SKILL.md`](./.claude/skills/eccube-mail/SKILL.md) | `eccube-mail` |
-| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/eccube-customize/SKILL.md`](./.claude/skills/eccube-customize/SKILL.md) | `eccube-customize` |
 | CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/eccube-csv/SKILL.md`](./.claude/skills/eccube-csv/SKILL.md) | `eccube-csv` |
 | コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
+| アセットビルド（SCSS / JS バンドル・生成物のコミット） | [`.claude/skills/eccube-asset/SKILL.md`](./.claude/skills/eccube-asset/SKILL.md) | `eccube-asset` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/eccube-review-responsibility/SKILL.md`](./.claude/skills/eccube-review-responsibility/SKILL.md) | `eccube-review-responsibility` |
+| コントリビューション（PR 作成・CI ゲートの再現） | [`.claude/skills/eccube-contributing/SKILL.md`](./.claude/skills/eccube-contributing/SKILL.md) | `eccube-contributing` |
 
 > 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
 > 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
@@ -407,7 +428,7 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 - **一般化テスト**: 固有のメソッド名・列名・テーブル名を消しても項目が成立するか確認する。
   成立しないものは Skill に書かない（そのレイヤ全体に効く規約ではなく、特定の調査結果である）。
   成立するなら例示を削って一般則だけ残す。固有名を残すと、無関係な箇所へ誤って適用される。
-- **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
+- **上限**: 1 レイヤ節あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
 - **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
 
 この歯止めは**追記するときに適用する**。本規則の導入時点で超過していた Skill
@@ -415,10 +436,10 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 超過の有無は次で確認できる。
 
 ```bash
-for f in .claude/skills/eccube-*/SKILL.md; do
-  sed -n '/よくある間違い/,/^## /p' "$f" | grep -E '^- ' \
-    | awk -v s="$(basename "$(dirname "$f")")" '{n++; if (length>m) m=length} END {if (n) printf "%-28s 項数=%-3s 最長=%s\n", s, n, m}'
-done
+awk '/^## /{if(n)printf "%-34s 項数=%-3s 最長=%s\n",s,n,m; s=substr($0,4); n=0; m=0}
+     /^- /{n++; if(length>m)m=length}
+     END{if(n)printf "%-34s 項数=%-3s 最長=%s\n",s,n,m}' \
+  .claude/skills/eccube-pre-impl/SKILL.md | awk '$2!="項数=0"'
 ```
 
 ## 主要エンティティ
@@ -477,4 +498,6 @@ Skill（`SKILL.md`）の形式は Claude Code / Cursor / Codex / Antigravity で
 - **規約準拠**: 該当レイヤの Skill（`.claude/skills/`）に従う。
 - **静的解析**: 実装後は `vendor/bin/phpstan analyse src`（level 6）を通す。
 - **コードスタイル**: `vendor/bin/php-cs-fixer fix` で PSR-12 に整える。ライセンスヘッダ必須。
-- **app/Customize 優先**: プロジェクト固有のカスタマイズはコア改変ではなく `app/Customize/` で行う。
+- **置き場の判別**: 本体へのコントリビュート（Issue 対応・機能追加・バグ修正）は `src/Eccube/` を改修する。
+  `app/Customize/` は**店舗が自分のプロジェクト固有コードを置く場所**で、本体の機能追加には使わない。
+  依頼文からどちらの立場か判別できないときは、実装を始める前に確認する。

@@ -1,6 +1,6 @@
 ---
 name: eccube-phpunit
-description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの規約。「テストを書いて」「PHPUnitテストを追加して」「コントローラのテストを作って」「テストが落ちる原因を調べて直して」などと言われたとき、または tests/Eccube/Tests 配下のテストコードを作成・編集するときに使用する。
+description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの規約。「テストを書いて」「PHPUnitテストを追加して」「コントローラのテストを作って」「テストが落ちる原因を調べて直して」などと言われたとき、または PHPUnit のテストコードを作成・編集するとき（コア・プラグインのいずれでも）に使用する。
 ---
 
 # PHPUnit テスト規約（EC-CUBE 4.4）
@@ -104,16 +104,8 @@ public static function provideStatuses(): array
 
 ## よくある間違い
 
-- ❌ `@dataProvider` アノテーション → ✅ `#[DataProvider]` 属性（PHPUnit 11）。
-- ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
-- ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
-- ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
-- ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
-- ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
-- ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
-- ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
-- ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言する。未宣言は deprecation、非 nullable は `cleanUpProperties()` の null 代入で `TypeError`。
-- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
+このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「PHPUnit テスト」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行方法
 

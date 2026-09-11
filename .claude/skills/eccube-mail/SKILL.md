@@ -157,16 +157,8 @@ HTML メールを足したいときは **同じディレクトリに `*.html.twi
 
 ## よくある間違い
 
-- ❌ コントローラで `MailerInterface` を直接呼んで `Email` を組み立てる → ✅ `MailService` の送信メソッドに集約する
-- ❌ 差出人・返信先をハードコードする → ✅ `BaseInfo` の `email01`（From/Bcc）/ `email03`（ReplyTo）/ `email04`（ReturnPath）を使う
-- ❌ 宛先に生の文字列を `->to($email)` で渡す → ✅ `convertRFCViolatingEmail($email)` を通す
-- ❌ 件名・本文を PHP 内で文字列連結する → ✅ `MailTemplate` ＋ Twig（`render()`）で組み立てる
-- ❌ プレーンテキストメール twig を素で書く / 通常の HTML エスケープをかける → ✅ `{% autoescape 'safe_textmail' %}` で囲む
-- ❌ HTML メール用に送信メソッドへ分岐を足す → ✅ 同名 `*.html.twig` を置けば `getHtmlTemplate()` が自動で multipart 化する
-- ❌ 送信失敗で例外を投げて受注処理を止める → ✅ `TransportExceptionInterface` を catch して `log_critical` で記録（既存の方針に合わせる）
-- ❌ `MailService` 内で `flush()` する／会員系メールを `MailHistory` に残す → ✅ persist まで（`flush()` は呼び出し側）。関連は `Order` と `Creator`(Member) のみ
-- ❌ コアの `Resource/template/default/Mail/*.twig` を直接書き換える → ✅ `app/template/<コード>/Mail/` で上書きする
-- ❌ 送信前のイベント dispatch を省く → ✅ プラグインの差し替え口として `EccubeEvents::MAIL_*` を必ず発火する
+このレイヤの「よくある間違い」10 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「メール」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

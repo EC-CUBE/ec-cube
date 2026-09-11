@@ -1,6 +1,6 @@
 ---
 name: eccube-security
-description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを実装・改修・点検するときの規約。「認可を追加して」「アクセス制御を直して」「このルートに権限チェックを入れて」「CSRF対策を確認して」「Voterを作って」「セキュリティ監査して」などと言われたとき、または src/Eccube/Security 配下・app/config/eccube/packages/security.yaml を作成・編集するとき、認可漏れ/CSRF漏れ/IDOR を点検するときに使用する。
+description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを実装・改修・点検するときの規約。「認可を追加して」「アクセス制御を直して」「このルートに権限チェックを入れて」「CSRF対策を確認して」「Voterを作って」「セキュリティ監査して」などと言われたとき、または認証・認可・CSRF の実装や設定（security.yaml 等）を作成・編集するとき（コア・app/Customize・プラグインのいずれでも）、認可漏れ/CSRF漏れ/IDOR を点検するときに使用する。
 ---
 
 # セキュリティ規約 — 認証・認可・CSRF（EC-CUBE 4.4）
@@ -16,6 +16,29 @@ description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを�
 
 EC-CUBE は **個別アクションの `#[IsGranted]` ではなく、ファイアウォール＋ロール＋Voter** で制御する。
 設定は `app/config/eccube/packages/security.yaml`。
+
+> **`access_control` は `security.yaml` に無い。`src/Eccube/DependencyInjection/EccubeExtension.php`
+> の `configureFramework()` が `prependExtensionConfig('security', ...)` で動的に注入している**
+> （コード内コメント「security.ymlでは制御できないため, ここで定義する」）。生成されるのは次の 6 規則で、
+> `ECCUBE_FORCE_SSL` が有効なら全規則に `requires_channel: https` が足される。
+>
+> | path | roles |
+> |---|---|
+> | `^/%eccube_admin_route%/login` | `IS_AUTHENTICATED_ANONYMOUSLY` |
+> | `^/%eccube_admin_route%/` | `ROLE_ADMIN` |
+> | `^/mypage/login` | `IS_AUTHENTICATED_ANONYMOUSLY` |
+> | `^/mypage/withdraw_complete` | `IS_AUTHENTICATED_ANONYMOUSLY` |
+> | `^/mypage/change` | `IS_AUTHENTICATED_FULLY` |
+> | `^/mypage/` | `ROLE_USER` |
+>
+> **認可レビューで `security.yaml` だけを見ると、この 6 規則が見えず誤検出する。**
+> 例: `^/mypage/` 配下は `ROLE_USER` が前提なので `getUser()` は非 null だが、
+> これを知らないと「null 参照で 500 になる」と誤って指摘してしまう。
+> **ただし規則は上から順に最初に一致したものが適用される**ため、より上に並ぶ
+> `/mypage/login`・`/mypage/withdraw_complete`（`IS_AUTHENTICATED_ANONYMOUSLY`）は
+> 匿名で到達でき、`getUser()` が null になり得る。**`^/mypage/` 配下を一律に
+> 「認証済み」と扱わない**こと（`/mypage/change` は逆に `IS_AUTHENTICATED_FULLY` で更に厳しい）。
+> 認可の穴を探すときは必ず `EccubeExtension.php` 側も合わせて読む。
 
 - **firewalls** は 3 つ:
   - `admin`: `pattern: '^/%eccube_admin_route%/'` — `Member`(管理者) を認証。`enable_csrf: true`、login throttling 有り。
@@ -78,20 +101,10 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 `services.yaml` の `autoconfigure: true` により `security.voter` タグは自動付与される（手動登録は不要。コアの既存 Voter に倣う）。
 **`access_decision` が unanimous なので、棄権（ABSTAIN）と拒否（DENY）の使い分けを誤ると全体が拒否になる**点に注意。
 
-## よくある間違い（認可・CSRF・IDOR — ツールでは検出できない観点）
+## よくある間違い
 
-- ❌ 管理アクションを `%eccube_admin_route%` 配下**以外**に置く → ✅ 配下に置き admin firewall の保護下にする
-- ❌ フォームを介さない POST/DELETE/Ajax で CSRF 未検証 → ✅ `$this->isTokenValid()` を呼ぶ（GET 以外）
-- ❌ Ajax 専用アクションで XHR 以外も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR に限定する
-- ❌ フロントで `{id}` から取得したエンティティを所有権チェックせず編集/削除（**IDOR**）
-  → ✅ `$this->getUser()` と突き合わせ、他人のリソースなら `AccessDeniedHttpException`
-- ❌ パスワード変更・退会など重要操作を `IS_AUTHENTICATED_REMEMBERED` で許可
-  → ✅ `IS_AUTHENTICATED_FULLY` を要求（盗難 Cookie での実行を防ぐ）
-- ❌ 独自 Voter で「対象外」を `ACCESS_DENIED` で返す → ✅ 対象外は `ACCESS_ABSTAIN`（unanimous 戦略で誤拒否を防ぐ）
-- ❌ 自前でパスワードをハッシュ/平文比較 → ✅ `PasswordHasher` 経由に統一
-- ❌ ユーザー入力を Twig で `|raw` 出力 → ✅ エスケープを効かせる（Skill `eccube-twig-template`）
-- ❌ ファイル操作を伴う管理ルートを新設して `eccube_restrict_file_upload` を考慮しない → ✅ 遮断対象（`eccube_restrict_file_upload_urls`）に含めるべきか検討する
-- ❌ ユーザー指定のパスをそのまま読み書き（**ディレクトリトラバーサル**）→ ✅ `..` を拒否し `realpath()` で解決、許可ベース配下かを検証する（`FileController::checkDir()` が手本）
+このレイヤの「よくある間違い」10 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「セキュリティ（認証・認可・CSRF・IDOR）」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

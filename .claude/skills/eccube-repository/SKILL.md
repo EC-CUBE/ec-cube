@@ -1,6 +1,6 @@
 ---
 name: eccube-repository
-description: EC-CUBE 4.4 の Doctrine リポジトリを実装・改修するときの規約。「リポジトリを作って」「検索メソッドを追加して」「クエリを書いて」「一覧の絞り込みを実装して」などと言われたとき、または src/Eccube/Repository・app/Customize/Repository 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 の Doctrine リポジトリを実装・改修するときの規約。「リポジトリを作って」「検索メソッドを追加して」「クエリを書いて」「一覧の絞り込みを実装して」などと言われたとき、またはリポジトリを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。
 ---
 
 # Repository 規約（EC-CUBE 4.4）
@@ -67,10 +67,5 @@ class ExampleRepository extends AbstractRepository
 
 ## よくある間違い
 
-- ❌ 生 SQL の文字列連結・値の直挿し → ✅ QueryBuilder ＋ `setParameter()` バインド
-- ❌ Repository に業務ロジックを書く → ✅ データアクセスに徹し、ロジックは Service
-- ❌ `ServiceEntityRepository` を直接継承 → ✅ `AbstractRepository<T>` を継承
-- ❌ オーバーライドで親と異なるシグネチャ → ✅ 親シグネチャを厳守
-- ❌ 画面表示の一覧・関連取得を無制限に全件取得（件数が際限なく増え得る）→ ✅ ページング（Paginator 用に QueryBuilder を返す）か上限を設ける
-- ❌ join 先への絞り込みを EXISTS 部分クエリへ移すとき、その別名に掛かっていた既存の制約を引き継がない → ✅ 同じ制約を EXISTS 内に再掲し、集計・出力側の母集団と一致させる
-- ❌ 1 対多の範囲絞り込みで下限・上限を独立した EXISTS 2 本に分ける（別々の子行が満たせばヒットしてしまう）→ ✅ 同一の子行に両条件を要求するなら EXISTS 1 本にまとめる
+このレイヤの「よくある間違い」7 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「Repository」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
