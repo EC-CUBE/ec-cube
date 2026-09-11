@@ -1,11 +1,35 @@
 import { Client as PgClient } from 'pg';
 import mysql from 'mysql2/promise';
 
+/** バインドパラメータに渡せる値。 */
+export type DbParam = string | number | boolean | null;
+
 export interface DbClient {
   tableExists(tableName: string): Promise<boolean>;
   columnExists(tableName: string, columnName: string): Promise<boolean>;
   getPlugin(code: string): Promise<{ initialized: boolean; enabled: boolean } | null>;
+  /**
+   * 任意の SELECT を実行し、先頭行の先頭カラムを返す（0 行なら null）。
+   * COUNT(*) 等はドライバによって string で返るため、数値として比較する場合は
+   * 呼び出し側で Number() を通すこと。
+   */
+  fetchOne(sql: string, params?: DbParam[]): Promise<unknown>;
+  /** 任意の SELECT を実行し、全行を返す。 */
+  fetchAll(sql: string, params?: DbParam[]): Promise<Record<string, unknown>[]>;
   close(): Promise<void>;
+}
+
+/**
+ * プレースホルダを PostgreSQL の `$n` 形式へ変換する。
+ *
+ * spec 側は MySQL / PostgreSQL の双方で同じ SQL を書けるよう `?` で統一する
+ * （e2e-test.yml は pgsql、plugin-test.yml は pgsql と mysql の両方を回す）。
+ * 単純な置換なので、文字列リテラル内に `?` を含む SQL には使えない。
+ */
+function toPgPlaceholders(sql: string): string {
+  let index = 0;
+
+  return sql.replace(/\?/g, () => `$${++index}`);
 }
 
 class PgDbClient implements DbClient {
@@ -45,6 +69,20 @@ class PgDbClient implements DbClient {
       initialized: result.rows[0].initialized,
       enabled: result.rows[0].enabled,
     };
+  }
+
+  async fetchOne(sql: string, params: DbParam[] = []): Promise<unknown> {
+    const result = await this.client.query(toPgPlaceholders(sql), params);
+    if (result.rows.length === 0) return null;
+    const row = result.rows[0];
+
+    return row[Object.keys(row)[0]];
+  }
+
+  async fetchAll(sql: string, params: DbParam[] = []): Promise<Record<string, unknown>[]> {
+    const result = await this.client.query(toPgPlaceholders(sql), params);
+
+    return result.rows;
   }
 
   async close(): Promise<void> {
@@ -103,6 +141,21 @@ class MysqlDbClient implements DbClient {
       initialized: Boolean(results[0].initialized),
       enabled: Boolean(results[0].enabled),
     };
+  }
+
+  async fetchOne(sql: string, params: DbParam[] = []): Promise<unknown> {
+    const [rows] = await this.conn().execute(sql, params);
+    const results = rows as Record<string, unknown>[];
+    if (results.length === 0) return null;
+    const row = results[0];
+
+    return row[Object.keys(row)[0]];
+  }
+
+  async fetchAll(sql: string, params: DbParam[] = []): Promise<Record<string, unknown>[]> {
+    const [rows] = await this.conn().execute(sql, params);
+
+    return rows as Record<string, unknown>[];
   }
 
   async close(): Promise<void> {

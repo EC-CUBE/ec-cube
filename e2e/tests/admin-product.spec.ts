@@ -1,4 +1,6 @@
-import { test, expect } from '@playwright/test';
+// UI からは見えない dtb_product_stock の重複を検証するため db fixture を使う
+// (EA0310-UC02-T03)。db を引数に取らないテストでは接続されない。
+import { test, expect } from '../fixtures/db-test';
 import { ADMIN_ROUTE } from '../config/default.config';
 import path from 'path';
 
@@ -802,10 +804,120 @@ test.describe('Admin Product (EA03)', () => {
     await expect(page.locator('#page_admin_product_product_class table')).not.toBeVisible();
   });
 
-  test.fixme('product_一覧からの規格編集_規格あり_重複在庫の修正 - EA0310-UC02-T03', async ({ page }) => {
-    // Codeception marks this as incomplete:
-    // "ローカルで通るが何故かGitHub Actionsでエラーになるためスキップ"
-    // See: https://github.com/EC-CUBE/ec-cube/issues/6150
+  test('product_一覧からの規格編集_規格あり_重複在庫の修正 - EA0310-UC02-T03', async ({ page, db }) => {
+    // 規格を「無効化 → 再度有効化」すると dtb_product_stock が二重に登録され、
+    // 在庫数がズレる不具合の回帰テスト（修正は #6029）。
+    // 重複は画面に出ないので DB を直接見る。
+    // 元の商品を壊さないよう複製してから操作する。
+    // 複製元は DB から決める。商品名で検索して先頭行を複製すると、
+    // 直前の EA0310-UC02-T01 が同じ商品を複製して規格を初期化しているため、
+    // 検索結果の並び順によっては「規格を持たない複製」を掴んで成立しない。
+    const [base] = await db.fetchAll(
+      `SELECT p.id, p.name
+         FROM dtb_product p
+         JOIN dtb_product_class pc ON pc.product_id = p.id
+        WHERE pc.class_category_id1 IS NOT NULL
+          AND pc.visible = true
+        GROUP BY p.id, p.name
+        ORDER BY p.id
+        LIMIT 1`
+    );
+    expect(base, '規格を持つ商品がフィクスチャに存在する').toBeTruthy();
+    const baseProductId = String(base.id);
+
+    await goProductList(page);
+    await searchProduct(page, String(base.name));
+    await expect(page.locator(searchResultMsg)).toContainText(/検索結果：\d+件が該当しました/);
+
+    // 先頭行ではなく商品 ID で行を特定して複製する
+    // （複製ボタンの title は <a> ではなくラッパの div に付いているので data-bs-target で取る）
+    const copyModal = page.locator(`#confirmModal-${baseProductId}`);
+    await page.locator(`#ex-product-${baseProductId} a[data-bs-target="#confirmModal-${baseProductId}"]`).click();
+    await expect(copyModal).toBeVisible();
+    await copyModal.locator(`a[href$="/product/product/${baseProductId}/copy"]`).click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('.alert-success')).toContainText('商品を複製しました');
+
+    // 複製した商品の規格管理へ。
+    // 規格管理リンクは data-action="confirm" で、product.twig の confirmFormChange が
+    // 必ず移動確認モーダルを開いて遷移を止める（クリックだけでは遷移しない）。
+    await page.locator('#standardConfig a[href*="product/class"]').click();
+    const confirmModal = page.locator('#confirmFormChangeModal');
+    await expect(confirmModal).toBeVisible();
+    await confirmModal.locator('a[data-action="save"]').click();
+    await page.waitForURL(/\/product\/product\/class\/\d+/);
+    await expect(page.locator(pageTitle)).toContainText('商品規格登録');
+    await expect(page.locator('#page_admin_product_product_class table')).toBeVisible();
+
+    // 検証対象の商品 ID は URL から取る（規格は削除・再作成されるため画面に ID は出ない）
+    const productId = page.url().match(/\/product\/product\/class\/(\d+)/)?.[1] ?? '';
+    expect(productId, '商品 ID を URL から取得できる').not.toBe('');
+
+    const row = 0;
+    const checked = page.locator(`#product_class_matrix_product_classes_${row}_checked`);
+    const stockUnlimited = page.locator(`#product_class_matrix_product_classes_${row}_stock_unlimited`);
+    const stock = page.locator(`#product_class_matrix_product_classes_${row}_stock`);
+    const price02 = page.locator(`#product_class_matrix_product_classes_${row}_price02`);
+    const save = page.locator('button[name="product_class_matrix[save]"]');
+
+    // 1. 在庫数無制限にして登録
+    await stockUnlimited.check();
+    await save.click();
+    await page.waitForLoadState('load');
+
+    // 2. 在庫数無制限を外して個数を入れて登録（無制限のままだと stock が disabled になる）
+    await stockUnlimited.uncheck();
+    await stock.fill('100');
+    await save.click();
+    await page.waitForLoadState('load');
+
+    // 3. 規格を無効化して登録（ここで ProductClass が削除される）
+    await checked.uncheck();
+    await save.click();
+    await page.waitForLoadState('load');
+
+    // 4. 規格を再度有効化し、個数と販売価格を入れて登録（ここで重複在庫が発生していた）
+    await checked.check();
+    await stock.fill('10');
+    await price02.fill('5000');
+    await save.click();
+    await page.waitForLoadState('load');
+    await expect(page.locator('.alert-success')).toContainText('保存しました');
+
+    // 1 つの規格に対して在庫レコードが 2 件以上ある状態になっていないこと
+    const duplicated = await db.fetchOne(
+      `SELECT COUNT(*) AS count FROM (
+         SELECT ps.product_class_id
+           FROM dtb_product_stock ps
+           JOIN dtb_product_class pc ON pc.id = ps.product_class_id
+          WHERE pc.product_id = ?
+          GROUP BY ps.product_class_id
+         HAVING COUNT(*) > 1
+       ) AS duplicated`,
+      [productId]
+    );
+    expect(Number(duplicated)).toBe(0);
+
+    // 非正規化されている dtb_product_class.stock と dtb_product_stock.stock がズレていないこと
+    const mismatched = await db.fetchOne(
+      `SELECT COUNT(*) AS count
+         FROM dtb_product_class pc
+         JOIN dtb_product_stock ps ON ps.product_class_id = pc.id
+        WHERE pc.product_id = ?
+          AND pc.stock_unlimited = false
+          AND pc.stock <> ps.stock`,
+      [productId]
+    );
+    expect(Number(mismatched)).toBe(0);
+
+    // 最後に入力した個数が在庫として残っていること
+    const stocks = await db.fetchAll(
+      `SELECT ps.stock FROM dtb_product_stock ps
+         JOIN dtb_product_class pc ON pc.id = ps.product_class_id
+        WHERE pc.product_id = ?`,
+      [productId]
+    );
+    expect(stocks.map((r) => Number(r.stock))).toContain(10);
   });
 
   test('product_商品の一括削除_正常', async ({ page }) => {

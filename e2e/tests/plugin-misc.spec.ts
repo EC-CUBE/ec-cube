@@ -70,9 +70,7 @@ test.describe('Plugin Misc', () => {
   });
 
   // マルチタブでの有効化/無効化競合テスト
-  // ヘッドレスChromiumではバックグラウンドタブのDOMが更新されるため不安定
-  // TODO: Playwright のマルチタブ対応改善後に有効化
-  test.fixme('test_install_enable_enable', async ({ page, db, config }) => {
+  test('test_install_enable_enable', async ({ page, db, config }) => {
     // 前回テスト失敗時の残りプラグインを削除
     await cleanupHorizon(page, db, config);
 
@@ -92,7 +90,7 @@ test.describe('Plugin Misc', () => {
     await horizon.削除();
   });
 
-  test.fixme('test_install_disable_disable', async ({ page, db, config }) => {
+  test('test_install_disable_disable', async ({ page, db, config }) => {
     // 前回テスト失敗時の残りプラグインを削除
     await cleanupHorizon(page, db, config);
 
