@@ -60,6 +60,29 @@ async function createOrderViaUI(page: import('@playwright/test').Page, name01: s
   await expect(page.locator('.alert-success').first()).toContainText('保存しました');
 }
 
+/**
+ * 商品一覧から規格なし商品の在庫数を読む.
+ *
+ * 商品編集画面ではなく一覧から読むのは, 編集画面が使う
+ * ProductRepository::findWithSortedClassCategories() が結果キャッシュ
+ * (eccube_result_cache_lifetime_short = 10 秒) を有効にしており,
+ * 直前の在庫更新が最大 10 秒間反映されないため。一覧の検索クエリはキャッシュしない。
+ */
+async function getProductStock(page: import('@playwright/test').Page, productName: string): Promise<number> {
+  await page.goto(`/${adminRoute}/product`);
+  await page.locator('#admin_search_product_id').fill(productName);
+  await page.locator('#search_form .c-outsideBlock__contents button').click();
+
+  // 検索が反映されるまで待つ。行は商品名で特定し, 位置に依存しない。
+  const row = page.locator('#form_bulk table tbody tr').filter({ hasText: productName });
+  await expect(row).toHaveCount(1);
+
+  // 列: チェックボックス / 商品ID / 画像 / 商品名 / 商品コード / 販売価格 / 在庫数
+  const stock = (await row.locator('td').nth(6).innerText()).trim();
+
+  return Number(stock);
+}
+
 test.describe('Admin Order (EA04)', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -434,6 +457,45 @@ test.describe('Admin Order (EA04)', () => {
     // Wait for completion
     await page.waitForSelector('#bulkChangeComplete', { state: 'visible', timeout: 30_000 });
     await expect(page.locator('#bulkChangeComplete')).toBeVisible();
+  });
+
+  test('order_受注ステータスを注文取消しへ変更すると在庫が戻る (EA0401-UC06-T01)', async ({ page }) => {
+    // 受注のキャンセルは OrderStateMachine の cancel 遷移で StockReduceProcessor::rollback() を呼び,
+    // その中で ProductStock に悲観ロック (PESSIMISTIC_WRITE) を掛ける。
+    // この経路は PHPUnit の Web テストでは TransactionRequiredException になり検証できないため,
+    // E2E で担保する。詳細は #7016。
+    const productName = 'チェリーアイスサンド';
+    const stockBeforeOrder = await getProductStock(page, productName);
+
+    // 再試行で前回の受注が残ると先頭行が別の受注になるため, 受注者名を実行ごとに一意化する。
+    // 氏名は 16 文字以下の制約があるため, ミリ秒を 36 進数にして桁を詰める（2 + 8 文字）。
+    const ordererName = `取消${Date.now().toString(36)}`;
+    await createOrderViaUI(page, ordererName, '太郎');
+
+    // 受注登録で在庫が 1 減る
+    const stockAfterOrder = await getProductStock(page, productName);
+    expect(stockAfterOrder).toBe(stockBeforeOrder - 1);
+
+    // 受注編集画面でステータスを注文取消しへ変更する（workflow の cancel 遷移）
+    await goOrderList(page);
+    await searchOrder(page, ordererName);
+    // 検索が反映されるまで待つ。行は受注者名で特定し, 位置に依存しない。
+    const orderRow = page.locator('#search_result > tbody > tr').filter({ hasText: ordererName });
+    await expect(orderRow).toHaveCount(1);
+    await orderRow.locator('a.action-edit').click();
+    await expect(page.locator('#order_name_name01')).toHaveValue(ordererName);
+
+    await page.locator('#order_OrderStatus').selectOption({ label: '注文取消し' });
+    await page.locator('#form1 button[value="register"]').click();
+    await page.waitForLoadState('load');
+
+    // 500 にならず保存され, ステータスが注文取消しになる
+    await expect(page.locator('.alert-success').first()).toContainText('保存しました');
+    await expect(page.locator('#order_OrderStatus option:checked')).toHaveText('注文取消し');
+
+    // rollbackStock が走り在庫が戻る
+    const stockAfterCancel = await getProductStock(page, productName);
+    expect(stockAfterCancel).toBe(stockBeforeOrder);
   });
 
   test('order_一括メール通知 (EA0402-UC02-T01)', async ({ page }) => {
