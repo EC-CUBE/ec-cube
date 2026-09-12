@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * profile.json 構造:
  *   { "ucp": { version, services, payment_handlers, capabilities }, "signing_keys": [JWK...] }
  *
- * - services / capabilities / payment_handlers のキーは reverse-domain.
+ * - services / capabilities / payment_handlers は reverse-domain 名をキーとし、エントリの配列を値とするレジストリ (ucp.json の $defs.base).
  * - endpoint (絶対 URL) はパスをハードコードせず UrlGenerator (RequestContext) から動的生成する.
  * - signing_keys[] は EC 公開鍵 JWK のみ (秘密鍵パラメータ非混入). UcpMessageSigner の戻りをそのまま使う.
  *
@@ -90,7 +90,7 @@ class UcpProfileBuilder
     /**
      * services レジストリを組み立てる. Catalog REST service を常時宣言する.
      *
-     * @return array<string, array<string, mixed>> reverse-domain キーのレジストリ
+     * @return array<string, list<array<string, mixed>>> reverse-domain キーのレジストリ (値は service エントリの配列)
      */
     private function buildServices(): array
     {
@@ -106,9 +106,11 @@ class UcpProfileBuilder
 
         return [
             self::CATALOG_SERVICE_KEY => [
-                'version' => self::UCP_VERSION,
-                'transport' => 'rest',
-                'endpoint' => $endpoint,
+                [
+                    'version' => self::UCP_VERSION,
+                    'transport' => 'rest',
+                    'endpoint' => $endpoint,
+                ],
             ],
         ];
     }
@@ -116,18 +118,22 @@ class UcpProfileBuilder
     /**
      * capabilities レジストリを組み立てる. Catalog の search/lookup を常時宣言する.
      *
-     * @return array<string, array<string, mixed>> reverse-domain キーのレジストリ
+     * @return array<string, list<array<string, mixed>>> reverse-domain キーのレジストリ (値は capability エントリの配列)
      */
     private function buildCapabilities(): array
     {
         return [
             self::CATALOG_SEARCH_CAPABILITY => [
-                'version' => self::UCP_VERSION,
-                'schema' => 'https://ucp.dev/schemas/shopping/catalog_search.json',
+                [
+                    'version' => self::UCP_VERSION,
+                    'schema' => 'https://ucp.dev/schemas/shopping/catalog_search.json',
+                ],
             ],
             self::CATALOG_LOOKUP_CAPABILITY => [
-                'version' => self::UCP_VERSION,
-                'schema' => 'https://ucp.dev/schemas/shopping/catalog_lookup.json',
+                [
+                    'version' => self::UCP_VERSION,
+                    'schema' => 'https://ucp.dev/schemas/shopping/catalog_lookup.json',
+                ],
             ],
         ];
     }
