@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Entity\Page;
 use Eccube\Entity\TradeLaw;
 use Eccube\Repository\TradeLawRepository;
 use Symfony\Component\HttpFoundation\Request;

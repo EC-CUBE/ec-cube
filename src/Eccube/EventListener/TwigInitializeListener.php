@@ -22,8 +22,6 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
-use Eccube\Entity\Page;
-use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\BlockPositionRepository;
@@ -35,7 +33,6 @@ use Eccube\Request\Context;
 use Eccube\Service\SiteStructuredDataService;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -123,7 +120,6 @@ class TwigInitializeListener implements EventSubscriberInterface
         // 引数は後方互換のため任意にしており、渡されなければここで取得する。
         $BaseInfo ??= $this->baseInfoRepository->get();
         $request = $event->getRequest();
-        /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
@@ -137,10 +133,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         // URLからPageを取得
-        /** @var Page $Page */
         $Page = $this->pageRepository->getPageByRoute($route);
 
-        /** @var PageLayout[] $PageLayouts */
         $PageLayouts = $Page->getPageLayouts();
 
         // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
@@ -219,6 +213,13 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
+
+        // 読み取り専用の判定は RestrictFileUploadListener が行い, ここでは結果を渡すだけにする.
+        // 対象ルートの一覧を二重に持たないため
+        $attributes = $event->getRequest()->attributes;
+        $this->twig->addGlobal('isReadOnlyScreen', $attributes->getBoolean(RestrictFileUploadListener::READ_ONLY_ATTRIBUTE));
+        $this->twig->addGlobal('isRestrictableScreen', $attributes->getBoolean(RestrictFileUploadListener::RESTRICTABLE_ATTRIBUTE));
+        $this->twig->addGlobal('readOnlyCommand', $attributes->get(RestrictFileUploadListener::READ_ONLY_COMMAND_ATTRIBUTE));
     }
 
     /**
@@ -231,8 +232,6 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     private function getDisplayEccubeNav(array $parentNav, array $AuthorityRoles, string $baseUrl): array
     {
-        $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
-
         foreach ($parentNav as $key => $childNav) {
             if (array_key_exists('children', $childNav) && count($childNav['children']) > 0) {
                 // 子のメニューがある場合は子の権限チェック
@@ -253,10 +252,6 @@ class TwigInitializeListener implements EventSubscriberInterface
                         unset($parentNav[$key]);
                         break;
                     }
-                }
-
-                if ($this->eccubeConfig['eccube_restrict_file_upload'] === '1' && in_array($childNav['url'], $restrictUrls)) {
-                    unset($parentNav[$key]);
                 }
             }
         }

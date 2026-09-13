@@ -596,8 +596,6 @@ class Shipping extends AbstractEntity
 
     /**
      * Product class of shipment item (temp)
-     *
-     * @return $this
      */
     public function setProductClassOfTemp(ProductClass $ProductClassOfTemp): static
     {
@@ -608,8 +606,6 @@ class Shipping extends AbstractEntity
 
     /**
      * Set order.
-     *
-     * @return $this
      */
     public function setOrder(Order $Order): static
     {

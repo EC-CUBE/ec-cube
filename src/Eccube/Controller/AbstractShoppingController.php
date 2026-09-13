@@ -35,7 +35,6 @@ class AbstractShoppingController extends AbstractController
      */
     protected function executePurchaseFlow(ItemHolderInterface $itemHolder, bool $returnResponse = true): PurchaseFlowResult|RedirectResponse|null
     {
-        /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext(clone $itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
             $this->addWarning($warning->getMessage());

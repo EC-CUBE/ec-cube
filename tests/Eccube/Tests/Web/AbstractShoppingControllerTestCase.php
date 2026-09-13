@@ -30,16 +30,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
     public function createShippingFormData()
     {
         $faker = $this->getFaker();

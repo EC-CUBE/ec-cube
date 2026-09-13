@@ -34,7 +34,7 @@ final class AutoConfigurationTagPassTest extends EccubeTestCase
         $this->assertFalse($definition->hasTag('doctrine.event_subscriber'));
 
         $container->addCompilerPass(new AutoConfigurationTagPass());
-        $container->compile();
+        $container->compile(true);
 
         $definition = $container->getDefinition(Subscriber::class);
         $this->assertTrue($definition->hasTag('doctrine.event_subscriber'));
@@ -50,7 +50,7 @@ final class AutoConfigurationTagPassTest extends EccubeTestCase
         $this->assertFalse($child->hasTag('eccube_rate_limiter'));
 
         $container->addCompilerPass(new AutoConfigurationTagPass());
-        $container->compile();
+        $container->compile(true);
 
         $this->assertTrue($child->hasTag('eccube_rate_limiter'));
     }

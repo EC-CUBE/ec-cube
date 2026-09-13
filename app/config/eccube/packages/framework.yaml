@@ -18,11 +18,14 @@ framework:
         cookie_secure: auto
         cookie_samesite: none
 
-    # When using the HTTP Cache, ESI allows to render page fragments separately
-    # and with different cache configurations for each fragment
-    # https://symfony.com/doc/current/book/http_cache.html#edge-side-includes
-    esi: { enabled: true }
-    fragments: { enabled: true }
+    # ESI / fragments are disabled by default.
+    # The core renders blocks via the inline fragment renderer ({{ render(path(...)) }}),
+    # which does not require the fragments listener nor the public /_fragment endpoint.
+    # Keeping them disabled avoids exposing /_fragment. Enable them only if a project
+    # actually uses render_esi() / render_hinclude() with an HTTP cache (ESI) gateway.
+    # https://symfony.com/doc/current/http_cache/esi.html
+    esi: { enabled: false }
+    fragments: { enabled: false }
     php_errors:
         log: true
     assets:
@@ -49,6 +52,9 @@ framework:
         # to avoid collisions when multiple apps share the same cache backend (e.g. a Redis server)
         # See https://symfony.com/doc/current/reference/configuration/framework.html#prefix-seed
         prefix_seed: ec-cube
+        # cache pool はリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
+        # cache.system 側は設定できないため RuntimeCacheDirPass で差し替える.
+        directory: '%eccube_runtime_dir%/pools/app'
     # Lock factory. flock store works on shared hosting without external infra.
     # Used by Agent Commerce (UCP Catalog) cache stampede prevention.
     lock: flock

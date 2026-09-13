@@ -63,8 +63,6 @@ class Tag extends AbstractEntity implements \Stringable
 
     /**
      * Set id.
-     *
-     * @return $this
      */
     public function setId(int $id): static
     {
@@ -83,8 +81,6 @@ class Tag extends AbstractEntity implements \Stringable
 
     /**
      * Set name.
-     *
-     * @return $this
      */
     public function setName(?string $name): static
     {
@@ -103,8 +99,6 @@ class Tag extends AbstractEntity implements \Stringable
 
     /**
      * Set sort_no.
-     *
-     * @return $this
      */
     public function setSortNo(int $sort_no): static
     {

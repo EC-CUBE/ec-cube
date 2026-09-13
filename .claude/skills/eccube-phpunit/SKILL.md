@@ -108,14 +108,12 @@ public static function provideStatuses(): array
 - ❌ `new Client()` など HTTP クライアントの自前生成 → ✅ 親クラスの `$this->client`。
 - ❌ URL の文字列直書き（`'/products/list'`）→ ✅ `$this->generateUrl('product_list')`。
 - ❌ Entity の手組み → ✅ `createXxx()` フィクスチャヘルパ。
-- ❌ 支払方法のデフォルト/再選択テストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で再選択先を固定（フィクスチャ並び変更で偽陽性になり得る）。
+- ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
 - ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
-- ❌ 回帰テストを追加して、修正を外すと落ちることを確認せずに完了とする → ✅ 修正を 1 つずつ外してどのテストが落ちるか実測する（落ちないテストはゲートにならない）。
-- ❌ PHP Warning が出ることを回帰の証拠にする → ✅ `phpunit.xml.dist` に `failOnWarning` が無いため Warning では落ちない。戻り値を assert で直接検証する。
+- ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
 - ❌ 型宣言の省略 → ✅ 引数・戻り値に型を付け、PHPStan level 6 を通す。
-- ❌ `setUp()` で未宣言のプロパティに代入（`$this->Member = ...`）→ ✅ プロパティを必ず宣言する。PHP 8.2 の動的プロパティ deprecation が `failOnDeprecation`（`phpunit.xml.dist`）で CI red になる。
-- ❌ テストのプロパティを非 nullable で宣言（`protected array $Items = [];`）→ ✅ `protected ?array $Items = null;` と nullable にする。`EccubeTestCase::cleanUpProperties()` が tearDown で全プロパティに `null` を代入するため、非 nullable だと `TypeError` で全テストが落ちる（初期値が必要なら `setUp()` で代入する）。
-- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は `str_contains(null, …)` の deprecation を出し、かつ「HTML パートが無いので必ず通る」空振りアサーションになる。
+- ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言する。未宣言は deprecation、非 nullable は `cleanUpProperties()` の null 代入で `TypeError`。
+- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
 
 ## 実行方法
 

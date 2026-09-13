@@ -627,7 +627,6 @@ class MailService
 
         $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_shipping_notify_mail_template_id']);
 
-        /** @var Order $Order */
         $Order = $Shipping->getOrder();
         $body = $this->getShippingNotifyMailBody($Shipping, $Order, $MailTemplate->getFileName());
 
@@ -706,7 +705,7 @@ class MailService
 
         if ($is_html) {
             $htmlFileName = $this->getHtmlTemplate($fileName);
-            $fileName = !is_null($htmlFileName) ? $htmlFileName : $fileName;
+            $fileName = $htmlFileName ?? $fileName;
         }
 
         return $this->twig->render($fileName, [

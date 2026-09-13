@@ -26,7 +26,6 @@ use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Eccube\Service\SchemaService;
 use Eccube\Tests\EccubeTestCase;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -157,7 +156,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             '--no-proxy is do not use proxy'
         );
 
-        /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
@@ -189,7 +187,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $display = $commandTester->getDisplay();
         $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
-        /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
@@ -222,7 +219,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
 
         $this->assertStringContainsString('[OK] Nothing to update', (string) $display, '--no-proxy is do not use proxy');
 
-        /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
@@ -256,7 +252,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $display = $commandTester->getDisplay();
         $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
-        /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
@@ -299,7 +294,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
             '--no-proxy is do not use proxy'
         );
 
-        /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
@@ -336,7 +330,6 @@ final class UpdateSchemaDoctrineCommandTest extends EccubeTestCase
         $display = $commandTester->getDisplay();
         $this->assertStringContainsString('[OK] Nothing to update', $display, 'Use proxy');
 
-        /** @var AbstractSchemaManager $schema */
         $schema = $this->getSchemaManager();
         $columns = $schema->listTableColumns('dtb_customer');
 
@@ -431,7 +424,6 @@ EOT
      */
     private function createComposerJsonFile($config): array
     {
-        /** @var Generator $faker */
         $faker = $this->getFaker();
 
         return [

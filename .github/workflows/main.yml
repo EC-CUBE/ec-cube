@@ -41,7 +41,7 @@ jobs:
     # plugin-test と並列で実行する (同じ needs)。
     needs: [ unit-test, e2e-test ]
     # 本体 ↔ eccube-api4 ↔ sample-payment-plugin の結合 E2E。
-    # 依存プラグインは fork の feature/agentic-commerce を既定参照 (org 移行後に別 PR で差し替え)。
+    # 依存プラグインは EC-CUBE org の 4.4 ブランチを既定参照 (eccube-api4#191 / sample-payment-plugin#54)。
     uses: ./.github/workflows/agentic-commerce-e2e.yml
   dockerbuild:
     uses: ./.github/workflows/dockerbuild.yml

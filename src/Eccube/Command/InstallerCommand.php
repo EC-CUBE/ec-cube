@@ -118,11 +118,6 @@ class InstallerCommand extends Command
     }
 
     #[\Override]
-    protected function configure(): void
-    {
-    }
-
-    #[\Override]
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $this->io->title('EC-CUBE Installer Interactive Wizard');
@@ -277,13 +272,13 @@ class InstallerCommand extends Command
             } catch (ProcessFailedException $e) {
                 $this->io->error($e->getMessage());
 
-                return 1;
+                return Command::FAILURE;
             }
         }
 
         $this->io->success('EC-CUBE installation successful.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     protected function getDatabaseName(string $databaseUrl): string
@@ -302,8 +297,6 @@ class InstallerCommand extends Command
     }
 
     /**
-     * @return false|string
-     *
      * @throws \Doctrine\DBAL\Exception
      */
     protected function getDatabaseServerVersion(string $databaseUrl): false|string

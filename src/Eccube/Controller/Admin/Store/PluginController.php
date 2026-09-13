@@ -238,6 +238,8 @@ class PluginController extends AbstractController
             }
             $this->addError(trans('admin.store.plugin.already.enabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
+            $this->addFlash('eccube.admin.disable_maintenance', '');
+
             return $this->redirectToRoute('admin_store_plugin');
         }
         // ストアからインストールしたプラグインは依存プラグインが有効化されているかを確認
@@ -347,6 +349,8 @@ class PluginController extends AbstractController
             }
             $this->addError(trans('admin.store.plugin.already.disabled', ['%plugin_name%' => $Plugin->getName()]), 'admin');
 
+            $this->addFlash('eccube.admin.disable_maintenance', '');
+
             return $this->redirectToRoute('admin_store_plugin');
         }
 
@@ -408,8 +412,6 @@ class PluginController extends AbstractController
     #[Template(template: '@admin/Store/plugin_install.twig')]
     public function install(Request $request): array|RedirectResponse
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();

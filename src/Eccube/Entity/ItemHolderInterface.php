@@ -31,8 +31,6 @@ interface ItemHolderInterface
 
     /**
      * 合計金額を設定します。
-     *
-     * @return $this
      */
     public function setTotal(string $total): static;
 
@@ -43,8 +41,6 @@ interface ItemHolderInterface
 
     /**
      * 送料合計を設定します。
-     *
-     * @return $this
      */
     public function setDeliveryFeeTotal(string $total): static;
 
@@ -55,22 +51,16 @@ interface ItemHolderInterface
 
     /**
      * 値引き合計を設定します。
-     *
-     * @return $this
      */
     public function setDiscount(string $total): static;
 
     /**
      * 手数料合計を設定します。
-     *
-     * @return $this
      */
     public function setCharge(string $total): static;
 
     /**
      * 税額合計を設定します。
-     *
-     * @return $this
      *
      * @deprecated 明細ごとに集計した税額と差異が発生する場合があるため非推奨
      */
@@ -78,8 +68,6 @@ interface ItemHolderInterface
 
     /**
      * 加算ポイントを設定します。
-     *
-     * @return $this
      */
     public function setAddPoint(string $addPoint): static;
 
@@ -90,8 +78,6 @@ interface ItemHolderInterface
 
     /**
      * 利用ポイントを設定します。
-     *
-     * @return $this
      */
     public function setUsePoint(string $usePoint): static;
 

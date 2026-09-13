@@ -75,7 +75,7 @@ class OrderType extends AbstractType
         $builder->add('message', TextareaType::class, [
             'required' => false,
             'constraints' => [
-                new Length(['min' => 0, 'max' => 3000]),
+                new Length(min: 0, max: 3000),
             ],
         ])->add('Shippings', CollectionType::class, [
             'entry_type' => ShippingType::class,
@@ -89,11 +89,8 @@ class OrderType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new NotBlank(),
-                    new Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
-                    new Length(['max' => 11]),
+                    new Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
+                    new Length(max: 11),
                 ],
             ]);
         }
@@ -192,7 +189,7 @@ class OrderType extends AbstractType
             'multiple' => false,
             'placeholder' => false,
             'constraints' => [
-                new NotBlank(['message' => $message]),
+                new NotBlank(message: $message),
             ],
             'choices' => $choices,
             'data' => $data,

@@ -118,7 +118,7 @@ file that was distributed with this source code.
                                     {{ form_widget(form.file) }}{# TODO input type="file" の装飾 #}
                                 </div>
                                 <div class="mb-2">
-                                    <a class="btn btn-ec-conversion action-upload" href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{ 'admin.common.upload'|trans }}</a>
+                                    <a class="btn btn-ec-conversion action-upload{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %} href="javascript:;" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('upload','',''); return false;">{{ 'admin.common.upload'|trans }}</a>
                                 </div>
                             </div>
                         </div>
@@ -130,7 +130,7 @@ file that was distributed with this source code.
                                         {{ form_widget(form.create_file, {attr: {placeholder: 'admin.content.file.directory_name'}}) }}
                                     </div>
                                     <div class="col-auto">
-                                        <a class="btn btn-ec-regular action-create" href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{ 'admin.common.create__new'|trans }}</a>
+                                        <a class="btn btn-ec-regular action-create{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %} href="javascript:" onclick="eccube.fileManager.setTreeStatus('tree_status');eccube.setModeAndSubmit('create','',''); return false;">{{ 'admin.common.create__new'|trans }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@ file that was distributed with this source code.
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                                <a class="btn btn-ec-delete" data-confirm="false"
+                                                                                <a class="btn btn-ec-delete{% if isReadOnlyScreen|default(false) %} disabled{% endif %}" data-confirm="false"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %}
                                                                                    href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                                     {{ 'admin.common.delete'|trans }}
                                                                                 </a>
@@ -270,7 +270,7 @@ file that was distributed with this source code.
                                                                             </div>
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                                                                <a class="btn btn-ec-delete" data-confirm="false"
+                                                                                <a class="btn btn-ec-delete{% if isReadOnlyScreen|default(false) %} disabled{% endif %}" data-confirm="false"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %}
                                                                                    href="{{ url('admin_content_file_delete', { 'select_file': file.file_path}) }}" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                                     {{ 'admin.common.delete'|trans }}
                                                                                 </a>

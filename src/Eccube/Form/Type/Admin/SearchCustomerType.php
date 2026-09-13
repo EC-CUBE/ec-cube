@@ -59,7 +59,7 @@ class SearchCustomerType extends AbstractType
                 'label' => 'admin.customer.multi_search_label',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('customer_status', CustomerStatusType::class, [
@@ -94,10 +94,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -112,10 +109,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -135,35 +129,35 @@ class SearchCustomerType extends AbstractType
                 'label' => 'admin.order.purchase_product',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('buy_total_start', PriceType::class, [
                 'label' => 'admin.order.purchase_price__start',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_price_len']),
                 ],
             ])
             ->add('buy_total_end', PriceType::class, [
                 'label' => 'admin.order.purchase_price__end',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_price_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_price_len']),
                 ],
             ])
             ->add('buy_times_start', IntegerType::class, [
                 'label' => 'admin.order.purchase_count__start',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_int_len']),
                 ],
             ])
             ->add('buy_times_end', IntegerType::class, [
                 'label' => 'admin.order.purchase_count__end',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_int_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_int_len']),
                 ],
             ])
             ->add('create_date_start', DateType::class, [
@@ -173,10 +167,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -190,10 +181,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -208,10 +196,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -225,10 +210,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -243,10 +225,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -260,10 +239,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -278,10 +254,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -295,10 +268,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -313,10 +283,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -330,10 +297,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -348,10 +312,7 @@ class SearchCustomerType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -365,10 +326,7 @@ class SearchCustomerType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
