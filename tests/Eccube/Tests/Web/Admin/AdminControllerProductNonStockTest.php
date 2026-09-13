@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Client;
 
 /**
  * Class AdminControllerProductNonStockTest.

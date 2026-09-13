@@ -123,6 +123,9 @@ services:
     Eccube\Service\AgentCommerce\Acp\AcpMessageSigner:
         autowire: true
         public: true
+        # 明示定義により services.yaml の $keyPurpose 束縛が外れるため、 ここで再束縛する。
+        arguments:
+            $keyPurpose: '@Eccube\Service\AgentCommerce\Security\AcpWebhookKeyPurpose'
     # UCP checkout (#6574) サービス群。テストからコンテナ取得するため public 化する。
     Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper:
         autowire: true

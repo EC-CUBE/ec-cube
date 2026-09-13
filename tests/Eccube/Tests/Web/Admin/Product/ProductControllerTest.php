@@ -664,7 +664,6 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $searchForm = $this->createSearchForm();
         $searchForm['id'] = 'Product name';
 
-        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_product'),

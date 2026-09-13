@@ -104,10 +104,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -121,10 +118,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -139,10 +133,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -156,10 +147,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -174,10 +162,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -191,10 +176,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -209,10 +191,7 @@ class SearchProductType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -226,10 +205,7 @@ class SearchProductType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',

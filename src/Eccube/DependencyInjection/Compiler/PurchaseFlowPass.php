@@ -68,7 +68,6 @@ class PurchaseFlowPass implements CompilerPassInterface
             }
             /** @var string $flowType */
             foreach ($allMethod as $flowType => $flowMethod) {
-                /** @var Definition|null $purchaseFlowDef */
                 $purchaseFlowDef = $flowTypes[$flowType] ?? null;
                 if (!is_null($purchaseFlowDef)) {
                     // flow_typeごとにソートをしてセットする

@@ -25,11 +25,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     protected $entityTest = 'Eccube-Entity-Master-Sex';
 
     /**

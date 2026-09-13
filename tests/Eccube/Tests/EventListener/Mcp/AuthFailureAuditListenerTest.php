@@ -17,6 +17,7 @@ namespace Eccube\Tests\EventListener\Mcp;
 
 use Eccube\EventListener\Mcp\AuthFailureAuditListener;
 use Eccube\Service\Mcp\McpAuditLogger;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\NullLogger;
@@ -83,6 +84,7 @@ final class AuthFailureAuditListenerTest extends TestCase
         $this->assertSame([], $recorder->records, 'mcp 以外のパスの 401 は記録しない');
     }
 
+    #[DoesNotPerformAssertions]
     public function testAuditFailureDoesNotBreakResponse(): void
     {
         $throwingAudit = new McpAuditLogger(
@@ -101,8 +103,6 @@ final class AuthFailureAuditListenerTest extends TestCase
 
         // 監査が throw しても例外が伝播しない (401 応答を壊さない)
         $listener->onKernelResponse($this->responseEvent('/admin/mcp', Response::HTTP_UNAUTHORIZED));
-
-        $this->addToAssertionCount(1);
     }
 
     private function buildListener(AbstractLogger $recorder): AuthFailureAuditListener

@@ -64,14 +64,6 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * tearDown
-     */
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-    }
-
-    /**
      * testIndex
      */
     public function testIndex()

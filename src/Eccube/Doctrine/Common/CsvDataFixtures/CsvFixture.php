@@ -14,7 +14,6 @@
 namespace Eccube\Doctrine\Common\CsvDataFixtures;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
@@ -59,7 +58,6 @@ class CsvFixture implements FixtureInterface
         // ファイル名からテーブル名を取得
         $table_name = str_replace('.'.$this->file->getExtension(), '', $this->file->getFilename());
         $sql = $this->getSql($table_name, $headers);
-        /** @var Connection $Connection */
         $Connection = $manager->getConnection();
         $Connection->beginTransaction();
 

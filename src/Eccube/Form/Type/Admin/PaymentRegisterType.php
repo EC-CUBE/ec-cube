@@ -49,7 +49,7 @@ class PaymentRegisterType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('rule_min', PriceType::class, [
@@ -62,10 +62,7 @@ class PaymentRegisterType extends AbstractType
                     // new Assert\Length(array(
                     //     'max' => $app['config']['int_len'],
                     // )),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('rule_max', PriceType::class, [
@@ -108,14 +105,5 @@ class PaymentRegisterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Payment::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'payment_register';
     }
 }

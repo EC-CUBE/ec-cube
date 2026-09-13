@@ -13,7 +13,6 @@
 
 namespace Eccube\EventListener;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\TransactionIsolationLevel;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -60,7 +59,6 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        /** @var Connection $Connection */
         $Connection = $this->em->getConnection();
         // DBAL 4 では Connection::connect() が protected になったため, 接続の明示確立には
         // getNativeConnection() を用いる。autoCommit を false にする前に接続しておくことが重要で,

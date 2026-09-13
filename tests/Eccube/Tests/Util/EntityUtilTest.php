@@ -27,11 +27,6 @@ use Eccube\Util\EntityUtil;
  */
 final class EntityUtilTest extends EccubeTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testDumpToArray()
     {
         $arrProps = [

@@ -64,29 +64,21 @@ class ShopMasterType extends AbstractType
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('shop_name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('shop_name_eng', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_mtext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
+                    new Assert\Regex(pattern: '/^[[:graph:][:space:]]+$/i'),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
@@ -101,9 +93,7 @@ class ShopMasterType extends AbstractType
             ->add('business_hour', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('email01', EmailType::class, [
@@ -137,17 +127,13 @@ class ShopMasterType extends AbstractType
             ->add('good_traded', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('message', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             // 構造化データ（JSON-LD / schema.org）
@@ -213,10 +199,7 @@ class ShopMasterType extends AbstractType
             ->add('delivery_free_quantity', IntegerType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('option_product_delivery_fee', ToggleSwitchType::class)
@@ -240,9 +223,7 @@ class ShopMasterType extends AbstractType
             ->add('invoice_registration_number', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             // 個別税率設定
@@ -254,35 +235,21 @@ class ShopMasterType extends AbstractType
             ->add('basic_point_rate', NumberType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
-                    new Assert\Range([
-                        'min' => 0,
-                        'max' => 100,
-                    ]),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
+                    new Assert\Range(min: 0, max: 100),
                 ],
             ])
             ->add('point_conversion_rate', NumberType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
-                    new Assert\Range([
-                        'min' => 1,
-                        'max' => 100,
-                    ]),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
+                    new Assert\Range(min: 1, max: 100),
                 ],
             ])
             ->add('ga_id', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             // エージェントコマース checkout の有効化フラグ (discovery / catalog は常時公開、checkout のみ制御)
@@ -306,12 +273,8 @@ class ShopMasterType extends AbstractType
                 ->create('company_kana', TextType::class, [
                     'required' => false,
                     'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        ]),
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_stext_len'],
-                        ]),
+                        new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u'),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                     ],
                 ])
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
@@ -322,12 +285,8 @@ class ShopMasterType extends AbstractType
                 ->create('shop_kana', TextType::class, [
                     'required' => false,
                     'constraints' => [
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig['eccube_stext_len'],
-                        ]),
-                        new Assert\Regex([
-                            'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                        new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u'),
                     ],
                 ])
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
@@ -427,14 +386,5 @@ class ShopMasterType extends AbstractType
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'shop_master';
     }
 }

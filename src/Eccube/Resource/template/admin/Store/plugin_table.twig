@@ -63,7 +63,7 @@ $(function() {
                                 {{ form_widget(form.plugin_archive, {'attr': {'accept': 'application/zip,application/x-tar,application/x-gzip'}}) }}
                                 {{ form_errors(form.plugin_archive) }}
 
-                                <button class="btn btn-primary btn-xs mt-2"
+                                <button class="btn btn-primary btn-xs mt-2"{% if isReadOnlyScreen|default(false) %} disabled{% endif %}
                                         onclick="changeActionSubmit('{{ url('admin_store_plugin_update', { id : Plugin.id }) }}', '{{ form.vars.name }}');">
                                     {{ 'admin.store.plugin_table.898'|trans }}
                                 </button>
@@ -74,7 +74,7 @@ $(function() {
                                 <div class="row">
                                         {% if Plugin.enabled == false %}
                                         <div class="col-6 px-0">
-                                            <a href="#" class="btn btn-ec-actionIcon"
+                                            <a href="#" class="btn btn-ec-actionIcon{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %}
                                                data-bs-toggle="modal"
                                                data-bs-target="#localPluginDeleteModal"
                                                data-delete-url="{{ url('admin_store_plugin_uninstall', { id : Plugin.id }) }}">
@@ -85,7 +85,7 @@ $(function() {
                                         {% if Plugin.enabled %}
                                         <div class="col-6 px-0">
                                             <a href="{{ url('admin_store_plugin_disable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                               class="btn btn-ec-actionIcon"
+                                               class="btn btn-ec-actionIcon{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %}
                                                data-method="post" data-confirm="false">
                                                 <i class="fa fa-pause fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.store.plugin_table.903'|trans }}"></i>
                                             </a>
@@ -93,7 +93,7 @@ $(function() {
                                         {% else %}
                                         <div class="col-6 px-0">
                                             <a href="{{ url('admin_store_plugin_enable', { id : Plugin.id }) }}" {{ csrf_token_for_anchor() }}
-                                               class="btn btn-ec-actionIcon"
+                                               class="btn btn-ec-actionIcon{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %}
                                                data-method="post" data-confirm="false">
                                                 <i class="fa fa-play fa-lg text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.store.plugin_table.902'|trans }}"></i>
                                             </a>
@@ -146,7 +146,7 @@ $(function() {
                         data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}
                 </button>
                 <a href="#" {{ csrf_token_for_anchor() }}
-                   class="btn btn-ec-delete"
+                   class="btn btn-ec-delete{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"{% if isReadOnlyScreen|default(false) %} aria-disabled="true" tabindex="-1"{% endif %}
                    data-confirm="false"
                    data-method="delete">
                     {{ 'admin.common.delete'|trans }}

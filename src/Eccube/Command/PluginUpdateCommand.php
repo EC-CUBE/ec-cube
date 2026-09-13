@@ -13,7 +13,6 @@
 
 namespace Eccube\Command;
 
-use Eccube\Entity\Plugin;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -40,21 +39,20 @@ class PluginUpdateCommand extends Command
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin|null $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
 
         if (!$Plugin) {
             $io->error("No such plugin `{$code}`.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
         $this->pluginService->updatePlugin($Plugin, $config);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Updated.');
 
-        return 0;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

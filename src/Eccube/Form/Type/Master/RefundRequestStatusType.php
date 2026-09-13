@@ -35,15 +35,6 @@ class RefundRequestStatusType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'refund_request_status';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
     public function getParent(): string
     {
         return MasterType::class;

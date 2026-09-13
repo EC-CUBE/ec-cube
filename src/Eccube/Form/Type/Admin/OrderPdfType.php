@@ -64,10 +64,7 @@ class OrderPdfType extends AbstractType
                 'data' => new \DateTime(),
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'data-target' => '#'.$this->getBlockPrefix().'_issue_date',
@@ -79,7 +76,7 @@ class OrderPdfType extends AbstractType
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $config['eccube_stext_len']]),
+                    new Assert\Length(max: $config['eccube_stext_len']),
                 ],
             ])
             ->add('download_kind', ChoiceType::class, [
@@ -98,7 +95,7 @@ class OrderPdfType extends AbstractType
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['eccube_order_pdf_message_len']]),
+                    new Assert\Length(max: $config['eccube_order_pdf_message_len']),
                 ],
                 'trim' => false,
             ])
@@ -106,7 +103,7 @@ class OrderPdfType extends AbstractType
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['eccube_order_pdf_message_len']]),
+                    new Assert\Length(max: $config['eccube_order_pdf_message_len']),
                 ],
                 'trim' => false,
             ])
@@ -114,7 +111,7 @@ class OrderPdfType extends AbstractType
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_order_pdf_message_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['eccube_order_pdf_message_len']]),
+                    new Assert\Length(max: $config['eccube_order_pdf_message_len']),
                 ],
                 'trim' => false,
             ])
@@ -123,21 +120,21 @@ class OrderPdfType extends AbstractType
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['eccube_stext_len']]),
+                    new Assert\Length(max: $config['eccube_stext_len']),
                 ],
             ])
             ->add('note2', TextType::class, [
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['eccube_stext_len']]),
+                    new Assert\Length(max: $config['eccube_stext_len']),
                 ],
             ])
             ->add('note3', TextType::class, [
                 'required' => false,
                 'attr' => ['maxlength' => $config['eccube_stext_len']],
                 'constraints' => [
-                    new Assert\Length(['max' => $config['eccube_stext_len']]),
+                    new Assert\Length(max: $config['eccube_stext_len']),
                 ],
             ])
             ->add('default', CheckboxType::class, [

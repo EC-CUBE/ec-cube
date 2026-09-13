@@ -25,11 +25,6 @@ use Eccube\Tests\EccubeTestCase;
  */
 final class AbstractMasterEntityTest extends EccubeTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testGetConstant()
     {
         $this->assertSame(1, TestSexDecorator::TEST_MALE, 'constant access');

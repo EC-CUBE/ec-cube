@@ -24,11 +24,6 @@ use Plugin\MigrationSample\PluginManager;
 #[Group('plugin-service')]
 final class PluginManagerTest extends EccubeTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testMigration()
     {
         $pluginManager = new PluginManager();

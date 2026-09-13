@@ -15,7 +15,6 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web;
 
-use Eccube\Event\TemplateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
