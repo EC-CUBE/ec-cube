@@ -54,15 +54,6 @@ class ProductListOrderByType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'product_list_order_by';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
     public function getParent(): string
     {
         return MasterType::class;

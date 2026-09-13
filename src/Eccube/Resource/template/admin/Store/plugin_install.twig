@@ -36,7 +36,7 @@ file that was distributed with this source code.
                                     {% for error in errors %}
                                         <div class="errormsg text-danger">{{ error.message|trans }}</div>
                                     {% endfor %}
-                                    <button class="btn btn-primary px-5" type="submit">{{ 'admin.common.upload'|trans }}</button>
+                                    <button class="btn btn-primary px-5" type="submit"{% if isReadOnlyScreen|default(false) %} disabled{% endif %}>{{ 'admin.common.upload'|trans }}</button>
                                 </div>
                             </div>
                         </div>

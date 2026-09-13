@@ -40,13 +40,4 @@ class ProductStatusType extends AbstractType
     {
         return MasterType::class;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'product_status';
-    }
 }

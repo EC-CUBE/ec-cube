@@ -47,14 +47,15 @@ if (!isset($_SERVER['APP_ENV'])) {
     // putenv は使わない（スレッド安全性のため）ので、env() 関数（$_ENV / $_SERVER 優先）と整合する。
     boot_env(__DIR__.'/.env', false);
 }
+// umask はコンテナ生成より前に決める必要があるため, 環境変数 ECCUBE_UMASK から読み込む.
+apply_umask();
+
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED);
 
 $env = isset($_SERVER['APP_ENV']) ? $_SERVER['APP_ENV'] : 'dev';
 $debug = isset($_SERVER['APP_DEBUG']) ? $_SERVER['APP_DEBUG'] : ('prod' !== $env);
 
 if ($debug) {
-    umask(0000);
-
     Debug::enable();
 }
 

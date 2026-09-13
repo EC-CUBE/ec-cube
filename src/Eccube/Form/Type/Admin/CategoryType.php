@@ -42,9 +42,7 @@ class CategoryType extends AbstractType
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
         ;

@@ -192,8 +192,16 @@ class InstallPluginController extends InstallController
         // KernelEvents::TERMINATE で強制的にキャッシュを削除する
         // see https://github.com/EC-CUBE/ec-cube/issues/5498#issuecomment-1205904083
         $this->eventDispatcher->addListener(KernelEvents::TERMINATE, function (): void {
+            $projectDir = $this->getParameter('kernel.project_dir');
+            $env = env('APP_ENV', 'prod');
             $fs = new Filesystem();
-            $fs->remove($this->getParameter('kernel.project_dir').'/var/cache/'.env('APP_ENV', 'prod'));
+            // ビルド生成物 (var/build) と実行時キャッシュ (var/runtime) は別ディレクトリのため,
+            // インストール直後のプラグインを反映するには双方を削除する必要がある.
+            $fs->remove([
+                $projectDir.'/var/cache/'.$env,
+                $projectDir.'/var/build/'.$env,
+                $projectDir.'/var/runtime/'.$env,
+            ]);
         });
     }
 }

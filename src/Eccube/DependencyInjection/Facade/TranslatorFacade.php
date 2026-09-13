@@ -29,9 +29,7 @@ class TranslatorFacade
 
     public static function init(TranslatorInterface $Translator): ?TranslatorFacade
     {
-        if (null === self::$instance) {
-            self::$instance = new self($Translator);
-        }
+        self::$instance ??= new self($Translator);
 
         return self::$instance;
     }

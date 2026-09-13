@@ -38,13 +38,13 @@ final class AbstractEntityTest extends EccubeTestCase
             'field3' => 3,
         ];
         $this->objEntity = new TestEntity($arrProps);
-        $this->assertTrue(is_object($this->objEntity));
+        $this->assertIsObject($this->objEntity);
     }
 
     public function testNewInstanceEmptyParams()
     {
         $this->objEntity = new TestEntity();
-        $this->assertTrue(is_object($this->objEntity));
+        $this->assertIsObject($this->objEntity);
     }
 
     public function testToArray()

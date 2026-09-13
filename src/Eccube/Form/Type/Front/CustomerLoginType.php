@@ -61,13 +61,4 @@ class CustomerLoginType extends AbstractType
             ],
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'customer_login';
-    }
 }

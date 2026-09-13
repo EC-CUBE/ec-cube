@@ -13,7 +13,6 @@
 
 namespace Eccube\Service\AgentCommerce\Security;
 
-use phpseclib3\Crypt\EC;
 use phpseclib3\Crypt\EC\PrivateKey;
 use phpseclib3\Crypt\EC\PublicKey;
 use phpseclib3\Crypt\PublicKeyLoader;
@@ -24,6 +23,9 @@ use phpseclib3\Crypt\PublicKeyLoader;
  * EC P-256 (secp256r1) / ES256 を使用し, 署名は raw R||S (IEEE P1363, 64byte) 形式で生成する.
  * 公開鍵は EC JWK (kty:"EC", crv:"P-256", x, y) として discovery の signing_keys[] に広告する.
  * 鍵ストア上に秘密鍵が無ければ生成して永続化する (KeyStoreInterface 経由).
+ *
+ * 鍵の生成方法は KeyPurposeInterface (UcpSigningKeyPurpose) が持つ. CLI
+ * (eccube:keystore:generate) と同じ経路を通すことで, どちらから作っても同じ鍵になる.
  */
 class UcpMessageSigner implements AgentCommerceMessageSignerInterface
 {
@@ -35,13 +37,13 @@ class UcpMessageSigner implements AgentCommerceMessageSignerInterface
     private ?PrivateKey $privateKey = null;
 
     /**
-     * @param KeyStoreInterface   $keyStore           秘密鍵 PEM の読み書きストア
-     * @param string              $purpose            鍵の用途識別子 (KeyStore のパス解決に使用)
-     * @param array<int, string>  $gracePublicKeyPems 旧公開鍵 PEM 群 (verify/JWK に含める)
+     * @param KeyStoreInterface  $keyStore           秘密鍵 PEM の読み書きストア
+     * @param KeyPurposeInterface $keyPurpose        鍵の用途 (purpose の解決と生成を担う)
+     * @param array<int, string> $gracePublicKeyPems 旧公開鍵 PEM 群 (verify/JWK に含める)
      */
     public function __construct(
         private readonly KeyStoreInterface $keyStore,
-        private readonly string $purpose = 'ucp_signing',
+        private readonly KeyPurposeInterface $keyPurpose,
         array $gracePublicKeyPems = [],
     ) {
         $this->gracePublicKeyPems = array_values($gracePublicKeyPems);
@@ -97,7 +99,7 @@ class UcpMessageSigner implements AgentCommerceMessageSignerInterface
     {
         $jwks = [];
         foreach ($this->collectPublicKeys() as $publicKey) {
-            $jwks[] = $this->toPublicJwk($publicKey);
+            $jwks[] = EcJwkFactory::toPublicJwk($publicKey);
         }
 
         return $jwks;
@@ -108,11 +110,11 @@ class UcpMessageSigner implements AgentCommerceMessageSignerInterface
      */
     public function getCurrentKid(): string
     {
-        return $this->thumbprint($this->getCurrentPublicKey());
+        return EcJwkFactory::thumbprint($this->getCurrentPublicKey());
     }
 
     /**
-     * 現用秘密鍵を取得する. 鍵ストアに無ければ EC P-256 を生成して永続化する.
+     * 現用秘密鍵を取得する. 鍵ストアに無ければ生成して永続化する.
      */
     private function getPrivateKey(): PrivateKey
     {
@@ -120,20 +122,19 @@ class UcpMessageSigner implements AgentCommerceMessageSignerInterface
             return $this->privateKey;
         }
 
-        $pem = $this->keyStore->read($this->purpose);
-        if ($pem === null || trim($pem) === '') {
-            /** @var PrivateKey $generated */
-            $generated = EC::createKey('secp256r1');
-            $pem = $generated->toString('PKCS8');
-            $this->keyStore->write($this->purpose, $pem);
-            $this->privateKey = $generated;
+        $purpose = $this->keyPurpose->getPurpose();
 
-            return $this->privateKey;
+        $pem = $this->keyStore->read($purpose);
+        if ($pem === null || trim($pem) === '') {
+            // CLI を使えない構成 (共有レンタルサーバー等) のためのフォールバック.
+            // 権限を分離した構成では eccube:keystore:generate で事前に配置しておく.
+            $pem = $this->keyPurpose->generate();
+            $this->keyStore->write($purpose, $pem);
         }
 
         $loaded = PublicKeyLoader::load($pem);
         if (!$loaded instanceof PrivateKey) {
-            throw new \RuntimeException(sprintf('鍵ストアの "%s" は EC 秘密鍵ではありません.', $this->purpose));
+            throw new \RuntimeException(sprintf('鍵ストアの "%s" は EC 秘密鍵ではありません.', $purpose));
         }
 
         $this->privateKey = $loaded;
@@ -168,99 +169,6 @@ class UcpMessageSigner implements AgentCommerceMessageSignerInterface
         }
 
         return $keys;
-    }
-
-    /**
-     * 公開鍵を EC JWK (連想配列) に変換する. 秘密鍵パラメータ d は含めない.
-     *
-     * @return array<string, mixed>
-     */
-    private function toPublicJwk(PublicKey $publicKey): array
-    {
-        $coords = $this->extractCoordinates($publicKey);
-
-        $jwk = [
-            'kty' => 'EC',
-            'crv' => 'P-256',
-            'x' => $coords['x'],
-            'y' => $coords['y'],
-            'use' => 'sig',
-            'alg' => 'ES256',
-        ];
-        $jwk['kid'] = $this->thumbprintFromCoordinates($coords['x'], $coords['y']);
-
-        return $jwk;
-    }
-
-    /**
-     * 公開鍵から JWK の座標 (x, y; base64url) を抽出する.
-     *
-     * 主: phpseclib の toString('JWK') を利用.
-     * フォールバック (コメント): phpseclib のバージョン差で 'JWK' 出力のキー名が
-     * 異なる / 取得できない場合は, getEncodedCoordinates() 等で得た
-     * uncompressed point (0x04 || X(32) || Y(32)) を 32byte ずつに分割し,
-     * それぞれ base64url する実装に切り替えること. ここではまず JWK 出力を解析し,
-     * 取得不能な場合に uncompressed point から座標を復元する.
-     *
-     * @return array{x: string, y: string}
-     */
-    private function extractCoordinates(PublicKey $publicKey): array
-    {
-        $x = null;
-        $y = null;
-
-        try {
-            $jwkJson = $publicKey->toString('JWK');
-            /** @var array<string, mixed>|null $decoded */
-            $decoded = json_decode($jwkJson, true);
-            if (is_array($decoded)) {
-                // JWK は {keys:[{...}]} か単体 {x,y} のいずれもあり得るため両対応.
-                if (isset($decoded['keys'][0]) && is_array($decoded['keys'][0])) {
-                    $decoded = $decoded['keys'][0];
-                }
-                if (isset($decoded['x']) && is_string($decoded['x'])) {
-                    $x = $decoded['x'];
-                }
-                if (isset($decoded['y']) && is_string($decoded['y'])) {
-                    $y = $decoded['y'];
-                }
-            }
-        } catch (\Throwable) {
-            // 下のフォールバックで座標を復元する.
-        }
-
-        if ($x === null || $y === null) {
-            // phpseclib3 の EC 公開鍵は toString('JWK') で必ず x/y を返すため通常到達しない。
-            throw new \RuntimeException('EC 公開鍵から JWK 座標を取得できませんでした.');
-        }
-
-        return ['x' => $x, 'y' => $y];
-    }
-
-    /**
-     * RFC 7638 JWK Thumbprint を kid として算出する.
-     */
-    private function thumbprint(PublicKey $publicKey): string
-    {
-        $coords = $this->extractCoordinates($publicKey);
-
-        return $this->thumbprintFromCoordinates($coords['x'], $coords['y']);
-    }
-
-    /**
-     * RFC 7638: 必須メンバ (crv, kty, x, y) を辞書順・余白なし JSON にして SHA-256 する.
-     */
-    private function thumbprintFromCoordinates(string $x, string $y): string
-    {
-        // キー昇順 (crv, kty, x, y), 余白なし.
-        $canonical = json_encode([
-            'crv' => 'P-256',
-            'kty' => 'EC',
-            'x' => $x,
-            'y' => $y,
-        ], JSON_UNESCAPED_SLASHES);
-
-        return $this->base64urlEncode(hash('sha256', (string) $canonical, true));
     }
 
     private function base64urlEncode(string $binary): string

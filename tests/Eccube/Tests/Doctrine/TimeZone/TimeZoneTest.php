@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Doctrine;
 
+use Doctrine\DBAL\Exception;
 use Eccube\Entity\Product;
 use Eccube\Repository\ProductRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -26,7 +27,7 @@ final class TimeZoneTest extends EccubeTestCase
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws Exception
      */
     protected function setUp(): void
     {

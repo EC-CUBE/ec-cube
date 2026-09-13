@@ -50,12 +50,9 @@ class PriceType extends AbstractType
             }
 
             if (isset($options['accept_minus']) && true === $options['accept_minus']) {
-                $constraints[] = new Range([
-                    'min' => $min,
-                    'max' => $max,
-                ]);
+                $constraints[] = new Range(min: $min, max: $max);
             } else {
-                $constraints[] = new Range(['min' => 0, 'max' => $max]);
+                $constraints[] = new Range(min: 0, max: $max);
             }
 
             return $constraints;
@@ -79,14 +76,5 @@ class PriceType extends AbstractType
     public function getParent(): ?string
     {
         return MoneyType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'price';
     }
 }
