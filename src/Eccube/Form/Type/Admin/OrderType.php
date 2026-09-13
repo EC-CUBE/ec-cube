@@ -172,10 +172,7 @@ class OrderType extends AbstractType
                 'widget' => 'single_text',
                 'with_seconds' => true,
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
             ])
             ->add('Payment', EntityType::class, [
@@ -236,15 +233,6 @@ class OrderType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Order::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'order';
     }
 
     /**

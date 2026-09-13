@@ -69,7 +69,7 @@ public function require(string $role): void
 
 上記の call 時拒否とは別に、 `tools/list` の応答自体を現在のトークンの scope で絞る。 呼べない Tool は一覧に出さない (最小権限: LLM に呼べない Tool を見せない)。
 
-- `Eccube\Service\Mcp\ScopeFilteringRegistry` が mcp-bundle の `mcp.registry` を装飾し、 `getTools()` だけを上書きする。 各 Tool の必要 scope を `McpToolScopeMap` で引き、 `AuthorizationCheckerInterface::isGranted()` で通ったものだけ返す。
+- `Eccube\Service\Mcp\ScopeFilteringRegistry` が mcp-bundle のサーバ registry (`mcp.server.eccube.registry`) を装飾し、 `getTools()` だけを上書きする。 各 Tool の必要 scope を `McpToolScopeMap` で引き、 `AuthorizationCheckerInterface::isGranted()` で通ったものだけ返す。
 - 中央マップ未登録の Tool (= call 時 fail-closed deny) は一覧からも隠す。
 - 認証トークンが無い経路 (CLI 等) は絞り込まず素通しする。
 

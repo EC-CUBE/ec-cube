@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Exception\ContentWriteException;
 use Eccube\Service\EnvFileService;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -38,6 +39,7 @@ final class EnvFileServiceTest extends TestCase
 
     protected function tearDown(): void
     {
+        FailingEnvStreamWrapper::unregister();
         $this->fs->remove($this->projectDir);
         parent::tearDown();
     }
@@ -174,6 +176,189 @@ final class EnvFileServiceTest extends TestCase
         $service = new EnvFileService($this->projectDir);
 
         $this->assertSame([], $service->getOverriddenKeys([]));
+    }
+
+    public function testSetReplacesExistingKeyAndAppendsNewKey(): void
+    {
+        $envFile = $this->projectDir.'/.env';
+        $this->fs->dumpFile($envFile, "FOO=bar\nBAZ=qux\n");
+
+        (new EnvFileService($this->projectDir))->set(['FOO' => 'updated', 'NEW_KEY' => '1']);
+
+        $env = (string) file_get_contents($envFile);
+        $this->assertStringContainsString('FOO=updated', $env);
+        $this->assertStringContainsString('BAZ=qux', $env);
+        $this->assertStringContainsString('NEW_KEY=1', $env);
+        $this->assertStringNotContainsString('FOO=bar', $env);
+    }
+
+    /**
+     * inode と所有者・モードを維持すること.
+     *
+     * 一時ファイルを作って rename する方式に変えると inode が変わり, .env の所有者と
+     * モードが実行プロセスの uid / umask で決まってしまう (権限を分離した構成で
+     * レーン S の所有権を失う). 単一ファイルの bind mount も壊れる.
+     */
+    public function testSetKeepsInodeAndPermissions(): void
+    {
+        $envFile = $this->projectDir.'/.env';
+        $this->fs->dumpFile($envFile, "FOO=bar\n");
+        $this->fs->chmod($envFile, 0o640);
+        clearstatcache();
+        $inode = fileinode($envFile);
+        $perms = fileperms($envFile) & 0o777;
+
+        (new EnvFileService($this->projectDir))->set(['FOO' => 'updated']);
+
+        clearstatcache();
+        $this->assertSame($inode, fileinode($envFile), 'inode を差し替えない');
+        $this->assertSame($perms, fileperms($envFile) & 0o777, 'モードを変えない');
+    }
+
+    /**
+     * 書き込み後の内容が短くなる場合に, 元の内容の末尾が残らないこと.
+     *
+     * 切り詰めを書き込みより先に行うと, 書き込みに失敗したときに元の内容ごと失う.
+     * 後に行う実装が意図どおり効いていることを確かめる.
+     */
+    public function testSetTruncatesLeftoverWhenContentShrinks(): void
+    {
+        $envFile = $this->projectDir.'/.env';
+        $this->fs->dumpFile($envFile, 'FOO='.str_repeat('x', 512)."\n");
+
+        (new EnvFileService($this->projectDir))->set(['FOO' => 'short']);
+
+        $env = (string) file_get_contents($envFile);
+        $this->assertSame("FOO=short\n", $env);
+        $this->assertStringNotContainsString('xxx', $env);
+    }
+
+    public function testSetDoesNothingForEmptyValues(): void
+    {
+        $envFile = $this->projectDir.'/.env';
+        $this->fs->dumpFile($envFile, "FOO=bar\n");
+
+        (new EnvFileService($this->projectDir))->set([]);
+
+        $this->assertSame("FOO=bar\n", (string) file_get_contents($envFile));
+    }
+
+    public function testSetThrowsWhenEnvIsAbsent(): void
+    {
+        $this->expectException(ContentWriteException::class);
+
+        (new EnvFileService($this->projectDir))->set(['FOO' => 'bar']);
+    }
+
+    public function testSetThrowsWhenEnvIsReadOnly(): void
+    {
+        $envFile = $this->projectDir.'/.env';
+        $this->fs->dumpFile($envFile, "FOO=bar\n");
+        $this->fs->chmod($envFile, 0o444);
+
+        // root で実行される環境では書き込み権限判定が効かないためスキップ
+        if (is_writable($envFile)) {
+            $this->markTestSkipped('.env is writable even with 0444 (running as root?)');
+        }
+
+        $this->expectException(ContentWriteException::class);
+
+        try {
+            (new EnvFileService($this->projectDir))->set(['FOO' => 'updated']);
+        } finally {
+            // 失敗しても元の内容が残っていること
+            $this->assertSame("FOO=bar\n", (string) file_get_contents($envFile));
+        }
+    }
+
+    /**
+     * 排他ロックを取得したまま放置しないこと (取得しっぱなしだと後続の書き込みが止まる).
+     */
+    public function testSetReleasesLock(): void
+    {
+        $envFile = $this->projectDir.'/.env';
+        $this->fs->dumpFile($envFile, "FOO=bar\n");
+
+        (new EnvFileService($this->projectDir))->set(['FOO' => 'updated']);
+
+        $handle = fopen($envFile, 'r+');
+        $this->assertIsResource($handle);
+        $this->assertTrue(flock($handle, LOCK_EX | LOCK_NB), 'set() の後は排他ロックを取得できる');
+        flock($handle, LOCK_UN);
+        fclose($handle);
+    }
+
+    /**
+     * 途中までしか書き込めなかったときは例外を投げ, 元の内容へ戻す.
+     *
+     * ディスクフルやクォータ超過は通常のファイルでは再現できないため, 失敗を注入する
+     * ストリームで代替する.
+     */
+    public function testSetRestoresOriginalOnPartialWrite(): void
+    {
+        $original = 'FOO='.str_repeat('x', 40)."\n";
+        // 本体の書き込みは 4 バイトで打ち切り, 復元の書き込みは最後まで通す
+        $projectDir = FailingEnvStreamWrapper::register($original, [4, PHP_INT_MAX]);
+
+        try {
+            (new EnvFileService($projectDir))->set(['FOO' => 'short']);
+            $this->fail('部分書き込みは例外にする');
+        } catch (ContentWriteException $e) {
+            $this->assertStringContainsString('最後まで書き込めませんでした', $e->getMessage());
+            $this->assertStringContainsString('書き込み前の状態へ戻しました', $e->getMessage());
+        }
+
+        $this->assertSame($original, FailingEnvStreamWrapper::contents(), '元の内容へ戻す');
+    }
+
+    /**
+     * 復元にも失敗した場合は, 戻せたときと区別して伝える (復旧手順が変わるため).
+     */
+    public function testSetReportsCorruptionWhenRestoreAlsoFails(): void
+    {
+        // 本体・復元のどちらの書き込みも 4 バイトで打ち切る
+        $projectDir = FailingEnvStreamWrapper::register('FOO='.str_repeat('x', 40)."\n", [4, 4]);
+
+        $this->expectException(ContentWriteException::class);
+        $this->expectExceptionMessageMatches('/内容が壊れている可能性があります/');
+
+        (new EnvFileService($projectDir))->set(['FOO' => 'short']);
+    }
+
+    /**
+     * 切り詰めに失敗したら例外にする.
+     *
+     * 戻り値を捨てると, 更新後の内容が短いときに元の内容の末尾が残ったまま成功として返る.
+     * このとき .env には不正な行が混ざる.
+     */
+    public function testSetThrowsWhenTruncateFails(): void
+    {
+        $original = 'FOO='.str_repeat('x', 40)."\n";
+        $projectDir = FailingEnvStreamWrapper::register($original, [], true);
+
+        try {
+            (new EnvFileService($projectDir))->set(['FOO' => 'short']);
+            $this->fail('切り詰めの失敗は例外にする');
+        } catch (ContentWriteException $e) {
+            $this->assertStringContainsString('更新を完了できませんでした', $e->getMessage());
+            $this->assertStringContainsString('書き込み前の状態へ戻しました', $e->getMessage());
+        }
+
+        // 切り詰めができなくても, ファイルの長さが元の内容以上なら書き戻すだけで復元できる
+        $this->assertSame($original, FailingEnvStreamWrapper::contents());
+    }
+
+    /**
+     * 書き出しに失敗したら例外にする (ディスクへ届いていない可能性がある).
+     */
+    public function testSetThrowsWhenFlushFails(): void
+    {
+        $projectDir = FailingEnvStreamWrapper::register("FOO=bar\n", [], false, true);
+
+        $this->expectException(ContentWriteException::class);
+        $this->expectExceptionMessageMatches('/更新を完了できませんでした/');
+
+        (new EnvFileService($projectDir))->set(['FOO' => 'updated']);
     }
 
     /**

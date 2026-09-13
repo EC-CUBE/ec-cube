@@ -62,7 +62,7 @@ jobs:
           php -m | grep -i redis
 
       - name: setup-chromedriver
-        uses: nanasess/setup-chromedriver@aa033c43468094ffc3fd28243c9ca1aef66775ff  # master
+        uses: nanasess/setup-chromedriver@3e4b0086a2e0ed5f6d670fb0cfebc8c113977aa3  # master
 
       - name: "VAddy: install"
         working-directory: /tmp

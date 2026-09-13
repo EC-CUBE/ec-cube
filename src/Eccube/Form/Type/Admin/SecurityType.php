@@ -60,41 +60,37 @@ class SecurityType extends AbstractType
             ->add('admin_route_dir', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                    new Assert\Regex([
-                        'pattern' => '/\A\w+\z/',
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => "/^(?!($routes)$).*$/",
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/\A\w+\z/'),
+                    new Assert\Regex(pattern: "/^(?!($routes)$).*$/"),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
             ])
             ->add('front_allow_hosts', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
                 'data' => $allowFrontHosts,
             ])
             ->add('front_deny_hosts', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
                 'data' => $denyFrontHosts,
             ])
             ->add('admin_allow_hosts', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
                 'data' => $allowHosts,
             ])
             ->add('admin_deny_hosts', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
                 'data' => $denyHosts,
             ])
@@ -106,10 +102,8 @@ class SecurityType extends AbstractType
             ->add('trusted_hosts', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                    new Assert\Regex([
-                        'pattern' => '/^[\x21-\x7e]+$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^[\x21-\x7e]+$/'),
                 ],
                 'data' => env('TRUSTED_HOSTS'),
             ])

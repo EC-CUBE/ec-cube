@@ -13,6 +13,7 @@
 
 namespace Eccube\Service\AgentCommerce\Acp;
 
+use Eccube\Service\AgentCommerce\Security\KeyPurposeInterface;
 use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 
 /**
@@ -26,7 +27,9 @@ use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
  * (HTTP クライアントでの通知配送・イベント組み立て) は後続 PR で本クラスを利用して実装する。
  *
  * 共有シークレットは keystore (#6797) から解決する (purpose: `acp_webhook`)。未設定時は
- * ランダム生成して永続化する (UCP 署名鍵と同じ解決方式)。エージェントへの共有 (provisioning) は運用手順。
+ * ランダム生成して永続化する (UCP 署名鍵と同じ解決方式)。生成方法は KeyPurposeInterface
+ * (AcpWebhookKeyPurpose) が持ち、CLI (eccube:keystore:generate) と同じ経路を通る。
+ * エージェントへの共有 (provisioning) は運用手順。
  *
  * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol ACP openapi.agentic_checkout_webhook.yaml (Merchant-Signature)
  */
@@ -36,7 +39,7 @@ class AcpMessageSigner
 
     public function __construct(
         private readonly KeyStoreInterface $keyStore,
-        private readonly string $purpose = 'acp_webhook',
+        private readonly KeyPurposeInterface $keyPurpose,
     ) {
     }
 
@@ -110,7 +113,7 @@ class AcpMessageSigner
     }
 
     /**
-     * 共有シークレットを取得する. keystore に無ければランダム生成して永続化する.
+     * 共有シークレットを取得する. keystore に無ければ生成して永続化する.
      */
     private function getSecret(): string
     {
@@ -118,15 +121,19 @@ class AcpMessageSigner
             return $this->secret;
         }
 
-        $stored = $this->keyStore->read($this->purpose);
+        $purpose = $this->keyPurpose->getPurpose();
+
+        $stored = $this->keyStore->read($purpose);
         if ($stored !== null && trim($stored) !== '') {
             $this->secret = trim($stored);
 
             return $this->secret;
         }
 
-        $generated = bin2hex(random_bytes(32));
-        $this->keyStore->write($this->purpose, $generated);
+        // CLI を使えない構成 (共有レンタルサーバー等) のためのフォールバック.
+        // 権限を分離した構成では eccube:keystore:generate で事前に配置しておく.
+        $generated = $this->keyPurpose->generate();
+        $this->keyStore->write($purpose, $generated);
         $this->secret = $generated;
 
         return $this->secret;

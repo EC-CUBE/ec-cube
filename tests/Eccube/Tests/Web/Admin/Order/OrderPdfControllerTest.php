@@ -147,6 +147,7 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->actual = $this->client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
         $this->verify();
+        $this->assertPdfBody();
 
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_order_export_pdf'),
             [
@@ -271,6 +272,7 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->actual = $client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
         $this->verify();
+        $this->assertPdfBody();
     }
 
     /**
@@ -329,6 +331,7 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->actual = $client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
         $this->verify();
+        $this->assertPdfBody();
     }
 
     /**
@@ -365,6 +368,7 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->actual = $this->client->getResponse()->headers->get('Content-Type');
         $this->expected = 'application/pdf';
         $this->verify();
+        $this->assertPdfBody();
 
         $OrderPdfs = $this->orderPdfRepository->findAll();
         $this->assertCount(1, $OrderPdfs, '1件保存されているはず');
@@ -475,5 +479,20 @@ final class OrderPdfControllerTest extends AbstractAdminWebTestCase
         $this->orderRepo->changeStatus($Order->getId(), $Status);
 
         return $Order;
+    }
+
+    /**
+     * レスポンス本文が PDF として成立していることを確かめる.
+     *
+     * Content-Type はコントローラが無条件に付けるため, ヘッダだけでは
+     * 「例外で空になった」「フォントが解決できず真っ白」を検出できない.
+     */
+    private function assertPdfBody(): void
+    {
+        $content = (string) $this->client->getResponse()->getContent();
+
+        $this->assertStringStartsWith('%PDF', $content, 'PDF になっていない');
+        // 基準セットで最小の 02-minimal が約 20KB. 半分を下回るのは異常
+        $this->assertGreaterThan(10000, \strlen($content), 'PDF が小さすぎる');
     }
 }

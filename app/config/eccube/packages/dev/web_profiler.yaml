@@ -6,3 +6,5 @@ framework:
     profiler:
         only_exceptions: false
         collect_serializer_data: true
+        # プロファイラはリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
+        dsn: 'file:%eccube_runtime_dir%/profiler'
