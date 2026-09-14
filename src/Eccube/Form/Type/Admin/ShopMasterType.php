@@ -140,9 +140,7 @@ class ShopMasterType extends AbstractType
             ->add('same_as', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                     new Assert\Callback($this->validateSameAsUrls(...)),
                 ],
             ])
@@ -151,10 +149,7 @@ class ShopMasterType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\LessThanOrEqual([
-                        'value' => 'today',
-                        'message' => 'admin.setting.shop.founding_date.error.not_future',
-                    ]),
+                    new Assert\LessThanOrEqual(value: 'today', message: 'admin.setting.shop.founding_date.error.not_future'),
                 ],
             ])
             ->add('number_of_employees', IntegerType::class, [
@@ -168,18 +163,13 @@ class ShopMasterType extends AbstractType
             ->add('copyright_year', IntegerType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => 1900,
-                        'max' => 9999,
-                    ]),
+                    new Assert\Range(min: 1900, max: 9999),
                 ],
             ])
             ->add('site_image', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                     new Assert\Url(),
                 ],
             ])
