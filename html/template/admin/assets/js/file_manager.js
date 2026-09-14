@@ -206,6 +206,15 @@
         eccube.fileManager.treeStatusHidden = treeHidden;
         eccube.fileManager.modeHidden = mode;
 
+        // サーバーから渡された開閉状態 (tree_status 由来) を復元する.
+        // arrTree の 5 番目が FileController::getTree() の open フラグ.
+        eccube.fileManager.arrTreeStatus = [];
+        $.each(arrTree, function(key, value) {
+            if ('true' === value[4]) {
+                eccube.fileManager.arrTreeStatus.push(value[2]);
+            }
+        });
+
         var tmp = [];
         $.each(arrTree, function(key, value) {
             arrTree[key]['path'] = value[2];
@@ -337,7 +346,10 @@
         var targetId = 'directory_tree_' + (++eccube.fileManager.nodeIdSeq);
         // 表示中のディレクトリ自身とその祖先を展開状態で描画する。前方一致だけで判定すると
         // "/images_backup" を表示中に "/images" まで開いてしまうため、区切り文字まで含めて比較する
-        var isOpen = currentPath === path || currentPath.indexOf(path.replace(/\/$/, '') + '/') === 0;
+        // 表示中のディレクトリ自身とその祖先に加えて, 利用者が開いたまま残しているものも展開する
+        var isOpen = currentPath === path
+            || currentPath.indexOf(path.replace(/\/$/, '') + '/') === 0
+            || eccube.fileManager.isTreeOpen(path);
 
         a.text(name);
         a.on('click', function(e) {
@@ -374,6 +386,19 @@
             }
 
             ul.attr('id', targetId);
+            // 開閉を記録しておき, フォルダ移動やアップロードで再描画されても状態を保つ.
+            // 子孫の開閉も伝播してくるため, 自分自身の分だけ拾う.
+            ul.on('shown.bs.collapse', function(e) {
+                if (e.target === this) {
+                    eccube.fileManager.addTreeStatus(path);
+                }
+            });
+            ul.on('hidden.bs.collapse', function(e) {
+                if (e.target === this) {
+                    eccube.fileManager.deleteTreeStatus(path);
+                }
+            });
+
             $.each(children, function(k, v) {
                 var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children'], currentPath);
                 li.appendTo(ul);
@@ -413,12 +438,24 @@
         }
     };
 
+    // 開いているディレクトリとして記録されているか
+    eccube.fileManager.isTreeOpen = function(path) {
+        return -1 !== $.inArray(path, eccube.fileManager.arrTreeStatus);
+    };
+
+    // Tree状態を追加する(開いた状態へ)
+    eccube.fileManager.addTreeStatus = function(path) {
+        if (!eccube.fileManager.isTreeOpen(path)) {
+            eccube.fileManager.arrTreeStatus.push(path);
+        }
+    };
+
     // Tree状態を削除する(閉じる状態へ)
     eccube.fileManager.deleteTreeStatus = function(path) {
-        for (var i = 0; i < eccube.fileManager.arrTreeStatus.length; i++) {
-            if (eccube.fileManager.arrTreeStatus[i] === path) {
-                eccube.fileManager.arrTreeStatus[i] = "";
-            }
+        var index = $.inArray(path, eccube.fileManager.arrTreeStatus);
+        // 空文字で埋めると tree_status に空の区切りが混ざるため, 要素ごと取り除く
+        if (-1 !== index) {
+            eccube.fileManager.arrTreeStatus.splice(index, 1);
         }
     };
 
