@@ -1,6 +1,25 @@
 @import "../library/_variable";
 @import "../mixin/_media";
 
+// ディレクトリツリーの開閉トグル。
+// ファイル管理はキーボード操作できるよう button を使い、他の画面は従来どおり label を使う。
+$directory-tree-toggle: ":is(label, .c-directoryTree__toggle)";
+
+// button を label と同じ見た目にするための打ち消し。
+// 子を持たないフォルダは disabled にして、押せない見た目にならないよう opacity を戻す。
+.c-directoryTree__toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  &:disabled {
+    opacity: 1;
+    cursor: default;
+  }
+}
+
 @mixin directoryTree{
   li {
     display: flex;
@@ -23,7 +42,7 @@
   }
   //2層目以降
   ul >li > ul {
-    li > label {
+    li > #{$directory-tree-toggle} {
       padding-left: 20px;
       position: relative;
       &:before {
@@ -34,10 +53,10 @@
         left: 0;
       }
     }
-    li:not(:last-of-type) > label::before {
+    li:not(:last-of-type) > #{$directory-tree-toggle}::before {
       content: "├";
     }
-    li:last-of-type > label::before  {
+    li:last-of-type > #{$directory-tree-toggle}::before  {
       content: "└";
     }
   }
@@ -46,7 +65,7 @@
 
 @mixin directoryLabelIcon{
   //1層目
-  label {
+  #{$directory-tree-toggle} {
     &::before {
       content: "\f146";
       display: inline-block;
@@ -64,7 +83,7 @@
 
   //2層目以降
   ul >li > ul {
-    label {
+    #{$directory-tree-toggle} {
       &::after {
         content: "\f146";
         display: inline-block;
@@ -147,7 +166,7 @@ Styleguide 7.2
   @include directoryTree();
   @include directoryLabelIcon();
   //1層目
-  label {
+  #{$directory-tree-toggle} {
     &::before {
       content: "\f07c";
     }
@@ -160,7 +179,7 @@ Styleguide 7.2
 
   //2層目以降
   ul >li > ul {
-    label {
+    #{$directory-tree-toggle} {
       &::after {
         content: "\f07c";
       }

@@ -196,7 +196,8 @@
         old_select_id: '',       // 前回選択していたファイル
         selectFileHidden: "",    // 選択したファイルのhidden名
         treeStatusHidden: "",    // ツリー状態保存用のhidden名
-        modeHidden: ""           // modeセットhidden名
+        modeHidden: "",          // modeセットhidden名
+        nodeIdSeq: 0             // ツリーノードの id 採番用の連番
     };
 
     // ツリー表示
@@ -233,6 +234,7 @@
             delete tmp[i];
         }
         var rootNode = tmp[0][0];
+        eccube.fileManager.nodeIdSeq = 0;
         var li = eccube.fileManager.buildDirectoryNode(rootNode['name'], rootNode['path'], rootNode['children'], openFolder);
         eccube.fileManager.tree = li.html();
         $('#' + view_id).html(li);
@@ -323,14 +325,19 @@
     eccube.fileManager.buildDirectoryNode = function(name, path, children, currentPath) {
         var ul = $('<ul></ul>'),
             li = $('<li></li>'),
-            label = $('<label></label>'),
+            // 開閉トグルは button にする。label はフォーカスできず、キーボードでは開閉できないため。
+            toggle = $('<button type="button" class="c-directoryTree__toggle"></button>'),
             a = $('<a href="#"></a>');
         currentPath = currentPath || '';
 
-        // id に "/" が残るとセレクタ側でエスケープが必要になるため、区切りをすべて "_" に置き換える
-        var targetId = path.replace(/\//g, '_');
-        // 表示中のディレクトリ自身とその祖先は展開状態で描画する
-        var isOpen = currentPath.indexOf(path) === 0;
+        // パスから id を作ると、"/" を "_" へ置き換えた結果が別のパスと一致することがある
+        // (例: "/foo/bar_baz" と "/foo/bar/baz")。ディレクトリ名には "_" を使えるため実際に起こり、
+        // id が重複すると Bootstrap の collapse は一致した要素をすべて開閉してしまう。
+        // そのためパスではなくノードごとの連番から id を作る。
+        var targetId = 'directory_tree_' + (++eccube.fileManager.nodeIdSeq);
+        // 表示中のディレクトリ自身とその祖先を展開状態で描画する。前方一致だけで判定すると
+        // "/images_backup" を表示中に "/images" まで開いてしまうため、区切り文字まで含めて比較する
+        var isOpen = currentPath === path || currentPath.indexOf(path.replace(/\/$/, '') + '/') === 0;
 
         a.text(name);
         a.on('click', function(e) {
@@ -338,15 +345,25 @@
             return e.preventDefault();
         });
 
-        // Bootstrap 5 は data-bs-toggle のみ解釈する (data-toggle は Bootstrap 4 の書式)
-        label.attr('data-bs-toggle', 'collapse');
-        label.attr('href', '#' + targetId);
-        label.attr('aria-expanded', isOpen);
-        label.attr('aria-controls', targetId);
-        label.appendTo(li);
+        if (children.length) {
+            // Bootstrap 5 は data-bs-toggle のみ解釈する (data-toggle は Bootstrap 4 の書式)。
+            // button では href が効かないため、対象は data-bs-target で指定する。
+            toggle.attr('data-bs-toggle', 'collapse');
+            toggle.attr('data-bs-target', '#' + targetId);
+            toggle.attr('aria-expanded', isOpen);
+            toggle.attr('aria-controls', targetId);
+            // 開閉の対象がフォルダ名で分かるようにする (開いているかは aria-expanded が伝える)
+            toggle.attr('aria-label', name);
+        } else {
+            // 子が無いフォルダのトグルは押しても対象が無い。階層の罫線を描くためだけに置くので、
+            // フォーカスも読み上げもさせない。
+            toggle.attr('disabled', 'disabled');
+            toggle.attr('aria-hidden', 'true');
+        }
+        toggle.appendTo(li);
         a.appendTo(li);
         if (!isOpen) {
-            label.addClass('collapsed')
+            toggle.addClass('collapsed')
         }
 
         if (children.length) {
