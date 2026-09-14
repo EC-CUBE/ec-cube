@@ -112,6 +112,13 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
         $this->assertSame(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode(), 'create は 201 を返す');
         $this->assertSame('2026-04-08', $created['ucp']['version'], 'UCP バージョンを広告する');
+
+        // ucp エンベロープ: payment_handlers は checkout 応答で必須 (response_checkout_schema)、
+        // capabilities はこの操作に関係する root capability (dev.ucp.shopping.checkout) を載せる。
+        $this->assertArrayHasKey('payment_handlers', $created['ucp'], 'MUST: ucp.payment_handlers is REQUIRED in checkout responses');
+        $this->assertStringContainsString('"payment_handlers":{}', (string) $this->client->getResponse()->getContent(), 'ucp.payment_handlers MUST serialize as {} (object) even when no handler is registered');
+        $this->assertArrayHasKey('dev.ucp.shopping.checkout', $created['ucp']['capabilities'] ?? [], 'ucp.capabilities MUST list the root capability relevant to this operation');
+        $this->assertSame('2026-04-08', $created['ucp']['capabilities']['dev.ucp.shopping.checkout'][0]['version'] ?? null);
         $this->assertSame('ready_for_complete', $created['status'], '住所と在庫が揃えば ready_for_complete');
         $this->assertNotEmpty($created['id']);
         $this->assertSame('JPY', $created['currency']);
@@ -214,6 +221,20 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $this->assertSame('incomplete', $created['status'], '住所未確定なら incomplete');
         $this->assertNotEmpty($created['messages'], '住所要求のメッセージを含む');
         $this->assertSame('recoverable', $created['messages'][0]['severity'], '住所は update で再入力可能なため recoverable');
+        $this->assertSame('address_required', $created['messages'][0]['code'] ?? null, 'MUST: error messages carry a code (message_error.json required)');
+    }
+
+    public function testStockWarningCarriesCode(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('1');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $payload['line_items'][0]['quantity'] = 999;
+
+        $created = $this->postJson('/ucp/checkout-sessions', $payload);
+
+        $this->assertNotEmpty($created['messages'] ?? [], '在庫超過は messages[] で通知する');
+        $this->assertSame('warning', $created['messages'][0]['type']);
+        $this->assertSame('limited_availability', $created['messages'][0]['code'] ?? null, 'MUST: warning messages carry a code (message_warning.json required)');
     }
 
     public function testGetUnknownSessionReturns404(): void
@@ -231,6 +252,9 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $second = $this->postJson('/ucp/checkout-sessions', $payload, 'POST', ['HTTP_Idempotency-Key' => 'idem-key-1']);
 
         $this->assertSame($first['id'], $second['id'], 'MUST NOT re-execute: 同一キーは同じセッションをリプレイする');
+
+        // リプレイ本文は DB の json 列 (assoc decode) から戻るため、空の payment_handlers が [] に退行しやすい。
+        $this->assertStringContainsString('"payment_handlers":{}', (string) $this->client->getResponse()->getContent(), 'ucp.payment_handlers MUST serialize as {} (object) on replayed responses too');
     }
 
     public function testCancel(): void
