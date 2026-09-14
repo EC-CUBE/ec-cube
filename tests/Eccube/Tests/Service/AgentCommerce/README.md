@@ -21,8 +21,19 @@ ACP の JSON Schema は runtime 検証 (pre-push) に必要なため `src/Eccube
 
 ### UCP schema (公式リポジトリから取得)
 
-`UcpCatalogSchemaContractTest` は UCP 公式リポジトリの `source/schemas` ツリーを参照します。
+次のテストは UCP 公式リポジトリの `source/schemas` ツリーを参照します。
 `SchemaValidatorTrait` が次の順で解決し、**いずれも無ければ `markTestSkipped`** します:
+
+| テスト | 検証対象 | schema 定義 |
+|---|---|---|
+| `Schema/UcpCatalogSchemaContractTest` | Catalog API の search / get_product 応答 | `shopping/catalog_search.json` / `shopping/catalog_lookup.json` |
+| `Schema/UcpProfileSchemaContractTest` | `UcpProfileBuilder` が組み立てる discovery profile の `ucp` メンバ (正常系 + 負例) | `ucp.json#/$defs/business_schema` |
+| `Web/AgentCommerce/UcpDiscoveryControllerTest::testProfileConformsToOfficialBusinessSchema` | `GET /.well-known/ucp` で**実際に配信された生 JSON** (空レジストリの `{}` 正規化を含む) | `ucp.json#/$defs/business_schema` |
+
+散文の MUST 文に現れない構造制約 (レジストリの値がエントリの配列であること等) は schema でしか
+表現されないため、手書き断言とは別に **配信する文書は必ず公式 schema で機械検証**します。
+生 JSON をそのまま検証するには `assertValidUcpJson()` を使います (連想配列経由では空の PHP 配列が
+JSON の `[]` になり、`{}` を要求する空レジストリを表現できません)。
 
 1. 環境変数 `ECCUBE_UCP_SCHEMA_DIR`
 2. `var/agent-commerce-spec/ucp/source/schemas` (CI で clone・`var/` は gitignore)
@@ -38,6 +49,10 @@ git clone --filter=blob:none --branch v2026-04-08 --single-branch \
 # または既存クローンを環境変数で指定
 ECCUBE_UCP_SCHEMA_DIR=/path/to/ucp/source/schemas vendor/bin/phpunit tests/Eccube/Tests/Service/AgentCommerce/Schema
 ```
+
+`specifications/ucp` (ローカル開発クローン) は `main` 相当で、CI が pin する `v2026-04-08` より新しい schema を
+含むことがあります。CI と同じ結果を得るには `git archive v2026-04-08 source/schemas` で展開したツリーを
+`ECCUBE_UCP_SCHEMA_DIR` で指定してください。
 
 CI (`.github/workflows/unit-test.yml` / `coverage.yml`) はリリースタグ `v2026-04-08` を自動で clone します。
 

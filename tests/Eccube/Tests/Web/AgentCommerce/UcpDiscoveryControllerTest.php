@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Tests\Service\AgentCommerce\Schema\SchemaValidatorTrait;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,11 +30,21 @@ use Symfony\Component\HttpFoundation\Response;
  *   - discovery は常時公開 (フラグ無効化なし)・catalog capability / service を常時宣言する.
  *   - signing_keys[] は EC 公開鍵 JWK のみ (秘密鍵パラメータ d/p/q/dp/dq/qi/oth/k 非混入).
  *   - 配信: Cache-Control public, max-age >= 60 (no-store/no-cache/private 禁止), HTTPS 想定・3xx 禁止.
+ *   - 配信文書の ucp メンバは公式 schema ucp.json#/$defs/business_schema に適合する
+ *     (schema 未取得環境では当該テストのみ skip. 取得手順は tests/Eccube/Tests/Service/AgentCommerce/README.md).
  *
- * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/schemas/profile.json
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/ucp.json#L174
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/source/schemas/profile.json
  */
 final class UcpDiscoveryControllerTest extends AbstractWebTestCase
 {
+    use SchemaValidatorTrait;
+
+    /**
+     * 配信文書の ucp メンバを検証する公式 schema 定義 (v2026-04-08).
+     */
+    private const BUSINESS_SCHEMA_REF = 'https://ucp.dev/schemas/ucp.json#/$defs/business_schema';
+
     /**
      * UCP バージョン (date-based, YYYY-MM-DD).
      */
@@ -197,5 +208,31 @@ final class UcpDiscoveryControllerTest extends AbstractWebTestCase
 
         $this->assertStringContainsString('application/json', (string) $response->headers->get('Content-Type'), 'The discovery document MUST be served as application/json');
         $this->assertFalse($response->isRedirection(), 'The discovery document MUST be served directly (no 3xx redirect)');
+    }
+
+    // --- 公式 schema 契約 ----------------------------------------------------
+
+    /**
+     * 配信された生 JSON の ucp メンバを、UCP 公式 schema (v2026-04-08) で検証する.
+     *
+     * 散文の MUST に現れない構造制約 (レジストリの値がエントリの配列であること等) は schema でしか
+     * 表現されないため、手書き断言とは別に schema そのもので機械検証する. 空レジストリの {} 正規化
+     * (UcpDiscoveryController::normalizeForJson) を含めて検証するため、連想配列ではなく
+     * レスポンス本文 (生 JSON) をそのまま渡す.
+     */
+    public function testProfileConformsToOfficialBusinessSchema(): void
+    {
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('agent_ucp_discovery'));
+        $raw = (string) $this->client->getResponse()->getContent();
+
+        $document = json_decode($raw);
+        $this->assertIsObject($document, 'The discovery document MUST be a JSON object');
+        $this->assertObjectHasProperty('ucp', $document, 'The profile MUST contain the required top-level "ucp" object');
+
+        $this->assertValidUcpJson(
+            self::BUSINESS_SCHEMA_REF,
+            (string) json_encode($document->ucp, JSON_UNESCAPED_SLASHES),
+            'The served ucp member MUST satisfy ucp.json#/$defs/business_schema (v2026-04-08).'
+        );
     }
 }
