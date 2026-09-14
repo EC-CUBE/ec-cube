@@ -363,7 +363,7 @@
         toggle.appendTo(li);
         a.appendTo(li);
         if (!isOpen) {
-            toggle.addClass('collapsed')
+            toggle.addClass('collapsed');
         }
 
         if (children.length) {
