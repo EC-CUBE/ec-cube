@@ -2,8 +2,9 @@
 @import "../mixin/_media";
 
 // ディレクトリツリーの開閉トグル。
-// ファイル管理はキーボード操作できるよう button を使い、他の画面は従来どおり label を使う。
-$directory-tree-toggle: ":is(label, .c-directoryTree__toggle)";
+// ファイル管理はキーボード操作できるよう button を使い、他の画面は従来どおり label を使うため、
+// どちらの要素も拾えるようにする。
+$directory-tree-toggle: "label, .c-directoryTree__toggle";
 
 // button を label と同じ見た目にするための打ち消し。
 // 子を持たないフォルダは disabled にして、押せない見た目にならないよう opacity を戻す。
@@ -42,7 +43,8 @@ $directory-tree-toggle: ":is(label, .c-directoryTree__toggle)";
   }
   //2層目以降
   ul >li > ul {
-    li > #{$directory-tree-toggle} {
+    li > label,
+    li > .c-directoryTree__toggle {
       padding-left: 20px;
       position: relative;
       &:before {
@@ -53,10 +55,12 @@ $directory-tree-toggle: ":is(label, .c-directoryTree__toggle)";
         left: 0;
       }
     }
-    li:not(:last-of-type) > #{$directory-tree-toggle}::before {
+    li:not(:last-of-type) > label::before,
+    li:not(:last-of-type) > .c-directoryTree__toggle::before {
       content: "├";
     }
-    li:last-of-type > #{$directory-tree-toggle}::before  {
+    li:last-of-type > label::before,
+    li:last-of-type > .c-directoryTree__toggle::before  {
       content: "└";
     }
   }

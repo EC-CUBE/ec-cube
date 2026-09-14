@@ -865,24 +865,28 @@ Styleguide 7.0
 .c-directoryTree > ul ul {
   margin-left: 10px;
 }
-.c-directoryTree ul > li > ul li > :is(label, .c-directoryTree__toggle) {
+.c-directoryTree ul > li > ul li > label,
+.c-directoryTree ul > li > ul li > .c-directoryTree__toggle {
   padding-left: 20px;
   position: relative;
 }
-.c-directoryTree ul > li > ul li > :is(label, .c-directoryTree__toggle):before {
+.c-directoryTree ul > li > ul li > label:before,
+.c-directoryTree ul > li > ul li > .c-directoryTree__toggle:before {
   display: block;
   width: 1em;
   height: 1em;
   position: absolute;
   left: 0;
 }
-.c-directoryTree ul > li > ul li:not(:last-of-type) > :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree ul > li > ul li:not(:last-of-type) > label::before,
+.c-directoryTree ul > li > ul li:not(:last-of-type) > .c-directoryTree__toggle::before {
   content: "├";
 }
-.c-directoryTree ul > li > ul li:last-of-type > :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree ul > li > ul li:last-of-type > label::before,
+.c-directoryTree ul > li > ul li:last-of-type > .c-directoryTree__toggle::before {
   content: "└";
 }
-.c-directoryTree :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree label::before, .c-directoryTree .c-directoryTree__toggle::before {
   content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
@@ -890,10 +894,10 @@ Styleguide 7.0
   font-size: 16px;
   font-weight: 400;
 }
-.c-directoryTree :is(label, .c-directoryTree__toggle).collapsed::before {
+.c-directoryTree label.collapsed::before, .c-directoryTree .c-directoryTree__toggle.collapsed::before {
   content: "\f0fe";
 }
-.c-directoryTree ul > li > ul :is(label, .c-directoryTree__toggle)::after {
+.c-directoryTree ul > li > ul label::after, .c-directoryTree ul > li > ul .c-directoryTree__toggle::after {
   content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
@@ -901,7 +905,7 @@ Styleguide 7.0
   font-size: 16px;
   font-weight: 400;
 }
-.c-directoryTree ul > li > ul :is(label, .c-directoryTree__toggle).collapsed::after {
+.c-directoryTree ul > li > ul label.collapsed::after, .c-directoryTree ul > li > ul .c-directoryTree__toggle.collapsed::after {
   content: "\f0fe";
 }
 
@@ -939,21 +943,25 @@ Styleguide 7.1
 .c-directoryTree--register > ul ul {
   margin-left: 10px;
 }
-.c-directoryTree--register ul > li > ul li > :is(label, .c-directoryTree__toggle) {
+.c-directoryTree--register ul > li > ul li > label,
+.c-directoryTree--register ul > li > ul li > .c-directoryTree__toggle {
   padding-left: 20px;
   position: relative;
 }
-.c-directoryTree--register ul > li > ul li > :is(label, .c-directoryTree__toggle):before {
+.c-directoryTree--register ul > li > ul li > label:before,
+.c-directoryTree--register ul > li > ul li > .c-directoryTree__toggle:before {
   display: block;
   width: 1em;
   height: 1em;
   position: absolute;
   left: 0;
 }
-.c-directoryTree--register ul > li > ul li:not(:last-of-type) > :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree--register ul > li > ul li:not(:last-of-type) > label::before,
+.c-directoryTree--register ul > li > ul li:not(:last-of-type) > .c-directoryTree__toggle::before {
   content: "├";
 }
-.c-directoryTree--register ul > li > ul li:last-of-type > :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree--register ul > li > ul li:last-of-type > label::before,
+.c-directoryTree--register ul > li > ul li:last-of-type > .c-directoryTree__toggle::before {
   content: "└";
 }
 .c-directoryTree--register {
@@ -999,24 +1007,28 @@ Styleguide 7.2
 .c-directoryTree--folder > ul ul {
   margin-left: 10px;
 }
-.c-directoryTree--folder ul > li > ul li > :is(label, .c-directoryTree__toggle) {
+.c-directoryTree--folder ul > li > ul li > label,
+.c-directoryTree--folder ul > li > ul li > .c-directoryTree__toggle {
   padding-left: 20px;
   position: relative;
 }
-.c-directoryTree--folder ul > li > ul li > :is(label, .c-directoryTree__toggle):before {
+.c-directoryTree--folder ul > li > ul li > label:before,
+.c-directoryTree--folder ul > li > ul li > .c-directoryTree__toggle:before {
   display: block;
   width: 1em;
   height: 1em;
   position: absolute;
   left: 0;
 }
-.c-directoryTree--folder ul > li > ul li:not(:last-of-type) > :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree--folder ul > li > ul li:not(:last-of-type) > label::before,
+.c-directoryTree--folder ul > li > ul li:not(:last-of-type) > .c-directoryTree__toggle::before {
   content: "├";
 }
-.c-directoryTree--folder ul > li > ul li:last-of-type > :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree--folder ul > li > ul li:last-of-type > label::before,
+.c-directoryTree--folder ul > li > ul li:last-of-type > .c-directoryTree__toggle::before {
   content: "└";
 }
-.c-directoryTree--folder :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree--folder label::before, .c-directoryTree--folder .c-directoryTree__toggle::before {
   content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
@@ -1024,10 +1036,10 @@ Styleguide 7.2
   font-size: 16px;
   font-weight: 400;
 }
-.c-directoryTree--folder :is(label, .c-directoryTree__toggle).collapsed::before {
+.c-directoryTree--folder label.collapsed::before, .c-directoryTree--folder .c-directoryTree__toggle.collapsed::before {
   content: "\f0fe";
 }
-.c-directoryTree--folder ul > li > ul :is(label, .c-directoryTree__toggle)::after {
+.c-directoryTree--folder ul > li > ul label::after, .c-directoryTree--folder ul > li > ul .c-directoryTree__toggle::after {
   content: "\f146";
   display: inline-block;
   margin-right: 0.5em;
@@ -1035,19 +1047,19 @@ Styleguide 7.2
   font-size: 16px;
   font-weight: 400;
 }
-.c-directoryTree--folder ul > li > ul :is(label, .c-directoryTree__toggle).collapsed::after {
+.c-directoryTree--folder ul > li > ul label.collapsed::after, .c-directoryTree--folder ul > li > ul .c-directoryTree__toggle.collapsed::after {
   content: "\f0fe";
 }
-.c-directoryTree--folder :is(label, .c-directoryTree__toggle)::before {
+.c-directoryTree--folder label::before, .c-directoryTree--folder .c-directoryTree__toggle::before {
   content: "\f07c";
 }
-.c-directoryTree--folder :is(label, .c-directoryTree__toggle).collapsed::before {
+.c-directoryTree--folder label.collapsed::before, .c-directoryTree--folder .c-directoryTree__toggle.collapsed::before {
   content: "\f07b";
 }
-.c-directoryTree--folder ul > li > ul :is(label, .c-directoryTree__toggle)::after {
+.c-directoryTree--folder ul > li > ul label::after, .c-directoryTree--folder ul > li > ul .c-directoryTree__toggle::after {
   content: "\f07c";
 }
-.c-directoryTree--folder ul > li > ul :is(label, .c-directoryTree__toggle).collapsed::after {
+.c-directoryTree--folder ul > li > ul label.collapsed::after, .c-directoryTree--folder ul > li > ul .c-directoryTree__toggle.collapsed::after {
   content: "\f07b";
 }
 
