@@ -327,30 +327,36 @@
             a = $('<a href="#"></a>');
         currentPath = currentPath || '';
 
-        a.html(name);
+        // id に "/" が残るとセレクタ側でエスケープが必要になるため、区切りをすべて "_" に置き換える
+        var targetId = path.replace(/\//g, '_');
+        // 表示中のディレクトリ自身とその祖先は展開状態で描画する
+        var isOpen = currentPath.indexOf(path) === 0;
+
+        a.text(name);
         a.on('click', function(e) {
             eccube.fileManager.openFolder(path);
             return e.preventDefault();
         });
 
-        label.attr('data-toggle', 'collapse');
-        label.attr('href', '#' + path.replace('/', '_'));
-        label.attr('aria-expanded', false);
-        label.attr('aria-control', '');
+        // Bootstrap 5 は data-bs-toggle のみ解釈する (data-toggle は Bootstrap 4 の書式)
+        label.attr('data-bs-toggle', 'collapse');
+        label.attr('href', '#' + targetId);
+        label.attr('aria-expanded', isOpen);
+        label.attr('aria-controls', targetId);
         label.appendTo(li);
         a.appendTo(li);
-        if (currentPath.indexOf(path) !== 0) {
+        if (!isOpen) {
             label.addClass('collapsed')
         }
 
         if (children.length) {
-            if (currentPath.indexOf(path) !== 0) {
-                ul.addClass('collapse list-unstyled');
-            } else {
-                ul.addClass('collapsed list-unstyled');
+            // Bootstrap 5 の collapse は .collapse を土台に .show の有無で開閉する
+            ul.addClass('collapse list-unstyled');
+            if (isOpen) {
+                ul.addClass('show');
             }
 
-            ul.attr('id', path.replace('/', '_'));
+            ul.attr('id', targetId);
             $.each(children, function(k, v) {
                 var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children'], currentPath);
                 li.appendTo(ul);
