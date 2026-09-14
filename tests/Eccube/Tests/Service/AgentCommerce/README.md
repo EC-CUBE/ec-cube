@@ -29,6 +29,11 @@ ACP の JSON Schema は runtime 検証 (pre-push) に必要なため `src/Eccube
 | `Schema/UcpCatalogSchemaContractTest` | Catalog API の search / get_product 応答 | `shopping/catalog_search.json` / `shopping/catalog_lookup.json` |
 | `Schema/UcpProfileSchemaContractTest` | `UcpProfileBuilder` が組み立てる discovery profile の `ucp` メンバ (正常系 + 負例) | `ucp.json#/$defs/business_schema` |
 | `Web/AgentCommerce/UcpDiscoveryControllerTest::testProfileConformsToOfficialBusinessSchema` | `GET /.well-known/ucp` で**実際に配信された生 JSON** (空レジストリの `{}` 正規化を含む) | `ucp.json#/$defs/business_schema` |
+| `Web/AgentCommerce/UcpCheckoutSchemaContractTest` | UCP checkout の create / update / get / complete / cancel とビジネスエラー (HTTP 2xx + `messages[]`) の応答 (正常系 + 負例) | `shopping/checkout.json` (→ `ucp.json#/$defs/response_checkout_schema`、`types/*.json`) |
+
+既知の未充足要件は `markTestIncomplete` で 1 要件 1 テストとして残し、正常系は当該要件だけを補填 (shim) して
+残り全体を検証します。shim は「まだ未充足であること」を先に断言するため、修正が landing すると意図的に失敗し、
+shim の撤去と incomplete テストの有効化を促します (`UcpCheckoutSchemaContractTest::assertConformsExceptKnownGaps`)。
 
 散文の MUST 文に現れない構造制約 (レジストリの値がエントリの配列であること等) は schema でしか
 表現されないため、手書き断言とは別に **配信する文書は必ず公式 schema で機械検証**します。
