@@ -1,6 +1,6 @@
 ---
 name: eccube-mail
-description: EC-CUBE 4.4 のメール送信（MailService・メールテンプレート・MailHistory）を実装・改修するときの規約。「メールを送って」「メール送信処理を追加して」「メールテンプレートを足して」「注文確定メールをカスタマイズして」「送信履歴を残して」などと言われたとき、または src/Eccube/Service/MailService・メール用 twig を作成・編集するときに使用する。
+description: EC-CUBE 4.4 のメール送信（MailService・メールテンプレート・MailHistory）を実装・改修するときの規約。「メールを送って」「通知を送って」「お知らせを送って」「顧客に連絡して」「メール送信処理を追加して」「メールテンプレートを足して」「注文確定メールをカスタマイズして」「送信履歴を残して」などと言われたとき、または src/Eccube/Service/MailService・メール用 twig を作成・編集するときに使用する。
 ---
 
 # メール送信規約（EC-CUBE 4.4）
