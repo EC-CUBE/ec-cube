@@ -155,6 +155,9 @@ final class UcpDiscoveryControllerTest extends AbstractWebTestCase
             $this->assertArrayHasKey('kid', $jwk, 'A signing JWK MUST carry a kid');
             $this->assertArrayHasKey('x', $jwk, 'An EC public JWK MUST carry the x coordinate');
             $this->assertArrayHasKey('y', $jwk, 'An EC public JWK MUST carry the y coordinate');
+            // ext-sodium が無い環境では phpseclib が padding 付きを返すため, 配信文書で正規化を保証する.
+            $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', (string) $jwk['x'], 'RFC 7515 §2: JWK x MUST be base64url without trailing "=" padding');
+            $this->assertMatchesRegularExpression('/^[A-Za-z0-9_-]+$/', (string) $jwk['y'], 'RFC 7515 §2: JWK y MUST be base64url without trailing "=" padding');
         }
     }
 
