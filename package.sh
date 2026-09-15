@@ -17,10 +17,9 @@ rm -rf $WORKSPACE/phpunit.xml.dist
 rm -rf $WORKSPACE/phpstan.neon.dist
 rm -rf $WORKSPACE/LICENSE.txt
 rm -rf $WORKSPACE/README.md
-rm -rf $WORKSPACE/codeception.yml
 rm -rf $WORKSPACE/var/*
 rm -rf $WORKSPACE/.env
-rm -rf $WORKSPACE/codeception
+rm -rf $WORKSPACE/e2e
 rm -rf $WORKSPACE/tests
 rm -rf $WORKSPACE/.github
 rm -rf $WORKSPACE/zap

@@ -46,7 +46,8 @@ return RectorConfig::configure()
                __DIR__.'/src',
                // __DIR__ . '/app',
                __DIR__.'/tests',
-               __DIR__.'/codeception',
+               __DIR__.'/e2e/fixtures/plugins',
+               __DIR__.'/e2e/router.php',
                // プラグインディレクトリ等、個別案件の場合は必要に応じて追加
                // __DIR__ . '/app/Plugin',
            ])
@@ -54,26 +55,17 @@ return RectorConfig::configure()
            ->withSkip([
                // 特定のファイルやディレクトリを除外する場合
                __DIR__.'/rector',
-               // Codeception 自動生成ファイル (codecept build で再生成されるため Rector の指摘は意味なし)
-               __DIR__.'/codeception/_support/_generated',
                // 特定のルールを除外する場合
                // ストリームラッパーのメソッドは PHP が固定のシグネチャで呼ぶ規約 (streamWrapper)
                // であり, 本体で参照していない引数も宣言したまま残す
                RemoveUnusedPublicMethodParameterRector::class => [
                    __DIR__.'/tests/Eccube/Tests/Service/FailingEnvStreamWrapper.php',
                ],
-               // Codeception の grabMultiple() 等は戻り値の要素が null になり得るため、
-               // NullToStrictStringFuncCallArgRector が追加する (string) キャストを
-               // RecastingRemovalRector が除去しないようにスキップする
+               // scandir() / explode() の戻り値要素はバージョンによって string と推論されたり
+               // されなかったりし、 NullToStrictStringFuncCallArgRector が追加する (string) キャストを
+               // RecastingRemovalRector が除去すると付け直す往復になるため、 キャストを維持する
                // (ローカル/CI 間でのルール適用揺らぎ対策)
                RecastingRemovalRector::class => [
-                   __DIR__.'/codeception/_support/Page/Admin/CustomerManagePage.php',
-                   __DIR__.'/codeception/_support/Page/Admin/OrderManagePage.php',
-                   __DIR__.'/codeception/acceptance/EF06OtherCest.php',
-                   // scandir() / explode() の戻り値要素はバージョンによって string と推論されたり
-                   // されなかったりし、 キャストを外すと NullToStrictStringFuncCallArgRector が
-                   // 付け直す往復になるため、 こちらもキャストを維持する
-                   __DIR__.'/codeception/_support/Helper/Acceptance.php',
                    __DIR__.'/src/Eccube/Service/Composer/OutputParser.php',
                ],
                // ContainerGetNameToTypeInTestsRector は $container->get('service.id') の文字列サービスIDを

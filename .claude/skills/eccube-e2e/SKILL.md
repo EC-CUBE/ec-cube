@@ -8,9 +8,6 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 **対象**: `e2e/tests/*.spec.ts`, `e2e/{pages,models,helpers,fixtures}/*.ts`
 **前提**: Playwright（TypeScript）。`cd e2e && npm ci` 済み。baseURL は環境変数 `BASE_URL`（既定 `http://127.0.0.1:8000`）。
 
-> EC-CUBE の E2E は `e2e/` 配下の Playwright が正。`codeception/` はレガシー残置で CI 無効（`AGENTS.md` 参照）。
-> 混同しないこと。
-
 ## 基本ルール
 
 - **spec ファイル名の接頭辞 = プロジェクト = 認証状態**（`e2e/playwright.config.ts` の `testMatch`）。新規 spec はこの規則で命名する:
