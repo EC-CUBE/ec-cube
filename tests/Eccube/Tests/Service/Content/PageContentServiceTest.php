@@ -25,6 +25,7 @@ use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class PageContentServiceTest extends EccubeTestCase
 {
@@ -372,6 +373,90 @@ final class PageContentServiceTest extends EccubeTestCase
     /**
      * app/template へ上書きしておらず, コアのテンプレートを解決できる既定ページ.
      */
+    /**
+     * プラグインの名前空間を指すページは, プラグイン同梱のテンプレートではなく
+     * 上書き用の app/template/plugin へ置く.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testGetTemplateDirForPluginNamespacePage(): void
+    {
+        $Page = (new Page())->setFileName('@Boomerang/example');
+
+        $this->assertTrue($this->pageContentService->isPluginNamespacePage($Page));
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin',
+            $this->pageContentService->getTemplateDir($Page)
+        );
+    }
+
+    /**
+     * "@" は twig の記法でディレクトリ名には含まれない. 付けたまま書き出すと
+     * EccubeExtension が登録するパス (app/template/plugin/Boomerang) と一致せず,
+     * 保存しても画面へ反映されない.
+     */
+    public function testGetFilePathStripsTwigNamespacePrefix(): void
+    {
+        $Page = (new Page())->setFileName('@Boomerang/example');
+
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/Boomerang/example.twig',
+            $this->pageContentService->getFilePath($Page)
+        );
+    }
+
+    /**
+     * 名前空間を持たないページの配置先は変えない.
+     */
+    public function testGetTemplateDirForNormalPageIsUnchanged(): void
+    {
+        $UserPage = (new Page())->setFileName('user_data/example')->setEditType(Page::EDIT_TYPE_USER);
+        $this->assertFalse($this->pageContentService->isPluginNamespacePage($UserPage));
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_user_data_dir'),
+            $this->pageContentService->getTemplateDir($UserPage)
+        );
+
+        $DefaultPage = (new Page())->setFileName('Product/list')->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->assertFalse($this->pageContentService->isPluginNamespacePage($DefaultPage));
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_front_dir').'/Product/list.twig',
+            $this->pageContentService->getFilePath($DefaultPage)
+        );
+    }
+
+    /**
+     * 名前空間の有無で配置先が変わるため, ファイル名を変更したときの旧ファイルは
+     * 「旧ファイル名に対応するディレクトリ」から消さなければならない.
+     *
+     * 新しい配置先で旧ファイル名を探すと, 別ページのテンプレートを巻き込んで
+     * 消しかねない (app/template/plugin/foo.twig 等).
+     */
+    public function testApplyRemovesPreviousTemplateFromItsOwnDir(): void
+    {
+        $userDataDir = (string) $this->eccubeConfig->get('eccube_theme_user_data_dir');
+        $pluginDir = (string) $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
+
+        // 通常のページとして作る
+        $this->apply(['name' => '移動前', 'body' => 'before']);
+        $previousPath = $userDataDir.'/'.$this->route.'.twig';
+        $this->assertFileExists($previousPath);
+
+        // 巻き添えを検知するため, 新しい配置先に同名のファイルを置いておく
+        $decoyPath = $pluginDir.'/'.$this->route.'.twig';
+        $this->createdFiles[] = $decoyPath;
+        (new Filesystem())->dumpFile($decoyPath, 'decoy');
+
+        // ファイル名だけ名前空間付きへ変更する
+        $movedPath = $pluginDir.'/Boomerang/'.$this->route.'.twig';
+        $this->createdFiles[] = $movedPath;
+        $this->apply(['name' => '移動後', 'file_name' => '@Boomerang/'.$this->route, 'body' => 'after']);
+
+        $this->assertFileExists($movedPath, '新しい配置先へ書き出す');
+        $this->assertFileDoesNotExist($previousPath, '旧ファイルは元の配置先から消す');
+        $this->assertSame('decoy', file_get_contents($decoyPath), '新しい配置先の同名ファイルを巻き込まない');
+    }
+
     private function findDefaultPageWithoutOverride(): Page
     {
         /** @var list<Page> $Pages */

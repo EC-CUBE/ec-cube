@@ -70,7 +70,9 @@ class MainEditType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
-                    new Assert\Regex(pattern: '/^([0-9a-zA-Z_\-]+\/?)+$/'),
+                    // 先頭の @ は twig の名前空間 (@PluginCode/xxx) を許すためのもの.
+                    // "." を許さないため ".." による上位ディレクトリへの脱出は依然できない.
+                    new Assert\Regex(pattern: '/^@?([0-9a-zA-Z_\-]+\/?)+$/'),
                 ],
             ])
             ->add('tpl_data', TextareaType::class, [
