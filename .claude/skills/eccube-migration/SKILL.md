@@ -1,6 +1,6 @@
 ---
 name: eccube-migration
-description: EC-CUBE 4.4 のデータベースマイグレーションを作成・編集するときの規約。「マイグレーションを作って」「マスタデータ/初期データを投入したい」「カラムの型を変えたい/リネームしたい」「スキーマを変えたい」などと言われたとき、または app/DoctrineMigrations 配下を作成・編集するときに使用する。注意: 単純なカラム追加は Entity 属性＋schema:update で反映されるためマイグレーション不要（その判断にも本 Skill を参照）。
+description: EC-CUBE 4.4 のデータベースマイグレーションを作成・編集するときの規約。「マイグレーションを作って」「マスタデータ/初期データを投入したい」「カラムの型を変えたい/リネームしたい」「スキーマを変えたい」などと言われたとき、またはマイグレーションを作成・編集するとき（コア・プラグインのいずれでも）に使用する。注意 — 単純なカラム追加は Entity 属性＋schema:update で反映されるためマイグレーション不要（その判断にも本 Skill を参照）。
 ---
 
 # マイグレーション規約（EC-CUBE 4.4）
@@ -120,10 +120,5 @@ final class Version20240101000000 extends AbstractMigration
 
 ## よくある間違い
 
-- ❌ カラムを足したので `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
-  → ✅ Entity 属性を足すだけ。新規は `schema:create`、既存は `schema:update --force` が反映する。
-- ❌ `doctrine:migrations:diff` で Entity 差分から ALTER を自動生成する
-  → ✅ `doctrine:migrations:generate` で空の雛形を作り、必要な SQL（INSERT・型変更等）だけ手で書く。
-- ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
-- ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
-- ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
+このレイヤの「よくある間違い」5 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「マイグレーション」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

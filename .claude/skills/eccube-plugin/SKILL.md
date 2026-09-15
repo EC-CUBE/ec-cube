@@ -8,8 +8,10 @@ description: EC-CUBE 4.4 のプラグインを実装・改修するときの規�
 **対象**: `app/Plugin/{PluginCode}/**`（コア側の仕組みは `src/Eccube/Plugin/`, `src/Eccube/Service/PluginService.php`）
 **前提**: Symfony 7.4 / PHP 8.2+
 
-> 目的: 自己完結したパッケージとして機能を追加し、コアやプロジェクト固有カスタマイズ（`app/Customize/`）と混同しないこと。
-> プロジェクト固有の 1 回限りの改変は `app/Customize/`、再配布・着脱可能な機能は `app/Plugin/`。
+> 目的: プラグインの契約（配置・メタデータ・ライフサイクル）を正しく扱うこと。
+> 本体開発では、プラグイン機構そのものの改修（`src/Eccube/Plugin/`・`PluginService`）と、
+> `app/Plugin/` に置く検証用プラグイン（`AnnotatedRouting` / `EntityExtension` / `EntityForm` 等）の
+> 保守で必要になる。
 
 ## 雛形の生成（まず CLI で骨組みを作る）
 
@@ -136,14 +138,8 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 
 ## よくある間違い
 
-- ❌ 雛形を手で一から作る → ✅ `bin/console eccube:plugin:generate <name> <code> <ver>` で骨組みを生成し、不要分を削る
-- ❌ `composer.json` に `extra.code` が無い → ✅ 必須。無いと install で失敗
-- ❌ PluginCode に `-` を使う → ✅ `^\w+$`（英数字・アンダースコアのみ）
-- ❌ install しただけで動くと思う → ✅ install 直後は無効。`eccube:plugin:enable --code=...` で有効化
-- ❌ エンティティトレイトに `#[EntityExtension(Target::class)]` を付け忘れ → ✅ 付けないとプロキシに乗らない
-- ❌ トレイト追加後にプロキシ再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
-- ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけプラグイン
-- ❌ `app/Customize`（`Eccube\` を直接拡張）と `app/Plugin`（`Plugin\{Code}\` 独立名前空間）の名前空間を混同 → ✅ 置き場所で名前空間を使い分ける
+このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「プラグイン」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

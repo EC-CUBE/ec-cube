@@ -160,14 +160,8 @@ try {
 
 ## よくある間違い
 
-- ❌ `fgetcsv` / `fputcsv` を直書きする → ✅ `CsvImportService` / `CsvExportService::fputcsv()` に乗る。直書きなら escape まで明示（省略は PHP 8.4 で非推奨）
-- ❌ 文字コード・区切り文字をハードコードする → ✅ `EccubeConfig` の `eccube_csv_export_*` / `eccube_csv_import_*` を使う
-- ❌ エクスポートで全件を配列に貯めて一括出力する → ✅ `StreamedResponse` ＋ `exportData()` のページング（100 件ずつ `em->clear()`）で逐次出力
-- ❌ 出力項目をコントローラに `if` で羅列する → ✅ `dtb_csv` 定義（`field_name` / `sort_no` / `enabled`）で表現し `getData()` に引かせる
-- ❌ インポートで自前エンコーディング判定や全行読み込みをする → ✅ `CsvImportService`（stream filter 自動適用・Iterator）に任せ 1 行ずつ処理
-- ❌ インポートをトランザクション無しで `flush()`／一時ファイルを残す → ✅ `beginTransaction`〜`commit`/`rollback` で囲み `removeUploadedFile()` する
-- ❌ 出力項目追加のためにコアの export 処理を改変する → ✅ `ADMIN_*_CSV_EXPORT*` イベントを購読して `ExportCsvRow` に列追加
-- ❌ `mtb_csv_type` へ `discriminator_type` なしで INSERT する → ✅ STI なので必ず指定する（Skill `eccube-migration`）
+このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「CSV 入出力」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
 

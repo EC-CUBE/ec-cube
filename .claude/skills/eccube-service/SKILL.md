@@ -1,6 +1,6 @@
 ---
 name: eccube-service
-description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、または src/Eccube/Service・app/Customize/Service 配下を作成・編集するときに使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
+description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、またはサービスを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
 ---
 
 # Service 規約 — 業務ロジックの置き場所（EC-CUBE 4.4）
@@ -90,11 +90,5 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 
 ## よくある間違い
 
-- ❌ Service が Controller を `use` する → ✅ 依存は一方向（Controller → Service）
-- ❌ 1 つの Service に無関係な処理を寄せ集める → ✅ 単一責任で分割
-- ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
-- ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
-
----
-
-実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。
+このレイヤの「よくある間違い」4 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「サービス」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
