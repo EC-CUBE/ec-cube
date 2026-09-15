@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.5.4",
-    "cross-env": "^7.0.2",
+    "cross-env": "^10.1.0",
     "esbuild": "^0.28.2",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
