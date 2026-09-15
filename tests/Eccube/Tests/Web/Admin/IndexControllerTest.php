@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin;
 
+use Doctrine\DBAL\Logging\DebugStack;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
@@ -62,6 +63,9 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
     #[Group(name: 'decimal')]
     public function testIndexWithSales($hour)
     {
+        // Clear existing orders to ensure test isolation
+        $this->deleteAllRows(['dtb_order']);
+
         $Customer = $this->createCustomer();
         $Today = new \DateTime();
         $Today->setTime($hour, 0);
@@ -71,6 +75,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $OrderPending = $this->orderStatusRepository->find(OrderStatus::PENDING);
         $OrderCancel = $this->orderStatusRepository->find(OrderStatus::CANCEL);
         $OrderProcessing = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
+        $OrderReturned = $this->orderStatusRepository->find(OrderStatus::RETURNED);
 
         // bulk 生成 → OrderDate 設定 → 1 回 flush. createOrder ループ (内部で createProduct/createDelivery が走る) を避ける.
         $todaysSales = '0';
@@ -88,7 +93,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         // excludes: ステータス別に 2 件ずつ bulk 生成し、Today / Yesterday を割り当てる.
-        foreach ([$OrderCancel, $OrderPending, $OrderProcessing] as $OrderStatus) {
+        foreach ([$OrderCancel, $OrderPending, $OrderProcessing, $OrderReturned] as $OrderStatus) {
             $excludeOrders = $this->createOrders(array_fill(0, 2, $Customer), ['orderStatus' => $OrderStatus]);
             $excludeOrders[0]->setOrderDate($Today);
             $excludeOrders[1]->setOrderDate($Yesterday);
@@ -188,5 +193,118 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
             ],
             '_token' => 'dummy',
         ];
+    }
+
+    /**
+     * Test dashboard performance with large dataset
+     * Verifies that database-level aggregation performs efficiently
+     *
+     * @group performance
+     */
+    public function testDashboardPerformanceWithLargeDataset()
+    {
+        // Clear existing orders to ensure test isolation
+        $this->deleteAllRows(['dtb_order']);
+
+        $Customer = $this->createCustomer();
+        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
+
+        // Create 100 orders to simulate realistic load
+        $orderCount = 100;
+
+        for ($i = 0; $i < $orderCount; $i++) {
+            $Order = $this->createOrder($Customer);
+            $Order->setOrderStatus($OrderNew);
+            // Distribute orders across the last 30 days
+            $daysAgo = random_int(0, 29);
+            $orderDate = new \DateTime("-{$daysAgo} days");
+            $Order->setOrderDate($orderDate);
+        }
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+
+        // Measure query performance
+        $queryStartTime = microtime(true);
+        $queryStartMemory = memory_get_usage();
+
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_homepage')
+        );
+
+        $queryEndTime = microtime(true);
+        $queryEndMemory = memory_get_usage();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // Performance assertions
+        $queryTime = $queryEndTime - $queryStartTime;
+        $memoryUsed = ($queryEndMemory - $queryStartMemory) / 1024 / 1024; // Convert to MB
+
+        // Dashboard should load in less than 2 seconds even with 100+ orders
+        $this->assertLessThan(2.0, $queryTime,
+            "Dashboard took {$queryTime}s to load, should be under 2s with database aggregation");
+
+        // Memory usage should be reasonable (less than 15MB for query execution)
+        $this->assertLessThan(15, $memoryUsed,
+            "Dashboard used {$memoryUsed}MB of memory, should be under 15MB with database aggregation");
+
+        // Verify data is displayed correctly
+        $salesText = $crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text();
+        $this->assertStringContainsString('￥', $salesText);
+        $this->assertStringContainsString('/', $salesText);
+    }
+
+    /**
+     * Test that database aggregation is used instead of loading all entities
+     * This ensures we don't have N+1 query problems
+     *
+     * @group performance
+     */
+    public function testDatabaseAggregationUsed()
+    {
+        // Clear existing orders to ensure test isolation
+        $this->deleteAllRows(['dtb_order']);
+
+        $Customer = $this->createCustomer();
+        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
+
+        // Create multiple orders
+        for ($i = 0; $i < 10; $i++) {
+            $Order = $this->createOrder($Customer);
+            $Order->setOrderStatus($OrderNew);
+            $Order->setOrderDate(new \DateTime('today'));
+        }
+        $this->entityManager->flush();
+        $this->entityManager->clear();
+
+        // Enable query logging
+        $connection = $this->entityManager->getConnection();
+        $logger = new DebugStack();
+        $connection->getConfiguration()->setSQLLogger($logger);
+
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
+
+        $connection->getConfiguration()->setSQLLogger();
+
+        // Count queries that fetch Order entities
+        $orderEntityQueries = 0;
+        foreach ($logger->queries as $query) {
+            // Check if query is selecting from dtb_order table
+            if (stripos((string) $query['sql'], 'FROM dtb_order') !== false) {
+                // If it's using GROUP BY and aggregate functions, it's the efficient query
+                if (stripos((string) $query['sql'], 'GROUP BY') !== false
+                    && (stripos((string) $query['sql'], 'SUM') !== false || stripos((string) $query['sql'], 'COUNT') !== false)) {
+                    // This is good - database aggregation
+                    continue;
+                }
+                $orderEntityQueries++;
+            }
+        }
+
+        // We should not be loading Order entities individually (N+1 problem)
+        // The efficient approach uses GROUP BY with SUM/COUNT
+        $this->assertLessThan(5, $orderEntityQueries,
+            "Found {$orderEntityQueries} queries loading Order entities. Should use database aggregation instead.");
     }
 }

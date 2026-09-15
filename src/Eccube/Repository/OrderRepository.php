@@ -645,4 +645,34 @@ class OrderRepository extends AbstractRepository
 
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * 期間内の売上データを日付でグループ化して集計
+     *
+     * @param \DateTime $fromDate 開始日
+     * @param \DateTime $toDate 終了日
+     * @param int[] $excludeStatuses 除外する受注ステータスID
+     * @param string $format 日付フォーマット ('Y/m/d' or 'Y/m')
+     *
+     * @return array<int, array{date_key: string, total_price: numeric-string|int|float|null, order_count: int|string}>
+     */
+    public function getSalesDataGroupedByDate(\DateTime $fromDate, \DateTime $toDate, array $excludeStatuses, string $format = 'Y/m/d'): array
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select("DATEFORMAT(o.order_date, '{$format}') as date_key")
+            ->addSelect('SUM(o.payment_total) as total_price')
+            ->addSelect('COUNT(o.id) as order_count')
+            ->andWhere('o.order_date >= :fromDate')
+            ->andWhere('o.order_date < :toDate')
+            ->andWhere('o.OrderStatus NOT IN (:excludes)')
+            ->setParameter('fromDate', $fromDate)
+            ->setParameter('toDate', $toDate)
+            ->setParameter('excludes', $excludeStatuses)
+            ->groupBy('date_key')
+            ->orderBy('date_key', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
+    }
 }
