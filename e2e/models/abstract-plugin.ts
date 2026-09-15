@@ -2,6 +2,7 @@ import { type Page, expect } from '@playwright/test';
 import { type DbClient } from '../helpers/db-client';
 import { traitExists } from '../helpers/file-helper';
 import { type PluginTestConfig } from '../fixtures/plugin-test';
+import { PluginManagePage } from '../pages/plugin-manage.page';
 
 /**
  * プラグインのライフサイクル状態を追跡し、DB/ファイルレベルの検証を行う基底クラス。
@@ -11,6 +12,14 @@ export abstract class AbstractPlugin {
   protected page: Page;
   protected db: DbClient;
   protected config: PluginTestConfig;
+
+  /**
+   * プラグイン一覧のページオブジェクト。
+   *
+   * 生成時の Page を持ち続けるため、タブを切り替えたら貼り替えが必要になる。
+   * サブクラス側で個別に持たせるとタブ切り替えの取り漏らしが起きるので、ここで一元管理する。
+   */
+  protected managePage!: PluginManagePage;
 
   protected initialized = false;
   protected enabled = false;
@@ -65,12 +74,30 @@ export abstract class AbstractPlugin {
     await newPage.goto(this.page.url());
     await newPage.waitForLoadState('load');
     const oldPage = this.page;
-    this.page = newPage;
+    await this.タブを切り替え(newPage);
+
     return oldPage;
   }
 
   async タブを切り替え(targetPage: Page): Promise<void> {
     this.page = targetPage;
     await this.page.bringToFront();
+    await this.ページオブジェクトを貼り替え();
+  }
+
+  /**
+   * 保持しているページオブジェクトを現在のタブへ貼り替える。
+   *
+   * ページオブジェクトは生成時の Page を持ち続けるため、`this.page` だけ差し替えても
+   * 操作先は元のタブに残る（マルチタブの競合テストが「別タブで操作したつもりで
+   * 同じタブを操作する」ことになり、成立しない）。
+   */
+  protected async ページオブジェクトを貼り替え(): Promise<void> {
+    // タブ切り替えはプラグイン一覧に居る前提。別の画面で切り替えると
+    // PluginManagePage.at() の 30 秒待ちのあと落ちて原因が分かりにくいので、
+    // ここで短く落として理由を出す。
+    await expect(this.page.locator('.c-pageTitle'), 'タブ切り替えはプラグイン一覧で行う')
+      .toContainText('インストールプラグイン一覧', { timeout: 5_000 });
+    this.managePage = await PluginManagePage.at(this.page);
   }
 }
