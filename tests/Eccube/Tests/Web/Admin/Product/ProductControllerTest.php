@@ -1051,6 +1051,143 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * ソートしてから商品CSVをダウンロードしてもエラーにならないことのテスト.
+     *
+     * 商品検索のクエリは ProductClass を to-many で join しているため, ProductClass 側の列
+     * (pc.code, pc.stock) でソートすると LimitSubqueryWalker が例外を投げ,
+     * CSV が最後まで出力されなかった.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    #[DataProvider(methodName: 'dataProductSortKeyProvider')]
+    public function testExportProductWithSortKey(string $sortKey): void
+    {
+        $searchForm = $this->createSearchForm();
+        $searchForm['sortkey'] = $sortKey;
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // ヘッダ行だけでなくデータ行が出力されていること.
+        $this->assertGreaterThan(0, $this->countCsvRows($this->exportProductCsv()));
+    }
+
+    /**
+     * ソートの有無で商品CSVの行数が変わらないことのテスト.
+     *
+     * ProductClass を select 句に載せると pc.visible の条件でコレクションが部分初期化され,
+     * ソートしたときだけ非表示の規格の行が落ちることがある. 行数で担保して検知する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportProductRowCountIsNotAffectedBySort(): void
+    {
+        // 規格を 2 件登録した商品. 規格を登録すると 規格なし既定の ProductClass は非表示になるが,
+        // ソートしない CSV には 3 行とも出力される.
+        $productName = 'Product for csv sort '.uniqid();
+        $Product = $this->createProduct($productName, 2);
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = $productName;
+
+        $expected = $this->countExportedRows($searchForm, '');
+        $this->assertSame(count($Product->getProductClasses()), $expected);
+
+        foreach (['product_code', 'stock'] as $sortKey) {
+            $this->assertSame($expected, $this->countExportedRows($searchForm, $sortKey), $sortKey);
+        }
+    }
+
+    /**
+     * ソートが商品CSVの並び順に反映されることのテスト.
+     *
+     * ソートを保ったまま LimitSubqueryWalker の例外を解消するのが目的なので,
+     * エラーにならないことだけでなく並び順そのものを担保する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportProductKeepsSortOrder(): void
+    {
+        // ソート未指定時の既定は p.update_date DESC, p.id DESC なので, 登録順を b, c, a にして
+        // 既定の並び (a, c, b) が昇順 (a, b, c) とも降順 (c, b, a) とも一致しないようにする.
+        // 一致していると, ソートが効かなくてもその向きのアサートが通ってしまう.
+        // 規格を登録すると 規格なし既定の ProductClass は非表示になるが, CSV には出力される.
+        $prefix = 'Product for sort order '.uniqid();
+        foreach (['b', 'c', 'a'] as $code) {
+            $Product = $this->createProduct($prefix.' '.$code, 1);
+            $no = 1;
+            foreach ($Product->getProductClasses() as $ProductClass) {
+                $ProductClass->setCode($code.$no++);
+            }
+        }
+        $this->entityManager->flush();
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = $prefix;
+        $searchForm['sortkey'] = 'product_code';
+
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertSame(['a', 'a', 'b', 'b', 'c', 'c'], $this->extractSortedProductGroups($this->exportProductCsv()));
+
+        $searchForm['sorttype'] = 'd';
+        $this->searchProduct($searchForm);
+        $this->assertSame(['c', 'c', 'b', 'b', 'a', 'a'], $this->extractSortedProductGroups($this->exportProductCsv()));
+    }
+
+    /**
+     * CSV から商品コードの先頭 1 文字を出力順に取り出す.
+     *
+     * 商品コードは `<商品を表す 1 文字><規格ごとの連番>` で登録する.
+     * 商品内の行順は `Product::$ProductClasses` の取得順（`#[ORM\OrderBy]` が無く DB 依存）
+     * に左右されるため, 商品間の並びだけを見るよう連番を落として比較する.
+     *
+     * @return array<int, string>
+     */
+    private function extractSortedProductGroups(string $csv): array
+    {
+        $records = $this->parseCsv($csv);
+        $header = array_shift($records);
+        $this->assertIsArray($header);
+        $index = array_search('商品コード', $header, true);
+        $this->assertIsInt($index);
+
+        return array_map(fn (array $row): string => substr((string) $row[$index], 0, 1), $records);
+    }
+
+    /**
+     * ソートしてから商品CSVを出力し, ヘッダ行を除いたレコード数を返す.
+     *
+     * @param array<string, mixed> $searchForm
+     */
+    private function countExportedRows(array $searchForm, string $sortKey): int
+    {
+        $searchForm['sortkey'] = $sortKey;
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        return $this->countCsvRows($this->exportProductCsv());
+    }
+
+    /**
+     * @return \Iterator<int<0, max>, array{string}>
+     */
+    public static function dataProductSortKeyProvider(): \Iterator
+    {
+        // ProductClass (to-many) の列。修正前はエラーになる2キー。
+        yield ['product_code'];
+        yield ['stock'];
+        // association (p.Status) のため wrap-queries の対象外。従来どおり動くこと。
+        yield ['status'];
+        // Product (to-one) の列。従来どおり動くこと。
+        yield ['product_id'];
+        yield ['name'];
+        // ソート未指定。
+        yield [''];
+    }
+
+    /**
      * 商品検索を実行し, 検索条件をセッションに保持する.
      *
      * @param array<string, mixed> $searchForm
