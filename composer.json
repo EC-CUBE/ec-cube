@@ -122,6 +122,7 @@
         "phpstan/phpstan-doctrine": "^2.0",
         "phpunit/phpunit": "^11.0",
         "rector/rector": "^2.1",
+        "softcreatr/jsonpath": "^0.8",
         "symfony/browser-kit": "^7.4",
         "symfony/phpunit-bridge": "^8.1"
     },
