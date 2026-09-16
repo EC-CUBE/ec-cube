@@ -146,6 +146,29 @@ final class FaqControllerTest extends AbstractAdminWebTestCase
         $this->assertNotInstanceOf(Faq::class, $this->entityManager->getRepository(Faq::class)->findOneBy(['question' => '表示順ゼロの質問']));
     }
 
+    public function testFaqEditRejectsBlankQuestion(): void
+    {
+        // 既存 FAQ の質問を空にして保存しても 500 にならず、バリデーションで弾かれる。
+        // TextType はビュー変換器が無いと空送信が null へ落ちるため、非 nullable な
+        // Faq::setQuestion() へ渡って TypeError になっていた（FaqType の empty_data で回避）。
+        $Faq = $this->createCommonFaq();
+        $id = $Faq->getId();
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_faq_edit', ['id' => $id]));
+        $form = $crawler->filter('#form1')->form();
+        $form['admin_faq[question]'] = ' ';
+        $this->client->submit($form);
+
+        // リダイレクトせず入力画面に留まる（500 でもない）。
+        $response = $this->client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode(), (string) $response->getContent());
+        $this->assertFalse($response->isRedirection());
+
+        // 既存の値が壊れていないこと。
+        $this->entityManager->clear();
+        $this->assertSame('よくある質問', $this->entityManager->getRepository(Faq::class)->find($id)->getQuestion());
+    }
+
     public function testRoutingAdminContentFaqDelete(): void
     {
         $Faq = $this->createCommonFaq();

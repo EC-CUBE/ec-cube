@@ -39,6 +39,9 @@ class FaqType extends AbstractType
         $builder
             ->add('question', TextType::class, [
                 'required' => true,
+                // dtb_faq.question は NOT NULL. ビュー変換器が無いと空送信が null へ落ち,
+                // 非 nullable な Faq::setQuestion() へ渡って 500 になるため空文字を明示する.
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
