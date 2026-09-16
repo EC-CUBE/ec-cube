@@ -74,3 +74,4 @@ class ExampleRepository extends AbstractRepository
 - ❌ 画面表示の一覧・関連取得を無制限に全件取得（件数が際限なく増え得る）→ ✅ ページング（Paginator 用に QueryBuilder を返す）か上限を設ける
 - ❌ join 先への絞り込みを EXISTS 部分クエリへ移すとき、その別名に掛かっていた既存の制約を引き継がない → ✅ 同じ制約を EXISTS 内に再掲し、集計・出力側の母集団と一致させる
 - ❌ 1 対多の範囲絞り込みで下限・上限を独立した EXISTS 2 本に分ける（別々の子行が満たせばヒットしてしまう）→ ✅ 同一の子行に両条件を要求するなら EXISTS 1 本にまとめる
+- ❌ 新規 CRUD で `AbstractRepository::save()` を使い直後に `getId()`（redirect 等）→ `save()` は `persist()` のみで **flush しない**ため id 未採番（IDENTITY は flush で採番）→ ✅ Repository で `save()`/`delete()` を `#[\Override]` し `persist()+flush()` / `remove()+flush()` にする（`NewsRepository` に倣う）

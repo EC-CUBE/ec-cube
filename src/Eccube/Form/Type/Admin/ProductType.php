@@ -172,7 +172,38 @@ class ProductType extends AbstractType
             ->add('return_link', HiddenType::class, [
                 'mapped' => false,
             ])
+            // 商品ごとFAQ
+            //
+            // faqs_rendered は FAQ 欄が描画されたことを示すセンチネル。
+            // @admin/Content/faq_collection.twig が必ず出力するため、テンプレートを上書きして
+            // FAQ 欄を描画していない場合だけ送信データから欠落する。
+            // 「上書きで未描画」と「UI で全行削除」はどちらも faqs キーが送られてこないため、
+            // このセンチネルが無いと両者を区別できない（下の PRE_SUBMIT を参照）。
+            ->add('faqs_rendered', HiddenType::class, [
+                'mapped' => false,
+                'data' => '1',
+            ])
+            ->add('faqs', CollectionType::class, [
+                'entry_type' => FaqType::class,
+                'entry_options' => ['sortable' => true],
+                'prototype' => true,
+                'mapped' => true,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => false,
+            ])
         ;
+
+        // FAQ 欄が描画されていない（テンプレート上書き等）ときは faqs に一切触れない。
+        // CollectionType は送信キーが無いと空コレクションとして扱い、allow_delete と
+        // Product::$Faqs の orphanRemoval により既存 FAQ を無警告で全削除してしまうため、
+        // フィールドごと取り除いて DataMapper が $Faqs に触れないようにする。
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
+            $data = $event->getData();
+            if (!is_array($data) || empty($data['faqs_rendered'])) {
+                $event->getForm()->remove('faqs');
+            }
+        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
