@@ -395,6 +395,9 @@ class FileController extends AbstractController
 
         $defaultDepth = count(explode('/', $topDir));
 
+        // tree_status は画面が保持している「開いているディレクトリ」の一覧.
+        // 画面側が扱うのは user_data からの相対パスのため, ここも相対パスで突き合わせる
+        // (絶対パスで比較すると一致せず, 開閉状態がまったく復元されない).
         $openDirs = [];
         if ($request->get('tree_status')) {
             $openDirs = explode('|', (string) $request->get('tree_status'));
@@ -408,7 +411,7 @@ class FileController extends AbstractController
                 'path' => $path,
                 'type' => $type,
                 'depth' => $depth,
-                'open' => in_array($path, $openDirs),
+                'open' => in_array($this->userDataFileService->toRelative($path), $openDirs, true),
             ];
         }
 
