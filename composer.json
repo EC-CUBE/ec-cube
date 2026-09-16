@@ -23,6 +23,7 @@
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "ext-pdo": "*",
+        "ext-phar": "*",
         "ext-session": "*",
         "ext-tokenizer": "*",
         "ext-xml": "*",
