@@ -15779,6 +15779,60 @@ Styleguide 22.1
   margin-bottom: 32px;
   font-size: 16px;
 }
+
+/**
+メディアクエリ
+SP フォーストで記述する。
+Twitter Bootstrap デフォルト準拠
+ */
+/*
+FAQ
+
+商品詳細・商品一覧（カテゴリ）・FAQブロックで使用する「よくある質問」のスタイルです。
+質問と回答を Q./A. で区別し、回答は字下げして表示します。
+
+Styleguide 23.1
+*/
+.ec-faqRole {
+  padding: 40px 0 0;
+}
+.ec-faqRole .ec-faqRole__list {
+  box-sizing: border-box;
+}
+.ec-faqRole .ec-faqRole__item {
+  width: 100%;
+  margin: 0;
+  padding: 16px 0;
+}
+.ec-faqRole .ec-faqRole__item:not(:last-of-type) {
+  border-bottom: 1px solid #ccc;
+}
+.ec-faqRole .ec-faqRole__question {
+  position: relative;
+  padding-left: 1.75em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.ec-faqRole .ec-faqRole__question::before {
+  content: "Q.";
+  position: absolute;
+  left: 0;
+  color: #de5d50;
+  font-weight: bold;
+}
+.ec-faqRole .ec-faqRole__answer {
+  position: relative;
+  padding-left: 1.75em;
+  margin: 0;
+  color: #525263;
+}
+.ec-faqRole .ec-faqRole__answer::before {
+  content: "A.";
+  position: absolute;
+  left: 0;
+  color: #5b8bd8;
+  font-weight: bold;
+}
 @media (min-width: 576px){
   .container-sm, .container {
     max-width: 540px;
@@ -18405,6 +18459,9 @@ Styleguide 22.1
   }
   .ec-userEditCompleteRole .ec-userEditCompleteRole__title {
     font-size: 32px;
+  }
+  .ec-faqRole {
+    padding: 60px 0 0;
   }
 }
 @media only screen and (min-width: 768px) and (min-width: 768px){
