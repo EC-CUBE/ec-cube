@@ -14,7 +14,6 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
@@ -207,8 +206,9 @@ class CsvExportService
     public function getData(Csv $Csv, AbstractEntity $entity): ?string
     {
         // エンティティ名が一致するかどうかチェック.
+        // 遅延ロードのプロキシ (Proxies\__CG__\...) が渡っても実エンティティのクラス名で比較する.
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
-        $entityName = ClassUtils::getClass($entity);
+        $entityName = $this->entityManager->getClassMetadata($entity::class)->getName();
         if ($csvEntityName !== $entityName) {
             return null;
         }
