@@ -12,6 +12,7 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
@@ -316,6 +317,40 @@ if (!$existingMemoOrder) {
     echo "  Created order-memo test order\n";
 } else {
     echo "  Order-memo test order already exists\n";
+}
+
+// --- お届け先上限テスト用 (お届け先が上限数に達しているテスト会員) ---
+// 共有会員 playwright@test.test には足さない。
+// front-mypage.spec.ts の EF0506-UC03-T01 が「お届け先は登録されていません」を前提にしているため、
+// 上限確認 (EF0506-UC03-T02) には専用会員を用意する。
+$addrMaxTestEmail = 'addr-max-test@test.test';
+$addrMaxCustomer = $entityManager->getRepository(Customer::class)->findOneBy(['email' => $addrMaxTestEmail]);
+if (!$addrMaxCustomer) {
+    $addrMaxCustomer = $generator->createCustomer($addrMaxTestEmail);
+    $Status = $entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::REGULAR);
+    $addrMaxCustomer->setStatus($Status);
+    $entityManager->flush($addrMaxCustomer);
+    echo "  Created address-max test customer: $addrMaxTestEmail\n";
+} else {
+    echo "  Address-max test customer already exists: $addrMaxTestEmail\n";
+}
+
+// 上限値はテスト側でハードコードせず eccube_deliv_addr_max を源泉にする
+$addrMax = (int) $container->getParameter('eccube_deliv_addr_max');
+$addrCount = (int) $entityManager->getRepository(CustomerAddress::class)->createQueryBuilder('ca')
+    ->select('COUNT(ca.id)')
+    ->where('ca.Customer = :customer')
+    ->setParameter('customer', $addrMaxCustomer)
+    ->getQuery()
+    ->getSingleScalarResult();
+
+if ($addrCount < $addrMax) {
+    for ($i = $addrCount; $i < $addrMax; $i++) {
+        $generator->createCustomerAddress($addrMaxCustomer);
+    }
+    echo '  Created '.($addrMax - $addrCount)." customer addresses for $addrMaxTestEmail (total $addrMax)\n";
+} else {
+    echo "  Address-max test customer already has $addrCount addresses (max $addrMax)\n";
 }
 
 // --- MCP 機能を有効化 (既定 OFF のため、 MCP e2e が /admin/mcp に到達できるようにする) ---
