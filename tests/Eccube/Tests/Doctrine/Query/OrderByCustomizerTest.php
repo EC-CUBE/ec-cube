@@ -22,6 +22,10 @@ use Eccube\Tests\EccubeTestCase;
 
 final class OrderByCustomizerTest extends EccubeTestCase
 {
+    // ORDER BY の方向 (asc/desc) は doctrine/orm 3.7 から SortDirection enum で大文字に正規化される
+    // (doctrine/orm#12449)。DQL のキーワードは大小文字を区別しないため、方向を含む DQL の比較は
+    // assertEqualsIgnoringCase で ORM のバージョン差を吸収する。
+
     public function testCustomizeNop()
     {
         $builder = $this->createQueryBuilder();
@@ -38,7 +42,7 @@ final class OrderByCustomizerTest extends EccubeTestCase
         $customizer = new OrderByCustomizerTest_Customizer(fn () => []);
         $customizer->customize($builder, null, '');
 
-        $this->assertSame('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
+        $this->assertEqualsIgnoringCase('SELECT p FROM Product p ORDER BY name desc', $builder->getDQL());
     }
 
     public function testCustomizeOverride()
@@ -50,7 +54,7 @@ final class OrderByCustomizerTest extends EccubeTestCase
         ]);
         $customizer->customize($builder, null, '');
 
-        $this->assertSame('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
+        $this->assertEqualsIgnoringCase('SELECT p FROM Product p ORDER BY productId asc', $builder->getDQL());
     }
 
     public function testCustomizeOverrideWithMultiClause()
@@ -63,7 +67,7 @@ final class OrderByCustomizerTest extends EccubeTestCase
         ]);
         $customizer->customize($builder, null, '');
 
-        $this->assertSame('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
+        $this->assertEqualsIgnoringCase('SELECT p FROM Product p ORDER BY productId asc, name desc', $builder->getDQL());
     }
 
     private function createQueryBuilder(): QueryBuilder
