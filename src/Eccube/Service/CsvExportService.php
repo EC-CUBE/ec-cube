@@ -66,7 +66,7 @@ class CsvExportService
     /**
      * CsvExportService constructor.
      */
-    public function __construct(protected ?EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator, protected BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator, protected BaseInfoRepository $baseInfoRepository)
     {
     }
 
@@ -172,7 +172,7 @@ class CsvExportService
      */
     public function exportData(\Closure $closure): void
     {
-        if (is_null($this->qb) || is_null($this->entityManager)) {
+        if (is_null($this->qb)) {
             throw new \LogicException('query builder not set.');
         }
 
