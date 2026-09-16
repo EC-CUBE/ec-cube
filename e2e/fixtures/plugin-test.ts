@@ -36,7 +36,7 @@ export const test = base.extend<PluginFixtures>({
       projectDir: process.env.ECCUBE_PROJECT_DIR || path.resolve(__dirname, '..', '..'),
       adminRoute: ADMIN_ROUTE,
       reposDir: process.env.REPOS_DIR || path.resolve(__dirname, '..', '..', 'repos'),
-      pluginDataDir: process.env.PLUGIN_DATA_DIR || path.resolve(__dirname, '..', '..', 'codeception', '_data', 'plugins'),
+      pluginDataDir: process.env.PLUGIN_DATA_DIR || path.resolve(__dirname, 'plugins'),
     };
     await use(config);
   },
