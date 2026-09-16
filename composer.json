@@ -43,7 +43,7 @@
         "exercise/htmlpurifier-bundle": "^5.0",
         "ezyang/htmlpurifier": "^4.14",
         "friendsofphp/php-cs-fixer": "^3.75",
-        "guzzlehttp/guzzle": "^7.4.5",
+        "guzzlehttp/guzzle": "^7.4.5 || ^8.0",
         "justinrainbow/json-schema": "^6.5",
         "knplabs/knp-paginator-bundle": "^6.8",
         "mobiledetect/mobiledetectlib": "^2.8",
