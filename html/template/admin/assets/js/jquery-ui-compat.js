@@ -780,5 +780,6 @@ $.fn.disableSelection = (function () {
  * @returns {JQuery}
  */
 $.fn.enableSelection = function () {
+    deprecated('enableSelection', 'CSS の user-select: none');
     return this.off('.ui-disableSelection');
 };
