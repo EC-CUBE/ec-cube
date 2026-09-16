@@ -16,3 +16,4 @@ id,device_type_id,block_name,file_name,create_date,update_date,use_controller,de
 16,10,Google Analytics,google_analytics,2021-02-16 12:00:00,2021-02-16 12:00:00,0,0,block
 17,10,Calendar,calendar,2021-03-16 12:00:00,2021-03-16 12:00:00,1,0,block
 18,10,Auto New Items,auto_new_item,2024-03-12 17:00:00,2024-03-12 17:00:00,1,0,block
+19,10,FAQ,faq,2026-07-27 00:00:00,2026-07-27 00:00:00,1,0,block
