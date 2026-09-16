@@ -86,7 +86,7 @@ class Calendar extends AbstractEntity
     /**
      * Set holiday.
      */
-    public function setHoliday(\DateTime $holiday): Calendar
+    public function setHoliday(?\DateTime $holiday): Calendar
     {
         $this->holiday = $holiday;
 

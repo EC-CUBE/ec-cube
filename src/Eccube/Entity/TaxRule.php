@@ -154,7 +154,7 @@ class TaxRule extends AbstractEntity
     /**
      * Set applyDate.
      */
-    public function setApplyDate(\DateTime $applyDate): TaxRule
+    public function setApplyDate(?\DateTime $applyDate): TaxRule
     {
         $this->apply_date = $applyDate;
 
