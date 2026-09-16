@@ -235,9 +235,6 @@ final class MailControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * 削除不可のテンプレートを削除
-     */
-    /**
      * 削除不可のテンプレートは、更新しても削除不可のままであることを確認
      *
      * @see https://github.com/EC-CUBE/ec-cube/issues/7053
@@ -276,6 +273,9 @@ final class MailControllerTest extends AbstractAdminWebTestCase
         $this->assertFalse($MailTemplate->isDeletable());
     }
 
+    /**
+     * 削除不可のテンプレートを削除
+     */
     public function testDeleteNotDeletable(): void
     {
         // 新規登録
