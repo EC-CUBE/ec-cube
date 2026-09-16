@@ -44,7 +44,7 @@ class FaqType extends AbstractType
                 'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('answer', TextareaType::class, [
@@ -52,7 +52,7 @@ class FaqType extends AbstractType
                 'purify_html' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             // 表示順. コレクション内では hidden にして、JS が並び順から連番を振る。
@@ -62,7 +62,7 @@ class FaqType extends AbstractType
                 'required' => false,
                 'attr' => $options['sortable'] ? ['class' => 'sort-no'] : [],
                 'constraints' => [
-                    new Assert\Range(['min' => 1, 'max' => 2147483647]),
+                    new Assert\Range(min: 1, max: 2147483647),
                 ],
             ])
             ->add('visible', ChoiceType::class, [
