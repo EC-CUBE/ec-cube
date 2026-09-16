@@ -45,6 +45,11 @@ class PageContentService
     use TemplateBodyTrait;
     use TemplateRemovalTrait;
 
+    /**
+     * twig の名前空間を表す接頭辞.
+     */
+    private const TWIG_NAMESPACE_PREFIX = '@';
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly PageRepository $pageRepository,
@@ -78,8 +83,38 @@ class PageContentService
         return $Page->getEditType() < Page::EDIT_TYPE_DEFAULT;
     }
 
+    /**
+     * プラグインの名前空間 (@PluginCode/...) を指すページか.
+     *
+     * プラグインが用意したテンプレートは twig の名前空間で解決されるため,
+     * dtb_page.file_name には "@PluginCode/xxx" の形で入る.
+     */
+    public function isPluginNamespacePage(Page $Page): bool
+    {
+        return str_starts_with((string) $Page->getFileName(), self::TWIG_NAMESPACE_PREFIX);
+    }
+
     public function getTemplateDir(Page $Page): string
     {
+        return $this->resolveTemplateDir($Page, (string) $Page->getFileName());
+    }
+
+    /**
+     * ファイル名に対応する配置先を返す.
+     *
+     * 名前空間の有無で配置先が変わるため, ファイル名の変更を跨ぐ処理
+     * (save() の旧ファイル削除) では「そのファイル名が置かれていたディレクトリ」を
+     * 引く必要がある. Page だけを見ると新しい配置先で旧ファイルを探してしまう.
+     */
+    private function resolveTemplateDir(Page $Page, string $fileName): string
+    {
+        // EccubeExtension::configureTwigPaths() が @PluginCode として登録するのは
+        // app/template/plugin/[code] と app/Plugin/[code]/Resource/template の 2 つ.
+        // 編集内容はプラグイン同梱側ではなく, 上書き用の app/template/plugin へ書く.
+        if (str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
+            return $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
+        }
+
         return $this->isUserDataPage($Page)
             ? (string) $this->eccubeConfig->get('eccube_theme_user_data_dir')
             : (string) $this->eccubeConfig->get('eccube_theme_front_dir');
@@ -87,7 +122,23 @@ class PageContentService
 
     public function getFilePath(Page $Page): string
     {
-        return $this->getTemplateDir($Page).'/'.$Page->getFileName().'.twig';
+        return $this->buildFilePath($this->getTemplateDir($Page), (string) $Page->getFileName());
+    }
+
+    /**
+     * テンプレートの書き込み先を組み立てる.
+     *
+     * 先頭の "@" は twig の名前空間の記法でディレクトリ名には含まれない
+     * (@PluginCode は app/template/plugin/PluginCode を指す) ため取り除く.
+     * 取り除かないと登録済みのパスと一致せず, 書き出しても画面へ反映されない.
+     */
+    private function buildFilePath(string $templateDir, string $fileName): string
+    {
+        if (str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
+            $fileName = substr($fileName, strlen(self::TWIG_NAMESPACE_PREFIX));
+        }
+
+        return $templateDir.'/'.$fileName.'.twig';
     }
 
     /**
@@ -224,7 +275,7 @@ class PageContentService
             $this->entityManager->flush();
 
             $templateDir = $this->getTemplateDir($Page);
-            $filePath = $templateDir.'/'.$Page->getFileName().'.twig';
+            $filePath = $this->buildFilePath($templateDir, (string) $Page->getFileName());
 
             // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
             // 比較相手の findTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
@@ -242,7 +293,10 @@ class PageContentService
             $removedPaths = [];
             // 更新でファイル名を変更した場合, 以前のファイルを削除する
             if (null !== $previousFileName && $Page->getFileName() !== $previousFileName) {
-                $oldFilePath = $templateDir.'/'.$previousFileName.'.twig';
+                $oldFilePath = $this->buildFilePath(
+                    $this->resolveTemplateDir($Page, $previousFileName),
+                    $previousFileName
+                );
                 if ($this->filesystem->exists($oldFilePath)) {
                     try {
                         $this->filesystem->remove($oldFilePath);
