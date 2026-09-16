@@ -24,7 +24,6 @@ use Eccube\Entity\DeliveryTime;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\OrderItemType as OrderItemTypeMaster;
 use Eccube\Entity\News;
-use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
 use Eccube\Entity\TaxRule;
@@ -265,9 +264,7 @@ final class EmptyTextSubmitTest extends AbstractTypeTestCase
      */
     public function testUnrenderedMappedTotalsKeepZero(): void
     {
-        /** @var Order $Order */
-        $Order = $this->entityManager->getRepository(Order::class)->findOneBy([]);
-        $this->assertNotNull($Order, '受注が 1 件以上必要');
+        $Order = $this->createOrder($this->createCustomer());
 
         $form = $this->formFactory->create(OrderType::class, $Order, ['csrf_protection' => false]);
         // 画面と同じく discount / delivery_fee_total / charge を送らない
