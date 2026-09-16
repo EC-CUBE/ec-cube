@@ -112,7 +112,7 @@ class PageContentService
         // app/template/plugin/[code] と app/Plugin/[code]/Resource/template の 2 つ.
         // 編集内容はプラグイン同梱側ではなく, 上書き用の app/template/plugin へ書く.
         if (str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
-            return (string) $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
+            return $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
         }
 
         return $this->isUserDataPage($Page)

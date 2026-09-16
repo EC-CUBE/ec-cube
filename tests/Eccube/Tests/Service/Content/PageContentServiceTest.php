@@ -435,7 +435,7 @@ final class PageContentServiceTest extends EccubeTestCase
     public function testApplyRemovesPreviousTemplateFromItsOwnDir(): void
     {
         $userDataDir = (string) $this->eccubeConfig->get('eccube_theme_user_data_dir');
-        $pluginDir = (string) $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
+        $pluginDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
 
         // 通常のページとして作る
         $this->apply(['name' => '移動前', 'body' => 'before']);
