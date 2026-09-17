@@ -24,12 +24,14 @@
  * - sortable
  *   - オプション: items / handle / cancel / placeholder / connectWith / distance / delay / disabled
  *   - コールバック: create / start / stop / update / receive / remove (第 2 引数 ui は item / helper / placeholder / sender)
- *   - メソッド: destroy / refresh / refreshPositions / toArray / serialize / option / enable / disable / instance / widget
+ *   - メソッド: destroy / refresh / refreshPositions / cancel / toArray / serialize / option / enable / disable / instance / widget
+ *     (cancel は jQuery UI と同じく、ドロップ後に呼んでも直前のドラッグ開始時の位置へ戻す。AJAX 保存失敗時の巻き戻し用)
  *   - 無視するオプション: axis / cursor / opacity / tolerance / helper / appendTo / zIndex / revert 等
  *   - 制約: items はコンテナ直下の要素のみ並び替えられる (SortableJS の制約)
  * - resizable
  *   - オプション: handles / minWidth / minHeight / maxWidth / maxHeight / disabled
- *   - コールバック: start / resize / stop (ネイティブのリサイズハンドル操作を mousedown / mouseup で区切る)
+ *   - コールバック: start / resize / stop (jQuery UI と同じくリサイズハンドルの押下中だけ発火する。
+ *     ウィンドウ幅の変化など、ハンドル操作以外の大きさの変化では発火しない)
  *   - メソッド: destroy / option / enable / disable / instance / widget
  * - disableSelection / enableSelection
  */
@@ -247,6 +249,13 @@ class CompatSortable {
         this.instance = null;
         /** @type {string|undefined} 既定の不可視プレースホルダを戻すための元の visibility */
         this._placeholderVisibility = undefined;
+        /** @type {boolean} ドラッグ中か (jQuery UI の dragging 相当。ドロップ処理の先頭で false に戻る) */
+        this._dragging = false;
+        /**
+         * @type {{item: HTMLElement, prev: Element|null, parent: HTMLElement}|undefined}
+         * 直前のドラッグ開始時の位置 (jQuery UI の domPosition 相当)。cancel() の戻し先
+         */
+        this._domPosition = undefined;
         this._create();
     }
 
@@ -274,15 +283,24 @@ class CompatSortable {
             ghostClass: 'ui-sortable-placeholder',
             animation: 0,
             onStart(evt) {
-                // カーソルに追従するクローンは id が重複するため外す
+                // カーソルに追従するクローンは子孫も含めて id が重複するため外す
                 if (Sortable.ghost) {
                     Sortable.ghost.removeAttribute('id');
+                    Sortable.ghost.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
                 }
+                // この時点では item はまだ元の位置にある。cancel() で戻すために記録する
+                self._domPosition = {
+                    item: evt.item,
+                    prev: evt.item.previousElementSibling,
+                    parent: evt.from,
+                };
+                self._dragging = true;
                 self._applyPlaceholder(evt.item);
                 trigger(self, 'sort', 'start', evt.originalEvent, self._uiHash(evt));
             },
             onUnchoose(evt) {
                 // ドロップ直後 (update / stop より前) に元の表示へ戻す
+                self._dragging = false;
                 self._clearPlaceholder(evt.item);
             },
             onUpdate(evt) {
@@ -475,9 +493,31 @@ class CompatSortable {
         return this;
     }
 
-    /** @returns {this} */
+    /**
+     * 直前のドラッグ開始時の位置へ要素を戻す.
+     * jQuery UI と同じく、ドロップ後 (update コールバックの中や AJAX 保存の失敗時) に呼べる.
+     *
+     * @returns {this}
+     */
     cancel() {
-        // ドラッグ中の取り消しは SortableJS に相当する API がないため何もしない
+        if (this._dragging) {
+            // ドラッグ中なら先にドロップを完了させる (jQuery UI が合成 mouseup で _mouseUp を呼ぶのと同じ)。
+            // fallback モードの SortableJS は PointerEvent が使える環境では document の pointerup、
+            // それ以外では mouseup でドロップ処理を行う (ドロップ後はリスナが外れるため両方送っても二重にならない)
+            const doc = this.element.ownerDocument;
+            if (typeof PointerEvent !== 'undefined') {
+                doc.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, cancelable: true }));
+            }
+            doc.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true }));
+        }
+        const position = this._domPosition;
+        if (position) {
+            if (position.prev) {
+                position.prev.after(position.item);
+            } else {
+                position.parent.prepend(position.item);
+            }
+        }
         return this;
     }
 
@@ -517,6 +557,7 @@ class CompatSortable {
     /** @returns {this} */
     destroy() {
         this.instance.destroy();
+        this._domPosition = undefined;
         $(this.element)
             .removeClass('ui-sortable ui-sortable-disabled ui-state-disabled')
             .removeData('eccube-jquery-ui-compat-sortable');
@@ -578,22 +619,20 @@ class CompatResizable {
 
         this._resizing = false;
         this._lastSize = this._size();
-        this._onMouseDown = () => {
-            this._originalSize = this._size();
-            this._mouseDown = true;
-        };
         this._onMouseUp = (event) => {
-            if (!this._mouseDown) {
-                return;
-            }
             this._mouseDown = false;
             if (this._resizing) {
                 this._resizing = false;
                 trigger(this, 'resize', 'stop', event, this._uiHash());
             }
         };
+        this._onMouseDown = () => {
+            this._originalSize = this._size();
+            this._mouseDown = true;
+            // jQuery UI と同じく押下中だけ document を監視する (destroy() を待たずにリスナが消える)
+            el.ownerDocument.addEventListener('mouseup', this._onMouseUp, { once: true });
+        };
         el.addEventListener('mousedown', this._onMouseDown);
-        document.addEventListener('mouseup', this._onMouseUp);
 
         if (typeof ResizeObserver !== 'undefined') {
             this._observer = new ResizeObserver(() => this._onResize());
@@ -653,7 +692,9 @@ class CompatResizable {
     }
 
     /**
-     * ResizeObserver のコールバック. 大きさが変わったときだけ resize (押下中の初回は start も) を発火する.
+     * ResizeObserver のコールバック. リサイズハンドルの押下中に大きさが変わったときだけ
+     * resize (初回は start も) を発火する. jQuery UI はハンドル操作でしか発火しないため、
+     * ウィンドウ幅の変化などハンドル操作以外の変化では発火しない.
      *
      * @returns {void}
      */
@@ -663,10 +704,10 @@ class CompatResizable {
             return;
         }
         this._lastSize = size;
-        if (this.options.disabled) {
+        if (this.options.disabled || !this._mouseDown) {
             return;
         }
-        if (this._mouseDown && !this._resizing) {
+        if (!this._resizing) {
             this._resizing = true;
             trigger(this, 'resize', 'start', null, this._uiHash());
         }
@@ -717,7 +758,7 @@ class CompatResizable {
             this._observer.disconnect();
         }
         el.removeEventListener('mousedown', this._onMouseDown);
-        document.removeEventListener('mouseup', this._onMouseUp);
+        el.ownerDocument.removeEventListener('mouseup', this._onMouseUp);
         Object.keys(this._originalStyle).forEach((prop) => {
             el.style[prop] = this._originalStyle[prop];
         });
