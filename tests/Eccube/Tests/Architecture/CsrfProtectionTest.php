@@ -81,11 +81,14 @@ final class CsrfProtectionTest extends TestCase
             if (!str_contains($line, '#[Route(')) {
                 continue;
             }
-            // GET 以外だけを受けるルートに絞る
-            if (!preg_match("/methods:\s*\[[^\]]*'(?:POST|DELETE|PUT|PATCH)'/", $line)) {
+            // 属性は複数行に分かれることがあるため, 閉じ括弧までを 1 つの文字列として集める
+            $attribute = $this->collectAttribute($lines, $i);
+
+            // GET 以外だけを受けるルートに絞る（methods の値は単一引用符・二重引用符の両方を許す）
+            if (!preg_match('/methods:\s*\[[^\]]*[\'"](?:POST|DELETE|PUT|PATCH)[\'"]/', $attribute)) {
                 continue;
             }
-            if (preg_match("/methods:\s*\[[^\]]*'GET'/", $line)) {
+            if (preg_match('/methods:\s*\[[^\]]*[\'"]GET[\'"]/', $attribute)) {
                 continue;
             }
 
@@ -104,6 +107,26 @@ final class CsrfProtectionTest extends TestCase
             'Ajax 専用なら $request->isXmlHttpRequest() で XHR に限定してください。',
             basename($path), implode(', ', $violations)
         ));
+    }
+
+    /**
+     * `#[Route(` から属性が閉じるまでを 1 つの文字列として返す.
+     *
+     * 行単位で `methods:` を探すと, 複数行に分けて書かれた属性を取りこぼす.
+     *
+     * @param list<string> $lines
+     */
+    private function collectAttribute(array $lines, int $routeLine): string
+    {
+        $collected = [];
+        for ($j = $routeLine, $max = min($routeLine + 12, count($lines)); $j < $max; ++$j) {
+            $collected[] = $lines[$j];
+            if (str_contains($lines[$j], ')]')) {
+                break;
+            }
+        }
+
+        return implode(' ', $collected);
     }
 
     /**

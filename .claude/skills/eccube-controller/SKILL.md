@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 のコントローラを実装・改修するときの�
 
 # Controller 規約 — 責務分離と Fat 化防止（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Controller/**/*.php`, `app/Customize/Controller/**/*.php`
+**対象**: `src/Eccube/Controller/**/*.php`, `app/Customize/Controller/**/*.php`, `app/Plugin/*/Controller/**/*.php`
 **前提**: Symfony 7.4 / PHP 8.2+
 
 > 目的: コントローラを「HTTP の入出力変換」に徹した薄い層に保ち、業務ロジックは Service へ寄せる。

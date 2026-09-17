@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 の Service を実装・改修するときの責務分�
 
 # Service 規約 — 業務ロジックの置き場所（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Service/**/*.php`, `app/Customize/Service/**/*.php`
+**対象**: `src/Eccube/Service/**/*.php`, `app/Customize/Service/**/*.php`, `app/Plugin/*/Service/**/*.php`
 **前提**: Symfony 7.4 / PHP 8.2+
 
 > 目的: コントローラから抽出した業務ロジックの受け皿。Service は「単一責任」を保ち、
@@ -75,6 +75,43 @@ class ExampleService
 - 1 つの Service に**無関係な責務**（例: 商品検索とメール送信）が同居している → 分割。
 - メソッドが**複数の関心事**（取得・整形・永続化・通知）を一気に処理している → private メソッド／別 Service へ。
 - トランザクション境界が曖昧。`flush()` をループ内で乱発している → まとめて `flush()`。
+
+## 既存サービスの上書き / デコレーション
+
+**EC-CUBE は `#[AsDecorator]` 属性を使っていない**（コアに用例なし）。
+`app/config/eccube/services.yaml` に明示的な定義を足し、Symfony のデコレーション（`decorates`）で包む。
+
+```yaml
+# app/config/eccube/services.yaml に追記
+services:
+    Customize\Service\MyCartServiceDecorator:
+        decorates: Eccube\Service\CartService
+        # 元サービスは .inner で受け取る（コンストラクタ DI）
+        arguments:
+            $inner: '@.inner'
+```
+
+```php
+// app/Customize/Service/MyCartServiceDecorator.php
+namespace Customize\Service;
+
+use Eccube\Service\CartService;
+
+class MyCartServiceDecorator
+{
+    public function __construct(private CartService $inner)
+    {
+    }
+
+    // 必要なメソッドだけ振る舞いを変え、それ以外は $this->inner に委譲する
+}
+```
+
+- `decorates` / `decoration_priority` / `decoration_inner_name` 等のサービスキーが使える
+  （`app/config/eccube/reference.php` の DefaultsType/InstanceofType に定義あり）。
+- **同名サービス ID を `class:` で置き換える**手もあるが、元の振る舞いを残したい拡張はデコレーションが安全。
+  元クラスへ依存している箇所を壊さないよう、**型は元サービスを満たすこと**。
+- プラグインから包む場合も同じ作法。プラグイン側の `services.yaml` に定義する。
 
 ## ツールに委ねる（整形・変換）
 

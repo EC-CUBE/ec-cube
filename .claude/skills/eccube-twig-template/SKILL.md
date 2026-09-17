@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 の Twig 拡張（Extension/Filter/Function）とテン
 
 # Twig 拡張・テンプレート規約（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Twig/Extension/**/*.php`, `src/Eccube/Resource/template/**/*.twig`, `app/template/**/*.twig`
+**対象**: `src/Eccube/Twig/Extension/**/*.php`, `src/Eccube/Resource/template/**/*.twig`, `app/template/**/*.twig`, `app/Plugin/*/Resource/template/**/*.twig`
 **前提**: Symfony 7.4 / Twig 3.x / PHP 8.2+
 
 > 目的: オートエスケープを前提に **XSS を作り込まない**こと、テンプレートの**上書きパス・名前空間を正しく**選ぶこと。

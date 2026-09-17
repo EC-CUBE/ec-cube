@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修する�
 
 # FormType 規約（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Form/Type/**/*.php`, `app/Customize/Form/**/*.php`
+**対象**: `src/Eccube/Form/Type/**/*.php`, `app/Customize/Form/**/*.php`, `app/Plugin/*/Form/**/*.php`
 **前提**: Symfony 7.4 Form / PHP 8.2+
 
 ## 基本ルール

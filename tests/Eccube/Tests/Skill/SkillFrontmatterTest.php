@@ -69,6 +69,9 @@ final class SkillFrontmatterTest extends TestCase
         $this->assertIsArray($parsed, $path.' の frontmatter が連想配列になっていません');
         $this->assertArrayHasKey('name', $parsed, $path.' に name がありません');
         $this->assertArrayHasKey('description', $parsed, $path.' に description がありません');
+        // Yaml::parse() は `description: 1234` を int として解釈するため, 文字列契約も検査する
+        $this->assertIsString($parsed['name'], $path.' の name が文字列ではありません');
+        $this->assertIsString($parsed['description'], $path.' の description が文字列ではありません');
     }
 
     /**

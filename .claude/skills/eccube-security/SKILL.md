@@ -6,7 +6,7 @@ description: EC-CUBE 4.4 の認証・認可・CSRF などセキュリティを�
 # セキュリティ規約 — 認証・認可・CSRF（EC-CUBE 4.4）
 
 **対象**: `src/Eccube/Security/**/*.php`, `app/config/eccube/packages/security.yaml`,
-および全コントローラの認可・CSRF 判断（コントローラ側の作法は Skill `eccube-controller` も参照）
+および全コントローラ（`app/Customize` とプラグインのコントローラを含む）の認可・CSRF 判断（コントローラ側の作法は Skill `eccube-controller` も参照）
 **前提**: Symfony 7.4 / PHP 8.2+
 
 > 目的: EC-CUBE の「ファイアウォール＋ロール＋Voter」というアクセス制御モデルを正しく理解し、

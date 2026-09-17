@@ -70,6 +70,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
 - ❌ `flush()` を確定として扱う → ✅ `TransactionListener` が 1 リクエスト＝1 トランザクションで包み、コミットは `kernel.terminate`。`flush` は SQL 発行のみ
 - ❌ `if` の下のロックを「条件付きだからほぼ通らない」と読む → ✅ 条件に使うプロパティが永続化されているか確かめる。非永続（transient）なら DB 読み込み直後は常に `null` で、その分岐は毎回実行される
+- ❌ 既存サービスを `#[AsDecorator]` で包む（コアに用例が無く作法が不一致）→ ✅ `services.yaml` で `decorates` ＋ `$inner: '@.inner'` 委譲にする
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-service/SKILL.md`
 

@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 の Doctrine リポジトリを実装・改修すると
 
 # Repository 規約（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Repository/**/*.php`, `app/Customize/Repository/**/*.php`
+**対象**: `src/Eccube/Repository/**/*.php`, `app/Customize/Repository/**/*.php`, `app/Plugin/*/Repository/**/*.php`
 **前提**: Doctrine ORM 3.x / Symfony 7.4
 
 ## 基本ルール

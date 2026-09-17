@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 の Doctrine エンティティを実装・改修する
 
 # Entity 規約（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Entity/**/*.php`, `app/Customize/Entity/**/*.php`
+**対象**: `src/Eccube/Entity/**/*.php`, `app/Customize/Entity/**/*.php`, `app/Plugin/*/Entity/**/*.php`
 **前提**: Doctrine ORM 3.x / PHP 8.2+（マッピングは **PHP8 属性**）
 
 ## 基本ルール

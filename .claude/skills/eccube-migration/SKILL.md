@@ -5,7 +5,7 @@ description: EC-CUBE 4.4 のデータベースマイグレーションを作成�
 
 # マイグレーション規約（EC-CUBE 4.4）
 
-**対象**: `app/DoctrineMigrations/Version*.php`
+**対象**: `app/DoctrineMigrations/Version*.php`, `app/Plugin/*/DoctrineMigrations/Version*.php`
 **前提**: Doctrine Migrations Bundle / Doctrine ORM 3.x
 
 > 重要: **スキーマの源泉は Entity の属性（`#[ORM\...]`）であり、マイグレーションではない**。

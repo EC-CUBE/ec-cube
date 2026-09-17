@@ -6,6 +6,7 @@ description: EC-CUBE 4.4 の PHPUnit テストを実装・修正するときの�
 # PHPUnit テスト規約（EC-CUBE 4.4）
 
 **対象**: `tests/Eccube/Tests/**/*Test.php`
+プラグインのテストも本 Skill の作法をそのまま適用する（同梱プラグインに `Tests/` の前例が無く、配置は各プラグインの `composer.json` の autoload-dev に従う）
 **前提**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ PHP 8.2+ / Symfony 7.4
 
 ## 基本ルール
