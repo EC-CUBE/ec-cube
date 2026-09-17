@@ -426,6 +426,10 @@ test.describe.serial('JavaScript management', () => {
 // Layout management (create, drag block, verify, cleanup)
 // ---------------------------------------------------------------------------
 test.describe.serial('Layout management', () => {
+  // Playwright のドラッグ模擬はドラッグ中にスクロールが入ると途切れるため,
+  // 未使用ブロック一覧とセクションが同時に画面へ収まるビューポートにする.
+  test.use({ viewport: { width: 1680, height: 3000 } });
+
   const layoutName = 'layout_test_' + Date.now();
   const pageName = 'page_test_' + Date.now();
 
@@ -433,50 +437,27 @@ test.describe.serial('Layout management', () => {
     test.setTimeout(180_000);
 
     /**
-     * Helper: Move a block by name to a target position area.
-     * Uses DOM manipulation + updateUpDown() to update hidden form inputs,
-     * matching the approach of layout_design.js's sortable update handler.
+     * Helper: ブロック名で探したブロックをセクションへドラッグ & ドロップする.
+     * SortableJS (layout_design.js) がドロップ時に hidden input (配置先・並び順) を
+     * 更新し, 空になったセクションへ案内を戻すところまで確認する.
      */
     async function moveBlockToPosition(blockName: string, targetPositionId: string) {
-      await page.evaluate(({ blockName, targetPositionId }) => {
-        // Find the block element containing the specified block name
-        const blocks = document.querySelectorAll('[id^="detail_box__layout_item"]');
-        let blockEl: Element | null = null;
-        blocks.forEach(el => {
-          if (el.querySelector('span')?.textContent?.trim() === blockName) {
-            blockEl = el;
-          }
-        });
-        if (!blockEl) throw new Error(`Block "${blockName}" not found`);
+      const blockByName = (scope: string) => page.locator(`${scope} [id^="detail_box__layout_item"]`, {
+        has: page.locator('span.view_readme', { hasText: new RegExp(`^${blockName}$`) }),
+      });
+      const block = blockByName('body').first();
+      const sourceId = await block.evaluate(el => el.parentElement!.id);
 
-        const sourceParent = (blockEl as Element).parentElement;
-        const target = document.getElementById(targetPositionId);
-        if (!target) throw new Error(`Target "${targetPositionId}" not found`);
+      await block.dragTo(page.locator(`#${targetPositionId}`));
 
-        // Remove placeholder from target if present
-        const placeholder = target.querySelector('.target-placeholder');
-        if (placeholder) placeholder.remove();
-
-        // Move the DOM element to the target
-        target.appendChild(blockEl);
-
-        // Add placeholder back to source if it has no more blocks
-        if (sourceParent && sourceParent.querySelectorAll('.block').length === 0) {
-          const tplEl = document.getElementById('target-placeholder');
-          if (tplEl) {
-            sourceParent.insertAdjacentHTML('beforeend', tplEl.innerHTML);
-          }
-        }
-
-        // Update the hidden form inputs via the global updateUpDown function
-        const updateUpDown = (window as any).updateUpDown;
-        if (updateUpDown) {
-          updateUpDown(target);
-          if (sourceParent) {
-            updateUpDown(sourceParent);
-          }
-        }
-      }, { blockName, targetPositionId });
+      const moved = blockByName(`#${targetPositionId}`);
+      await expect(moved).toHaveCount(1);
+      await expect(moved.locator('input.target-id')).toHaveValue(targetPositionId.replace('position_', ''));
+      await expect(page.locator(`#${targetPositionId} .target-placeholder`)).toHaveCount(0);
+      // 移動元が空になったら「ブロックをドラッグ&ドロップ」の案内が戻る
+      if (await page.locator(`#${sourceId} .block`).count() === 0) {
+        await expect(page.locator(`#${sourceId} .target-placeholder`)).toHaveCount(1);
+      }
     }
 
     // --- CREATE LAYOUT ---
@@ -490,7 +471,7 @@ test.describe.serial('Layout management', () => {
 
     // Move block "新着情報" to header area (#position_3)
     await moveBlockToPosition('新着情報', 'position_3');
-    await page.waitForTimeout(500);
+    await expect(page.locator('#position_3 [id^="detail_box__layout_item"] input.block-row')).toHaveValue('0');
 
     // Save layout
     await page.locator('#form1 > div > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button').click();
@@ -524,7 +505,6 @@ test.describe.serial('Layout management', () => {
     await page.waitForLoadState('load');
 
     await moveBlockToPosition('新着情報', 'position_10');
-    await page.waitForTimeout(500);
 
     await page.locator('#form1 > div > div.c-conversionArea > div > div > div:nth-child(2) > div > div > button').click();
     await page.waitForLoadState('load');

@@ -64,14 +64,14 @@ file that was distributed with this source code.
                     if (block.prev.length) {
                         block.current.insertBefore(block.prev);
                         block.menu.popover('hide');
-                        window.updateUpDown($block.parent('.ui-sortable').first());
+                        window.updateUpDown($block.parent());
                     }
                 });
                 $('.context-movedown').on('click', block, function() {
                     if (block.next.length) {
                         block.current.insertAfter(block.next);
                         block.menu.popover('hide');
-                        window.updateUpDown($block.parent('.ui-sortable').first());
+                        window.updateUpDown($block.parent());
                     }
                 });
                 $('.context-movesection').off('click').on('click', block, function() {
@@ -251,7 +251,7 @@ file that was distributed with this source code.
                                         <div class="d-block border border-ec-gray">
                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_HEAD') %}
                                             <div id="position_{{ target_id }}"
-                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0 ui-sortable">
+                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__head'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
@@ -262,7 +262,7 @@ file that was distributed with this source code.
                                             </div>
                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_BODY_AFTER') %}
                                             <div id="position_{{ target_id }}"
-                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0 ui-sortable">
+                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__body_after'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
@@ -273,7 +273,7 @@ file that was distributed with this source code.
                                             </div>
                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_HEADER') %}
                                             <div id="position_{{ target_id }}"
-                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0 ui-sortable">
+                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__header'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
@@ -284,7 +284,7 @@ file that was distributed with this source code.
                                             </div>
                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_TOP') %}
                                             <div id="position_{{ target_id }}"
-                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0 ui-sortable">
+                                                 class="d-block p-3 border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__contents_top'|trans }}</p>
                                                 {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                     {{ include('@admin/Content/layout_block.twig') }}
@@ -298,7 +298,7 @@ file that was distributed with this source code.
                                                     <div class="col align-items-start p-3 border border-ec-gray border-top-0 border-start-0">
                                                         {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_LEFT') %}
                                                         <div id="position_{{ target_id }}"
-                                                             class="d-block ui-sortable">
+                                                             class="d-block">
                                                             <p class="fw-bold mb-2">{{ 'admin.content.layout_section__side_left'|trans }}</p>
                                                             {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                                 {{ include('@admin/Content/layout_block.twig') }}
@@ -312,7 +312,7 @@ file that was distributed with this source code.
                                                         <div class="d-block h-100">
                                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_TOP') %}
                                                             <div id="position_{{ target_id }}"
-                                                                 class="d-block p-3 border border-ec-gray border-top-0 border-start-0 border-end-0 ui-sortable">
+                                                                 class="d-block p-3 border border-ec-gray border-top-0 border-start-0 border-end-0">
                                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__main_top'|trans }}</p>
                                                                 {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                                     {{ include('@admin/Content/layout_block.twig') }}
@@ -328,7 +328,7 @@ file that was distributed with this source code.
                                                             </div>
                                                             {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_MAIN_BOTTOM') %}
                                                             <div id="position_{{ target_id }}"
-                                                                 class="d-block p-3 border border-ec-gray border-top-0 border-start-0 border-end-0 ui-sortable">
+                                                                 class="d-block p-3 border border-ec-gray border-top-0 border-start-0 border-end-0">
                                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__main_bottom'|trans }}</p>
                                                                 {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                                     {{ include('@admin/Content/layout_block.twig') }}
@@ -342,7 +342,7 @@ file that was distributed with this source code.
                                                     <div class="col align-items-start ps-0 border border-ec-gray border-top-0 border-start-0 border-end-0">
                                                         {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_SIDE_RIGHT') %}
                                                         <div id="position_{{ target_id }}"
-                                                             class="d-block p-3 h-100 ui-sortable">
+                                                             class="d-block p-3 h-100">
                                                             <p class="fw-bold mb-2">{{ 'admin.content.layout_section__side_right'|trans }}</p>
                                                             {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                                 {{ include('@admin/Content/layout_block.twig') }}
@@ -357,7 +357,7 @@ file that was distributed with this source code.
                                             <div class="d-block border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_CONTENTS_BOTTOM') %}
                                                 <div id="position_{{ target_id }}"
-                                                     class="d-block p-3 ui-sortable">
+                                                     class="d-block p-3">
                                                     <p class="fw-bold mb-2">{{ 'admin.content.layout_section__contents_bottom'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
@@ -370,7 +370,7 @@ file that was distributed with this source code.
                                             <div class="d-block border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_FOOTER') %}
                                                 <div id="position_{{ target_id }}"
-                                                     class="d-block p-3 ui-sortable">
+                                                     class="d-block p-3">
                                                     <p class="fw-bold mb-2">{{ 'admin.content.layout_section__footer'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
@@ -383,7 +383,7 @@ file that was distributed with this source code.
                                             <div class="d-block border border-ec-gray border-top-0 border-end-0 border-start-0">
                                                 {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_DRAWER') %}
                                                 <div id="position_{{ target_id }}"
-                                                     class="d-block p-3 ui-sortable">
+                                                     class="d-block p-3">
                                                     <p class="fw-bold mb-2">{{ 'admin.content.layout_section__drawer'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
@@ -396,7 +396,7 @@ file that was distributed with this source code.
                                             <div class="d-block">
                                                 {% set target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_CLOSE_BODY_BEFORE') %}
                                                 <div id="position_{{ target_id }}"
-                                                     class="d-block p-3 border-top-0 border-end-0 border-start-0 ui-sortable">
+                                                     class="d-block p-3 border-top-0 border-end-0 border-start-0">
                                                     <p class="fw-bold mb-2">{{ 'admin.content.layout_section__close_body_before'|trans }}</p>
                                                     {% for BlockPosition in Layout.getBlockPositionsByTargetId(target_id) %}
                                                         {{ include('@admin/Content/layout_block.twig') }}
@@ -423,7 +423,7 @@ file that was distributed with this source code.
                                         {% endif %}
                                         <div id="unused-block" class="d-block border border-ec-gray">
                                             {% set unused_target_id = constant('Eccube\\Entity\\Layout::TARGET_ID_UNUSED') %}
-                                            <div id="position_{{ unused_target_id }}" class="d-block p-3 ui-sortable">
+                                            <div id="position_{{ unused_target_id }}" class="d-block p-3">
                                                 <p class="fw-bold mb-2">{{ 'admin.content.layout_section__unused'|trans }}</p>
                                                 <div class="mb-3">
                                                     <div class="row">

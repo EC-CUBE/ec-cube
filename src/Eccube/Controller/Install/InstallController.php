@@ -72,6 +72,9 @@ class InstallController extends AbstractController
         'zlib',
         'ctype',
         'session',
+        // filter / tokenizer は composer.json の require で宣言済み。インストーラの検査も揃える
+        'filter',
+        'tokenizer',
         'JSON',
         'xml',
         'libxml',
