@@ -120,5 +120,5 @@ final class Version20240101000000 extends AbstractMigration
 
 ## よくある間違い
 
-このレイヤの「よくある間違い」5 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「マイグレーション」節に集約している。
+このレイヤの「よくある間違い」は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「マイグレーション」節に集約している。
 全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

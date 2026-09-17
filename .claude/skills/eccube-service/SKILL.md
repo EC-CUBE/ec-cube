@@ -90,5 +90,5 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 
 ## よくある間違い
 
-このレイヤの「よくある間違い」4 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「サービス」節に集約している。
+このレイヤの「よくある間違い」は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「サービス」節に集約している。
 全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

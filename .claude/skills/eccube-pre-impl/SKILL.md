@@ -115,6 +115,8 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 既存フォームに二重送信防止/楽観ロック用の unmapped hidden を足し、サーバー側で値未送信を即エラー扱い → ✅ 値が空/未送信なら判定をスキップ（プログラム的 POST・既存テスト・外部連携を壊さない後方互換を保つ）
 - ❌ 共通 FormType(RepeatedPasswordType 等)を子で使い `options.constraints` を渡す（親が定義した制約が全置換され消える） → ✅ 親の制約一式も再掲して付与する
 - ❌ `CollectionType`＋`allow_delete` 欄が上書きテンプレートで未描画 → ✅ 送信キー欠落は空コレクション扱いで既存の子が無警告で全削除。hidden で描画済みを示し、無ければ `PRE_SUBMIT` で `remove()`
+- ❌ TextType 系で `empty_data` を省く → ✅ 必須なら `'empty_data' => ''`、任意なら setter を nullable に。空送信は null 化し検証前に setter へ渡る
+- ❌ `data_class` が無いから配列にマップされる＝安全、と判断 → ✅ Controller が `createForm()` の第 2 引数でエンティティを渡していれば、そのエンティティへ直接書き込まれる
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-formtype/SKILL.md`
 
@@ -269,6 +271,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ ローカルだけ 500 のテストを自分の変更のせいに帰属 → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が入る
 - ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる。
 - ❌ `strpos()` の結果を順序比較にそのまま使う → ✅ 見つからないと `false` が `0` 扱いで空振りする。比較前に双方の存在を assert する
+- ❌ 悲観ロックを使う処理を PHPUnit のテストで書く → ✅ test は `TransactionListener` 無効で `TransactionRequiredException` になる。E2E で書く（#7016）。
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-phpunit/SKILL.md`
 
@@ -285,6 +288,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
 - ❌ 新規 spec を作ったのに CI で実行されない → ✅ `e2e-test.yml` の `suite:` 配列にファイル名（`.spec.ts` 抜き）を追加する。
 - ❌ 複数スイートが一斉に落ちたのを spec の不具合として追う → ✅ `setup-fixtures.php` は try-catch 無しの直列実行で、Fatal 以降のフィクスチャが未生成になる。ログ末尾の完了行を先に見る
+- ❌ 更新直後の値を任意の画面から読む → ✅ `APP_ENV=e2e` は結果キャッシュ有効（dev/test は無効）で最大 10 秒古い。`enableResultCache` しない画面から読む（#7016）。
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-e2e/SKILL.md`
 

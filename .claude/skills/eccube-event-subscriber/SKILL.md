@@ -101,7 +101,7 @@ class ExampleDoctrineListener
 
 ## よくある間違い
 
-このレイヤの「よくある間違い」7 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「イベント（Subscriber）」節に集約している。
+このレイヤの「よくある間違い」は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「イベント（Subscriber）」節に集約している。
 全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
