@@ -286,7 +286,7 @@ jobs:
           set -e
           ## アーカイブの直下にプラグインの中身が並ぶ形にする (e2e/helpers/tar-helper.ts と同じ)。
           ## `-C dir .` だと `./` 付きのエントリになり PharData::extractTo() の展開が不安定になる
-          SRC=codeception/_data/plugins/Boomerang-1.0.0
+          SRC=e2e/fixtures/plugins/Boomerang-1.0.0
           tar -czf "${PWD}/Boomerang-1.0.0.tgz" -C "${SRC}" $(ls "${SRC}")
 
           ## 3 は「本処理は完了したがキャッシュの削除に手動操作が必要」。 分離した構成では
