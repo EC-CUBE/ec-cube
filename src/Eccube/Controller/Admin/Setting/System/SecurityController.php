@@ -14,6 +14,7 @@
 namespace Eccube\Controller\Admin\Setting\System;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Exception\ContentWriteException;
 use Eccube\Form\Type\Admin\SecurityType;
 use Eccube\Service\EnvFileService;
 use Eccube\Util\CacheUtil;
@@ -76,8 +77,6 @@ class SecurityController extends AbstractController
             $overriddenKeys = $this->envFileService->getOverriddenKeys(self::ENV_KEYS);
 
             $data = $form->getData();
-            $envFile = $this->getParameter('kernel.project_dir').'/.env';
-            $env = file_get_contents($envFile);
 
             $frontAllowHosts = \json_encode(
                 array_filter(\explode("\n", StringUtil::convertLineFeed($data['front_allow_hosts'])), fn ($str) => StringUtil::isNotBlank($str))
@@ -103,9 +102,14 @@ class SecurityController extends AbstractController
                 'TRUSTED_HOSTS' => $data['trusted_hosts'],
             ], array_flip($overriddenKeys));
 
-            if ([] !== $replace) {
-                $env = StringUtil::replaceOrAddEnv($env, $replace);
-                file_put_contents($envFile, $env);
+            try {
+                // 書き込みは EnvFileService へ委譲する (file_put_contents の失敗を握り潰さない)
+                $this->envFileService->set($replace);
+            } catch (ContentWriteException $e) {
+                $this->addError('admin.common.save_error', 'admin');
+                log_error($e->getMessage(), [$e->getPath()]);
+
+                return $this->redirectToRoute('admin_setting_system_security');
             }
 
             // 上書きされ反映されなかったキーは名指しで警告する
@@ -116,11 +120,14 @@ class SecurityController extends AbstractController
             // 管理画面URLの更新. 上書きされておらず変更されている場合はログアウトし再ログインさせる.
             $adminRoute = $this->eccubeConfig['eccube_admin_route'];
             if ($adminRoute !== $data['admin_route_dir'] && !in_array('ECCUBE_ADMIN_ROUTE', $overriddenKeys, true)) {
-                $env = StringUtil::replaceOrAddEnv($env, [
-                    'ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir'],
-                ]);
+                try {
+                    $this->envFileService->set(['ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir']]);
+                } catch (ContentWriteException $e) {
+                    $this->addError('admin.common.save_error', 'admin');
+                    log_error($e->getMessage(), [$e->getPath()]);
 
-                file_put_contents($envFile, $env);
+                    return $this->redirectToRoute('admin_setting_system_security');
+                }
 
                 $this->addSuccess('admin.setting.system.security.admin_url_changed', 'admin');
 

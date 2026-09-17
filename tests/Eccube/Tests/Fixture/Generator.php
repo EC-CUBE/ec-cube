@@ -313,9 +313,7 @@ class Generator
         $ProductCodesGenerated = [];
 
         $Product = new Product();
-        if (is_null($product_name)) {
-            $product_name = $faker->realText($faker->numberBetween(10, 50));
-        }
+        $product_name ??= $faker->realText($faker->numberBetween(10, 50));
         $Product
             ->setName($product_name)
             ->setCreator($Member)
@@ -536,9 +534,7 @@ class Generator
         $quantity = $faker->numberBetween(1, 10);
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Payments = $this->paymentRepository->findAll();
-        if ($statusTypeId === null) {
-            $statusTypeId = OrderStatus::PROCESSING;
-        }
+        $statusTypeId ??= OrderStatus::PROCESSING;
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $statusTypeId);
         $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);

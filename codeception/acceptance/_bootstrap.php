@@ -285,9 +285,7 @@ $createProduct = (fn ($product_name = null, $product_class_num = 3) => createPro
 Fixtures::add('createProduct', $createProduct);
 
 $createCustomer = function ($email = null, $active = true) use ($container, $faker) {
-    if (is_null($email)) {
-        $email = microtime(true).'.'.$faker->safeEmail;
-    }
+    $email ??= microtime(true).'.'.$faker->safeEmail;
 
     return createCustomer($container, $email, $active);
 };

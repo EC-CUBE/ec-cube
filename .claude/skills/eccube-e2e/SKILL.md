@@ -36,7 +36,7 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 
 - ❌ `waitForTimeout(固定ms)` で同期を取る → ✅ web-first assertion で「状態」を待つ。外部 JS 由来の待機だけ例外とし、理由をコメントに書く。
 - ❌ `front-*` spec で管理者ログイン済みを前提にする → ✅ front は未認証 state。spec 内でログインするか admin 経由で会員作成する。
-- ❌ 固定件数で assert（`検索結果：1件が該当`）→ ✅ 正規表現（`/検索結果：\d+件が該当/`）。retry 時の重複データに強くする（`admin-product.spec.ts` 修正例）。
+- ❌ 一覧の件数や先頭行（`tr:first-child`）に依存する → ✅ 先行テストや retry で件数も並び順も変わる。件数は正規表現、行は ID で特定（`mode: 'serial'` での固定化は 1 件の失敗で後続が全滅）。
 - ❌ セレクタが複数要素にマッチ（strict mode violation）→ ✅ `.first()` か `data-*` 属性で一意化する。
 - ❌ テスト境界で管理者セッションが切れて 401 → ✅ `ensureAdminLoggedIn()` 等で再ログインしてから操作（`admin-basicinfo.spec.ts` 修正例）。
 - ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）。

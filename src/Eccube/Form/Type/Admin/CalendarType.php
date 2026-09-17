@@ -51,9 +51,7 @@ class CalendarType extends AbstractType
             ->add('title', TextType::class, [
                 'required' => true,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('holiday', DateType::class, [
@@ -63,10 +61,7 @@ class CalendarType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
@@ -84,10 +79,7 @@ class CalendarType extends AbstractType
             $errors = $this->validator->validate(
                 $Calendar->getHoliday(),
                 [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ]
             );
 
@@ -124,14 +116,5 @@ class CalendarType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Calendar::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'calendar';
     }
 }

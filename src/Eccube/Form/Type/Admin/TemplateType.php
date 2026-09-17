@@ -41,32 +41,23 @@ class TemplateType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z]+$/',
-                    ]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Regex(pattern: '/^[0-9a-zA-Z]+$/'),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('file', FileType::class, [
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => trans('admin.common.select')]),
-                    new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
-                        'mimeTypesMessage' => trans('admin.store.template.invalid_upload_file'),
-                    ]),
+                    new Assert\NotBlank(message: trans('admin.common.select')),
+                    new Assert\File(mimeTypes: ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'], mimeTypesMessage: trans('admin.store.template.invalid_upload_file')),
                 ],
             ]);
     }

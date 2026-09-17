@@ -78,13 +78,4 @@ class DeliveryTimeType extends AbstractType
                 ->orderBy('dt.sort_no', 'ASC'),
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'delivery_time';
-    }
 }

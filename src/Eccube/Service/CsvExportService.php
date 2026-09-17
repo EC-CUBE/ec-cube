@@ -14,7 +14,6 @@
 namespace Eccube\Service;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\EccubeConfig;
@@ -67,7 +66,7 @@ class CsvExportService
     /**
      * CsvExportService constructor.
      */
-    public function __construct(protected ?EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator, protected BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected EntityManagerInterface $entityManager, protected CsvRepository $csvRepository, protected CsvTypeRepository $csvTypeRepository, protected OrderRepository $orderRepository, protected ShippingRepository $shippingRepository, protected CustomerRepository $customerRepository, protected ProductRepository $productRepository, protected EccubeConfig $eccubeConfig, protected FormFactoryInterface $formFactory, protected PaginatorInterface $paginator, protected BaseInfoRepository $baseInfoRepository)
     {
     }
 
@@ -173,7 +172,7 @@ class CsvExportService
      */
     public function exportData(\Closure $closure): void
     {
-        if (is_null($this->qb) || is_null($this->entityManager)) {
+        if (is_null($this->qb)) {
             throw new \LogicException('query builder not set.');
         }
 
@@ -207,8 +206,9 @@ class CsvExportService
     public function getData(Csv $Csv, AbstractEntity $entity): ?string
     {
         // エンティティ名が一致するかどうかチェック.
+        // 遅延ロードのプロキシ (Proxies\__CG__\...) が渡っても実エンティティのクラス名で比較する.
         $csvEntityName = str_replace('\\\\', '\\', $Csv->getEntityName());
-        $entityName = ClassUtils::getClass($entity);
+        $entityName = $this->entityManager->getClassMetadata($entity::class)->getName();
         if ($csvEntityName !== $entityName) {
             return null;
         }
@@ -268,9 +268,7 @@ class CsvExportService
      */
     public function fputcsv(array $row): void
     {
-        if (is_null($this->convertEncodingCallBack)) {
-            $this->convertEncodingCallBack = $this->getConvertEncodingCallback();
-        }
+        $this->convertEncodingCallBack ??= $this->getConvertEncodingCallback();
 
         // 出力開始時(exportHeader/exportData)に解決済み. 単体で fputcsv だけ呼ぶ場合は都度解決する.
         $sanitizeFormulas = $this->sanitizeFormulas ?? $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
