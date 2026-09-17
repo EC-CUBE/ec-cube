@@ -15,8 +15,11 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Doctrine\ORM\Tools;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
-use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -64,10 +67,7 @@ final class PaginationTest extends EccubeTestCase
         /** @var EntityManager $em */
         $em = $this->entityManager;
         $conn = $em->getConnection();
-        if (!$conn->isConnected()) {
-            $conn->connect();
-        }
-        $this->createTable($conn->getWrappedConnection());
+        $this->createTable($conn);
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
         $driver = new AttributeDriver([__DIR__]);
@@ -93,8 +93,14 @@ final class PaginationTest extends EccubeTestCase
         $em = $this->entityManager;
         if ($em) {
             $conn = $em->getConnection();
-            $platform = $conn->getDatabasePlatform()->getName();
-            $this->dropTable($conn->getWrappedConnection(), $platform);
+            $dbalPlatform = $conn->getDatabasePlatform();
+            $platform = match (true) {
+                $dbalPlatform instanceof AbstractMySQLPlatform => 'mysql',
+                $dbalPlatform instanceof PostgreSQLPlatform => 'postgresql',
+                $dbalPlatform instanceof SQLitePlatform => 'sqlite',
+                default => '',
+            };
+            $this->dropTable($conn, $platform);
         }
         parent::tearDown();
     }
@@ -102,8 +108,7 @@ final class PaginationTest extends EccubeTestCase
     protected function createTable(Connection $conn)
     {
         $sql = 'CREATE TEMPORARY TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $conn->executeStatement($sql);
     }
 
     protected function dropTable(Connection $conn, string $platform)
@@ -114,8 +119,7 @@ final class PaginationTest extends EccubeTestCase
             default => 'DROP TABLE IF EXISTS test_entity;',
         };
 
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $conn->executeStatement($sql);
     }
 
     /**

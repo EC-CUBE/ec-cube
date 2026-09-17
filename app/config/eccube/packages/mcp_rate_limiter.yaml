@@ -1,0 +1,19 @@
+# MCP サーバの Rate Limiter 設定 (設計 §5「Rate Limiter 連携」)。
+#
+# 2 段構成:
+#   - mcp_ip:     リモート IP 単位の制限 (firewall 前で消費、 認証エラー連発攻撃にも効く)
+#   - mcp_client: OAuth2 client_id 単位の制限 (firewall 通過後の OAuth2Token から client_id を取得して消費)
+#
+# 既定値は PoC レベルの控えめな値。 GA 運用開始時に再評価する。
+framework:
+    rate_limiter:
+        mcp_ip:
+            policy: fixed_window
+            limit: 60
+            interval: '1 minute'
+            cache_pool: rate_limiter.cache
+        mcp_client:
+            policy: fixed_window
+            limit: 300
+            interval: '1 minute'
+            cache_pool: rate_limiter.cache

@@ -16,20 +16,18 @@ namespace Eccube\Entity\Master;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Repository\Master\DeviceTypeRepository;
 
-if (!class_exists(DeviceType::class, false)) {
-    /**
-     * DeviceType
-     */
-    #[ORM\Table(name: 'mtb_device_type')]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: DeviceTypeRepository::class)]
-    #[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
-    class DeviceType extends AbstractMasterEntity
-    {
-        public const DEVICE_TYPE_MB = 2;
-        // const DEVICE_TYPE_TABLET = 3;
-        public const DEVICE_TYPE_PC = 10;
-    }
+/**
+ * DeviceType
+ */
+#[ORM\Table(name: 'mtb_device_type')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: DeviceTypeRepository::class)]
+#[ORM\Cache(usage: 'NONSTRICT_READ_WRITE')]
+class DeviceType extends AbstractMasterEntity
+{
+    public const DEVICE_TYPE_MB = 2;
+    // const DEVICE_TYPE_TABLET = 3;
+    public const DEVICE_TYPE_PC = 10;
 }

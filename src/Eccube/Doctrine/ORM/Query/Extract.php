@@ -13,6 +13,8 @@
 
 namespace Eccube\Doctrine\ORM\Query;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
@@ -104,18 +106,18 @@ class Extract extends FunctionNode
     #[\Override]
     public function getSql(SqlWalker $sqlWalker): string
     {
-        $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
+        $platform = $sqlWalker->getConnection()->getDatabasePlatform();
         // UTCとの時差(秒数)
         $diff = intval(date('Z'));
         $second = abs($diff);
         $op = ($diff === $second) ? '+' : '-';
 
-        return match ($driver) {
-            'sqlite' => sprintf(
+        return match (true) {
+            $platform instanceof SQLitePlatform => sprintf(
                 "CAST(STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS')) AS INTEGER)",
                 $this->formats[$this->field],
                 $this->source->dispatch($sqlWalker)),
-            'postgresql' => sprintf(
+            $platform instanceof PostgreSQLPlatform => sprintf(
                 "EXTRACT(%s FROM %s %s $op INTERVAL '$second SECONDS')",
                 $this->field,
                 $this->type,

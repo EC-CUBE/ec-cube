@@ -13,6 +13,8 @@
 
 namespace Eccube\Doctrine\ORM\Query;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
@@ -41,9 +43,11 @@ class Normalize extends FunctionNode
     #[\Override]
     public function getSql(SqlWalker $sqlWalker): string
     {
-        return match ($sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName()) {
-            'postgresql' => sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO),
-            'mysql' => sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker)),
+        $platform = $sqlWalker->getConnection()->getDatabasePlatform();
+
+        return match (true) {
+            $platform instanceof PostgreSQLPlatform => sprintf("LOWER(TRANSLATE(%s, '%s', '%s'))", $this->string->dispatch($sqlWalker), self::FROM, self::TO),
+            $platform instanceof AbstractMySQLPlatform => sprintf('CONVERT(%s USING utf8) COLLATE utf8_unicode_ci', $this->string->dispatch($sqlWalker)),
             default => sprintf('LOWER(%s)', $this->string->dispatch($sqlWalker)),
         };
     }

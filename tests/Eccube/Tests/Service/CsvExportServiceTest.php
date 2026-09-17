@@ -15,9 +15,12 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service;
 
+use Doctrine\Persistence\Proxy;
 use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Order;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\OrderRepository;
@@ -130,7 +133,8 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $fp = fopen($this->url, 'r');
         $File = [];
         if ($fp !== false) {
-            while (($data = fgetcsv($fp)) !== false) {
+            // $escape は PHP 8.4 で明示指定が必須（既定値が変わる予告）。現行の既定値を明示する
+            while (($data = fgetcsv($fp, escape: '\\')) !== false) {
                 $File[] = $data;
             }
             fclose($fp);
@@ -139,5 +143,35 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->expected = count($Result);
         $this->actual = count($File);
         $this->verify();
+    }
+
+    public function testGetDataResolvesRealClassNameOfProxy(): void
+    {
+        $Product = $this->createProduct('プロキシ商品');
+        $productId = $Product->getId();
+        $this->entityManager->clear();
+
+        // 識別子だけで参照すると未初期化のプロキシ (Proxies\__CG__\Eccube\Entity\Product) が返る
+        $Proxy = $this->entityManager->getReference(Product::class, $productId);
+        $this->assertInstanceOf(Proxy::class, $Proxy);
+        $this->assertInstanceOf(Product::class, $Proxy);
+
+        $Csv = new Csv();
+        $Csv->setEntityName(Product::class);
+        $Csv->setFieldName('name');
+
+        // プロキシのクラス名ではなく実エンティティのクラス名で dtb_csv.entity_name と比較されること
+        $this->assertSame('プロキシ商品', $this->csvExportService->getData($Csv, $Proxy));
+    }
+
+    public function testGetDataReturnsNullWhenEntityNameDoesNotMatch(): void
+    {
+        $Product = $this->createProduct();
+
+        $Csv = new Csv();
+        $Csv->setEntityName(ProductClass::class);
+        $Csv->setFieldName('name');
+
+        $this->assertNull($this->csvExportService->getData($Csv, $Product));
     }
 }

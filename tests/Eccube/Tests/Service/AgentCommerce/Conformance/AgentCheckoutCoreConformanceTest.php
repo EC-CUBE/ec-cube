@@ -20,6 +20,7 @@ use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -70,19 +71,21 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
     }
 
     /**
-     * 決済ハンドラの結果型は「中断→再開」状態機械を表現する 4 値を持つ.
+     * 決済ハンドラの結果型は「中断→再開」状態機械を表現する 5 値を持つ.
      *
-     * COMPLETED / REQUIRES_ACTION (3DS/escalation) / PENDING (非同期) / FAILED。
+     * AUTHORIZED (与信のみ・capture 要) / COMPLETED (売上確定済・capture 不要) /
+     * REQUIRES_ACTION (3DS/escalation) / PENDING (非同期) / FAILED。
      * 追加認証はエラー (FAILED) ではなく REQUIRES_ACTION で表現される点が要。
+     * 与信と売上確定を区別するのは、auto-capture 型 PSP で capture が二重発行されるのを防ぐため。
      */
     public function testPaymentOutcomeCoversStateMachineSignals(): void
     {
         $values = array_map(static fn (PaymentOutcomeStatus $s): string => $s->value, PaymentOutcomeStatus::cases());
 
         $this->assertEqualsCanonicalizing(
-            ['completed', 'requires_action', 'pending', 'failed'],
+            ['authorized', 'completed', 'requires_action', 'pending', 'failed'],
             $values,
-            'MUST: 決済結果型は completed/requires_action/pending/failed の 4 状態を表現できる',
+            'MUST: 決済結果型は authorized/completed/requires_action/pending/failed の 5 状態を表現できる',
         );
     }
 
@@ -117,6 +120,7 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
      * プロトコル系 (HTTP 4xx/5xx) とビジネス系 (HTTP 200 + messages[]) の 2 系統への
      * 実際の HTTP 変換は checkout controller (#6776/#6574) の責務であり中核の対象外.
      */
+    #[DoesNotPerformAssertions]
     public function testTwoTierHttpMappingIsDeferredToControllerLayer(): void
     {
         self::markTestIncomplete('HTTP ステータスと messages[] への 2 系統変換は ACP/UCP checkout controller (#6776/#6574) で検証する。');
@@ -126,6 +130,7 @@ final class AgentCheckoutCoreConformanceTest extends TestCase
      * リプレイ (Idempotency-Key) で副作用を再実行しない不変条件は、controller/middleware の
      * 冪等性処理に依存するため中核では未実装.
      */
+    #[DoesNotPerformAssertions]
     public function testIdempotentReplayIsDeferredToControllerLayer(): void
     {
         self::markTestIncomplete('Idempotency-Key によるリプレイ抑止は checkout controller (#6776/#6574) で検証する。');

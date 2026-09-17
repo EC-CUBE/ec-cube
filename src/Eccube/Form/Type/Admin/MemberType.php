@@ -19,9 +19,11 @@ use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Form\Type\RepeatedPasswordType;
 use Eccube\Form\Type\ToggleSwitchType;
+use Eccube\Form\Validator\PasswordBlocklist;
 use Eccube\Repository\MemberRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
@@ -47,33 +49,36 @@ class MemberType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        // RepeatedPasswordType の options.constraints を上書きするため,
+        // 長さ・パターンに加えてブロックリスト・漏洩チェックもここで明示的に付与する.
+        $passwordConstraints = [
+            new Assert\NotBlank(),
+            new Assert\Length(min: $this->eccubeConfig['eccube_password_min_len'], max: $this->eccubeConfig['eccube_password_max_len']),
+            new Assert\Regex(pattern: $this->eccubeConfig['eccube_password_pattern'], message: 'form_error.password_pattern_invalid'),
+            new PasswordBlocklist(),
+        ];
+        // NIST SP 800-63B-4 対応の漏洩パスワードチェック. 閉域網等では config で無効化できる.
+        if ($this->eccubeConfig['eccube_password_compromised_check']) {
+            $passwordConstraints[] = new Assert\NotCompromisedPassword(skipOnError: true);
+        }
+
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('department', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('plain_password', RepeatedPasswordType::class, [
                 'options' => [
-                    'constraints' => [
-                        new Assert\Length([
-                            'min' => $this->eccubeConfig['eccube_password_min_len'],
-                            'max' => $this->eccubeConfig['eccube_password_max_len'],
-                        ]),
-                        new Assert\Regex([
-                            'pattern' => $this->eccubeConfig['eccube_password_pattern'],
-                            'message' => 'form_error.password_pattern_invalid',
-                        ]),
-                        new Assert\NotBlank(),
-                    ],
+                    'constraints' => $passwordConstraints,
                 ],
             ])
             ->add('Authority', EntityType::class, [
@@ -94,6 +99,11 @@ class MemberType extends AbstractType
                 ],
             ])
             ->add('two_factor_auth_enabled', ToggleSwitchType::class, [
+            ])
+            ->add('two_factor_auth_reset', CheckboxType::class, [
+                'mapped' => false,
+                'label' => false,
+                'required' => false,
             ]);
 
         // login idの入力は新規登録時のみとし、編集時はdisabledにする
@@ -103,14 +113,8 @@ class MemberType extends AbstractType
 
             $options = [
                 'constraints' => [
-                    new Assert\Length([
-                        'min' => $this->eccubeConfig['eccube_id_min_len'],
-                        'max' => $this->eccubeConfig['eccube_id_max_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[[:graph:][:space:]]+$/i',
-                        'message' => 'form_error.graph_only',
-                    ]),
+                    new Assert\Length(min: $this->eccubeConfig['eccube_id_min_len'], max: $this->eccubeConfig['eccube_id_max_len']),
+                    new Assert\Regex(pattern: '/^[[:graph:][:space:]]+$/i', message: 'form_error.graph_only'),
                 ],
             ];
 

@@ -13,9 +13,13 @@
 
 namespace Eccube\Controller\Install;
 
+use Doctrine\Bundle\DoctrineBundle\ConnectionFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Result;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
@@ -68,6 +72,9 @@ class InstallController extends AbstractController
         'zlib',
         'ctype',
         'session',
+        // filter / tokenizer は composer.json の require で宣言済み。インストーラの検査も揃える
+        'filter',
+        'tokenizer',
         'JSON',
         'xml',
         'libxml',
@@ -77,6 +84,7 @@ class InstallController extends AbstractController
         'fileinfo',
         'intl',
         'sodium',
+        'gd',
     ];
     /**
      * @var string[]
@@ -260,8 +268,8 @@ class InstallController extends AbstractController
         if ($this->isInstalled()) {
             // ショップ名/メールアドレス
             $conn = $entityManager->getConnection();
-            $stmt = $conn->query('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
-            $row = $stmt->fetch();
+            $stmt = $conn->executeQuery('SELECT shop_name, email01 FROM dtb_base_info WHERE id = 1;');
+            $row = $stmt->fetchAssociative();
             $sessionData['shop_name'] = $row['shop_name'];
             $sessionData['email'] = $row['email01'];
 
@@ -281,10 +289,7 @@ class InstallController extends AbstractController
             $mailerUrl = $this->getParameter('eccube_mailer_dsn');
             $sessionData = array_merge($sessionData, $this->extractMailerUrl($mailerUrl));
         } else {
-            // 初期値設定
-            if (!isset($sessionData['admin_allow_hosts'])) {
-                $sessionData['admin_allow_hosts'] = '';
-            }
+            $sessionData['admin_allow_hosts'] ??= '';
             if (!isset($sessionData['smtp_host'])) {
                 $sessionData = array_merge($sessionData, $this->extractMailerUrl('smtp://localhost:25'));
             }
@@ -459,7 +464,7 @@ class InstallController extends AbstractController
         $forceSSL = isset($sessionData['admin_force_ssl']) && (bool) $sessionData['admin_force_ssl'];
         if ($forceSSL === false) {
             $forceSSL = '0';
-        } elseif ($forceSSL === true) {
+        } elseif ($forceSSL) {
             $forceSSL = '1';
         }
         $env = file_get_contents(__DIR__.'/../../../../.env.dist');
@@ -543,8 +548,8 @@ class InstallController extends AbstractController
                 $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'wincache']), 'install');
             }
         } else {
-            if (!extension_loaded('apc')) {
-                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apc']), 'install');
+            if (!extension_loaded('apcu')) {
+                $this->addInfo(trans('install.recommend_extension_disabled', ['%module%' => 'apcu']), 'install');
             }
         }
         if (isset($_SERVER['SERVER_SOFTWARE']) && str_contains((string) $_SERVER['SERVER_SOFTWARE'], 'Apache')) {
@@ -567,7 +572,13 @@ class InstallController extends AbstractController
      */
     protected function createConnection(array $params): Connection
     {
-        if (str_contains((string) $params['url'], 'mysql')) {
+        // DBAL 4 では DriverManager が 'url' を解析しなくなったため, DsnParser で driver/host/dbname 等へ展開する.
+        $url = (string) ($params['url'] ?? '');
+        if ($url !== '') {
+            $params = (new DsnParser(ConnectionFactory::DEFAULT_SCHEME_MAP))->parse($url);
+        }
+
+        if (str_contains($url, 'mysql')) {
             $params['charset'] = 'utf8mb4';
             $params['defaultTableOptions'] = [
                 'charset' => 'utf8mb4',
@@ -580,10 +591,6 @@ class InstallController extends AbstractController
 
         $conn = DriverManager::getConnection($params);
         $conn->executeQuery('select 1');
-
-        $platform = $conn->getDatabasePlatform();
-        $platform->markDoctrineTypeCommented('datetime');
-        $platform->markDoctrineTypeCommented('datetimetz');
 
         return $conn;
     }
@@ -782,9 +789,7 @@ class InstallController extends AbstractController
             $options['smtp_host'] = 'smtp.gmail.com';
             $options['transport'] = 'smtp';
         }
-        if (!isset($options['smtp_port'])) {
-            $options['smtp_port'] = 'ssl' === $options['encryption'] ? 465 : 25;
-        }
+        $options['smtp_port'] ??= 'ssl' === $options['encryption'] ? 465 : 25;
         if (isset($options['smtp_username']) && !isset($options['auth_mode'])) {
             $options['auth_mode'] = 'plain';
         }
@@ -840,7 +845,7 @@ class InstallController extends AbstractController
         try {
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
 
-            $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+            $id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
                 ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
                 : null;
 
@@ -858,7 +863,7 @@ class InstallController extends AbstractController
                 'update_date' => Types::DATETIMETZ_MUTABLE,
             ]);
 
-            $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
+            $member_id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
                 ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
                 : null;
 
@@ -896,37 +901,36 @@ class InstallController extends AbstractController
         $conn->beginTransaction();
         try {
             $salt = StringUtil::random(32);
-            $stmt = $conn->prepare('SELECT id FROM dtb_member WHERE login_id = :login_id;');
-            $stmt->bindParam(':login_id', $data['login_id']);
-            /** @var Result $row */
-            $row = $stmt->executeQuery();
+            // DBAL 4 の executeQuery/executeStatement は名前付きパラメータを expandArrayParameters()
+            // で展開する際, プレースホルダからコロンを除いた名前 (:login_id → login_id) で配列キーを
+            // 引くため, パラメータ配列のキーはコロンを付けない (付けると MissingNamedParameter になる).
+            $row = $conn->executeQuery('SELECT id FROM dtb_member WHERE login_id = :login_id;', [
+                'login_id' => $data['login_id'],
+            ]);
             $password = $this->passwordHasher->hashPassword(new Customer(), $data['login_pass']);
             if ($row->fetchOne() !== false) {
                 // 同一の管理者IDであればパスワードのみ更新
-                $sth = $conn->prepare('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;');
-                $sth->execute([
-                    ':password' => $password,
-                    ':login_id' => $data['login_id'],
+                $conn->executeStatement('UPDATE dtb_member set password = :password, update_date = current_timestamp WHERE login_id = :login_id;', [
+                    'password' => $password,
+                    'login_id' => $data['login_id'],
                 ]);
             } else {
                 // 新しい管理者IDが入力されたらinsert
-                $sth = $conn->prepare("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');");
-                $sth->execute([
-                    ':login_id' => $data['login_id'],
-                    ':password' => $password,
+                $conn->executeStatement("INSERT INTO dtb_member (login_id, password, work_id, authority_id, creator_id, sort_no, update_date, create_date,name,department,discriminator_type) VALUES (:login_id, :password, '1', '0', '1', '1', current_timestamp, current_timestamp,'管理者','EC-CUBE SHOP', 'member');", [
+                    'login_id' => $data['login_id'],
+                    'password' => $password,
                 ]);
             }
-            $stmt = $conn->prepare('UPDATE dtb_base_info set
+            $conn->executeStatement('UPDATE dtb_base_info set
                 shop_name = :shop_name,
                 email01 = :admin_mail,
                 email02 = :admin_mail,
                 email03 = :admin_mail,
                 email04 = :admin_mail,
                 update_date = current_timestamp
-            WHERE id = 1;');
-            $stmt->execute([
-                ':shop_name' => $data['shop_name'],
-                ':admin_mail' => $data['email'],
+            WHERE id = 1;', [
+                'shop_name' => $data['shop_name'],
+                'admin_mail' => $data['email'],
             ]);
             $conn->commit();
         } catch (\Exception $e) {
@@ -942,7 +946,13 @@ class InstallController extends AbstractController
      */
     public function createAppData(array $params, EntityManager $em): array
     {
-        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        $p = $em->getConnection()->getDatabasePlatform();
+        $platform = match (true) {
+            $p instanceof SQLitePlatform => 'sqlite',
+            $p instanceof AbstractMySQLPlatform => 'mysql',
+            $p instanceof PostgreSQLPlatform => 'postgresql',
+            default => 'unknown',
+        };
         $version = $this->getDatabaseVersion($em);
 
         return [
@@ -957,8 +967,6 @@ class InstallController extends AbstractController
 
     /**
      * @param array<string, mixed> $params
-     *
-     * @return $this
      */
     protected function sendAppData(array $params, EntityManager $em): static
     {
@@ -993,7 +1001,13 @@ class InstallController extends AbstractController
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('server_version', 'server_version');
-        $platform = $em->getConnection()->getDatabasePlatform()->getName();
+        $p = $em->getConnection()->getDatabasePlatform();
+        $platform = match (true) {
+            $p instanceof SQLitePlatform => 'sqlite',
+            $p instanceof AbstractMySQLPlatform => 'mysql',
+            $p instanceof PostgreSQLPlatform => 'postgresql',
+            default => 'unknown',
+        };
         $sql = match ($platform) {
             'sqlite' => 'SELECT sqlite_version() AS server_version',
             'mysql' => 'SELECT version() AS server_version',
@@ -1010,7 +1024,10 @@ class InstallController extends AbstractController
         return $version;
     }
 
-    public function convertAdminAllowHosts(string $adminAllowHosts): string
+    /**
+     * admin_allow_hosts は任意入力のため, 未入力の場合は null が渡される.
+     */
+    public function convertAdminAllowHosts(?string $adminAllowHosts): string
     {
         if (empty($adminAllowHosts)) {
             return '[]';

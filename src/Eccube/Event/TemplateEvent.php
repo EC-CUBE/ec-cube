@@ -108,8 +108,6 @@ class TemplateEvent extends Event
      * javascriptの読み込みやcssの読み込みに利用する.
      *
      * @param bool $include twigファイルとしてincludeするかどうか
-     *
-     * @return $this
      */
     public function addAsset(string $asset, bool $include = true): static
     {
@@ -126,8 +124,6 @@ class TemplateEvent extends Event
      * ここで追加したコードは, </body>タグ直前に出力される
      *
      * @param bool $include twigファイルとしてincludeするかどうか
-     *
-     * @return $this
      */
     public function addSnippet(string $snippet, bool $include = true): static
     {

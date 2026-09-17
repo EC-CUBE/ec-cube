@@ -30,6 +30,12 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
+        # EccubeBundle の Entity は Kernel::addEntityExtensionPass が TraitProxyAttributeDriver で
+        # 明示登録する。auto_mapping が同じ src/Eccube/Entity を素の AttributeDriver でも登録すると、
+        # そちらが Entity ソースを無条件に require_once するため、Proxy (app/proxy/entity) を
+        # ロード済みの状態で "Cannot redeclare class" となる (Entity の class_exists ガード全廃後).
+        mappings:
+            EccubeBundle: false
         controller_resolver:
             auto_mapping: false
         dql:

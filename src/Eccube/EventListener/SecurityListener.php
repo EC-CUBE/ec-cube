@@ -58,6 +58,14 @@ class SecurityListener implements EventSubscriberInterface
     public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
+
+        // login_memory はフロントのログインフォーム専用のため, ステートレスなファイアウォール(API 等)では
+        // セッションを使用しない. ステートレスなリクエストでセッションを使用すると
+        // UnexpectedSessionUsageException が発生し, 認証失敗時に 401 ではなく 500 を返してしまう.
+        if ($request->attributes->get('_stateless', false) || !$request->hasSession()) {
+            return;
+        }
+
         $request->getSession()->set('_security.login_memory', (bool) $request->request->get('login_memory', 0));
     }
 

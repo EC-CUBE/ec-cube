@@ -21,10 +21,8 @@ use Symfony\Component\Form\Test\FormInterface;
 
 final class PaymentMethodTest extends EccubeTestCase
 {
-    public function testConstructorInjection(): never
+    public function testConstructorInjection()
     {
-        $this->markTestIncomplete();
-
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 

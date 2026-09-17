@@ -19,6 +19,7 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
@@ -32,6 +33,11 @@ final class MailControllerTest extends AbstractAdminWebTestCase
     protected ?Customer $Customer = null;
 
     protected ?Order $Order = null;
+
+    protected ?Member $Member = null;
+
+    /** @var array<int, MailHistory>|null */
+    protected ?array $MailHistories = null;
 
     protected function setUp(): void
     {
@@ -47,6 +53,7 @@ final class MailControllerTest extends AbstractAdminWebTestCase
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
         $this->entityManager->flush();
+        $this->MailHistories = [];
         for ($i = 0; $i < 3; $i++) {
             $this->MailHistories[$i] = new MailHistory();
             $this->MailHistories[$i]

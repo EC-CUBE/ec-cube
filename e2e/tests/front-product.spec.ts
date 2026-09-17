@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER } from '../config/default.config';
 
 test.describe('Front Product (EF02)', () => {
 
@@ -342,13 +343,13 @@ test.describe('Front Product (EF02)', () => {
     // This uses the admin API to set stock to 0, then checks front display.
     // We'll check product 2 (チェリーアイスサンド) which is a simple product.
     // First, set stock to 0 via admin
-    const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+    const adminRoute = ADMIN_ROUTE;
     await page.goto(`/${adminRoute}/product/product/2/edit`);
     await page.waitForLoadState('load');
     // May need to login
     if (await page.locator('#login_id').count() > 0) {
-      await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-      await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+      await page.locator('#login_id').fill(ADMIN_USER);
+      await page.locator('#password').fill(ADMIN_PASSWORD);
       await page.getByRole('button', { name: 'ログイン' }).click();
       await page.waitForLoadState('load');
       await page.goto(`/${adminRoute}/product/product/2/edit`);
@@ -466,12 +467,12 @@ test.describe('Front Product (EF02)', () => {
 
   test('EF0202-UC03-T01 商品詳細カート7 在庫数<注文数', async ({ page }) => {
     // Use admin to set stock to 3 for product 2 (チェリーアイスサンド)
-    const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+    const adminRoute = ADMIN_ROUTE;
     await page.goto(`/${adminRoute}/product/product/2/edit`);
     await page.waitForLoadState('load');
     if (await page.locator('#login_id').count() > 0) {
-      await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-      await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+      await page.locator('#login_id').fill(ADMIN_USER);
+      await page.locator('#password').fill(ADMIN_PASSWORD);
       await page.getByRole('button', { name: 'ログイン' }).click();
       await page.waitForLoadState('load');
       await page.goto(`/${adminRoute}/product/product/2/edit`);

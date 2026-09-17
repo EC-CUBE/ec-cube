@@ -3,6 +3,8 @@ import { HorizonStore } from '../models/plugins/horizon-store';
 import { HorizonLocal } from '../models/plugins/horizon-local';
 import { BoomerangStore } from '../models/plugins/boomerang-store';
 import { BoomerangLocal } from '../models/plugins/boomerang-local';
+import { MasterEntityExtensionLocal } from '../models/plugins/master-entity-extension-local';
+import { MasterDataManagePage } from '../pages/master-data-manage.page';
 import { emptyDir } from '../helpers/tar-helper';
 
 test.describe('Plugin Extend', () => {
@@ -110,5 +112,25 @@ test.describe('Plugin Extend', () => {
     await boomerang.検証();
     await boomerang.無効化();
     await boomerang.削除();
+  });
+
+  // Issue #5400 / #6273: Entity/Master 配下のマスタEntityをtraitで拡張すると、
+  // マスタデータ管理ページのプルダウンから拡張したテーブルが消えてしまう回帰の防止。
+  test('test_master_entity_extension', async ({ page, db, config }) => {
+    const plugin = await MasterEntityExtensionLocal.start(page, db, config);
+
+    await plugin.インストール();
+    await plugin.有効化();
+
+    // 拡張したマスタデータ(mtb_device_type)がプルダウンに残っており、選択・保存できること
+    const masterPage = await MasterDataManagePage.go(page, config.adminRoute);
+    expect(await masterPage.選択肢が存在する('mtb_device_type'), 'mtb_device_type がプルダウンに存在する').toBe(true);
+    await masterPage.選択('mtb_device_type');
+    await masterPage.保存();
+
+    // 後片付け(無効化・削除)はプラグイン管理画面上で行うため、マスタデータ画面から戻る
+    await page.goto(`/${config.adminRoute}/store/plugin`);
+    await plugin.無効化();
+    await plugin.削除();
   });
 });

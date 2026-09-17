@@ -58,9 +58,8 @@ final class ContactControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    public function testConfirm(): never
+    public function testConfirm()
     {
-        $this->markTestIncomplete('FIXME title');
         $crawler = $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('contact'),
@@ -70,10 +69,18 @@ final class ContactControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = 'お問い合わせ(確認ページ)';
-        $this->actual = $crawler->filter('title')->text();
+        // 確認ページ(Contact/confirm.twig)がレンダリングされていること
+        $this->assertCount(1, $crawler->filter('.ec-contactConfirmRole'));
 
-        $this->assertMatchesRegularExpression('/'.preg_quote((string) $this->expected).'$/', $this->actual);
+        // ContactController が Page(contact_confirm) を渡していること.
+        // contact_confirm の Page は meta_tags に noindex を持つ.
+        $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
+
+        // <title> が確認ページ名になっていること.
+        // contact と contact_confirm は同一パス '/contact' のため, ルータは常に contact に
+        // マッチし, TwigInitializeListener が設定する twig グローバル title は
+        // 「入力ページ」のままになる. ContactController が subtitle を渡して上書きしている.
+        $this->assertMatchesRegularExpression('/お問い合わせ\(確認ページ\)$/', $crawler->filter('title')->text());
     }
 
     public function testComplete()

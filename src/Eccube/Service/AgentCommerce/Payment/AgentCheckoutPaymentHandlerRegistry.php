@@ -18,10 +18,9 @@ use Eccube\Entity\Order;
 /**
  * エージェントチェックアウトの決済ハンドラレジストリ.
  *
- * `agent_commerce.payment_handler` タグの付いたハンドラを集約し、Order の支払方法から適切な
- * ハンドラを解決する。具象ハンドラは決済プラグインがタグ付きサービスとして寄与する
- * (core には具象実装を持たない)。プロトコル固有の解決メソッド (UCP の handler_id 解決等) は
- * 各プロトコル PR (#6574 等) が本クラスへ追加する。
+ * `agent_commerce.payment_handler` タグの付いたハンドラを集約し、Order の支払方法、もしくは
+ * UCP の handler_id から適切なハンドラを解決する。具象ハンドラは決済プラグインがタグ付きサービスとして
+ * 寄与する (core には具象実装を持たない)。
  */
 class AgentCheckoutPaymentHandlerRegistry
 {
@@ -53,6 +52,30 @@ class AgentCheckoutPaymentHandlerRegistry
     }
 
     /**
+     * UCP の handler_id に一致する UCP ハンドラを返す (なければ null).
+     *
+     * 同一 handler_id を複数のハンドラが宣言している場合は、プラグイン競合による非決定的な
+     * 決済ハンドラ選択を避けるため、null を返さず明示的に例外を投げる。
+     *
+     * @throws \RuntimeException 同一 handler_id が複数登録されている場合
+     */
+    public function resolveUcpByHandlerId(string $handlerId): ?UcpPaymentHandlerInterface
+    {
+        $matched = [];
+        foreach ($this->handlers as $handler) {
+            if ($handler instanceof UcpPaymentHandlerInterface && $handler->getHandlerId() === $handlerId) {
+                $matched[] = $handler;
+            }
+        }
+
+        if (count($matched) > 1) {
+            throw new \RuntimeException(sprintf('Multiple UCP payment handlers are registered for handler_id "%s". Plugin payment handlers must declare a unique handler_id.', $handlerId));
+        }
+
+        return $matched[0] ?? null;
+    }
+
+    /**
      * handler_id に一致するハンドラを返す (なければ null).
      *
      * {@link AgentCheckoutPaymentHandlerInterface::getHandlerId()} で突合する
@@ -78,5 +101,18 @@ class AgentCheckoutPaymentHandlerRegistry
         }
 
         return $matched[0] ?? null;
+    }
+
+    /**
+     * 登録済みの UCP ハンドラを返す (discovery の payment_handlers 広告に使用).
+     *
+     * @return list<UcpPaymentHandlerInterface>
+     */
+    public function ucpHandlers(): array
+    {
+        return array_values(array_filter(
+            $this->handlers,
+            static fn (AgentCheckoutPaymentHandlerInterface $handler): bool => $handler instanceof UcpPaymentHandlerInterface
+        ));
     }
 }

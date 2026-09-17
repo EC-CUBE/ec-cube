@@ -1,0 +1,134 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{#
+クッキーポリシーページ（汎用ひな型）。
+
+本文は汎用的なひな型であり、店舗が実際に利用しているタグ・第三者提供先・目的・オプトアウト手段を
+店舗側で追記してもらう前提とする（コアはひな型のみ提供）。
+#}
+{% extends 'default_frame.twig' %}
+
+{% set body_class = 'cookie_policy_page' %}
+
+{% block title %}{{ 'cookie_policy.page.title'|trans }}{% endblock %}
+
+{% block main %}
+<div class="ec-role">
+    <div class="ec-pageHeader">
+        <h1>{{ 'cookie_policy.page.title'|trans }}</h1>
+    </div>
+</div>
+
+<div class="ec-cookiePolicyPage">
+    <div class="ec-off3Grid">
+        <div class="ec-off3Grid__cell">
+
+            {# クッキーとは #}
+            <section class="ec-cookiePolicyPage__section">
+                <h2 class="ec-cookiePolicyPage__heading">{{ 'cookie_policy.section.what_is_cookie.title'|trans }}</h2>
+                <p class="ec-cookiePolicyPage__text">
+                    {{ 'cookie_policy.section.what_is_cookie.description'|trans }}
+                </p>
+            </section>
+
+            {# 使用するクッキー #}
+            <section class="ec-cookiePolicyPage__section">
+                <h2 class="ec-cookiePolicyPage__heading">{{ 'cookie_policy.section.cookie_types.title'|trans }}</h2>
+
+                <h3 class="ec-cookiePolicyPage__subheading">{{ 'cookie_policy.section.cookie_types.essential.title'|trans }}</h3>
+                <p class="ec-cookiePolicyPage__text">
+                    {{ 'cookie_policy.section.cookie_types.essential.description'|trans }}
+                </p>
+                <ul class="ec-cookiePolicyPage__list">
+                    <li>{{ 'cookie_policy.section.cookie_types.essential.item1'|trans }}</li>
+                    <li>{{ 'cookie_policy.section.cookie_types.essential.item2'|trans }}</li>
+                    <li>{{ 'cookie_policy.section.cookie_types.essential.item3'|trans }}</li>
+                </ul>
+
+                <h3 class="ec-cookiePolicyPage__subheading">{{ 'cookie_policy.section.cookie_types.analytics.title'|trans }}</h3>
+                <p class="ec-cookiePolicyPage__text">
+                    {{ 'cookie_policy.section.cookie_types.analytics.description'|trans }}
+                </p>
+                <ul class="ec-cookiePolicyPage__list">
+                    <li>{{ 'cookie_policy.section.cookie_types.analytics.item1'|trans }}</li>
+                    <li>{{ 'cookie_policy.section.cookie_types.analytics.item2'|trans }}</li>
+                </ul>
+                <p class="ec-cookiePolicyPage__notice">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    {{ 'cookie_policy.section.cookie_types.analytics.consent_required'|trans }}
+                </p>
+            </section>
+
+            {# 第三者提供の目的 #}
+            <section class="ec-cookiePolicyPage__section">
+                <h2 class="ec-cookiePolicyPage__heading">{{ 'cookie_policy.section.third_party.title'|trans }}</h2>
+                <p class="ec-cookiePolicyPage__text">
+                    {{ 'cookie_policy.section.third_party.description'|trans }}
+                </p>
+                <ul class="ec-cookiePolicyPage__list">
+                    <li>{{ 'cookie_policy.section.third_party.purpose1'|trans }}</li>
+                    <li>{{ 'cookie_policy.section.third_party.purpose2'|trans }}</li>
+                    <li>{{ 'cookie_policy.section.third_party.purpose3'|trans }}</li>
+                </ul>
+            </section>
+
+            {# 提供先 #}
+            <section class="ec-cookiePolicyPage__section">
+                <h2 class="ec-cookiePolicyPage__heading">{{ 'cookie_policy.section.providers.title'|trans }}</h2>
+                <div class="ec-cookiePolicyPage__provider">
+                    {# 【GDPR/APPI 制限事項】Google Analytics は米国（Google LLC）への越境移転を伴う。
+                       改正個人情報保護法 28 条（外国にある第三者への提供）および GDPR 第 V 章に基づき、
+                       移転先国名（例: 米国）と移転先での取扱いを店舗側で本欄に追記すること。 #}
+                    <h3 class="ec-cookiePolicyPage__subheading">Google Analytics</h3>
+                    <p class="ec-cookiePolicyPage__text">
+                        {{ 'cookie_policy.section.providers.google.description'|trans }}
+                    </p>
+                    <p class="ec-cookiePolicyPage__text">
+                        <strong>{{ 'cookie_policy.section.providers.provider_name'|trans }}:</strong> Google LLC<br>
+                        <strong>{{ 'cookie_policy.section.providers.privacy_policy'|trans }}:</strong>
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="ec-link">
+                            https://policies.google.com/privacy
+                        </a>
+                    </p>
+                </div>
+            </section>
+
+            {# 同意の変更方法 #}
+            <section class="ec-cookiePolicyPage__section">
+                <h2 class="ec-cookiePolicyPage__heading">{{ 'cookie_policy.section.change_consent.title'|trans }}</h2>
+                <p class="ec-cookiePolicyPage__text">
+                    {{ 'cookie_policy.section.change_consent.description'|trans }}
+                </p>
+                <p class="ec-cookiePolicyPage__text">
+                    <a href="{{ url('cookie_consent_index') }}" class="ec-blockBtn--action">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                        {{ 'cookie_policy.section.change_consent.settings_link'|trans }}
+                    </a>
+                </p>
+            </section>
+
+            {# お問い合わせ #}
+            <section class="ec-cookiePolicyPage__section">
+                <h2 class="ec-cookiePolicyPage__heading">{{ 'cookie_policy.section.contact.title'|trans }}</h2>
+                <p class="ec-cookiePolicyPage__text">
+                    {{ 'cookie_policy.section.contact.description'|trans }}
+                </p>
+                <p class="ec-cookiePolicyPage__text">
+                    <a href="{{ url('contact') }}" class="ec-link">
+                        {{ 'cookie_policy.section.contact.contact_link'|trans }}
+                    </a>
+                </p>
+            </section>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -43,20 +43,12 @@ class ForgotType extends AbstractType
         $builder->add('login_email', EmailType::class, [
             'attr' => [
                 'maxlength' => $this->eccubeConfig['eccube_stext_len'],
+                'autocomplete' => 'username',
             ],
             'constraints' => [
                 new Assert\NotBlank(),
                 new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
             ],
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'forgot';
     }
 }

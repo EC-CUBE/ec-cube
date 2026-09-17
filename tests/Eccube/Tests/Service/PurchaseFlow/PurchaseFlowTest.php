@@ -52,17 +52,6 @@ final class PurchaseFlowTest extends EccubeTestCase
         $this->assertEquals($expected, $this->flow->validate($itemHolder, new PurchaseContext()));
     }
 
-    public function testAddProcesser(): never
-    {
-        // TODO: FIXME
-        $this->markTestIncomplete(__METHOD__.'may be not implement');
-        $processor = new PurchaseFlowTest_ItemHolderPreprocessor();
-        $this->flow->addItemHolderProcessor($processor);
-
-        $processor = new PurchaseFlowTest_ItemPreprocessor();
-        $this->flow->addItemProcessor($processor);
-    }
-
     public function testProcessItemProcessors()
     {
         $this->flow->addItemPreprocessor(new PurchaseFlowTest_ItemPreprocessor());

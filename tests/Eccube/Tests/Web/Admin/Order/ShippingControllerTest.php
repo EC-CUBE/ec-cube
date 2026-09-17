@@ -15,10 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Order;
 
-use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Order;
-use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\ShippingRepository;
@@ -54,7 +52,6 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
     public function testShippingMessageNoticeWhenPost()
     {
         $Customer = $this->createCustomer();
-        /** @var Order $Order */
         $Order = $this->createOrder($Customer);
 
         $crawler = $this->client->request(
@@ -102,6 +99,44 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
         $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
         $this->assertInstanceOf(Shipping::class, $expectedShipping);
         $this->assertSame($trackingNumber, $expectedShipping->getTrackingNumber());
+    }
+
+    /**
+     * 出荷編集画面(複数配送対応の ShippingController)で出荷日を手動編集できることを確認するテスト.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6528
+     */
+    public function testEditShippingDate()
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+        $shippingId = $Shipping->getId();
+
+        $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
+        $shippingFormData['shipping_date'] = '2021-05-06T07:08:09';
+
+        $formData['shippings'] = [$shippingFormData];
+        $formData['_token'] = 'dummy';
+        $formData['add_shipping'] = '';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
+            [
+                'form' => $formData,
+                'mode' => 'register',
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()])));
+
+        $expectedShipping = $this->entityManager->find(Shipping::class, $shippingId);
+        $this->assertInstanceOf(Shipping::class, $expectedShipping);
+        // タイムゾーン表現に依存せず, 指し示す時刻(instant)が一致することを確認する.
+        $this->assertSame(
+            (new \DateTime('2021-05-06T07:08:09'))->getTimestamp(),
+            $expectedShipping->getShippingDate()->getTimestamp()
+        );
     }
 
     /**
@@ -273,7 +308,6 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
     #[Group(name: 'decimal')]
     public function testCalculateTax()
     {
-        /** @var Product $Product */
         $Product = $this->createProduct('test', 2);
         /** @var ProductClass $ProductClass1 */
         $ProductClass1 = $Product->getProductClasses()[0];
@@ -287,7 +321,6 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
         $this->entityManager->persist($ProductClass2);
         $this->entityManager->flush();
 
-        /** @var Customer $Customer */
         $Customer = $this->createCustomer();
         $Order = $this->createOrderWithProductClasses($Customer, [$ProductClass1]);
         $Shipping = $Order->getShippings()->first();

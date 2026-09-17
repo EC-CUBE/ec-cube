@@ -1,1 +1,46 @@
-npx lint-staged -q || node -e ''
+#!/usr/bin/env sh
+# Pre-commit hook (軽量): staged な *.php を php-cs-fixer で auto-fix するだけ。
+# 重い rector / phpstan は pre-push に分離。
+#
+# 実行環境は自動判定: ec-cube コンテナ稼働中なら docker compose exec、
+# 無ければ host の vendor/bin、どちらも無ければ skip。
+# 強制指定: ECCUBE_HOOK_RUNNER=docker|host|skip / バイパス: HUSKY=0 git commit
+
+[ "$HUSKY" = "0" ] && exit 0
+
+STAGED_PHP=$(git diff --cached --name-only --diff-filter=ACMR | grep '\.php$' || true)
+[ -z "$STAGED_PHP" ] && exit 0
+
+DC="docker compose"; SVC="ec-cube"
+case "${ECCUBE_HOOK_RUNNER:-auto}" in
+  docker) RUN="$DC exec -T $SVC" ;;
+  host)   RUN="" ;;
+  skip)   exit 0 ;;
+  auto)
+    if $DC exec -T "$SVC" true >/dev/null 2>&1; then RUN="$DC exec -T $SVC"
+    elif command -v php >/dev/null 2>&1 && [ -x vendor/bin/php-cs-fixer ]; then RUN=""
+    else echo "pre-commit: no container / no host php+vendor; skip (HUSKY=0 to bypass)"; exit 0
+    fi ;;
+  *) echo "pre-commit: invalid ECCUBE_HOOK_RUNNER='$ECCUBE_HOOK_RUNNER' (docker|host|skip|auto)"; exit 1 ;;
+esac
+
+# 部分ステージ安全性のため lint-staged を優先。
+# lint-staged は未ステージ差分を stash で退避してから整形・add・復元するため、
+# `git add -p` 等の部分ステージ運用でも未ステージの変更を巻き込まない。
+# host 実行かつ lint-staged が入っている場合のみ利用（コンテナには node が無い前提）。
+if [ -z "$RUN" ] && [ -x node_modules/.bin/lint-staged ]; then
+  echo "pre-commit: lint-staged"
+  npx lint-staged -q
+  exit $?
+fi
+
+# フォールバック: node/lint-staged が無い環境（コンテナ等）向けに php-cs-fixer を直接実行。
+# 注意: この経路は未ステージ差分の stash 退避を行わないため、対象ファイルを丸ごと再 add する。
+# `git add -p` で部分ステージした未ステージ分も混入し得る（node のある環境では lint-staged が使われる）。
+echo "pre-commit: php-cs-fixer (staged; fallback, 部分ステージ非保護)"
+if ! echo "$STAGED_PHP" | xargs $RUN vendor/bin/php-cs-fixer \
+       --config=.php-cs-fixer.dist.php --path-mode=intersection fix; then
+  echo "FAIL: php-cs-fixer"
+  exit 1
+fi
+echo "$STAGED_PHP" | xargs git add

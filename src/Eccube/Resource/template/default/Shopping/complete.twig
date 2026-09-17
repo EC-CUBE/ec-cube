@@ -74,6 +74,13 @@ file that was distributed with this source code.
             {% if Order.complete_message is not empty %}
                 {{ Order.complete_message|raw|purify }}
             {% endif %}
+            {# 配送方法・支払い方法の保存失敗メッセージ #}
+            {% for message in app.session.flashbag.get('preferred_save_error') %}
+                <div class="ec-alert-warning">
+                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                    <div class="ec-alert-warning__text">{{ message|trans }}</div>
+                </div>
+            {% endfor %}
         </div>
     </div>
     <div class="ec-off4Grid">

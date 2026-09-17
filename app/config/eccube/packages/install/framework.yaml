@@ -1,4 +1,13 @@
 framework:
+    # framework.secret が単一の env 変数（ECCUBE_AUTH_MAGIC）だけで構成される場合,
+    # Symfony は secrets vault にその env 変数を「復号鍵から導出する」役割を持たせる
+    # (FrameworkExtension::registerSecretsConfiguration / SodiumVault::loadEnvVars).
+    # vault も復号鍵も無いインストール時は導出結果が空文字となり,
+    # env var loader の空文字が eccube.yaml の env(ECCUBE_AUTH_MAGIC): '<change.me>' を
+    # 上書きしてしまうため, framework.secret が空になり起動できない.
+    # EC-CUBE は secrets vault を使わないため, インストール環境では無効化する.
+    secrets:
+        enabled: false
     session:
         # Install environment runs on PHP built-in web server (HTTP only)
         # The built-in server does not support HTTPS, so cookie_secure must be false

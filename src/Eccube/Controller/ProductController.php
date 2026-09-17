@@ -23,17 +23,18 @@ use Eccube\Form\Type\AddCartType;
 use Eccube\Form\Type\SearchProductType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
+use Eccube\Repository\FaqRepository;
 use Eccube\Repository\Master\ProductListMaxRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\CartService;
+use Eccube\Service\FaqStructuredDataService;
+use Eccube\Service\ProductStructuredDataService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,6 +63,9 @@ class ProductController extends AbstractController
         protected AuthenticationUtils $helper,
         protected ProductListMaxRepository $productListMaxRepository,
         private readonly PaginatorInterface $paginator,
+        private readonly ProductStructuredDataService $productStructuredDataService,
+        private readonly FaqRepository $faqRepository,
+        private readonly FaqStructuredDataService $faqStructuredDataService,
     ) {
         $this->purchaseFlow = $cartPurchaseFlow;
         $this->BaseInfo = $baseInfoRepository->get();
@@ -87,7 +91,6 @@ class ProductController extends AbstractController
         }
 
         // searchForm
-        /** @var FormBuilderInterface $builder */
         $builder = $this->formFactory->createNamedBuilder('', SearchProductType::class);
 
         if ($request->getMethod() === 'GET') {
@@ -102,7 +105,6 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_INDEX_INITIALIZE);
 
-        /** @var FormInterface $searchForm */
         $searchForm = $builder->getForm();
 
         $searchForm->handleRequest($request);
@@ -140,7 +142,6 @@ class ProductController extends AbstractController
         // addCart form
         $forms = [];
         foreach ($pagination as $Product) {
-            /** @var FormBuilderInterface $builder */
             $builder = $this->formFactory->createNamedBuilder(
                 '',
                 AddCartType::class,
@@ -157,12 +158,19 @@ class ProductController extends AbstractController
 
         $Category = $searchForm->get('category_id')->getData();
 
+        // カテゴリFAQ は1ページ目のみ表示する（全ページに出すと同じ FAQPage の構造化データが重複するため）
+        $categoryFaqs = $Category && $pagination->getCurrentPageNumber() === 1
+            ? $this->faqRepository->getCategoryFaq($Category, $this->eccubeConfig['eccube_max_number_faq_get'])
+            : [];
+
         return [
             'subtitle' => $this->getPageTitle($searchData),
             'pagination' => $pagination,
             'search_form' => $searchForm->createView(),
             'forms' => $forms,
             'Category' => $Category,
+            'Faqs' => $categoryFaqs,
+            'faq_json_ld' => $this->faqStructuredDataService->createFaqPageJsonLd($categoryFaqs),
         ];
     }
 
@@ -207,12 +215,24 @@ class ProductController extends AbstractController
             $is_favorite = $this->customerFavoriteProductRepository->isFavorite($Customer, $Product);
         }
 
+        $productJsonLd = $this->productStructuredDataService->createProductJsonLd(
+            $Product,
+            $request->getSchemeAndHttpHost(),
+            $this->generateUrl('product_detail', ['id' => $Product->getId()], UrlGeneratorInterface::ABSOLUTE_URL),
+            $this->eccubeConfig['currency'],
+        );
+
+        $productFaqs = $this->faqRepository->getProductFaq($Product, $this->eccubeConfig['eccube_max_number_faq_get']);
+
         return [
             'title' => $this->title,
             'subtitle' => $Product->getName(),
             'form' => $builder->getForm()->createView(),
             'Product' => $Product,
             'is_favorite' => $is_favorite,
+            'product_json_ld' => $productJsonLd,
+            'Faqs' => $productFaqs,
+            'faq_json_ld' => $this->faqStructuredDataService->createFaqPageJsonLd($productFaqs),
         ];
     }
 
@@ -341,7 +361,6 @@ class ProductController extends AbstractController
         );
         $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_PRODUCT_CART_ADD_INITIALIZE);
 
-        /** @var FormInterface $form */
         $form = $builder->getForm();
         $form->handleRequest($request);
 

@@ -33,6 +33,8 @@ class EmptyPaymentHandlerRegistry implements PaymentHandlerRegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array<string, list<array<string, mixed>>>
      */
     public function collect(): array
     {

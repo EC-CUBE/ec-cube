@@ -26,6 +26,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\RefundRequestRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
@@ -56,6 +57,7 @@ class MypageController extends AbstractController
         protected PurchaseFlow $purchaseFlow,
         private readonly AuthenticationUtils $utils,
         private readonly PaginatorInterface $paginator,
+        private readonly RefundRequestRepository $refundRequestRepository,
     ) {
         $this->BaseInfo = $baseInfoRepository->get();
     }
@@ -187,9 +189,16 @@ class MypageController extends AbstractController
             }
         }
 
+        // 返品申請履歴ボタンを「申請がある明細にのみ」表示するため, 注文明細ID別の申請件数を一括取得する(N+1回避).
+        $Customer = $this->getUser();
+        $refundRequestCounts = $Customer instanceof Customer
+            ? $this->refundRequestRepository->getRefundRequestCountsByCustomer($Customer)
+            : [];
+
         return [
             'Order' => $Order,
             'stockOrder' => $stockOrder,
+            'refundRequestCounts' => $refundRequestCounts,
         ];
     }
 

@@ -16,12 +16,14 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service;
 
 use DAMA\DoctrineTestBundle\Doctrine\DBAL\StaticDriver;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -102,6 +104,26 @@ final class PluginServiceTest extends AbstractServiceTestCase
      */
 
     // テスト用のダミープラグインを配置する
+    /**
+     * CLI 実行時, アーカイブの検査用の一時領域は OS の一時ディレクトリに作る.
+     *
+     * var/runtime (Web サーバー所有) に作ると, Web サーバーと CLI で書き込み権限を
+     * 分離した構成でプラグイン操作が CLI から行えなくなるため.
+     * (テストは CLI で実行されるため, この経路を通る)
+     */
+    public function testCreateTempDirUsesSystemTempDir(): void
+    {
+        $dir = $this->service->createTempDir();
+
+        try {
+            $this->assertDirectoryExists($dir);
+            $this->assertStringStartsWith(realpath(sys_get_temp_dir()), (string) realpath($dir));
+            $this->assertSame('0700', substr(sprintf('%o', fileperms($dir)), -4), '所有者のみに制限する');
+        } finally {
+            rmdir($dir);
+        }
+    }
+
     private function createTempDir()
     {
         $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());
@@ -564,7 +586,13 @@ EOD;
     public function testCreateEntityAndTrait()
     {
         $conn = $this->entityManager->getConnection();
-        $platform = $conn->getDatabasePlatform()->getName();
+        $dbalPlatform = $conn->getDatabasePlatform();
+        $platform = match (true) {
+            $dbalPlatform instanceof AbstractMySQLPlatform => 'mysql',
+            $dbalPlatform instanceof PostgreSQLPlatform => 'postgresql',
+            $dbalPlatform instanceof SQLitePlatform => 'sqlite',
+            default => '',
+        };
         if ('postgresql' !== $platform) {
             $this->markTestSkipped('does not support of '.$platform);
         }
@@ -651,6 +679,15 @@ class Block
     #[ORM\Column(name: "id", type: "integer", options: ["unsigned" => true])]
     #[ORM\GeneratedValue(strategy: "IDENTITY")]
     private $id;
+
+    /**
+     * テスト側から代入するための ORM 非マッピングプロパティ.
+     *
+     * 宣言しないと PHP 8.2 の動的プロパティ生成 (deprecated) になる.
+     *
+     * @var bool|null
+     */
+    public $sample;
 
     /**
      * @return int
@@ -740,7 +777,6 @@ EOD;
      */
     private function createComposerJsonFile($config): array
     {
-        /** @var Generator $faker */
         $faker = $this->getFaker();
 
         return [

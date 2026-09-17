@@ -108,7 +108,10 @@ class OrderStateMachine implements EventSubscriberInterface
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
-        $Order->setPaymentDate(new \DateTime());
+        // 管理者が入金日を手動でセットしている場合は上書きしない.
+        if (null === $Order->getPaymentDate()) {
+            $Order->setPaymentDate(new \DateTime());
+        }
     }
 
     /**

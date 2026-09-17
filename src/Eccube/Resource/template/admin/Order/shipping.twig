@@ -22,6 +22,13 @@ file that was distributed with this source code.
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
     <script>
+        // 出荷日: 鉛筆アイコン押下で入力欄を表示する(誤操作防止).
+        $(document).on('click', '.date-edit-toggle', function() {
+            var $col = $(this).closest('.col');
+            $col.find('.date-edit-view').addClass('d-none');
+            $col.find('.date-edit-input').removeClass('d-none');
+        });
+
         // 商品追加
         $('.addProduct-button').on('click', function() {
             var no = $(this).data('shipping-no');
@@ -469,7 +476,14 @@ file that was distributed with this source code.
                                                 <div class="col">
                                                     {% if shippingForm.vars.value.shipping_date %}
                                                         {# 登録済みの出荷で出荷日が設定されている場合は出荷日を表示する #}
-                                                        <span>{{ shippingForm.vars.value.shipping_date|date_min }}</span>
+                                                        <span class="date-edit-view">
+                                                            {{ shippingForm.vars.value.shipping_date|date_min }}
+                                                            <a class="btn btn-ec-actionIcon date-edit-toggle" href="javascript:;" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.edit'|trans }}"><i class="fa fa-pencil fa-lg text-secondary" aria-hidden="true"></i></a>
+                                                        </span>
+                                                        <span class="date-edit-input d-none">
+                                                            {{ form_widget(shippingForm.shipping_date) }}
+                                                            {{ form_errors(shippingForm.shipping_date) }}
+                                                        </span>
                                                     {% elseif shippingForm.vars.value.id %}
                                                         {# 登録済みの出荷で出荷日が設定されていない場合 #}
                                                         <!-- 出荷済にするボタン -->

@@ -59,10 +59,11 @@ class EntryType extends AbstractType
             ->add('kana', KanaType::class, [])
             ->add('company_name', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'autocomplete' => 'organization',
+                ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class)
@@ -79,10 +80,7 @@ class EntryType extends AbstractType
                 'widget' => 'choice',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\LessThanOrEqual([
-                        'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form_error.select_is_future_or_now_date',
-                    ]),
+                    new Assert\LessThanOrEqual(value: date('Y-m-d', strtotime('-1 day')), message: 'form_error.select_is_future_or_now_date'),
                 ],
             ])
             ->add('sex', SexType::class, [
@@ -128,15 +126,5 @@ class EntryType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Customer::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        // todo entry,mypageで共有されているので名前を変更する
-        return 'entry';
     }
 }

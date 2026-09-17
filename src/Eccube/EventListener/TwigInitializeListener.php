@@ -18,11 +18,10 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Member;
-use Eccube\Entity\Page;
-use Eccube\Entity\PageLayout;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\BlockPositionRepository;
@@ -31,9 +30,9 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Request\Context;
+use Eccube\Service\SiteStructuredDataService;
 use Eccube\Service\SystemService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -42,6 +41,13 @@ use Twig\Environment;
 class TwigInitializeListener implements EventSubscriberInterface
 {
     /**
+     * サイト共通の構造化データ（WebSite / Organization）を出力するルート名.
+     *
+     * トップページと「当サイトについて」の 2 ページに限定する.
+     */
+    private const SITE_STRUCTURED_DATA_ROUTES = ['homepage', 'help_about'];
+
+    /**
      * @var bool 初期化済かどうか.
      */
     protected bool $initialized = false;
@@ -49,7 +55,7 @@ class TwigInitializeListener implements EventSubscriberInterface
     /**
      * TwigInitializeListener constructor.
      */
-    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService)
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected BlockPositionRepository $blockPositionRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly AuthorityRoleRepository $authorityRoleRepository, private EccubeConfig $eccubeConfig, protected Context $requestContext, private readonly MobileDetect $mobileDetector, private readonly UrlGeneratorInterface $router, private readonly LayoutRepository $layoutRepository, protected SystemService $systemService, private readonly SiteStructuredDataService $siteStructuredDataService)
     {
     }
 
@@ -63,24 +69,57 @@ class TwigInitializeListener implements EventSubscriberInterface
             return;
         }
 
-        $this->twig->addGlobal('BaseInfo', $this->baseInfoRepository->get());
+        $BaseInfo = $this->baseInfoRepository->get();
+        $this->twig->addGlobal('BaseInfo', $BaseInfo);
 
         if ($this->requestContext->isAdmin()) {
             $this->setAdminGlobals($event);
         } else {
-            $this->setFrontVariables($event);
+            $this->setFrontVariables($event, $BaseInfo);
         }
 
         $this->initialized = true;
     }
 
     /**
+     * セッションストレージが読み込まれた後に、フロント表示用 Twig グローバルをセットする.
+     * （onKernelRequest priority 6 より後に実行するため -20 で登録）
+     */
+    public function setIsAdminLoggedInOnFrontGlobal(RequestEvent $event): void
+    {
+        if (!$event->isMainRequest()) {
+            return;
+        }
+
+        if ($this->requestContext->isAdmin()) {
+            return;
+        }
+
+        $request = $event->getRequest();
+        // セッション Cookie が無いリクエストでは触れない（Session::has() がセッション開始を引き起こすのを避ける）
+        if (!$request->hasPreviousSession()) {
+            $this->twig->addGlobal('isAdminLoggedInOnFront', false);
+
+            return;
+        }
+
+        $session = $request->getSession();
+        if (!$session->isStarted()) {
+            $session->start();
+        }
+
+        $this->twig->addGlobal('isAdminLoggedInOnFront', $session->has('_security_admin'));
+    }
+
+    /**
      * @throws NonUniqueResultException
      */
-    public function setFrontVariables(RequestEvent $event): void
+    public function setFrontVariables(RequestEvent $event, ?BaseInfo $BaseInfo = null): void
     {
+        // 呼び出し元（onKernelRequest）が取得済みの BaseInfo を渡す。
+        // 引数は後方互換のため任意にしており、渡されなければここで取得する。
+        $BaseInfo ??= $this->baseInfoRepository->get();
         $request = $event->getRequest();
-        /** @var ParameterBag $attributes */
         $attributes = $request->attributes;
         $route = $attributes->get('_route');
         if ($route == 'user_data') {
@@ -94,10 +133,8 @@ class TwigInitializeListener implements EventSubscriberInterface
         }
 
         // URLからPageを取得
-        /** @var Page $Page */
         $Page = $this->pageRepository->getPageByRoute($route);
 
-        /** @var PageLayout[] $PageLayouts */
         $PageLayouts = $Page->getPageLayouts();
 
         // Pageに紐づくLayoutからDeviceTypeが一致するLayoutを探す
@@ -147,6 +184,15 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('title', $Page->getName());
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
+        // サイト共通の構造化データ（WebSite / Organization）はトップページと「当サイトについて」にだけ出力する。
+        // Google の Organization ドキュメントが「トップページか組織を説明する単一ページを推奨。
+        // サイトの全ページに含める必要はない」としているため、対象外では組み立て自体を行わない。
+        $this->twig->addGlobal(
+            'site_json_ld',
+            in_array($route, self::SITE_STRUCTURED_DATA_ROUTES, true)
+                ? $this->siteStructuredDataService->createWebSiteJsonLd($BaseInfo)
+                : []
+        );
     }
 
     public function setAdminGlobals(RequestEvent $event): void
@@ -167,6 +213,13 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
+
+        // 読み取り専用の判定は RestrictFileUploadListener が行い, ここでは結果を渡すだけにする.
+        // 対象ルートの一覧を二重に持たないため
+        $attributes = $event->getRequest()->attributes;
+        $this->twig->addGlobal('isReadOnlyScreen', $attributes->getBoolean(RestrictFileUploadListener::READ_ONLY_ATTRIBUTE));
+        $this->twig->addGlobal('isRestrictableScreen', $attributes->getBoolean(RestrictFileUploadListener::RESTRICTABLE_ATTRIBUTE));
+        $this->twig->addGlobal('readOnlyCommand', $attributes->get(RestrictFileUploadListener::READ_ONLY_COMMAND_ATTRIBUTE));
     }
 
     /**
@@ -179,8 +232,6 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     private function getDisplayEccubeNav(array $parentNav, array $AuthorityRoles, string $baseUrl): array
     {
-        $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
-
         foreach ($parentNav as $key => $childNav) {
             if (array_key_exists('children', $childNav) && count($childNav['children']) > 0) {
                 // 子のメニューがある場合は子の権限チェック
@@ -202,10 +253,6 @@ class TwigInitializeListener implements EventSubscriberInterface
                         break;
                     }
                 }
-
-                if ($this->eccubeConfig['eccube_restrict_file_upload'] === '1' && in_array($childNav['url'], $restrictUrls)) {
-                    unset($parentNav[$key]);
-                }
             }
         }
 
@@ -222,6 +269,8 @@ class TwigInitializeListener implements EventSubscriberInterface
             KernelEvents::REQUEST => [
                 // SecurityServiceProviderで、認証処理が完了した後に実行.
                 ['onKernelRequest', 6],
+                // Security / Session より後（高い priority が先に実行される）
+                ['setIsAdminLoggedInOnFrontGlobal', -20],
             ],
         ];
     }

@@ -20,6 +20,10 @@ file that was distributed with this source code.
 
          var modal = $('#PluginProgressModal');
          var bootstrapModal = new bootstrap.Modal(modal.get(0));
+         // 表示アニメーションの完了を記録する。show() の途中で hide() を呼ぶと
+         // bootstrap が hide を無視し、モーダルが表示されたまま残ることがあるため。
+         var modalShown = false;
+         modal.on('shown.bs.modal', function () { modalShown = true; });
          bootstrapModal.show();
          var progress = $('div.progress', modal).show();
          var progress_message = $('#progress_message');
@@ -106,16 +110,112 @@ file that was distributed with this source code.
              }).always(function () {
                  // モーダルをクローズ
                  progress.hide();
-                 bootstrapModal.hide();
+                 // 処理が一瞬で終わると show アニメーションの途中で hide を呼ぶ
+                 // ことになり、bootstrap がこれを無視してモーダルが残る。表示が
+                 // 完了してから閉じることで、モーダルが残ってボタンを押せなくなる
+                 // のを防ぐ。
+                 if (modalShown) {
+                     bootstrapModal.hide();
+                 } else {
+                     modal.one('shown.bs.modal', function () {
+                         bootstrapModal.hide();
+                     });
+                 }
 
-                 // 管理画面へのボタンを有効化
-                 $('#go_to_admin_page')
-                     .removeClass('disabled')
-                     .removeAttr('tabindex')
-                     .attr('href', "{{ url('install_plugin_redirect') }}")
+                 enableGoToAdminPage();
              });
          });
      });
+
+     /**
+      * 管理画面へのボタンを有効化する.
+      *
+      * install_plugin_redirect はトランザクションファイルの検証を
+      * ECCUBE-CSRF-TOKEN ヘッダで行うため, 通常のリンク遷移では実行できない.
+      * クリック時に fetch でリクエストしてから, 自前で管理画面へ遷移する.
+      * href には管理画面の URL を設定しておき, JS が動作しない場合や
+      * 別タブで開かれた場合でも遷移できるようにする.
+      */
+     function enableGoToAdminPage() {
+         var adminUrl = '{{ admin_url|e('js') }}';
+         var redirectUrl = '{{ url('install_plugin_redirect')|e('js') }}';
+         var token = '{{ token|e('js') }}';
+
+         var button = document.getElementById('go_to_admin_page');
+         button.classList.remove('disabled');
+         button.removeAttribute('tabindex');
+         button.href = adminUrl;
+
+         button.addEventListener('click', function (event) {
+             event.preventDefault();
+
+             // redirect: 'manual' でリダイレクトを追跡しない.
+             // トランザクションファイルの削除だけを行わせ, 遷移は自前で行う.
+             fetch(redirectUrl, {
+                 headers: {
+                     'X-Requested-With': 'XMLHttpRequest',
+                     'ECCUBE-CSRF-TOKEN': token
+                 },
+                 credentials: 'same-origin',
+                 redirect: 'manual'
+             }).catch(function (error) {
+                 console.log(error);
+             }).then(function () {
+                 return waitForAdminPage(adminUrl, 20, 500);
+             }).then(function (ready) {
+                 if (ready) {
+                     window.location.href = adminUrl;
+                     return;
+                 }
+                 // 管理画面がまだ応答しない場合は遷移せず, 再試行を促す.
+                 // ボタンは有効なままなので, 再度クリックできる.
+                 var modalEl = document.getElementById('PluginProgressModal');
+                 var messageEl = document.getElementById('progress_message');
+                 if (messageEl) {
+                     messageEl.textContent = '管理画面の準備に時間がかかっています。しばらくしてから「管理画面を表示」を再度クリックしてください。';
+                 }
+                 var footer = modalEl ? modalEl.querySelector('.modal-footer') : null;
+                 if (footer) {
+                     footer.style.display = '';
+                 }
+                 if (modalEl) {
+                     bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                 }
+             });
+         });
+     }
+
+     /**
+      * 管理画面が応答するようになるまで待つ.
+      *
+      * CacheUtil::clearCache() はキャッシュ削除を予約するだけで, 実際の
+      * cache:clear は kernel.terminate (レスポンス送信後) に実行される.
+      * install_plugin_redirect もキャッシュ削除を予約するため, レスポンス直後に
+      * 遷移すると削除中のリクエストとなり 500 になることがある.
+      * 応答を確認してから遷移することでこれを避ける.
+      */
+     function waitForAdminPage(url, retries, interval) {
+         return fetch(url, { credentials: 'same-origin' })
+             .then(function (response) {
+                 return response.ok;
+             })
+             .catch(function () {
+                 return false;
+             })
+             .then(function (ready) {
+                 if (ready) {
+                     return true;
+                 }
+                 if (retries <= 0) {
+                     return false;
+                 }
+                 return new Promise(function (resolve) {
+                     setTimeout(resolve, interval);
+                 }).then(function () {
+                     return waitForAdminPage(url, retries - 1, interval);
+                 });
+             });
+     }
     </script>
 {% endblock %}
 

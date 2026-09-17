@@ -8,3 +8,4 @@ id,creator_id,name,file_name,mail_subject,deletable,create_date,update_date,disc
 7,,Password Reminder,Mail/reset_complete_mail.twig,Your password has been changed,0,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
 8,,Shipping Notice,Mail/shipping_notify.twig,Your order has been shipped,0,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
 9,,Notification email,Mail/customer_change_notify.twig,Your account information has been changed.,0,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate
+10,,Refund Request Notification,Mail/refund_request_notify.twig,A refund request has been submitted,0,2017-03-07 10:14:52,2017-03-07 10:14:52,mailtemplate

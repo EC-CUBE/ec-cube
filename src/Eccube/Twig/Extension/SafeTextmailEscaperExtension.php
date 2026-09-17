@@ -23,8 +23,9 @@ class SafeTextmailEscaperExtension extends AbstractExtension
     {
         /** @var EscaperRuntime $escaper */
         $escaper = $twig->getRuntime(EscaperRuntime::class);
+        // Twig は null の変数もそのまま渡すため、引数は nullable で受ける
         $escaper->setEscaper(
-            'safe_textmail', fn ($string, $charset) => str_replace(['<', '>'], ['＜', '＞'], $string)
+            'safe_textmail', fn (?string $string, $charset) => str_replace(['<', '>'], ['＜', '＞'], $string ?? '')
         );
     }
 }

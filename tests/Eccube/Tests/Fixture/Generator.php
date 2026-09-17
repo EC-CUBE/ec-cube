@@ -13,6 +13,7 @@
 
 namespace Eccube\Tests\Fixture;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
@@ -166,7 +167,7 @@ class Generator
             } while ($this->customerRepository->findBy(['email' => $email]));
         }
         $phoneNumber = str_replace('-', '', $faker->phoneNumber);
-        $Status = $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
+        $Status = $this->entityManager->find(CustomerStatus::class, CustomerStatus::REGULAR);
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Sex = $this->entityManager->find(Sex::class, $faker->numberBetween(1, 2));
         $Job = $this->entityManager->find(Job::class, $faker->numberBetween(1, 18));
@@ -312,9 +313,7 @@ class Generator
         $ProductCodesGenerated = [];
 
         $Product = new Product();
-        if (is_null($product_name)) {
-            $product_name = $faker->realText($faker->numberBetween(10, 50));
-        }
+        $product_name ??= $faker->realText($faker->numberBetween(10, 50));
         $Product
             ->setName($product_name)
             ->setCreator($Member)
@@ -535,9 +534,7 @@ class Generator
         $quantity = $faker->numberBetween(1, 10);
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Payments = $this->paymentRepository->findAll();
-        if ($statusTypeId === null) {
-            $statusTypeId = OrderStatus::PROCESSING;
-        }
+        $statusTypeId ??= OrderStatus::PROCESSING;
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $statusTypeId);
         $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
@@ -832,7 +829,6 @@ class Generator
     public function createPage(): Page
     {
         $faker = $this->getFaker();
-        /** @var Page $Page */
         $Page = $this->pageRepository->newPage();
         do {
             $url = $faker->word();
@@ -892,7 +888,7 @@ class Generator
      * @param array $options {
      *
      *     @var Sex|null            $sex            全 Customer に設定する Sex
-     *     @var CustomerStatus|null $status         全 Customer に設定する CustomerStatus (デフォルト: ACTIVE)
+     *     @var CustomerStatus|null $status         全 Customer に設定する CustomerStatus (デフォルト: REGULAR)
      *     @var callable|null       $emailTemplate  function(int $i): string でメールアドレスを生成
      * }
      *
@@ -909,7 +905,7 @@ class Generator
         $Sex = $options['sex'] ?? null;
         /** @var CustomerStatus $Status */
         $Status = $options['status']
-            ?? $this->entityManager->find(CustomerStatus::class, CustomerStatus::ACTIVE);
+            ?? $this->entityManager->find(CustomerStatus::class, CustomerStatus::REGULAR);
         $emailTemplate = $options['emailTemplate']
             ?? fn (int $i): string => sprintf('bulk-user-%d-%s@example.com', $i, $faker->uuid);
 
@@ -1441,7 +1437,7 @@ class Generator
         }
 
         $conn = $this->entityManager->getConnection();
-        $platform = $conn->getDatabasePlatform()->getName();
+        $platform = $conn->getDatabasePlatform();
 
         $columns = array_keys($rows[0]);
         $sql = sprintf(
@@ -1457,7 +1453,7 @@ class Generator
             $startedTransaction = true;
         }
 
-        if ('mysql' === $platform) {
+        if ($platform instanceof AbstractMySQLPlatform) {
             $conn->executeStatement("SET SESSION sql_mode='NO_AUTO_VALUE_ON_ZERO'");
         }
 
@@ -1469,7 +1465,14 @@ class Generator
                 $stmt->bindValue($idx++, $value);
             }
             $stmt->executeStatement();
-            $ids[] = (int) $conn->lastInsertId();
+            // DBAL 4 では PDO mysql の lastInsertId() が '0' を返すと NoIdentityValue 例外になる
+            // (native prepared statement 経由では AUTO_INCREMENT 値が PDO::lastInsertId() に
+            //  反映されないことがある)。mysql では SELECT LAST_INSERT_ID() で確実に取得する。
+            if ($platform instanceof AbstractMySQLPlatform) {
+                $ids[] = (int) $conn->fetchOne('SELECT LAST_INSERT_ID()');
+            } else {
+                $ids[] = (int) $conn->lastInsertId();
+            }
         }
 
         if ($startedTransaction) {

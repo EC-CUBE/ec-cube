@@ -234,12 +234,12 @@ final readonly class InMemoryMethodClassPaymentHandler implements AgentCheckoutP
         return $this->handlerId;
     }
 
-    public function authorize(Order $order, array $paymentData): PaymentOutcome
+    public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
     {
         return PaymentOutcome::completed();
     }
 
-    public function capture(Order $order, array $paymentData): PaymentOutcome
+    public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
     {
         return PaymentOutcome::completed();
     }

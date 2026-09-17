@@ -46,9 +46,7 @@ class EntityProxyService
      */
     public function generate(array $includesDirs, array $excludeDirs, string $outputDir, ?OutputInterface $output = null): array
     {
-        if (is_null($output)) {
-            $output = new ConsoleOutput();
-        }
+        $output ??= new ConsoleOutput();
 
         $generatedFiles = [];
 
@@ -84,7 +82,7 @@ class EntityProxyService
             // baseDir e.g. /src/Eccube/Entity and /app/Plugin/PluginCode/Entity
             $baseDir = str_replace($projectDir, '', str_replace($baseName, '', $fileName));
             if (!file_exists($outputDir.$baseDir)) {
-                mkdir($outputDir.$baseDir, 0777, true);
+                mkdir($outputDir.$baseDir, 0755, true);
             }
 
             $file = ltrim(str_replace($projectDir, '', $fileName), '/');
@@ -155,8 +153,21 @@ class EntityProxyService
                     ->files();
 
                 foreach ($files as $file) {
-                    require_once $file->getRealPath();
-                    $includedFiles[] = $file->getRealPath();
+                    $realPath = $file->getRealPath();
+                    $includedFiles[] = $realPath;
+                    // 既にProxy等でロード済みのEntityクラスを再度require_onceすると
+                    // "Cannot redeclare class" になるため、宣言済みならスキップする.
+                    // 対象は Entity ディレクトリ配下 (app/Plugin/*/Entity, app/Customize/Entity) に限定する.
+                    // Plugin が同梱するライブラリ (例: phpseclib) 等の非Entityファイルは
+                    // 偽のFQCNを組み立てないよう対象外とし、従来どおり require_once する.
+                    $normalized = str_replace('\\', '/', $realPath);
+                    if (preg_match('#/app/(Customize/Entity/[^.]+|Plugin/[^/]+/Entity/[^.]+)\.php$#', $normalized, $matches)) {
+                        $fqcn = str_replace('/', '\\', $matches[1]);
+                        if (class_exists($fqcn, false)) {
+                            continue;
+                        }
+                    }
+                    require_once $realPath;
                 }
             }
             $includedFileSets[] = $includedFiles;

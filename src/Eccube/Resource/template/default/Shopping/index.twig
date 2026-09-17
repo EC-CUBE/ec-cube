@@ -327,6 +327,31 @@ file that was distributed with this source code.
                         <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
                     {% endif %}
                 </div>
+                {# 保存された配送方法・支払い方法の情報ボックス(会員のみ) #}
+                {% if is_granted('ROLE_USER') %}
+                    {% if preferredPaymentName is defined and preferredPaymentName and preferredDeliveryName is defined and preferredDeliveryName %}
+                        <div class="ec-orderPreferred">
+                            <div class="ec-rectHeading">
+                                <h2>{{ 'front.shopping.preferred_info_title'|trans }}</h2>
+                            </div>
+                            <p>{{ 'front.shopping.preferred_delivery_label'|trans }}: {{ preferredDeliveryName }}</p>
+                            <p>{{ 'front.shopping.preferred_payment_label'|trans }}: {{ preferredPaymentName }}</p>
+                            {% if isMultipleShipping is defined and isMultipleShipping %}
+                                <p>{{ 'front.shopping.preferred_multiple_shipping_notice'|trans }}</p>
+                            {% else %}
+                                <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                                <button type="submit" formaction="{{ url('shopping_restore_preferred') }}" class="ec-inlineBtn">{{ 'front.shopping.use_preferred_button'|trans }}</button>
+                            {% endif %}
+                        </div>
+                    {% elseif preferredUnavailableReason is defined and preferredUnavailableReason %}
+                        <div class="ec-orderPreferred">
+                            <div class="ec-alert-warning">
+                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                                <div class="ec-alert-warning__text">{{ preferredUnavailableReason|trans }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
                 <div class="ec-orderDelivery">
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.shopping.delivery_info'|trans }}</h2>

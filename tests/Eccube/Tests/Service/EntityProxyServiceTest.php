@@ -79,10 +79,8 @@ final class EntityProxyServiceTest extends EccubeTestCase
         $this->assertNotNull($sequence);
     }
 
-    public function testGenerateFromOriginalFile(): never
+    public function testGenerateFromOriginalFile()
     {
-        $this->markTestIncomplete();
-
         $findSequence = (static fn (Tokens $tokens) => $tokens->findSequence([
             [T_PRIVATE, 'private'],
             [T_VARIABLE, '$hoge'],

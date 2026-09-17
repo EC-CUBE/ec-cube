@@ -14,7 +14,6 @@
 namespace Eccube\Controller\Admin\Customer;
 
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
-use Doctrine\ORM\QueryBuilder;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Customer;
@@ -117,7 +116,6 @@ class CustomerController extends AbstractController
             $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
         }
 
-        /** @var QueryBuilder $qb */
         $qb = $this->customerRepository->getQueryBuilderBySearchData($searchData);
 
         $paginate_options = [];
@@ -267,10 +265,6 @@ class CustomerController extends AbstractController
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
-
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request): void {

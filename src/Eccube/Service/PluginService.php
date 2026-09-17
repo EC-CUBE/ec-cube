@@ -15,8 +15,10 @@ namespace Eccube\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Mapping\Driver\MappingDriverChain;
 use Doctrine\Persistence\Mapping\MappingException as PersistenceMappingException;
@@ -53,11 +55,6 @@ class PluginService
     private readonly string $projectRoot;
 
     /**
-     * @var string %kernel.environment%
-     */
-    private readonly string $environment;
-
-    /**
      * PluginService constructor.
      */
     public function __construct(
@@ -73,7 +70,6 @@ class PluginService
         private readonly PluginContext $pluginContext,
     ) {
         $this->projectRoot = $this->eccubeConfig->get('kernel.project_dir');
-        $this->environment = $this->eccubeConfig->get('kernel.environment');
     }
 
     /**
@@ -152,7 +148,6 @@ class PluginService
             $requires = $this->getPluginRequired($config);
             $notInstalledOrDisabled = array_filter($requires, function ($req) {
                 $code = preg_replace('/^ec-cube\//i', '', (string) $req['name']);
-                /** @var Plugin|null $DependPlugin */
                 $DependPlugin = $this->pluginRepository->findByCode($code);
 
                 return $DependPlugin ? $DependPlugin->isEnabled() == false : true;
@@ -197,7 +192,6 @@ class PluginService
     public function postInstall(array $config, string|int $source): void
     {
         try {
-            /** @var Plugin|null $Plugin */
             $Plugin = $this->pluginRepository->findByCode($config['code']);
 
             if (!$Plugin) {
@@ -234,9 +228,47 @@ class PluginService
      */
     public function generateProxyAndUpdateSchema(Plugin $plugin, array $config, bool $uninstall = false, bool $saveMode = true): void
     {
-        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode): void {
-            $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
+        $conn = $this->entityManager->getConnection();
+        $this->generateProxyAndCallback(function ($generatedFiles, $proxiesDirectory) use ($saveMode, $conn): void {
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($generatedFiles, $proxiesDirectory, $saveMode): void {
+                $this->schemaService->updateSchema($generatedFiles, $proxiesDirectory, $saveMode);
+            });
         }, $plugin, $config, $uninstall);
+    }
+
+    /**
+     * MySQL では DDL が暗黙的に COMMIT を発行し SAVEPOINT を破壊するため,
+     * DDL 実行前後でトランザクションのネストレベルを退避・復元する.
+     */
+    private function executeDdlWithMySqlWorkaround(Connection $conn, callable $ddlCallback): void
+    {
+        if (!$conn->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            $ddlCallback();
+
+            return;
+        }
+
+        $autoCommit = $conn->isAutoCommit();
+        $nestingLevel = $conn->getTransactionNestingLevel();
+
+        // MySQL の DDL は暗黙的に COMMIT を発行するため, 既存のトランザクションを
+        // すべて COMMIT してからDDLを実行する.
+        for ($i = 0; $i < $nestingLevel; $i++) {
+            $conn->commit();
+        }
+
+        // autoCommit=false のままだと DDL 実行時に DBAL が遅延でトランザクションを
+        // 開始し, MySQL の暗黙 COMMIT とずれてしまうため, 一時的に autoCommit=true にする.
+        $conn->setAutoCommit(true);
+        try {
+            $ddlCallback();
+        } finally {
+            $conn->setAutoCommit($autoCommit);
+            // DDL 実行前のネストレベルまでトランザクションを開始し直す.
+            for ($i = 0; $i < $nestingLevel; $i++) {
+                $conn->beginTransaction();
+            }
+        }
     }
 
     /**
@@ -314,11 +346,27 @@ class PluginService
      */
     public function createTempDir(): string
     {
-        $tempDir = $this->projectRoot.'/var/cache/'.$this->environment.'/Plugin';
-        @mkdir($tempDir);
+        // アーカイブの検査用の一時領域. 本来の配置先へは元アーカイブから展開し直すため,
+        // ここから移動することはない (install() / update() を参照).
+        if (\PHP_SAPI === 'cli') {
+            // ランタイムディレクトリは Web サーバー所有 (レーン W) になり得るため, CLI からは
+            // OS の一時ディレクトリを使う (/tmp は 1777 で, どのユーザーも自分の領域を作れる).
+            // 他のユーザーから展開後のファイルを読まれないよう, 所有者のみに制限する.
+            $d = sys_get_temp_dir().'/eccube_plugin_'.sha1(StringUtil::random(16));
+
+            if (!mkdir($d, 0700)) {
+                throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
+            }
+
+            return $d;
+        }
+
+        // リクエスト処理中に作られる分はランタイムディレクトリへ置く.
+        $tempDir = $this->eccubeConfig->get('eccube_runtime_dir').'/Plugin';
+        @mkdir($tempDir, 0755, true);
         $d = ($tempDir.'/'.sha1(StringUtil::random(16)));
 
-        if (!mkdir($d, 0777)) {
+        if (!mkdir($d, 0755)) {
             throw new PluginException(trans('admin.store.plugin.mkdir.error', ['%dir_name%' => $d]));
         }
 
@@ -326,12 +374,15 @@ class PluginService
     }
 
     /**
-     * @param array<int, string> $arr
+     * 未作成のディレクトリを表す null も受け取る（install()/update() は例外発生時点で
+     * 変数が未設定のまま渡すため）。
+     *
+     * @param array<int, string|null> $arr
      */
     public function deleteDirs(array $arr): void
     {
         foreach ($arr as $dir) {
-            if (file_exists($dir)) {
+            if (null !== $dir && file_exists($dir)) {
                 $fs = new Filesystem();
                 $fs->remove($dir);
             }
@@ -540,12 +591,15 @@ class PluginService
         $this->unregisterPlugin($plugin);
 
         try {
-            // スキーマを更新する
-            $this->generateProxyAndUpdateSchema($plugin, $config, true);
+            $conn = $this->entityManager->getConnection();
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $config): void {
+                // スキーマを更新する
+                $this->generateProxyAndUpdateSchema($plugin, $config, true);
 
-            // プラグインのネームスペースに含まれるEntityのテーブルを削除する
-            $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
-            $this->schemaService->dropTable($namespace);
+                // プラグインのネームスペースに含まれるEntityのテーブルを削除する
+                $namespace = 'Plugin\\'.$plugin->getCode().'\\Entity';
+                $this->schemaService->dropTable($namespace);
+            });
         } catch (PersistenceMappingException) {
             // XXX 削除された Bundle が MappingException をスローする場合があるが実害は無いので無視して進める
         }
@@ -565,8 +619,34 @@ class PluginService
     public function unregisterPlugin(Plugin $p): void
     {
         $em = $this->entityManager;
+        $this->reconcileMySqlTransaction($em->getConnection());
         $em->remove($p);
         $em->flush();
+    }
+
+    /**
+     * MySQL の DDL 暗黙 COMMIT によるトランザクション不整合を解消する.
+     *
+     * composer 経由のプラグイン uninstall などでは, 処理途中の MySQL の DDL が暗黙 COMMIT を
+     * 発行して実接続のトランザクションを終了させる一方, DBAL のネストレベルだけが残ることがある.
+     * この状態で flush() すると内部の commit/rollBack が実接続側で実行され, DBAL 4 では
+     * "There is no active transaction" 例外になる. ネストレベルだけが残り実接続に
+     * トランザクションが無い不整合を検知した場合は, 接続を閉じてネストレベルをリセットする
+     * (実接続は次の操作で再接続される. 暗黙 COMMIT 済みのため失われる未確定の変更は無い).
+     */
+    private function reconcileMySqlTransaction(Connection $conn): void
+    {
+        if (!$conn->getDatabasePlatform() instanceof AbstractMySQLPlatform) {
+            return;
+        }
+        if ($conn->getTransactionNestingLevel() === 0) {
+            return;
+        }
+        /** @var \PDO $nativeConnection */
+        $nativeConnection = $conn->getNativeConnection();
+        if (!$nativeConnection->inTransaction()) {
+            $conn->close();
+        }
     }
 
     /**
@@ -589,9 +669,7 @@ class PluginService
      */
     private function regenerateProxy(Plugin $plugin, bool $temporary, ?string $outputDir = null, bool $uninstall = false): array
     {
-        if (is_null($outputDir)) {
-            $outputDir = $this->projectRoot.'/app/proxy/entity';
-        }
+        $outputDir ??= $this->projectRoot.'/app/proxy/entity';
         @mkdir($outputDir);
 
         if ($temporary) {
@@ -638,7 +716,7 @@ class PluginService
 
             $this->callPluginManagerMethod($config, $enable ? 'enable' : 'disable');
 
-            $plugin->setEnabled($enable ? true : false);
+            $plugin->setEnabled($enable);
             $em->persist($plugin);
 
             // Proxyだけ再生成してスキーマは更新しない
@@ -717,7 +795,10 @@ class PluginService
 
             $em->persist($plugin);
 
-            $this->generateProxyAndUpdateSchema($plugin, $meta);
+            $conn = $em->getConnection();
+            $this->executeDdlWithMySqlWorkaround($conn, function () use ($plugin, $meta): void {
+                $this->generateProxyAndUpdateSchema($plugin, $meta);
+            });
 
             if ($plugin->isInitialized()) {
                 $this->callPluginManagerMethod($meta, 'update');
@@ -901,8 +982,6 @@ class PluginService
      * Plugin is exist check
      *
      * @param array<int, array<string, mixed>> $plugins get from api（各行に product_code を含む）
-     *
-     * @return false|int|string
      */
     public function checkPluginExist(array $plugins, string $pluginCode): false|int|string
     {

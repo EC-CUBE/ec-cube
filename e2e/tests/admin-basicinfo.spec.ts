@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_PASSWORD, ADMIN_ROUTE, ADMIN_USER, CUSTOMER_PASSWORD, VALID_PASSWORD } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 
 /**
  * Helper: Re-login to admin if session expired.
@@ -9,8 +10,8 @@ const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
  */
 async function ensureAdminLoggedIn(page: import('@playwright/test').Page) {
   if (await page.locator('#login_id').count() > 0) {
-    await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-    await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+    await page.locator('#login_id').fill(ADMIN_USER);
+    await page.locator('#password').fill(ADMIN_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
   }
@@ -572,7 +573,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/mypage/login');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('input[name="login_email"]').fill(email);
-    await frontPage.locator('input[name="login_pass"]').fill('password');
+    await frontPage.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage.locator('#login_mypage button[type="submit"]').click();
     await frontPage.waitForLoadState('load');
 
@@ -626,8 +627,8 @@ test.describe('Admin Basic Info (EA07)', () => {
 
     // Re-login if session expired
     if (await page.locator('#login_id').count() > 0) {
-      await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-      await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+      await page.locator('#login_id').fill(ADMIN_USER);
+      await page.locator('#password').fill(ADMIN_PASSWORD);
       await page.getByRole('button', { name: 'ログイン' }).click();
       await page.waitForLoadState('load');
       await page.goto(`/${adminRoute}/setting/shop`);
@@ -657,7 +658,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/mypage/login');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('input[name="login_email"]').fill(email);
-    await frontPage.locator('input[name="login_pass"]').fill('password');
+    await frontPage.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage.locator('#login_mypage button[type="submit"]').click();
     await frontPage.waitForLoadState('load');
 
@@ -732,8 +733,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email1);
     await page.locator('#entry_email_second').fill(email1);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');
@@ -794,8 +795,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#entry_phone_number').fill('111-111-111');
     await page.locator('#entry_email_first').fill(email2);
     await page.locator('#entry_email_second').fill(email2);
-    await page.locator('#entry_plain_password_first').fill('password1234');
-    await page.locator('#entry_plain_password_second').fill('password1234');
+    await page.locator('#entry_plain_password_first').fill(VALID_PASSWORD);
+    await page.locator('#entry_plain_password_second').fill(VALID_PASSWORD);
     await page.locator('#entry_user_policy_check').check();
     await page.locator('button.ec-blockBtn--action[type="submit"]').click();
     await page.waitForLoadState('load');
@@ -856,7 +857,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage.goto('/mypage/login');
     await frontPage.waitForLoadState('load');
     await frontPage.locator('input[name="login_email"]').fill(email);
-    await frontPage.locator('input[name="login_pass"]').fill('password');
+    await frontPage.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage.locator('#login_mypage button[type="submit"]').click();
     await frontPage.waitForLoadState('load');
 
@@ -901,7 +902,7 @@ test.describe('Admin Basic Info (EA07)', () => {
     await frontPage2.goto('/mypage/login');
     await frontPage2.waitForLoadState('load');
     await frontPage2.locator('input[name="login_email"]').fill(email);
-    await frontPage2.locator('input[name="login_pass"]').fill('password');
+    await frontPage2.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await frontPage2.locator('#login_mypage button[type="submit"]').click();
     await frontPage2.waitForLoadState('load');
 
@@ -1272,8 +1273,8 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.goto(`/${adminRoute}/setting/shop/calendar`);
     await page.waitForLoadState('load');
     if (page.url().includes('/login')) {
-      await page.locator('#login_id').fill(process.env.ADMIN_USER || 'admin');
-      await page.locator('#password').fill(process.env.ADMIN_PASSWORD || 'password');
+      await page.locator('#login_id').fill(ADMIN_USER);
+      await page.locator('#password').fill(ADMIN_PASSWORD);
       await page.getByRole('button', { name: 'ログイン' }).click();
       await page.waitForLoadState('load');
       await page.goto(`/${adminRoute}/setting/shop/calendar`);
@@ -1323,5 +1324,66 @@ test.describe('Admin Basic Info (EA07)', () => {
     await page.locator('#calendar_item_new button').click();
     await page.waitForLoadState('load');
     await expect(page.locator('#page_admin_setting_shop_calendar .alert-success')).toContainText('保存しました');
+  });
+
+  test('basicinfo_納品書PDFの出力項目トグル - EA0701-UC01-T18', async ({ page }) => {
+    // dev 環境の Symfony デバッグツールバーが送信ボタンを覆うことがあるため非表示にする
+    // (CI の test 環境ではツールバー自体が存在しないため no-op)。
+    const hideDebugToolbar = () => page.addStyleTag({
+      content: '.sf-toolbar, .sf-minitoolbar { display: none !important; }',
+    }).catch(() => { /* ツールバーが無い環境では無視 */ });
+
+    await page.goto(`/${adminRoute}/setting/shop`);
+    await page.waitForLoadState('load');
+    await ensureAdminLoggedIn(page);
+    if (!page.url().includes('/setting/shop')) {
+      await page.goto(`/${adminRoute}/setting/shop`);
+      await page.waitForLoadState('load');
+    }
+    await hideDebugToolbar();
+
+    // 納品書PDFの出力トグルが各入力欄の横（店舗情報／税設定カード）に表示されていること
+    const hourCheckbox = page.locator('#shop_master_order_pdf_visible_business_hour');
+    const invoiceCheckbox = page.locator('#shop_master_order_pdf_visible_invoice_number');
+    await expect(hourCheckbox).toBeAttached();
+    await expect(invoiceCheckbox).toBeAttached();
+
+    // 初期状態を退避（アサーション失敗時も finally で必ず復元する）
+    const hourInitial = await hourCheckbox.isChecked();
+    const invoiceInitial = await invoiceCheckbox.isChecked();
+
+    try {
+      // 既定 OFF の「店舗営業時間」と既定 ON の「インボイス登録番号」を反転して保存
+      await page.locator('label[for="shop_master_order_pdf_visible_business_hour"]').click();
+      await page.locator('label[for="shop_master_order_pdf_visible_invoice_number"]').click();
+      await page.waitForTimeout(500);
+      await page.locator('button.ladda-button[type="submit"]').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+
+      // 再表示して反転後の状態が保持されていること
+      await page.goto(`/${adminRoute}/setting/shop`);
+      await page.waitForLoadState('load');
+      await hideDebugToolbar();
+      await expect(page.locator('#shop_master_order_pdf_visible_business_hour')).toBeChecked({ checked: !hourInitial });
+      await expect(page.locator('#shop_master_order_pdf_visible_invoice_number')).toBeChecked({ checked: !invoiceInitial });
+    } finally {
+      // 初期状態へ復元して保存（アサーションが失敗しても設定を元に戻す）
+      await page.goto(`/${adminRoute}/setting/shop`);
+      await page.waitForLoadState('load');
+      await hideDebugToolbar();
+      const hourNow = await page.locator('#shop_master_order_pdf_visible_business_hour').isChecked();
+      if (hourNow !== hourInitial) {
+        await page.locator('label[for="shop_master_order_pdf_visible_business_hour"]').click();
+      }
+      const invoiceNow = await page.locator('#shop_master_order_pdf_visible_invoice_number').isChecked();
+      if (invoiceNow !== invoiceInitial) {
+        await page.locator('label[for="shop_master_order_pdf_visible_invoice_number"]').click();
+      }
+      await page.waitForTimeout(500);
+      await page.locator('button.ladda-button[type="submit"]').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+    }
   });
 });

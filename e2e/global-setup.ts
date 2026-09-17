@@ -7,6 +7,15 @@ import path from 'path';
  * Codeception の _bootstrap.php と同等のデータ（会員、商品、受注）を作成。
  */
 export default function globalSetup() {
+  // フィクスチャの生成には Eccube\Tests\Fixture\Generator が要る。これはテスト環境専用の
+  // サービスのため、APP_ENV=prod で動く環境 (permission-lanes) では解決できない。
+  // そこでは eccube:fixtures:load が入れた基本データだけで足りるので、実行自体を省く
+  // (省かないと毎回スタックトレースが出て、本当の失敗が埋もれる)。
+  if (process.env.SKIP_FIXTURES === '1') {
+    console.log('SKIP_FIXTURES=1 のためフィクスチャの生成を省略します。');
+    return;
+  }
+
   const projectDir = path.resolve(__dirname, '..');
   const phpBin = process.env.PHP_BIN || 'php';
 
@@ -19,14 +28,18 @@ export default function globalSetup() {
         timeout: 120_000,
         env: {
           ...process.env,
-          APP_ENV: process.env.APP_ENV || 'codeception',
+          APP_ENV: process.env.APP_ENV || 'e2e',
         },
         stdio: ['pipe', 'pipe', 'pipe'],
       }
     );
     console.log(output.toString());
   } catch (error: any) {
-    console.error('Fixture setup failed:', error.stderr?.toString() || error.message);
+    // PHP CLI は Fatal error を stdout に書くため、stderr だけだと失敗理由が一切残らない
+    const detail = [error.stdout?.toString(), error.stderr?.toString()]
+      .filter((s?: string) => s && s.trim() !== '')
+      .join('\n');
+    console.error('Fixture setup failed:', detail || error.message);
     // フィクスチャ失敗はテスト実行を止めない（基本データは eccube:fixtures:load で入っている）
     console.warn('Continuing without additional fixtures...');
   }

@@ -19,348 +19,346 @@ use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Repository\CheckoutSessionRepository;
 
-if (!class_exists(CheckoutSession::class)) {
+/**
+ * エージェントコマース (ACP/UCP) のチェックアウトセッション.
+ *
+ * プロトコル非依存の中核エンティティ。AI エージェントはブラウザセッション (Cookie) を持たないため、
+ * 通常購入の `Cart` がセッション (`cart_key`) で束ねられるのに対し、本エンティティが
+ * `session_id` (推測困難な公開識別子) で `Cart` をセッションレスに束ねる役割を担う。
+ *
+ * - 商品明細は `Cart`/`CartItem` を再利用 (本エンティティは Cart を関連で保持)。
+ * - 確定時は通常購入と同様に `pre_order_id` 経由で `Order` を生成・関連付ける。
+ * - `status` はプロトコル横断の正規化ステータス。プロトコル固有 status は `metadata` に保持する。
+ *
+ * @see https://github.com/EC-CUBE/ec-cube/issues/6777
+ */
+#[ORM\Table(name: 'dtb_checkout_session')]
+#[ORM\Index(columns: ['update_date'], name: 'dtb_checkout_session_update_date_idx')]
+#[ORM\UniqueConstraint(name: 'dtb_checkout_session_session_id_idx', columns: ['session_id'])]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CheckoutSessionRepository::class)]
+class CheckoutSession extends AbstractEntity
+{
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
     /**
-     * エージェントコマース (ACP/UCP) のチェックアウトセッション.
+     * エージェントへ公開するセッション識別子 (推測困難・API パスで使用).
      *
-     * プロトコル非依存の中核エンティティ。AI エージェントはブラウザセッション (Cookie) を持たないため、
-     * 通常購入の `Cart` がセッション (`cart_key`) で束ねられるのに対し、本エンティティが
-     * `session_id` (推測困難な公開識別子) で `Cart` をセッションレスに束ねる役割を担う。
-     *
-     * - 商品明細は `Cart`/`CartItem` を再利用 (本エンティティは Cart を関連で保持)。
-     * - 確定時は通常購入と同様に `pre_order_id` 経由で `Order` を生成・関連付ける。
-     * - `status` はプロトコル横断の正規化ステータス。プロトコル固有 status は `metadata` に保持する。
-     *
-     * @see https://github.com/EC-CUBE/ec-cube/issues/6777
+     * 整数 PK は列挙可能なため、外部公開用にはこの不透明な識別子を用いる。
      */
-    #[ORM\Table(name: 'dtb_checkout_session')]
-    #[ORM\Index(columns: ['update_date'], name: 'dtb_checkout_session_update_date_idx')]
-    #[ORM\UniqueConstraint(name: 'dtb_checkout_session_session_id_idx', columns: ['session_id'])]
-    #[ORM\InheritanceType('SINGLE_TABLE')]
-    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
-    #[ORM\HasLifecycleCallbacks]
-    #[ORM\Entity(repositoryClass: CheckoutSessionRepository::class)]
-    class CheckoutSession extends AbstractEntity
+    #[ORM\Column(name: 'session_id', type: Types::STRING, length: 255)]
+    private string $session_id = '';
+
+    /**
+     * プロトコル種別 (ACP / UCP) マスタへの参照.
+     */
+    #[ORM\ManyToOne(targetEntity: AgentProtocol::class)]
+    #[ORM\JoinColumn(name: 'agent_protocol_id', referencedColumnName: 'id')]
+    private ?AgentProtocol $Protocol = null;
+
+    /**
+     * セッションを開始したエージェントの識別子.
+     */
+    #[ORM\Column(name: 'agent_id', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $agent_id = null;
+
+    /**
+     * 正規化ステータス (incomplete/ready/completed/canceled/expired) マスタへの参照.
+     */
+    #[ORM\ManyToOne(targetEntity: CheckoutSessionStatus::class)]
+    #[ORM\JoinColumn(name: 'checkout_session_status_id', referencedColumnName: 'id')]
+    private ?CheckoutSessionStatus $Status = null;
+
+    /**
+     * 通貨コード (ISO 4217 alpha-3).
+     */
+    #[ORM\Column(name: 'currency_code', type: Types::STRING, length: 3)]
+    private string $currency_code = 'JPY';
+
+    /**
+     * セッションの有効期限.
+     */
+    #[ORM\Column(name: 'expires_at', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
+    private ?\DateTime $expires_at = null;
+
+    /**
+     * 購入者情報 (氏名・住所・連絡先等) の中立表現.
+     *
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(name: 'buyer_data', type: Types::JSON, nullable: true)]
+    private ?array $buyer_data = null;
+
+    /**
+     * 配送 (fulfillment) 情報の中立表現.
+     *
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(name: 'fulfillment_data', type: Types::JSON, nullable: true)]
+    private ?array $fulfillment_data = null;
+
+    /**
+     * 支払情報の中立表現 (token はマスキング/暗号化して保持).
+     *
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(name: 'payment_data', type: Types::JSON, nullable: true)]
+    private ?array $payment_data = null;
+
+    /**
+     * プロトコル固有のメタデータ (正規化ステータスに収まらない情報を保持).
+     *
+     * @var array<string, mixed>|null
+     */
+    #[ORM\Column(name: 'metadata', type: Types::JSON, nullable: true)]
+    private ?array $metadata = null;
+
+    /**
+     * 明細を保持する Cart (セッションレスに束ねる対象).
+     */
+    #[ORM\ManyToOne(targetEntity: Cart::class)]
+    #[ORM\JoinColumn(name: 'cart_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Cart $Cart = null;
+
+    /**
+     * 確定時に生成される Order (完了前は null).
+     */
+    #[ORM\ManyToOne(targetEntity: Order::class)]
+    #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Order $Order = null;
+
+    /**
+     * 紐づく会員 (ゲスト購入では null).
+     */
+    #[ORM\ManyToOne(targetEntity: Customer::class)]
+    #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
+    private ?Customer $Customer = null;
+
+    #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
+    private \DateTime $create_date;
+
+    #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
+    private \DateTime $update_date;
+
+    public function getId(): ?int
     {
-        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
-        #[ORM\Id]
-        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-        private ?int $id = null;
+        return $this->id;
+    }
 
-        /**
-         * エージェントへ公開するセッション識別子 (推測困難・API パスで使用).
-         *
-         * 整数 PK は列挙可能なため、外部公開用にはこの不透明な識別子を用いる。
-         */
-        #[ORM\Column(name: 'session_id', type: Types::STRING, length: 255)]
-        private string $session_id = '';
+    public function getSessionId(): string
+    {
+        return $this->session_id;
+    }
 
-        /**
-         * プロトコル種別 (ACP / UCP) マスタへの参照.
-         */
-        #[ORM\ManyToOne(targetEntity: AgentProtocol::class)]
-        #[ORM\JoinColumn(name: 'agent_protocol_id', referencedColumnName: 'id')]
-        private ?AgentProtocol $Protocol = null;
+    public function setSessionId(string $session_id): CheckoutSession
+    {
+        $this->session_id = $session_id;
 
-        /**
-         * セッションを開始したエージェントの識別子.
-         */
-        #[ORM\Column(name: 'agent_id', type: Types::STRING, length: 255, nullable: true)]
-        private ?string $agent_id = null;
+        return $this;
+    }
 
-        /**
-         * 正規化ステータス (incomplete/ready/completed/canceled/expired) マスタへの参照.
-         */
-        #[ORM\ManyToOne(targetEntity: CheckoutSessionStatus::class)]
-        #[ORM\JoinColumn(name: 'checkout_session_status_id', referencedColumnName: 'id')]
-        private ?CheckoutSessionStatus $Status = null;
+    public function getProtocol(): ?AgentProtocol
+    {
+        return $this->Protocol;
+    }
 
-        /**
-         * 通貨コード (ISO 4217 alpha-3).
-         */
-        #[ORM\Column(name: 'currency_code', type: Types::STRING, length: 3)]
-        private string $currency_code = 'JPY';
+    public function setProtocol(?AgentProtocol $Protocol = null): CheckoutSession
+    {
+        $this->Protocol = $Protocol;
 
-        /**
-         * セッションの有効期限.
-         */
-        #[ORM\Column(name: 'expires_at', type: Types::DATETIMETZ_MUTABLE, nullable: true)]
-        private ?\DateTime $expires_at = null;
+        return $this;
+    }
 
-        /**
-         * 購入者情報 (氏名・住所・連絡先等) の中立表現.
-         *
-         * @var array<string, mixed>|null
-         */
-        #[ORM\Column(name: 'buyer_data', type: Types::JSON, nullable: true)]
-        private ?array $buyer_data = null;
+    public function getAgentId(): ?string
+    {
+        return $this->agent_id;
+    }
 
-        /**
-         * 配送 (fulfillment) 情報の中立表現.
-         *
-         * @var array<string, mixed>|null
-         */
-        #[ORM\Column(name: 'fulfillment_data', type: Types::JSON, nullable: true)]
-        private ?array $fulfillment_data = null;
+    public function setAgentId(?string $agent_id = null): CheckoutSession
+    {
+        $this->agent_id = $agent_id;
 
-        /**
-         * 支払情報の中立表現 (token はマスキング/暗号化して保持).
-         *
-         * @var array<string, mixed>|null
-         */
-        #[ORM\Column(name: 'payment_data', type: Types::JSON, nullable: true)]
-        private ?array $payment_data = null;
+        return $this;
+    }
 
-        /**
-         * プロトコル固有のメタデータ (正規化ステータスに収まらない情報を保持).
-         *
-         * @var array<string, mixed>|null
-         */
-        #[ORM\Column(name: 'metadata', type: Types::JSON, nullable: true)]
-        private ?array $metadata = null;
+    public function getStatus(): ?CheckoutSessionStatus
+    {
+        return $this->Status;
+    }
 
-        /**
-         * 明細を保持する Cart (セッションレスに束ねる対象).
-         */
-        #[ORM\ManyToOne(targetEntity: Cart::class)]
-        #[ORM\JoinColumn(name: 'cart_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-        private ?Cart $Cart = null;
+    public function setStatus(?CheckoutSessionStatus $Status = null): CheckoutSession
+    {
+        $this->Status = $Status;
 
-        /**
-         * 確定時に生成される Order (完了前は null).
-         */
-        #[ORM\ManyToOne(targetEntity: Order::class)]
-        #[ORM\JoinColumn(name: 'order_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-        private ?Order $Order = null;
+        return $this;
+    }
 
-        /**
-         * 紐づく会員 (ゲスト購入では null).
-         */
-        #[ORM\ManyToOne(targetEntity: Customer::class)]
-        #[ORM\JoinColumn(name: 'customer_id', referencedColumnName: 'id', nullable: true, onDelete: 'SET NULL')]
-        private ?Customer $Customer = null;
+    public function getCurrencyCode(): string
+    {
+        return $this->currency_code;
+    }
 
-        #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
-        private \DateTime $create_date;
+    public function setCurrencyCode(string $currency_code): CheckoutSession
+    {
+        $this->currency_code = $currency_code;
 
-        #[ORM\Column(name: 'update_date', type: Types::DATETIMETZ_MUTABLE)]
-        private \DateTime $update_date;
+        return $this;
+    }
 
-        public function getId(): ?int
-        {
-            return $this->id;
-        }
+    public function getExpiresAt(): ?\DateTime
+    {
+        return $this->expires_at;
+    }
 
-        public function getSessionId(): string
-        {
-            return $this->session_id;
-        }
+    public function setExpiresAt(?\DateTime $expires_at = null): CheckoutSession
+    {
+        $this->expires_at = $expires_at;
 
-        public function setSessionId(string $session_id): CheckoutSession
-        {
-            $this->session_id = $session_id;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getBuyerData(): ?array
+    {
+        return $this->buyer_data;
+    }
 
-        public function getProtocol(): ?AgentProtocol
-        {
-            return $this->Protocol;
-        }
+    /**
+     * @param array<string, mixed>|null $buyer_data
+     */
+    public function setBuyerData(?array $buyer_data = null): CheckoutSession
+    {
+        $this->buyer_data = $buyer_data;
 
-        public function setProtocol(?AgentProtocol $Protocol = null): CheckoutSession
-        {
-            $this->Protocol = $Protocol;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getFulfillmentData(): ?array
+    {
+        return $this->fulfillment_data;
+    }
 
-        public function getAgentId(): ?string
-        {
-            return $this->agent_id;
-        }
+    /**
+     * @param array<string, mixed>|null $fulfillment_data
+     */
+    public function setFulfillmentData(?array $fulfillment_data = null): CheckoutSession
+    {
+        $this->fulfillment_data = $fulfillment_data;
 
-        public function setAgentId(?string $agent_id = null): CheckoutSession
-        {
-            $this->agent_id = $agent_id;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getPaymentData(): ?array
+    {
+        return $this->payment_data;
+    }
 
-        public function getStatus(): ?CheckoutSessionStatus
-        {
-            return $this->Status;
-        }
+    /**
+     * @param array<string, mixed>|null $payment_data
+     */
+    public function setPaymentData(?array $payment_data = null): CheckoutSession
+    {
+        $this->payment_data = $payment_data;
 
-        public function setStatus(?CheckoutSessionStatus $Status = null): CheckoutSession
-        {
-            $this->Status = $Status;
+        return $this;
+    }
 
-            return $this;
-        }
+    /**
+     * @return array<string, mixed>|null
+     */
+    public function getMetadata(): ?array
+    {
+        return $this->metadata;
+    }
 
-        public function getCurrencyCode(): string
-        {
-            return $this->currency_code;
-        }
+    /**
+     * @param array<string, mixed>|null $metadata
+     */
+    public function setMetadata(?array $metadata = null): CheckoutSession
+    {
+        $this->metadata = $metadata;
 
-        public function setCurrencyCode(string $currency_code): CheckoutSession
-        {
-            $this->currency_code = $currency_code;
+        return $this;
+    }
 
-            return $this;
-        }
+    public function getCart(): ?Cart
+    {
+        return $this->Cart;
+    }
 
-        public function getExpiresAt(): ?\DateTime
-        {
-            return $this->expires_at;
-        }
+    public function setCart(?Cart $Cart = null): CheckoutSession
+    {
+        $this->Cart = $Cart;
 
-        public function setExpiresAt(?\DateTime $expires_at = null): CheckoutSession
-        {
-            $this->expires_at = $expires_at;
+        return $this;
+    }
 
-            return $this;
-        }
+    public function getOrder(): ?Order
+    {
+        return $this->Order;
+    }
 
-        /**
-         * @return array<string, mixed>|null
-         */
-        public function getBuyerData(): ?array
-        {
-            return $this->buyer_data;
-        }
+    public function setOrder(?Order $Order = null): CheckoutSession
+    {
+        $this->Order = $Order;
 
-        /**
-         * @param array<string, mixed>|null $buyer_data
-         */
-        public function setBuyerData(?array $buyer_data = null): CheckoutSession
-        {
-            $this->buyer_data = $buyer_data;
+        return $this;
+    }
 
-            return $this;
-        }
+    public function getCustomer(): ?Customer
+    {
+        return $this->Customer;
+    }
 
-        /**
-         * @return array<string, mixed>|null
-         */
-        public function getFulfillmentData(): ?array
-        {
-            return $this->fulfillment_data;
-        }
+    public function setCustomer(?Customer $Customer = null): CheckoutSession
+    {
+        $this->Customer = $Customer;
 
-        /**
-         * @param array<string, mixed>|null $fulfillment_data
-         */
-        public function setFulfillmentData(?array $fulfillment_data = null): CheckoutSession
-        {
-            $this->fulfillment_data = $fulfillment_data;
+        return $this;
+    }
 
-            return $this;
-        }
+    public function getCreateDate(): ?\DateTime
+    {
+        return $this->create_date ?? null;
+    }
 
-        /**
-         * @return array<string, mixed>|null
-         */
-        public function getPaymentData(): ?array
-        {
-            return $this->payment_data;
-        }
+    public function setCreateDate(\DateTime $create_date): CheckoutSession
+    {
+        $this->create_date = $create_date;
 
-        /**
-         * @param array<string, mixed>|null $payment_data
-         */
-        public function setPaymentData(?array $payment_data = null): CheckoutSession
-        {
-            $this->payment_data = $payment_data;
+        return $this;
+    }
 
-            return $this;
-        }
+    public function getUpdateDate(): ?\DateTime
+    {
+        return $this->update_date ?? null;
+    }
 
-        /**
-         * @return array<string, mixed>|null
-         */
-        public function getMetadata(): ?array
-        {
-            return $this->metadata;
-        }
+    public function setUpdateDate(\DateTime $update_date): CheckoutSession
+    {
+        $this->update_date = $update_date;
 
-        /**
-         * @param array<string, mixed>|null $metadata
-         */
-        public function setMetadata(?array $metadata = null): CheckoutSession
-        {
-            $this->metadata = $metadata;
+        return $this;
+    }
 
-            return $this;
-        }
-
-        public function getCart(): ?Cart
-        {
-            return $this->Cart;
-        }
-
-        public function setCart(?Cart $Cart = null): CheckoutSession
-        {
-            $this->Cart = $Cart;
-
-            return $this;
-        }
-
-        public function getOrder(): ?Order
-        {
-            return $this->Order;
-        }
-
-        public function setOrder(?Order $Order = null): CheckoutSession
-        {
-            $this->Order = $Order;
-
-            return $this;
-        }
-
-        public function getCustomer(): ?Customer
-        {
-            return $this->Customer;
-        }
-
-        public function setCustomer(?Customer $Customer = null): CheckoutSession
-        {
-            $this->Customer = $Customer;
-
-            return $this;
-        }
-
-        public function getCreateDate(): ?\DateTime
-        {
-            return $this->create_date ?? null;
-        }
-
-        public function setCreateDate(\DateTime $create_date): CheckoutSession
-        {
-            $this->create_date = $create_date;
-
-            return $this;
-        }
-
-        public function getUpdateDate(): ?\DateTime
-        {
-            return $this->update_date ?? null;
-        }
-
-        public function setUpdateDate(\DateTime $update_date): CheckoutSession
-        {
-            $this->update_date = $update_date;
-
-            return $this;
-        }
-
-        /**
-         * 有効期限を過ぎているか.
-         */
-        public function isExpired(\DateTime $now): bool
-        {
-            return $this->expires_at !== null && $this->expires_at <= $now;
-        }
+    /**
+     * 有効期限を過ぎているか.
+     */
+    public function isExpired(\DateTime $now): bool
+    {
+        return $this->expires_at !== null && $this->expires_at <= $now;
     }
 }

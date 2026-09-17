@@ -93,6 +93,17 @@ file that was distributed with this source code.
         return false;
     });
     $('#captcha-refresh').on('click', refreshCaptchaImage);
+
+    // 注意喚起モーダルで「発行手続きへ進む」を押したら、閉じてからCAPTCHAモーダルを開く
+    // フェードアウト中もボタンは押せるため、連打でハンドラが積み重ならないよう
+    // 専用の名前空間 (.proceed) で登録前に解除しておく
+    $('#proceed_to_captcha').on('click', function() {
+        var $confirm = $('#authentication_key_confirm');
+        $confirm.off('hidden.bs.modal.proceed').one('hidden.bs.modal.proceed', function() {
+            $('#captcha').modal('show');
+        });
+        $confirm.modal('hide');
+    });
 </script>
 {% endblock %}
 
@@ -116,7 +127,7 @@ file that was distributed with this source code.
                             </div>
                             <div class="row">
                                 <div class="col-3">
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#captcha" type="button">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authentication_key_confirm" type="button">
                                         {{ 'admin.store.setting.get_api_key'|trans }}
                                     </button>
                                 </div>
@@ -175,6 +186,30 @@ file that was distributed with this source code.
             </div>
         </div>
     </form>
+
+    <div class="modal fade" id="authentication_key_confirm" tabindex="-1" role="dialog" aria-labelledby="authentication_key_confirm_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="authentication_key_confirm_label">{{ 'admin.store.setting.get_api_key_confirm_title'|trans }}</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-start">
+                    <div class="alert alert-warning mb-2" role="alert">
+                        {{ 'admin.store.setting.get_api_key_confirm_info'|trans }}
+                    </div>
+                    <a href="{{ eccube_config.eccube_owners_store_url }}/mypage/login.php" target="_blank" rel="noopener noreferrer">
+                        {{ 'admin.store.setting.get_api_key_confirm_link'|trans }}
+                        <i class="fa fa-external-link" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'common.cancel'|trans }}</button>
+                    <button id="proceed_to_captcha" class="btn btn-ec-conversion" type="button">{{ 'admin.store.setting.get_api_key_confirm_proceed'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="captcha" tabindex="-1" role="dialog" aria-labelledby="captcha" aria-hidden="true">
         <form id="captcha-form" method="post">

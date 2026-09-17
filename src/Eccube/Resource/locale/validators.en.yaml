@@ -22,6 +22,7 @@ Invalid credentials.: |
 Invalid CSRF token.: |
   Failed to sign in.
   Please make sure if the credentials are correct.
+This password has been leaked in a data breach, it must not be used. Please use another password.: This password has been found in a known data breach. Please use another password.
 
 #------------------------------------------------------------------------------------
 # EC-CUBE error message
@@ -42,7 +43,8 @@ form_error.same_email: Please enter the same email address.
 form_error.admin_is_not_available: Do not use "admin" as the directory name.
 form_error.member_already_exists: This ID is already registered.
 form_error.customer_already_exists:  This email address can not be used.
-form_error.password_pattern_invalid: Please use one alphanumeric character each.
+form_error.password_pattern_invalid: It contains characters that cannot be used (such as control characters).
+form_error.password_blocklisted: This password is too easy to guess. Please use another password.
 form_error.out_of_range: Invalid DateTime.
 
 #------------------------------------------------------------------------------------
@@ -72,3 +74,7 @@ form.type.add.quantity: Please enter more than 1.
 form.type.select.select_is_future_or_now_date: Invalid Date of Birth.
 form.type.admin.nottrackingnumberstyle: Tracking No. entry must be alphanumeric chars and hypens.
 form.type.float.invalid: Only numbers and decimal points are accepted.
+form_error.refund_request.quantity_exceed: Quantity must be {{ compared_value }} or less.
+form_error.refund_request.max_files: You can attach up to {{ limit }} files.
+form_error.refund_request.file_size: File is too large. Max {{ limit }}.
+form_error.refund_request.file_type: File type not allowed. Please use JPEG, PNG, GIF, WebP, MP4, MOV, or AVI.

@@ -9,13 +9,78 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 {% if BaseInfo.ga_id is not empty %}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ BaseInfo.ga_id }}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+    {% if not BaseInfo.optionCookieConsent %}
+        {# 【GDPR/ePrivacy 制限事項】本機能 OFF（既定）時は同意なしで GA を無条件ロードする。
+           後方互換のための挙動であり、EU 圏の利用者を対象とする店舗では ePrivacy 指令・GDPR が
+           要求する事前同意要件を満たさない。EU 対応が必要な場合は管理画面「店舗基本情報」で本機能を ON にすること。 #}
+        {# クッキーポリシー同意機能が OFF のときは従来どおり無条件で読み込む（後方互換） #}
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ BaseInfo.ga_id }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-        gtag('config', '{{ BaseInfo.ga_id }}');
-    </script>
+            gtag('config', '{{ BaseInfo.ga_id }}');
+        </script>
+    {% else %}
+        {#
+        クッキーポリシー同意機能が ON のとき:
+          - gtag を即時発火せず、ローダー関数 loadGoogleAnalytics() を定義する。
+          - 発火可否は JS が同意 Cookie を読んで判定する（キャッシュ／CDN 安全。サーバ側で consent 分岐しない）。
+          - コアと拡張で同じ拡張点を通すため、公開フック（初回チェック＋ eccube:cookie-consent:changed の購読）を使う。
+          - ローダーは店舗がカスタマイズ可能（GA4・タグマネージャ等への差し替え）。
+        #}
+        <script>
+            window.ECCUBE = window.ECCUBE || {};
+            window.ECCUBE.cookieConsent = window.ECCUBE.cookieConsent || {};
+
+            window.ECCUBE.cookieConsent.loadGoogleAnalytics = function() {
+                // 二重ロード防止
+                if (typeof window.gtag !== 'undefined') {
+                    return;
+                }
+                var trackingId = '{{ BaseInfo.ga_id }}';
+                if (!trackingId) {
+                    return;
+                }
+
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://www.googletagmanager.com/gtag/js?id=' + trackingId;
+                document.head.appendChild(script);
+
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('js', new Date());
+                gtag('config', trackingId);
+            };
+
+            (function() {
+                // 初回チェック: 既に同意済みなら即ロード（再訪ユーザー向け）。
+                // getStatus() は cookie_consent.js が定義するが、読み込み順に依存しないよう Cookie 直読みにフォールバックする。
+                function currentStatus() {
+                    if (window.ECCUBE.cookieConsent && window.ECCUBE.cookieConsent.getStatus) {
+                        return window.ECCUBE.cookieConsent.getStatus();
+                    }
+                    var matches = document.cookie.match(/(?:^|; )eccube_cookie_consent=([^;]*)/);
+                    return matches ? decodeURIComponent(matches[1]) : null;
+                }
+
+                if (currentStatus() === 'accepted') {
+                    window.ECCUBE.cookieConsent.loadGoogleAnalytics();
+                }
+
+                // 変化時: その場で同意したらリロードなしでロード（新規ユーザー向け）。
+                // 【GDPR 制限事項】撤回（accepted→rejected）は即時反映されない。ロード済み gtag は
+                // 現在ページでは停止せず、ブラウザに残存する GA Cookie も削除しない（非ロードになるのは次ページ遷移以降）。
+                document.addEventListener('eccube:cookie-consent:changed', function(e) {
+                    if (e.detail && e.detail.status === 'accepted') {
+                        window.ECCUBE.cookieConsent.loadGoogleAnalytics();
+                    }
+                });
+            })();
+        </script>
+    {% endif %}
 {% endif %}

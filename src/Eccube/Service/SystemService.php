@@ -13,6 +13,8 @@
 
 namespace Eccube\Service;
 
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Eccube\Common\EccubeConfig;
@@ -53,23 +55,12 @@ class SystemService implements EventSubscriberInterface
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('v', 'v');
 
-        $platform = $this->entityManager->getConnection()->getDatabasePlatform()->getName();
-        switch ($platform) {
-            case 'sqlite':
-                $prefix = 'SQLite version ';
-                $func = 'sqlite_version()';
-                break;
-
-            case 'mysql':
-                $prefix = 'MySQL ';
-                $func = 'version()';
-                break;
-
-            case 'pgsql':
-            default:
-                $prefix = '';
-                $func = 'version()';
-        }
+        $platform = $this->entityManager->getConnection()->getDatabasePlatform();
+        [$prefix, $func] = match (true) {
+            $platform instanceof SQLitePlatform => ['SQLite version ', 'sqlite_version()'],
+            $platform instanceof AbstractMySQLPlatform => ['MySQL ', 'version()'],
+            default => ['', 'version()'],
+        };
 
         $version = $this->entityManager
             ->createNativeQuery('select '.$func.' as v', $rsm)

@@ -44,6 +44,7 @@ class PasswordResetType extends AbstractType
         $builder->add('login_email', EmailType::class, [
             'attr' => [
                 'maxlength' => $this->eccubeConfig['eccube_stext_len'],
+                'autocomplete' => 'username',
             ],
             'constraints' => [
                 new Assert\NotBlank(),

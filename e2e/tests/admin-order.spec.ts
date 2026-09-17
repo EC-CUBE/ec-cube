@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 const pageTitle = '.c-pageTitle';
 const searchResultMsg = '#search_form #search_total_count';
 const searchErrorMsg = '.c-contentsArea__primaryCol .text-center';
@@ -566,5 +567,34 @@ test.describe('Admin Order (EA04)', () => {
     expect(download.suggestedFilename()).toMatch(/nouhinsyo\.pdf$/);
 
     await popup.close();
+  });
+
+  test('order_受注管理用メモのアイコンとモーダル表示 - #6821', async ({ page }) => {
+    // 受注明細にメモを持つフィクスチャ受注(注文者: 受注メモ確認用)を開く
+    await goOrderList(page);
+    await searchOrder(page, '受注メモ確認用');
+    await expect(page.locator(searchResultMsg)).not.toContainText('検索結果：0件が該当しました');
+
+    await page.locator('#search_result tbody tr:first-child a.action-edit').click();
+    await page.waitForLoadState('load');
+    await expect(page.locator(pageTitle)).toContainText('受注登録');
+
+    // メモアイコンは商品明細のみに表示される(送料・手数料・値引きには出ない)
+    const memoLink = page.locator('a[data-bs-target^="#order_memo_"]');
+    await expect(memoLink).toHaveCount(1);
+
+    // ツールチップのオーバーレイによるクリック阻害を避ける
+    await page.evaluate(() => document.querySelectorAll('.tooltip').forEach((el) => el.remove()));
+
+    // アイコンクリックでモーダルにメモ全文が表示される
+    await memoLink.click();
+    const modal = page.locator('[id^="order_memo_"].modal.show');
+    await expect(modal).toBeVisible();
+    await expect(modal).toContainText('梱包時は割れ物注意');
+    await expect(modal).toContainText('同梱物: 取扱説明書');
+
+    // 閉じる (フェードアウトの完了まで自動リトライで待つ)
+    await modal.locator('[data-bs-dismiss="modal"]').first().click();
+    await expect(page.locator('[id^="order_memo_"].modal.show')).toHaveCount(0);
   });
 });

@@ -23,6 +23,12 @@ file that was distributed with this source code.
             <li class="ec-footerNavi__link">
                 <a href="{{ url('contact') }}">{{ 'front.block.footer.inquiry'|trans }}</a>
             </li>
+            {# クッキー同意機能が ON のときのみ、設定ページへの導線を表示（店舗共通設定のためキャッシュ安全） #}
+            {% if BaseInfo.optionCookieConsent %}
+                <li class="ec-footerNavi__link">
+                    <a href="{{ url('cookie_consent_index') }}">{{ 'front.block.footer.cookie_settings'|trans }}</a>
+                </li>
+            {% endif %}
         </ul>
         <div class="ec-footerTitle">
             <div class="ec-footerTitle__logo">

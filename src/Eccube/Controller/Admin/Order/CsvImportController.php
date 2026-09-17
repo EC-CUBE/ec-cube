@@ -16,7 +16,6 @@ namespace Eccube\Controller\Admin\Order;
 use Doctrine\DBAL\ConnectionException;
 use Eccube\Controller\Admin\AbstractCsvImportController;
 use Eccube\Entity\Master\OrderStatus;
-use Eccube\Entity\Shipping;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\ShippingRepository;
 use Eccube\Service\CsvImportService;
@@ -56,7 +55,6 @@ class CsvImportController extends AbstractCsvImportController
                     $csv = $this->getImportData($formFile);
 
                     try {
-                        $this->entityManager->getConfiguration()->setSQLLogger();
                         $this->entityManager->getConnection()->beginTransaction();
 
                         $this->loadCsv($csv, $errors);

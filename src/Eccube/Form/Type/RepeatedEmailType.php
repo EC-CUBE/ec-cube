@@ -45,9 +45,7 @@ class RepeatedEmailType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_email_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_email_len']),
                 ],
             ],
             'first_options' => [
@@ -73,14 +71,5 @@ class RepeatedEmailType extends AbstractType
     public function getParent(): ?string
     {
         return RepeatedType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'repeated_email';
     }
 }

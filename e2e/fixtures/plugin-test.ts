@@ -1,5 +1,5 @@
-import { test as base, expect } from '@playwright/test';
-import { createDbClient, DbClient } from '../helpers/db-client';
+import { test as dbTest, expect } from './db-test';
+import { ADMIN_ROUTE } from '../config/default.config';
 import { compressPlugin, emptyDir } from '../helpers/tar-helper';
 import path from 'path';
 
@@ -13,29 +13,19 @@ export interface PluginTestConfig {
 }
 
 type PluginFixtures = {
-  db: DbClient;
   config: PluginTestConfig;
   compressPluginToRepos: (pluginDirName: string) => Promise<void>;
   compressPluginToDataDir: (pluginDirName: string) => Promise<void>;
 };
 
-export const test = base.extend<PluginFixtures>({
-  db: async ({}, use) => {
-    const databaseUrl = process.env.DATABASE_URL;
-    if (!databaseUrl) {
-      throw new Error('DATABASE_URL environment variable is required');
-    }
-    const client = await createDbClient(databaseUrl);
-    await use(client);
-    await client.close();
-  },
-
+// `db` は fixtures/db-test.ts から継承する（定義を 2 箇所に持たない）
+export const test = dbTest.extend<PluginFixtures>({
   config: async ({}, use) => {
     const config: PluginTestConfig = {
       projectDir: process.env.ECCUBE_PROJECT_DIR || path.resolve(__dirname, '..', '..'),
-      adminRoute: process.env.ECCUBE_ADMIN_ROUTE || 'admin',
+      adminRoute: ADMIN_ROUTE,
       reposDir: process.env.REPOS_DIR || path.resolve(__dirname, '..', '..', 'repos'),
-      pluginDataDir: process.env.PLUGIN_DATA_DIR || path.resolve(__dirname, '..', '..', 'codeception', '_data', 'plugins'),
+      pluginDataDir: process.env.PLUGIN_DATA_DIR || path.resolve(__dirname, 'plugins'),
     };
     await use(config);
   },

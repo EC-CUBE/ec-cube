@@ -44,7 +44,7 @@ class AuthenticationType extends AbstractType
                 'label' => 'admin.store.setting.api_key',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex(['pattern' => '/^[0-9a-zA-Z]+$/']),
+                    new Assert\Regex(pattern: '/^[0-9a-zA-Z]+$/'),
                 ],
             ])
             ->add('php_path', TextType::class,
@@ -52,9 +52,7 @@ class AuthenticationType extends AbstractType
                     'label' => 'admin.store.setting.php_path',
                     'required' => false,
                     'constraints' => [
-                        new Assert\Length([
-                            'max' => $this->eccubeConfig->get('eccube_smtext_len'),
-                        ]),
+                        new Assert\Length(max: $this->eccubeConfig->get('eccube_smtext_len')),
                     ],
                 ]);
     }

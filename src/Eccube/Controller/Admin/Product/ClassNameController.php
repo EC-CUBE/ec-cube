@@ -196,10 +196,6 @@ class ClassNameController extends AbstractController
         // タイムアウトを無効にする.
         set_time_limit(0);
 
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger();
-
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request): void {
             // CSV種別を元に初期化.

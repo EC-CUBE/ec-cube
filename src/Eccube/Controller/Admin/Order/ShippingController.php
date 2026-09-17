@@ -224,7 +224,7 @@ class ShippingController extends AbstractController
             'form' => $form->createView(),
             'searchProductModalForm' => $searchProductModalForm->createView(),
             'Order' => $Order,
-            'shippingDeliveryTimes' => $this->serializer->serialize($times, 'json'),
+            'shippingDeliveryTimes' => json_encode($times, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
         ];
     }
 

@@ -37,6 +37,12 @@ jobs:
     # PR/push では最新 PHP のみ。全バージョンは weekly-test.yml が週次で回す
     with:
       php-versions: "['8.5']"
+  agentic-commerce-e2e:
+    # plugin-test と並列で実行する (同じ needs)。
+    needs: [ unit-test, e2e-test ]
+    # 本体 ↔ eccube-api4 ↔ sample-payment-plugin の結合 E2E。
+    # 依存プラグインは EC-CUBE org の 4.4 ブランチを既定参照 (eccube-api4#191 / sample-payment-plugin#54)。
+    uses: ./.github/workflows/agentic-commerce-e2e.yml
   dockerbuild:
     uses: ./.github/workflows/dockerbuild.yml
     permissions:
@@ -47,6 +53,12 @@ jobs:
     uses: ./.github/workflows/plugin-test.yml
     with:
       php-versions: "['8.5']"
+  permission-lanes-test:
+    needs: [ unit-test, e2e-test ]
+    # Web サーバーと CLI の書き込み権限を分けた構成 (docker-compose.permission-lanes.yml) を
+    # 起動して検証する。 別 uid かつ Apache 経由でしか再現しない挙動 (読み取り専用モード・
+    # レーン境界・CLI 導線) は単体テストでは検出できない (#7072 Phase 6)。
+    uses: ./.github/workflows/permission-lanes-test.yml
   e2e-test-throttling:
     needs: [ plugin-test ]
     uses: ./.github/workflows/e2e-test-throttling.yml
@@ -56,9 +68,19 @@ jobs:
 #    needs: [ plugin-test ]
 #    uses: ./.github/workflows/deny-test.yml
   success:
-    needs: [ e2e-test-throttling, dockerbuild ]
+    # 全ジョブを直接 needs する。チェーン依存(success←throttling←plugin-test←unit-test)だと
+    # 上流の failure が各ホップで skipped に化けて末端へ届かず、必須チェック success が
+    # skipped=パス扱いとなって赤テストのまま auto-merge されてしまうため(#6840)。
+    needs: [ rector, phpstan, php-cs-fixer, unit-test, e2e-test, plugin-test, e2e-test-throttling, permission-lanes-test, dockerbuild, agentic-commerce-e2e ]
+    # 上流が失敗しても success 自体は必ず実行する(skip させない)
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
+      # skipped は許容(dependabot の coverage 等、正当な skip がある)。
+      # failure / cancelled のみを赤として扱い、auto-merge をブロックする。
+      - name: Check required jobs
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        run: echo "::error::required job failed or was cancelled" && exit 1
       - name: success
         run: echo "::notice::success!"
   coverage:

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { CUSTOMER_PASSWORD } from '../config/default.config';
 
 /**
  * Helper: Add a product to cart and go to the cart page.
@@ -23,7 +24,7 @@ async function loginAsTestCustomer(page: import('@playwright/test').Page) {
   await page.goto('/mypage/login');
   await page.waitForLoadState('load');
   await page.locator('input[name="login_email"]').fill('playwright@test.test');
-  await page.locator('input[name="login_pass"]').fill('password');
+  await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
   await page.getByRole('button', { name: 'ログイン' }).click();
   await page.waitForLoadState('load');
 }
@@ -38,6 +39,59 @@ async function clearCart(page: import('@playwright/test').Page) {
   const deleteLinks = page.locator('.ec-cartRow__delColumn a');
   while (await deleteLinks.count() > 0) {
     await deleteLinks.first().click();
+    await page.waitForLoadState('load');
+  }
+}
+
+/**
+ * name01 marker shared by the addresses created in this spec.
+ * Used by deleteTestCustomerAddresses() to clean up leftovers from a failed run.
+ */
+const TEST_ADDRESS_NAME01 = '配送6259';
+
+/**
+ * Helper: Add a customer address from MyPage with a distinctive name02 marker.
+ * Returns to caller on the address list page.
+ */
+async function addCustomerAddressFromMypage(page: import('@playwright/test').Page, name02: string) {
+  await page.goto('/mypage/delivery');
+  await page.waitForLoadState('load');
+  await page.locator('div.ec-addressRole div.ec-addressRole__actions a').click();
+  await page.waitForLoadState('load');
+  await page.locator('#customer_address_name_name01').fill(TEST_ADDRESS_NAME01);
+  await page.locator('#customer_address_name_name02').fill(name02);
+  await page.locator('#customer_address_kana_kana01').fill('ハイソウ');
+  await page.locator('#customer_address_kana_kana02').fill('ハナコ');
+  await page.locator('#customer_address_postal_code').fill('530-0001');
+  await page.locator('#customer_address_address_pref').selectOption({ value: '27' });
+  await page.waitForTimeout(1000); // 郵便番号(yubinbango)の自動入力を待つ
+  await page.locator('#customer_address_address_addr01').fill('大阪市北区');
+  await page.locator('#customer_address_address_addr02').fill('梅田1-1-1');
+  await page.locator('#customer_address_phone_number').fill('111-111-111');
+  await page.locator('div.ec-RegisterRole__actions button').click();
+  await page.waitForLoadState('load');
+  await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先一覧');
+}
+
+/**
+ * Helper: Delete every address created by this spec from MyPage.
+ * Keeps retries green: a run that fails between add and delete would otherwise leave
+ * an address behind and make the marker match multiple items (strict mode violation).
+ */
+async function deleteTestCustomerAddresses(page: import('@playwright/test').Page) {
+  await page.goto('/mypage/delivery');
+  await page.waitForLoadState('load');
+  // テストが途中で失敗してログアウト状態になっている場合はログインし直す.
+  if (!page.url().includes('/mypage/delivery')) {
+    await loginAsTestCustomer(page);
+    await page.goto('/mypage/delivery');
+    await page.waitForLoadState('load');
+  }
+  const items = page.locator('.ec-addressList__item', { hasText: TEST_ADDRESS_NAME01 });
+  while (await items.count() > 0) {
+    // clearCart() の dialog ハンドラと二重に accept しないよう, クリックごとに once で張る.
+    page.once('dialog', dialog => dialog.accept());
+    await items.first().locator('a.ec-addressList__remove').click();
     await page.waitForLoadState('load');
   }
 }
@@ -78,7 +132,7 @@ test.describe('Front Order (EF03)', () => {
     // ショッピングログインページでログイン
     await expect(page).toHaveURL(/\/shopping\/login/);
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -332,6 +386,86 @@ test.describe('Front Order (EF03)', () => {
     await expect(page.locator('.ec-pageHeader h1')).toContainText('ご注文完了');
   });
 
+  // お届け先選択画面での住所の編集・削除 (issue #6259)
+  test.describe('お届け先の編集・削除 (EF0305-UC10)', () => {
+
+    test.afterEach(async ({ page }) => {
+      // 途中で失敗しても住所を残さない. 残るとマーカーが多重マッチして
+      // リトライが strict mode violation で恒久失敗する.
+      await deleteTestCustomerAddresses(page);
+    });
+
+    test('EF0305-UC10-T01 会員 お届け先の編集・削除', async ({ page }) => {
+      // 実行ごとに一意なマーカーを使い, 残留データと多重マッチしないようにする.
+      const suffix = String(Date.now());
+      const name02 = `花子${suffix}`;
+      const editedName02 = `桜子${suffix}`;
+
+      await loginAsTestCustomer(page);
+
+      // お届け先を追加(テスト末尾と afterEach で削除して原状復帰する).
+      await addCustomerAddressFromMypage(page, name02);
+
+      // カート→レジ→ご注文手続き.
+      await addProductToCartAndGoToCart(page, 1);
+      await page.locator('a.ec-blockBtn--action', { hasText: 'レジに進む' }).click();
+      await page.waitForLoadState('load');
+      await expect(page).toHaveURL(/\/shopping$/);
+
+      // お届け先選択画面へ.
+      await page.locator('div.ec-orderDelivery__change button').first().click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+
+      // 追加した住所の項目に「変更」「削除」ボタンがあること.
+      const item = page.locator('.ec-addressList__item', { hasText: name02 });
+      await expect(item.getByRole('link', { name: '変更' })).toBeVisible();
+      await expect(item.getByRole('link', { name: '削除' })).toBeVisible();
+
+      // 追加した住所を選択し, ご注文手続き画面のお届け先に適用する.
+      await item.locator('input[type="radio"]').check();
+      await page.locator('button.ec-blockBtn--action', { hasText: '選択したお届け先に送る' }).click();
+      await page.waitForLoadState('load');
+      await expect(page).toHaveURL(/\/shopping$/);
+      await expect(page.locator('div.ec-orderDelivery')).toContainText(name02);
+
+      // お届け先選択画面へ戻る.
+      await page.locator('div.ec-orderDelivery__change button').first().click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+
+      // 編集: name02 を変更して登録 → 選択画面に戻り反映されること.
+      await page.locator('.ec-addressList__item', { hasText: name02 }).getByRole('link', { name: '変更' }).click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の変更');
+      await page.locator('#shopping_shipping_name_name02').fill(editedName02);
+      await page.locator('div.ec-RegisterRole__actions button.ec-blockBtn--action').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+      await expect(page.locator('.ec-addressList')).toContainText(editedName02);
+
+      // 適用中の住所を編集したので, 再選択せずに戻ってもご注文手続き画面へ反映されていること.
+      await page.locator('a.ec-blockBtn--cancel', { hasText: '戻る' }).click();
+      await page.waitForLoadState('load');
+      await expect(page).toHaveURL(/\/shopping$/);
+      await expect(page.locator('div.ec-orderDelivery')).toContainText(editedName02);
+
+      // お届け先選択画面へ戻る.
+      await page.locator('div.ec-orderDelivery__change button').first().click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+
+      // 削除: 確認ダイアログを承認 → 一覧から消えること.
+      // once にして afterEach(clearCart)のダイアログハンドラと二重に accept しないようにする.
+      page.once('dialog', dialog => dialog.accept());
+      const editedItem = page.locator('.ec-addressList__item', { hasText: editedName02 });
+      await editedItem.getByRole('link', { name: '削除' }).click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('div.ec-pageHeader h1')).toContainText('お届け先の指定');
+      await expect(page.locator('.ec-addressList')).not.toContainText(editedName02);
+    });
+  });
+
   test('EF0305-UC07-T01 ログインしてカートをマージ', async ({ page }) => {
     // ログアウト状態から開始
     await page.goto('/logout');
@@ -352,7 +486,7 @@ test.describe('Front Order (EF03)', () => {
 
     // ログイン
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -382,7 +516,7 @@ test.describe('Front Order (EF03)', () => {
 
     // ログイン
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -452,7 +586,7 @@ test.describe('Front Order (EF03)', () => {
     await page1.goto('/mypage/login');
     await page1.waitForLoadState('load');
     await page1.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page1.locator('input[name="login_pass"]').fill('password');
+    await page1.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page1.getByRole('button', { name: 'ログイン' }).click();
     await page1.waitForLoadState('load');
 
@@ -462,7 +596,7 @@ test.describe('Front Order (EF03)', () => {
     await page2.goto('/mypage/login');
     await page2.waitForLoadState('load');
     await page2.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page2.locator('input[name="login_pass"]').fill('password');
+    await page2.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page2.getByRole('button', { name: 'ログイン' }).click();
     await page2.waitForLoadState('load');
 
@@ -502,7 +636,7 @@ test.describe('Front Order (EF03)', () => {
     await page1.goto('/mypage/login');
     await page1.waitForLoadState('load');
     await page1.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page1.locator('input[name="login_pass"]').fill('password');
+    await page1.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page1.getByRole('button', { name: 'ログイン' }).click();
     await page1.waitForLoadState('load');
 
@@ -535,7 +669,7 @@ test.describe('Front Order (EF03)', () => {
     await page2.goto('/mypage/login');
     await page2.waitForLoadState('load');
     await page2.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page2.locator('input[name="login_pass"]').fill('password');
+    await page2.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page2.getByRole('button', { name: 'ログイン' }).click();
     await page2.waitForLoadState('load');
 
@@ -684,7 +818,7 @@ test.describe('Front Order (EF03)', () => {
 
     // Login at shopping login page
     await page.locator('input[name="login_email"]').fill('playwright@test.test');
-    await page.locator('input[name="login_pass"]').fill('password');
+    await page.locator('input[name="login_pass"]').fill(CUSTOMER_PASSWORD);
     await page.getByRole('button', { name: 'ログイン' }).click();
     await page.waitForLoadState('load');
 
@@ -758,5 +892,111 @@ test.describe('Front Order (EF03)', () => {
 
     // カートに商品が残っていることを確認
     await expect(page.locator('.ec-cartRow__name').first()).toContainText('チェリーアイスサンド');
+  });
+});
+
+/**
+ * 配送方法・支払い方法の保存と復元 (#6819)。
+ *
+ * 保存（注文確定）→ 情報ボックス表示 → 手動復元のユーザージャーニーを検証する。
+ * ゲスト除外・複数配送先・非公開時の警告などのバリエーションは
+ * PHPUnit の機能テスト（ShoppingControllerPreferredShippingPaymentTest）でカバーする。
+ *
+ * 2 つのテストは保存→復元の順序に依存するため serial で実行する。
+ */
+test.describe.serial('Front Order 配送方法・支払い方法の保存と復元 (#6819)', () => {
+
+  /**
+   * Helper: カートに商品を入れ、レジに進んで /shopping まで遷移する。
+   */
+  async function goToShopping(page: import('@playwright/test').Page) {
+    await addProductToCartAndGoToCart(page, 1);
+    await page.locator('a.ec-blockBtn--action', { hasText: 'レジに進む' }).click();
+    await page.waitForLoadState('load');
+    await expect(page).toHaveURL(/\/shopping$/);
+  }
+
+  /**
+   * Helper: 支払方法のラジオを選択する。
+   * data-trigger="change" によりフォームが /shopping/redirect_to へ送信され、画面がリロードされる。
+   */
+  async function selectPayment(page: import('@playwright/test').Page, label: string) {
+    const radio = page.getByRole('radio', { name: label });
+    if (await radio.isChecked()) {
+      return;
+    }
+    await Promise.all([
+      page.waitForResponse((resp) => resp.url().includes('/shopping/redirect_to')),
+      radio.check(),
+    ]);
+    await page.waitForLoadState('load');
+    await expect(page.getByRole('radio', { name: label })).toBeChecked();
+  }
+
+  test.afterEach(async ({ page }) => {
+    await clearCart(page);
+  });
+
+  test('保存チェックボックスONで注文すると次回の注文手続きに保存設定が表示される', async ({ page }) => {
+    await loginAsTestCustomer(page);
+    await goToShopping(page);
+
+    // 保存対象を明確にするため支払方法を「銀行振込」に変更する
+    await selectPayment(page, '銀行振込');
+
+    // 確認画面へ
+    await page.locator('.ec-blockBtn--action', { hasText: '確認する' }).click();
+    await page.waitForLoadState('load');
+    await expect(page).toHaveURL(/\/shopping\/confirm/);
+
+    // 保存チェックボックスが表示され、初期値は OFF
+    const checkbox = page.locator('input[name="_shopping_order[save_preferred_shipping_payment]"]');
+    await expect(checkbox).toBeVisible();
+    await expect(checkbox).not.toBeChecked();
+    const checkboxArea = page.locator('.ec-totalBox__preferred');
+    await expect(checkboxArea).toContainText('この配送方法と支払い方法を保存する');
+    await expect(checkboxArea).toContainText('次回の注文時にワンクリックで設定できます');
+
+    // ON にして注文する
+    await checkbox.check();
+    await page.locator('.ec-blockBtn--action', { hasText: '注文する' }).click();
+    await page.waitForLoadState('load');
+    await expect(page).toHaveURL(/\/shopping\/complete/);
+    await expect(page.locator('.ec-pageHeader h1')).toContainText('ご注文完了');
+
+    // 再度購入フローへ進むと、お客様情報の直後に情報ボックスが表示される
+    await goToShopping(page);
+    const box = page.locator('.ec-orderPreferred');
+    await expect(box).toBeVisible();
+    await expect(box).toContainText('保存された設定があります');
+    await expect(box).toContainText('配送方法: サンプル業者');
+    await expect(box).toContainText('支払い方法: 銀行振込');
+    await expect(box.locator('button', { hasText: 'この設定を使用する' })).toBeVisible();
+  });
+
+  test('「この設定を使用する」で保存された設定が復元され合計が再計算される', async ({ page }) => {
+    await loginAsTestCustomer(page);
+    await goToShopping(page);
+
+    // 前のテストで保存済みのため情報ボックスが表示される
+    const box = page.locator('.ec-orderPreferred');
+    await expect(box).toBeVisible();
+
+    // 保存値(銀行振込)と異なる支払方法を選択しておく
+    await selectPayment(page, '郵便振替');
+
+    // 復元ボタンをクリックすると /shopping に戻り、成功メッセージが表示される
+    await box.locator('button', { hasText: 'この設定を使用する' }).click();
+    await page.waitForLoadState('load');
+    await expect(page).toHaveURL(/\/shopping$/);
+    await expect(page.locator('.ec-cartRole')).toContainText('保存された設定を適用しました');
+
+    // 支払方法・配送方法が保存値に復元される
+    await expect(page.getByRole('radio', { name: '銀行振込' })).toBeChecked();
+    const selectedDelivery = page.locator('select[name="_shopping_order[Shippings][0][Delivery]"] option:checked');
+    await expect(selectedDelivery).toHaveText('サンプル業者');
+
+    // 合計金額(送料込み)が表示されている
+    await expect(page.locator('.ec-totalBox__paymentTotal')).toContainText('￥');
   });
 });

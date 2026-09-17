@@ -16,9 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Faker\Generator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -111,7 +109,6 @@ final class LogControllerTest extends AbstractAdminWebTestCase
 
         $this->formData['line_max'] = $value;
 
-        /** @var Crawler $crawler */
         $crawler = $this->client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_log'),
@@ -141,7 +138,6 @@ final class LogControllerTest extends AbstractAdminWebTestCase
 
     private function createTestFile($number)
     {
-        /** @var Generator $faker */
         $faker = $this->getFaker();
 
         if (!file_exists($this->logTest)) {

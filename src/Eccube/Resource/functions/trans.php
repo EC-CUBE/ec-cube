@@ -24,14 +24,3 @@ function trans(string|int $id, array $parameters = [], ?string $domain = null, ?
 
     return $Translator->trans($id, $parameters, $domain, $locale);
 }
-
-/**
- * @param mixed $number - 不要引数
- * @param array<mixed> $parameters
- *
- * @deprecated  transを使用してください。
- */
-function transChoice(string|int $id, mixed $number, array $parameters = [], ?string $domain = null, ?string $locale = null): string
-{
-    return trans($id, $parameters, $domain, $locale);
-}

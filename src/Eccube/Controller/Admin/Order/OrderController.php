@@ -52,7 +52,6 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class OrderController extends AbstractController
@@ -186,7 +185,8 @@ class OrderController extends AbstractController
 
         $qb = $this->orderRepository->getQueryBuilderBySearchDataForAdmin($searchData);
 
-        $sortKey = $searchData['sortkey'];
+        // null を配列オフセットに使うのは PHP 8.5 で非推奨。null は '' として扱われるため挙動は変わらない
+        $sortKey = $searchData['sortkey'] ?? '';
         $paginate_options = ['wrap-queries' => true];
         if (empty($this->orderRepository::COLUMNS[$sortKey]) || $sortKey == 'order_status') {
             $paginate_options = [];
@@ -298,10 +298,6 @@ class OrderController extends AbstractController
     {
         // タイムアウトを無効にする.
         set_time_limit(0);
-
-        // sql loggerを無効にする.
-        $em = $this->entityManager;
-        $em->getConfiguration()->setSQLLogger();
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $csvTypeId): void {
@@ -472,14 +468,11 @@ class OrderController extends AbstractController
         $trackingNumber = $request->get('tracking_number') ?? '';
         $trackingNumber = mb_convert_kana((string) $trackingNumber, 'a', 'utf-8');
 
-        /** @var ConstraintViolationListInterface $errors */
         $errors = $this->validator->validate(
             $trackingNumber,
             [
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[0-9a-zA-Z-]+$/u', 'message' => trans('admin.order.tracking_number_error')]
-                ),
+                new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                new Assert\Regex(pattern: '/^[0-9a-zA-Z-]+$/u', message: trans('admin.order.tracking_number_error')),
             ]
         );
 
@@ -592,7 +585,8 @@ class OrderController extends AbstractController
             ]);
         }
 
-        // TCPDF::Outputを実行するとプロパティが初期化されるため、ファイル名を事前に取得しておく
+        // ファイル名はページ数で決まる。出力前に取得する（4.3 の TCPDF は Output() で
+        // 文書を閉じてページ数を失ったため必須だった。現在の描画器は出力しても状態を保つ）
         $pdfFileName = $this->orderPdfService->getPdfFileName();
 
         // ダウンロードする

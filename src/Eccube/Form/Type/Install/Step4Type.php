@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContext;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class Step4Type extends AbstractType
 {
@@ -109,12 +109,10 @@ class Step4Type extends AbstractType
                         'driver' => $data['database'],
                         'port' => $data['database_port'],
                     ];
-                    $conn = DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
-
                     // todo MySQL, PostgreSQLのバージョンチェックも欲しい.DBALで接続すればエラーになる？
                     $conn = DriverManager::getConnection($connectionParams, $config);
-                    $conn->connect();
+                    // DBAL 4 では connect() が protected のため, 実クエリ発行で接続検証する.
+                    $conn->executeQuery('SELECT 1');
                 } catch (\Exception $e) {
                     $form['database']->addError(new FormError(trans('install.database_connection_error').$e->getMessage()));
                 }
@@ -131,14 +129,14 @@ class Step4Type extends AbstractType
     }
 
     /**
-     * @param array<mixed> $data
-     * @param mixed|null $param
+     * Assert\Callback から各フィールドの値が渡されるため, $data はスカラー値となる.
      */
-    public function validate(array $data, ExecutionContext $context, mixed $param = null): void
+    public function validate(mixed $data, ExecutionContextInterface $context, mixed $param = null): void
     {
-        $parameters = $this->requestStack->getCurrentRequest()->get('install_step4');
-        if ($parameters['database'] != 'pdo_sqlite') {
-            $context->getValidator()->validate($data, [
+        $parameters = $this->requestStack->getCurrentRequest()?->get('install_step4');
+        if (($parameters['database'] ?? null) !== 'pdo_sqlite') {
+            // inContext() を経由しないと違反が現在のコンテキストに追加されない.
+            $context->getValidator()->inContext($context)->validate($data, [
                 new Assert\NotBlank(),
             ]);
         }

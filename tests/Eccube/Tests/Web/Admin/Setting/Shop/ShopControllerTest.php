@@ -133,6 +133,75 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
         yield [false, false];
     }
 
+    /**
+     * MCP サーバ有効化トグルが BaseInfo に保存されること.
+     * チェックボックスは未チェックをキー欠落で表すため, 無効化はキーを送らないことで再現する.
+     */
+    #[DataProvider(methodName: 'dataMcpEnabledProvider')]
+    #[Group(name: 'cache-clear')]
+    public function testSubmitPersistsMcpEnabledOption(bool $checked, bool $expected): void
+    {
+        $formData = $this->createFormData();
+        if ($checked) {
+            $formData['mcp_enabled'] = '1';
+        } else {
+            unset($formData['mcp_enabled']);
+        }
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $this->assertSame($expected, $BaseInfo->isMcpEnabled());
+    }
+
+    public static function dataMcpEnabledProvider(): \Iterator
+    {
+        yield [true, true];
+        yield [false, false];
+    }
+
+    /**
+     * 納品書PDFの出力項目トグルが BaseInfo に保存されること (#6197).
+     * 既定 ON の項目を OFF に、既定 OFF の項目を ON にできることの双方を確認する.
+     * チェックボックスは未チェックをキー欠落で表すため, 無効化はキーを送らないことで再現する.
+     */
+    #[DataProvider(methodName: 'dataOrderPdfVisibleProvider')]
+    #[Group(name: 'cache-clear')]
+    public function testSubmitPersistsOrderPdfVisibleOptions(bool $checked, bool $expected): void
+    {
+        $formData = $this->createFormData();
+        foreach (['order_pdf_visible_shop_name', 'order_pdf_visible_business_hour'] as $key) {
+            if ($checked) {
+                $formData[$key] = '1';
+            } else {
+                unset($formData[$key]);
+            }
+        }
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        // 既定 ON の店名, 既定 OFF の店舗営業時間, いずれも送信内容どおりに保存される
+        $this->assertSame($expected, $BaseInfo->isOrderPdfVisibleShopName());
+        $this->assertSame($expected, $BaseInfo->isOrderPdfVisibleBusinessHour());
+    }
+
+    public static function dataOrderPdfVisibleProvider(): \Iterator
+    {
+        yield [true, true];
+        yield [false, false];
+    }
+
     public static function dataSubmitProvider(): \Iterator
     {
         yield [false, false];

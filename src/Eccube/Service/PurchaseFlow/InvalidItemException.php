@@ -22,7 +22,7 @@ class InvalidItemException extends \Exception
      */
     public function __construct(?string $message = null, private readonly ?array $messageArgs = [], private readonly bool $warning = false)
     {
-        parent::__construct($message);
+        parent::__construct($message ?? '');
     }
 
     /**

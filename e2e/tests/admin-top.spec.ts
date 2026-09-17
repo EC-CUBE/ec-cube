@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
+import { ADMIN_ROUTE } from '../config/default.config';
 
-const adminRoute = process.env.ECCUBE_ADMIN_ROUTE || 'admin';
+const adminRoute = ADMIN_ROUTE;
 const pageTitle = '.c-pageTitle h2.c-pageTitle__title';
 
 test.describe('Admin Top (EA01)', () => {

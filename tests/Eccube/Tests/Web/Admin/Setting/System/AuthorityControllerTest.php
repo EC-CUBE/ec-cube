@@ -20,7 +20,6 @@ use Eccube\Entity\Master\Authority;
 use Eccube\Entity\Member;
 use Eccube\Repository\AuthorityRoleRepository;
 use Eccube\Repository\Master\AuthorityRepository;
-use Eccube\Repository\MemberRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 

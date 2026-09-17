@@ -18,6 +18,7 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * CategoryRepository test cases.
@@ -229,6 +230,7 @@ final class CategoryRepositoryTest extends EccubeTestCase
         $this->assertNotInstanceOf(Category::class, $Category);
     }
 
+    #[DoesNotPerformAssertions]
     public function testDeleteFail()
     {
         // 商品をカテゴリに紐付けて作成.
@@ -240,7 +242,6 @@ final class CategoryRepositoryTest extends EccubeTestCase
             $this->categoryRepository->delete($Category);
             $this->fail();
         } catch (\Exception) {
-            $this->addToAssertionCount(1);
         }
     }
 }

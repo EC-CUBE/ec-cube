@@ -119,10 +119,10 @@ class AgentCheckoutIdempotencyStore
     private function replay(string $storedHash, bool $hasResponse, int $storedStatus, array $storedBody, string $requestHash): array
     {
         if ($storedHash !== $requestHash) {
-            throw new IdempotencyConflictException('Idempotency-Key was reused with different request parameters.');
+            throw new IdempotencyConflictException('Idempotency-Key was reused with different request parameters.', IdempotencyConflictException::REASON_CONFLICT);
         }
         if (!$hasResponse) {
-            throw new IdempotencyConflictException('A request with the same Idempotency-Key is currently being processed.');
+            throw new IdempotencyConflictException('A request with the same Idempotency-Key is currently being processed.', IdempotencyConflictException::REASON_IN_FLIGHT);
         }
 
         return ['status' => $storedStatus, 'body' => $storedBody, 'replayed' => true];
@@ -141,7 +141,7 @@ class AgentCheckoutIdempotencyStore
         );
         if ($row === false) {
             // 競合相手がロールバック等で消えた場合は処理中扱い (再試行を促す)。
-            throw new IdempotencyConflictException('A request with the same Idempotency-Key is currently being processed.');
+            throw new IdempotencyConflictException('A request with the same Idempotency-Key is currently being processed.', IdempotencyConflictException::REASON_IN_FLIGHT);
         }
 
         $hasResponse = $row['response_status'] !== null;
