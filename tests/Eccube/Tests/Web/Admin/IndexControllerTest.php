@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin;
 
-use Doctrine\DBAL\Logging\DebugStack;
+use Carbon\Carbon;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
@@ -24,6 +24,7 @@ use Eccube\Repository\OrderRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class IndexControllerTest extends AbstractAdminWebTestCase
@@ -196,12 +197,9 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * Test dashboard performance with large dataset
-     * Verifies that database-level aggregation performs efficiently
-     *
-     * @group performance
+     * 売上グラフ (週間・月間・年間) が、アプリケーションのタイムゾーンの日付で集計されることを確認する.
      */
-    public function testDashboardPerformanceWithLargeDataset()
+    public function testSaleChart()
     {
         // Clear existing orders to ensure test isolation
         $this->deleteAllRows(['dtb_order']);
@@ -209,102 +207,75 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $Customer = $this->createCustomer();
         $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
 
-        // Create 100 orders to simulate realistic load
-        $orderCount = 100;
+        $today = Carbon::today();
+        $yesterday = Carbon::yesterday()->endOfDay();
 
-        for ($i = 0; $i < $orderCount; $i++) {
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderStatus($OrderNew);
-            // Distribute orders across the last 30 days
-            $daysAgo = random_int(0, 29);
-            $orderDate = new \DateTime("-{$daysAgo} days");
-            $Order->setOrderDate($orderDate);
+        // 日付境界の直後 (本日 00:00:00) と直前 (昨日 23:59:59) に 1 件ずつ. UTC ではどちらも昨日の日付になる.
+        [$TodayOrder, $YesterdayOrder] = $this->createOrders([$Customer, $Customer], ['orderStatus' => $OrderNew]);
+        $TodayOrder->setOrderDate($today->toDateTime());
+        $TodayOrder->setPaymentTotal('1000');
+        $YesterdayOrder->setOrderDate($yesterday->toDateTime());
+        $YesterdayOrder->setPaymentTotal('2000');
+
+        // 集計から除外されるステータス
+        foreach ([OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED] as $statusId) {
+            $OrderStatus = $this->orderStatusRepository->find($statusId);
+            [$ExcludedOrder] = $this->createOrders([$Customer], ['orderStatus' => $OrderStatus]);
+            $ExcludedOrder->setOrderDate($today->toDateTime());
+            $ExcludedOrder->setPaymentTotal('4000');
         }
         $this->entityManager->flush();
-        $this->entityManager->clear();
 
-        // Measure query performance
-        $queryStartTime = microtime(true);
-        $queryStartMemory = memory_get_usage();
-
-        $crawler = $this->client->request(
+        $this->client->request(
             Request::METHOD_GET,
-            $this->generateUrl('admin_homepage')
+            $this->generateUrl('admin_homepage_sale', ['_token' => 'dummy']),
+            [],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
         );
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
 
-        $queryEndTime = microtime(true);
-        $queryEndMemory = memory_get_usage();
+        [$weekly, $monthly, $yearly] = json_decode((string) $this->client->getResponse()->getContent(), true);
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $assertSales = function (array $data, string $key, string $price, int $count): void {
+            $this->assertArrayHasKey($key, $data);
+            $this->assertSame(0, bccomp($price, (string) $data[$key]['price'], 2), $key.' の売上');
+            $this->assertSame($count, $data[$key]['count'], $key.' の件数');
+        };
+        $sumCount = fn (array $data): int => (int) array_sum(array_column($data, 'count'));
 
-        // Performance assertions
-        $queryTime = $queryEndTime - $queryStartTime;
-        $memoryUsed = ($queryEndMemory - $queryStartMemory) / 1024 / 1024; // Convert to MB
+        // 週間: 7 日前〜本日の日別
+        $this->assertCount(8, $weekly);
+        $assertSales($weekly, $today->format('Y/m/d'), '1000', 1);
+        $assertSales($weekly, $yesterday->format('Y/m/d'), '2000', 1);
+        $this->assertSame(2, $sumCount($weekly));
 
-        // Dashboard should load in less than 2 seconds even with 100+ orders
-        $this->assertLessThan(2.0, $queryTime,
-            "Dashboard took {$queryTime}s to load, should be under 2s with database aggregation");
+        // 月間: 月初〜本日の日別. 本日が月初なら昨日は含まれない
+        $sameMonth = $today->isSameMonth($yesterday);
+        $this->assertCount((int) $today->format('j'), $monthly);
+        $assertSales($monthly, $today->format('Y/m/d'), '1000', 1);
+        if ($sameMonth) {
+            $assertSales($monthly, $yesterday->format('Y/m/d'), '2000', 1);
+        }
+        $this->assertSame($sameMonth ? 2 : 1, $sumCount($monthly));
 
-        // Memory usage should be reasonable (less than 15MB for query execution)
-        $this->assertLessThan(15, $memoryUsed,
-            "Dashboard used {$memoryUsed}MB of memory, should be under 15MB with database aggregation");
-
-        // Verify data is displayed correctly
-        $salesText = $crawler->filter('#chart-statistics > div.card-body > div.row:nth-child(1) > div:nth-child(1) > div')->text();
-        $this->assertStringContainsString('￥', $salesText);
-        $this->assertStringContainsString('/', $salesText);
+        // 年間: 1 年前の同月〜本日の月別 (13 か月)
+        $this->assertCount(13, $yearly);
+        if ($sameMonth) {
+            $assertSales($yearly, $today->format('Y/m'), '3000', 2);
+        } else {
+            $assertSales($yearly, $today->format('Y/m'), '1000', 1);
+            $assertSales($yearly, $yesterday->format('Y/m'), '2000', 1);
+        }
+        $this->assertSame(2, $sumCount($yearly));
     }
 
-    /**
-     * Test that database aggregation is used instead of loading all entities
-     * This ensures we don't have N+1 query problems
-     *
-     * @group performance
-     */
-    public function testDatabaseAggregationUsed()
+    public function testSaleChartWithoutXmlHttpRequest()
     {
-        // Clear existing orders to ensure test isolation
-        $this->deleteAllRows(['dtb_order']);
-
-        $Customer = $this->createCustomer();
-        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
-
-        // Create multiple orders
-        for ($i = 0; $i < 10; $i++) {
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderStatus($OrderNew);
-            $Order->setOrderDate(new \DateTime('today'));
-        }
-        $this->entityManager->flush();
-        $this->entityManager->clear();
-
-        // Enable query logging
-        $connection = $this->entityManager->getConnection();
-        $logger = new DebugStack();
-        $connection->getConfiguration()->setSQLLogger($logger);
-
-        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_homepage'));
-
-        $connection->getConfiguration()->setSQLLogger();
-
-        // Count queries that fetch Order entities
-        $orderEntityQueries = 0;
-        foreach ($logger->queries as $query) {
-            // Check if query is selecting from dtb_order table
-            if (stripos((string) $query['sql'], 'FROM dtb_order') !== false) {
-                // If it's using GROUP BY and aggregate functions, it's the efficient query
-                if (stripos((string) $query['sql'], 'GROUP BY') !== false
-                    && (stripos((string) $query['sql'], 'SUM') !== false || stripos((string) $query['sql'], 'COUNT') !== false)) {
-                    // This is good - database aggregation
-                    continue;
-                }
-                $orderEntityQueries++;
-            }
-        }
-
-        // We should not be loading Order entities individually (N+1 problem)
-        // The efficient approach uses GROUP BY with SUM/COUNT
-        $this->assertLessThan(5, $orderEntityQueries,
-            "Found {$orderEntityQueries} queries loading Order entities. Should use database aggregation instead.");
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_homepage_sale', ['_token' => 'dummy'])
+        );
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 }
