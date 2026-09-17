@@ -59,6 +59,33 @@ class ExampleService
 - 設定は `app/config/eccube/packages/purchaseflow.yaml`。
 - 受注に直接関わらない業務ロジック（商品管理・会員管理・メール送信等）は通常の Service に置いてよい。
 
+## DB レコードとファイルを対で扱う Service
+
+ページ・ブロック・メールテンプレート（`dtb_page` / `dtb_block` / `dtb_mail_template` と `app/template/**` の twig）のように
+**DB レコードとファイルが対**になるものは、`src/Eccube/Service/Content/*ContentService` の形に揃える。
+管理画面のコントローラと CLI（`eccube:page:*` 等）が**同じ Service を通る**ことで、検証・書き出し・キャッシュ削除が二重にならない。
+
+- **検証は管理画面と同じ FormType を submit して行う**（`PageContentService::apply()` は `MainEditType` を組み立てて submit）。
+  CLI 専用の検証を書かない。失敗は `ContentValidationException`（エラー一覧を持つ）で返す。
+- **順序は DB → ファイル、しかもトランザクションの中**。`EntityManager::wrapInTransaction()` の中で `persist` / `flush` してから
+  `dumpFile()` する。ファイルの書き出しに失敗したら例外でロールバックし、**レコードだけが残る状態を作らない**
+  （残ると参照先の無いテンプレートとして画面が「Unable to find template」で落ちる）。権限を分離した構成では
+  `app/template` への書き込みだけが失敗し得るので、この順序が効く。
+- **削除は退避 → DB 削除 → 退避ファイルの削除**（`TemplateRemovalTrait::removeTemplatesAround()`）。ファイルを先に消すと DB 削除の失敗で
+  レコードだけが残り、後に消すとファイル削除の失敗でファイルだけが残る。同じディレクトリへ `.removing-<乱数>` で rename して退避し、
+  失敗時は戻す。
+- **本文が現在の内容と同じならファイルを書き出さない**（`TemplateBodyTrait::shouldWriteTemplate()`）。`app/template/{theme}` は
+  `src/Eccube/Resource/template/default` より twig の探索で優先されるため、内容が同じ写しを作ると upstream のテンプレート修正
+  （脆弱性パッチを含む）が画面へ反映されなくなる。比較は FormType の `trim` に合わせて正規化する。
+  ただしどこからも解決できないテンプレートは必ず書き出す。
+- **本文を指定しない新規登録は配置先に既にあるテンプレートを初期値にする**（`readExistingTemplate()`）。Git でコミット済みのテンプレートから
+  レコードを作れるようにするため。
+- **I/O の失敗は `ContentWriteException::forWrite()` / `forRemove()` に包んで投げる**。握りつぶすと「保存できました」と出て反映されない。
+- 結果は `ContentResult`（`status` = `Created` / `Updated` / `Unchanged` / `Removed`、書き出した・削除したパス、`--dry-run` 用の変更前後）で返す。
+  `dryRun` を引数で受け、`true` なら DB もファイルも触らずに `ContentResult` だけ返す。
+- キャッシュの削除は Service に書かず、呼び出し側（コマンドは `ContentCommandTrait::clearContentCache()`、管理画面は
+  `CacheUtil::clearCache()`）に任せる。分離した構成では削除できないことがあり、その扱いは入口ごとに異なる（Skill `eccube-permission-lanes`）。
+
 ## やってはいけないこと
 
 - **上位層（Controller）への依存**: Service が `Eccube\Controller\...` を `use` / 型ヒントするのは
@@ -94,6 +121,9 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 - ❌ 1 つの Service に無関係な処理を寄せ集める → ✅ 単一責任で分割
 - ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
 - ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
+- ❌ DB を commit してからテンプレートを `dumpFile()` する → ✅ トランザクションの中で DB → ファイルの順。失敗はロールバック
+- ❌ テンプレートを無条件に `dumpFile()` する → ✅ 本文が同じなら書かない（`app/template` の写しが upstream の修正を隠す）
+- ❌ 管理画面と CLI で検証や書き出しを別々に実装する → ✅ 同じ `*ContentService` を通し、検証は FormType の submit で行う
 
 ---
 
