@@ -60,16 +60,13 @@ class RefundRequestType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\GreaterThan(0),
-                    new Assert\LessThanOrEqual([
-                        'value' => $maxQuantity,
-                        'message' => 'form_error.refund_request.quantity_exceed',
-                    ]),
+                    new Assert\LessThanOrEqual(value: $maxQuantity, message: 'form_error.refund_request.quantity_exceed'),
                 ],
             ])
             ->add('reason', TextareaType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => 4000]),
+                    new Assert\Length(max: 4000),
                 ],
             ])
             ->add('files', FileType::class, [
@@ -77,17 +74,9 @@ class RefundRequestType extends AbstractType
                 'multiple' => true,
                 'required' => false,
                 'constraints' => [
-                    new Assert\Count([
-                        'max' => self::MAX_FILE_COUNT,
-                        'maxMessage' => 'form_error.refund_request.max_files',
-                    ]),
+                    new Assert\Count(max: self::MAX_FILE_COUNT, maxMessage: 'form_error.refund_request.max_files'),
                     new Assert\All([
-                        new Assert\File([
-                            'maxSize' => self::MAX_FILE_SIZE,
-                            'maxSizeMessage' => 'form_error.refund_request.file_size',
-                            'mimeTypes' => self::ALLOWED_MIME_TYPES,
-                            'mimeTypesMessage' => 'form_error.refund_request.file_type',
-                        ]),
+                        new Assert\File(maxSize: self::MAX_FILE_SIZE, maxSizeMessage: 'form_error.refund_request.file_size', mimeTypes: self::ALLOWED_MIME_TYPES, mimeTypesMessage: 'form_error.refund_request.file_type'),
                     ]),
                 ],
             ]);
@@ -104,14 +93,5 @@ class RefundRequestType extends AbstractType
             'max_quantity' => 1,
         ]);
         $resolver->setAllowedTypes('max_quantity', ['int', 'string']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'refund_request';
     }
 }

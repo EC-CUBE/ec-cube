@@ -85,6 +85,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 金額を int/float で扱う → ✅ DECIMAL は `?string`（getter は `string`）。四則演算は `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）
 - ❌ `@deprecated` なゲッタを未使用と判断して削除する → ✅ CSV 出力項目（`dtb_csv`）のアクセサとして現役のことがあり、削除は仕様変更になる。先に CSV 定義と照合する
 - ❌ プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断 → ✅ 対象クラスが未宣言のときだけプロキシが `require` される。先にロードした状態で試す
+- ❌ プロパティだけ `?T = null` にしてカラム属性は据え置く → ✅ `nullable: true` が無ければ DB は NOT NULL。上位層で補完する設計は、その経路を通らない永続化で INSERT が落ちる
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-entity/SKILL.md`
 
@@ -99,6 +100,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 画面表示の一覧・関連取得を無制限に全件取得（件数が際限なく増え得る）→ ✅ ページング（Paginator 用に QueryBuilder を返す）か上限を設ける
 - ❌ join 先への絞り込みを EXISTS 部分クエリへ移すとき、その別名に掛かっていた既存の制約を引き継がない → ✅ 同じ制約を EXISTS 内に再掲し、集計・出力側の母集団と一致させる
 - ❌ 1 対多の範囲絞り込みで下限・上限を独立した EXISTS 2 本に分ける（別々の子行が満たせばヒットしてしまう）→ ✅ 同一の子行に両条件を要求するなら EXISTS 1 本にまとめる
+- ❌ `AbstractRepository::save()` 直後に `getId()` 参照 → ✅ `persist()` のみで flush せず id 未採番。`save()`/`delete()` を `#[\Override]` し flush する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-repository/SKILL.md`
 
@@ -112,6 +114,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入
 - ❌ 既存フォームに二重送信防止/楽観ロック用の unmapped hidden を足し、サーバー側で値未送信を即エラー扱い → ✅ 値が空/未送信なら判定をスキップ（プログラム的 POST・既存テスト・外部連携を壊さない後方互換を保つ）
 - ❌ 共通 FormType(RepeatedPasswordType 等)を子で使い `options.constraints` を渡す（親が定義した制約が全置換され消える） → ✅ 親の制約一式も再掲して付与する
+- ❌ `CollectionType`＋`allow_delete` 欄が上書きテンプレートで未描画 → ✅ 送信キー欠落は空コレクション扱いで既存の子が無警告で全削除。hidden で描画済みを示し、無ければ `PRE_SUBMIT` で `remove()`
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-formtype/SKILL.md`
 
@@ -275,7 +278,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 - ❌ `waitForTimeout(固定ms)` で同期を取る → ✅ web-first assertion で「状態」を待つ。外部 JS 由来の待機だけ例外とし、理由をコメントに書く。
 - ❌ `front-*` spec で管理者ログイン済みを前提にする → ✅ front は未認証 state。spec 内でログインするか admin 経由で会員作成する。
-- ❌ 固定件数で assert（`検索結果：1件が該当`）→ ✅ 正規表現（`/検索結果：\d+件が該当/`）。retry 時の重複データに強くする（`admin-product.spec.ts` 修正例）。
+- ❌ 一覧の件数や先頭行（`tr:first-child`）に依存する → ✅ 先行テストや retry で件数も並び順も変わる。件数は正規表現、行は ID で特定（`mode: 'serial'` での固定化は 1 件の失敗で後続が全滅）。
 - ❌ セレクタが複数要素にマッチ（strict mode violation）→ ✅ `.first()` か `data-*` 属性で一意化する。
 - ❌ テスト境界で管理者セッションが切れて 401 → ✅ `ensureAdminLoggedIn()` 等で再ログインしてから操作（`admin-basicinfo.spec.ts` 修正例）。
 - ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）。

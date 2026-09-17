@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\DependencyInjection\Compiler;
 
 use Eccube\DependencyInjection\Compiler\McpScopeEnforcementPass;
+use Eccube\Service\Mcp\McpServerDefinition;
 use Eccube\Service\Mcp\ScopeEnforcingReferenceHandler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -34,14 +35,14 @@ final class McpScopeEnforcementPassTest extends TestCase
     public function testWiresScopeEnforcingHandlerIntoBuilder(): void
     {
         $container = new ContainerBuilder();
-        $container->setDefinition('mcp.server.builder', new Definition(\stdClass::class));
+        $container->setDefinition(McpServerDefinition::BUILDER_SERVICE_ID, new Definition(\stdClass::class));
         // mcp.tool タグの Tool を 1 つ用意 (locator 構築対象)
         $container->setDefinition('dummy.tool', (new Definition(\stdClass::class))->addTag('mcp.tool'));
 
         (new McpScopeEnforcementPass())->process($container);
 
         // 1. builder に setReferenceHandler が ScopeEnforcingReferenceHandler 参照付きで差し込まれている
-        $calls = $container->getDefinition('mcp.server.builder')->getMethodCalls();
+        $calls = $container->getDefinition(McpServerDefinition::BUILDER_SERVICE_ID)->getMethodCalls();
         $setReferenceHandlerCalls = array_filter($calls, static fn (array $c): bool => 'setReferenceHandler' === $c[0]);
         $this->assertCount(1, $setReferenceHandlerCalls, 'builder に setReferenceHandler が 1 回差し込まれる');
 
@@ -64,7 +65,7 @@ final class McpScopeEnforcementPassTest extends TestCase
 
         (new McpScopeEnforcementPass())->process($container);
 
-        $this->assertFalse($container->hasDefinition('mcp.server.builder'));
+        $this->assertFalse($container->hasDefinition(McpServerDefinition::BUILDER_SERVICE_ID));
         // builder 不在なら配線されない inner ReferenceHandler 定義も残さない
         // (残すと builder 不在構成のコンテナコンパイルを乱す)
         $this->assertFalse(

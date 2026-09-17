@@ -59,8 +59,7 @@ final class InstallControllerTest extends AbstractWebTestCase
         $cacheUtil = static::getContainer()->get(CacheUtil::class);
         $request = new Request();
         $request->setSession(new Session(new MockArraySessionStorage()));
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->session = new EccubeSession($requestStack);
         $this->controller = new InstallController($passwordHasher, $cacheUtil);
         $this->controller->setFormFactory($formFactory);
@@ -86,7 +85,7 @@ final class InstallControllerTest extends AbstractWebTestCase
     public function testStep1()
     {
         $this->actual = $this->controller->step1($this->createStub(Request::class));
-        $this->assertTrue(is_array($this->actual));
+        $this->assertIsArray($this->actual);
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
 
@@ -103,7 +102,7 @@ final class InstallControllerTest extends AbstractWebTestCase
     {
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $this->actual = $this->controller->step3($this->createStub(Request::class), $entityManager);
-        $this->assertTrue(is_array($this->actual));
+        $this->assertIsArray($this->actual);
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
         $this->assertInstanceOf(Request::class, $this->actual['request']);
     }
@@ -111,7 +110,7 @@ final class InstallControllerTest extends AbstractWebTestCase
     public function testStep4()
     {
         $this->actual = $this->controller->step4($this->createStub(Request::class));
-        $this->assertTrue(is_array($this->actual));
+        $this->assertIsArray($this->actual);
         $this->assertInstanceOf(FormView::class, $this->actual['form']);
     }
 

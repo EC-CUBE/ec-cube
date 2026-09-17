@@ -412,8 +412,6 @@ class PluginController extends AbstractController
     #[Template(template: '@admin/Store/plugin_install.twig')]
     public function install(Request $request): array|RedirectResponse
     {
-        $this->addInfoOnce('admin.common.restrict_file_upload_info', 'admin');
-
         $form = $this->formFactory
             ->createBuilder(PluginLocalInstallType::class)
             ->getForm();

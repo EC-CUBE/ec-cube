@@ -43,9 +43,7 @@ abstract class AbstractPluginManager
      */
     public function migration(Connection $connection, string $pluginCode, ?string $version = null, ?string $migrationFilePath = null): void
     {
-        if (null === $migrationFilePath) {
-            $migrationFilePath = __DIR__.'/../../../app/Plugin/'.$pluginCode.'/DoctrineMigrations';
-        }
+        $migrationFilePath ??= __DIR__.'/../../../app/Plugin/'.$pluginCode.'/DoctrineMigrations';
 
         if (null == $version) {
             $version = 'latest';

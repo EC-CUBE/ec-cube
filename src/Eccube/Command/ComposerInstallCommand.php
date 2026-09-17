@@ -42,6 +42,6 @@ class ComposerInstallCommand extends Command
     {
         $this->composerService->execInstall($input->getOption('dry-run'), $output);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -42,14 +42,14 @@ class PluginEnableCommand extends Command
         if (empty($code)) {
             $io->error('code is required.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $plugin = $this->pluginRepository->findByCode($code);
         if (is_null($plugin)) {
             $io->error("Plugin `$code` is not found.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         if (!$plugin->isInitialized()) {
@@ -57,10 +57,10 @@ class PluginEnableCommand extends Command
         }
 
         $this->pluginService->enable($plugin);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Plugin Enabled.');
 
-        return 0;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

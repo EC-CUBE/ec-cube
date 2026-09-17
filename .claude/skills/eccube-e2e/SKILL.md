@@ -34,7 +34,7 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 
 ## よくある間違い
 
-このレイヤの「よくある間違い」8 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「E2E（Playwright）」節に集約している。
+このレイヤの「よくある間違い」9 項は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「E2E（Playwright）」節に集約している。
 全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
 
 ## 実行・確認方法
