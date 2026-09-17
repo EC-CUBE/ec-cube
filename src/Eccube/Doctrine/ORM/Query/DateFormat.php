@@ -13,108 +13,90 @@
 
 namespace Eccube\Doctrine\ORM\Query;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
 
 /**
- * DATEFORMAT(date, format)
- *  date:
- *      日付/時刻データ型
+ * DATEFORMAT(source, 'format')
+ *  source:
+ *      日付/時刻データ型 (datetimetz カラムを想定)
  *  format:
- *      フォーマット文字列 (例: 'Y/m/d', 'Y/m')
+ *      PHP の日付フォーマットの文字列リテラル (self::FORMATS のキーのみ)
+ *
+ * UTCDateTimeType / UTCDateTimeTzType は値を UTC に変換して保存し、
+ * InitDriver が MySQL / PostgreSQL のセッションのタイムゾーンを UTC に固定するため、
+ * アプリケーションのタイムゾーンとの時差を加えてから整形する (Extract と同じ方式)。
+ * 時差は SQL 生成時点の値を固定で使うため、夏時間のあるタイムゾーンでは境界付近の日付がずれる。
  */
 class DateFormat extends FunctionNode
 {
-    protected Node|string|null $date = null;
-    protected Node|string|null $format = null;
-
     /**
-     * PHPフォーマットをデータベースフォーマットに変換するマッピング
+     * PHP の日付フォーマット → 各 DB の書式指定子
      *
-     * @var array<string, array<string, string>>
+     * @var array<string, array{mysql: string, postgresql: string, sqlite: string}>
      */
-    protected array $formatMap = [
-        'mysql' => [
-            'Y/m/d' => '%Y/%m/%d',
-            'Y/m' => '%Y/%m',
-            'Y-m-d' => '%Y-%m-%d',
-            'Y-m' => '%Y-%m',
-        ],
-        'postgresql' => [
-            'Y/m/d' => 'YYYY/MM/DD',
-            'Y/m' => 'YYYY/MM',
-            'Y-m-d' => 'YYYY-MM-DD',
-            'Y-m' => 'YYYY-MM',
-        ],
-        'sqlite' => [
-            'Y/m/d' => '%Y/%m/%d',
-            'Y/m' => '%Y/%m',
-            'Y-m-d' => '%Y-%m-%d',
-            'Y-m' => '%Y-%m',
-        ],
+    public const FORMATS = [
+        'Y/m/d' => ['mysql' => '%Y/%m/%d', 'postgresql' => 'YYYY/MM/DD', 'sqlite' => '%Y/%m/%d'],
+        'Y/m' => ['mysql' => '%Y/%m', 'postgresql' => 'YYYY/MM', 'sqlite' => '%Y/%m'],
+        'Y-m-d' => ['mysql' => '%Y-%m-%d', 'postgresql' => 'YYYY-MM-DD', 'sqlite' => '%Y-%m-%d'],
+        'Y-m' => ['mysql' => '%Y-%m', 'postgresql' => 'YYYY-MM', 'sqlite' => '%Y-%m'],
     ];
 
+    protected Node|string $source;
+    protected string $format;
+
+    /**
+     * @throws QueryException
+     */
+    #[\Override]
     public function parse(Parser $parser): void
     {
+        $lexer = $parser->getLexer();
         $parser->match(TokenType::T_IDENTIFIER);
         $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
-        // 第1引数: 日付
-        $this->date = $parser->ArithmeticPrimary();
+        $this->source = $parser->ArithmeticPrimary();
         $parser->match(TokenType::T_COMMA);
 
-        // 第2引数: フォーマット文字列
-        $this->format = $parser->ArithmeticPrimary();
+        $parser->match(TokenType::T_STRING);
+        $format = (string) $lexer->token->value;
+        if (!isset(self::FORMATS[$format])) {
+            $parser->syntaxError(implode('/', array_keys(self::FORMATS)));
+        }
+        $this->format = $format;
 
         $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
+    #[\Override]
     public function getSql(SqlWalker $sqlWalker): string
     {
-        $driver = $sqlWalker->getConnection()->getDriver()->getDatabasePlatform()->getName();
-        $dateField = $this->date->dispatch($sqlWalker);
-        $formatValue = $this->format->dispatch($sqlWalker);
+        $platform = $sqlWalker->getConnection()->getDatabasePlatform();
+        $source = $this->source->dispatch($sqlWalker);
+        // UTCとの時差(秒数)
+        $diff = intval(date('Z'));
+        $second = abs($diff);
+        $op = ($diff === $second) ? '+' : '-';
 
-        // フォーマット文字列から引用符を除去
-        $phpFormat = trim($formatValue, "'\"");
-
-        // データベースプラットフォームに応じたフォーマットに変換
-        switch ($driver) {
-            case 'sqlite':
-                $dbFormat = $this->convertFormat($phpFormat, 'sqlite');
-                // SQLiteの場合、DATETIME()でカラム値を正規化してからSTRFTIME()を適用
-                // これにより、タイムゾーン付き日時文字列が正しく処理される
-                $sql = sprintf("STRFTIME('%s', DATETIME(%s))", $dbFormat, $dateField);
-                break;
-            case 'postgresql':
-                $dbFormat = $this->convertFormat($phpFormat, 'postgresql');
-                $sql = sprintf("TO_CHAR(%s, '%s')", $dateField, $dbFormat);
-                break;
-            case 'mysql':
-            default:
-                $dbFormat = $this->convertFormat($phpFormat, 'mysql');
-                $sql = sprintf("DATE_FORMAT(%s, '%s')", $dateField, $dbFormat);
-                break;
-        }
-
-        return $sql;
-    }
-
-    /**
-     * PHPフォーマットをデータベース固有のフォーマットに変換
-     *
-     * @param string $phpFormat PHPの日付フォーマット
-     * @param string $driver データベースドライバ名
-     *
-     * @return string データベース固有のフォーマット
-     */
-    protected function convertFormat(string $phpFormat, string $driver): string
-    {
-        // マッピングにない場合はデフォルトのフォーマットを返す
-        // MySQL形式をデフォルトとする
-        return $this->formatMap[$driver][$phpFormat] ?? $this->formatMap['mysql'][$phpFormat] ?? '%Y/%m/%d';
+        return match (true) {
+            $platform instanceof SQLitePlatform => sprintf(
+                "STRFTIME('%s', DATETIME(%s, '{$op}{$second} SECONDS'))",
+                self::FORMATS[$this->format]['sqlite'],
+                $source),
+            $platform instanceof PostgreSQLPlatform => sprintf(
+                "TO_CHAR(%s $op INTERVAL '$second SECONDS', '%s')",
+                $source,
+                self::FORMATS[$this->format]['postgresql']),
+            default => sprintf(
+                "DATE_FORMAT(%s $op INTERVAL $second SECOND, '%s')",
+                $source,
+                self::FORMATS[$this->format]['mysql']),
+        };
     }
 }
