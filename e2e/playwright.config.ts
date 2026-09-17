@@ -34,6 +34,11 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: undefined,
+        // The permission-lanes environment runs as APP_ENV=prod behind Apache with a
+        // self-signed certificate (see the `permission-lanes-tests` project below).
+        // Logging in there requires HTTPS, so accept the certificate here too.
+        // This has no effect on the plain HTTP runs used by the other projects.
+        ignoreHTTPSErrors: true,
       },
     },
     {
@@ -71,6 +76,24 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         storageState: path.join(__dirname, '.auth', 'admin.json'),
+      },
+    },
+    {
+      // Runs against the environment started by docker-compose.permission-lanes.yml,
+      // where the web server and the CLI have different uids. Kept out of the
+      // `admin-tests` glob on purpose: with ECCUBE_RESTRICT_FILE_UPLOAD=1 the admin
+      // screens that write to lane S are read-only, so the regular admin specs cannot
+      // pass there.
+      name: 'permission-lanes-tests',
+      testMatch: /permission-lanes\.spec\.ts/,
+      dependencies: ['setup'],
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: path.join(__dirname, '.auth', 'admin.json'),
+        // That environment is APP_ENV=prod, whose session cookie uses SameSite=None:
+        // browsers drop it without the Secure flag, so the admin has to be reached over
+        // HTTPS. Apache serves it with the snakeoil certificate baked into the image.
+        ignoreHTTPSErrors: true,
       },
     },
     {

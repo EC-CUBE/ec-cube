@@ -48,7 +48,7 @@ bin/console dbal:run-sql "UPDATE dtb_base_info SET acp_checkout_enabled = 1, ucp
 bin/console cache:pool:clear --all
 
 # 2. ビルトインサーバ起動。EC-CUBE は public-dir="." のため front controller はルートの index.php。
-#    codeception/router.php は GET に対し false を返し、静的フォールバック挙動が PHP バージョン依存で
+#    e2e/router.php は GET に対し false を返し、静的フォールバック挙動が PHP バージョン依存で
 #    404 になり得るため、index.php を直接 router にして確実に kernel へ通す (CI と同じ方針)。
 php -S 127.0.0.1:8000 index.php &
 

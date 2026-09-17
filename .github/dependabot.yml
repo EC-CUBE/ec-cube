@@ -100,11 +100,11 @@ updates:
           - "filepond"
           - "filepond-plugin-*"
           - "jquery"
-          - "jquery-ui"
           - "jquery.qrcode"
           - "ladda"
           - "normalize.css"
           - "slick-carousel"
+          - "sortablejs"
           - "spin.js"
         update-types: [ "minor", "patch" ]
       # ビルドツールと間接依存 (package-lock.json のみの更新)

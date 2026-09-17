@@ -7,7 +7,7 @@ set -e
 # プロジェクトルートディレクトリ
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPOS_DIR="${PROJECT_ROOT}/repos"
-PLUGINS_DIR="${PROJECT_ROOT}/codeception/_data/plugins"
+PLUGINS_DIR="${PROJECT_ROOT}/e2e/fixtures/plugins"
 
 echo "Preparing mock server plugins..."
 

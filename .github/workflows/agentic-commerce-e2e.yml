@@ -217,7 +217,7 @@ jobs:
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
-          ## codeception/router.php は GET に対し false を返すため、php-S の静的フォールバック挙動
+          ## e2e/router.php は GET に対し false を返すため、php-S の静的フォールバック挙動
           ## (PHP version 依存) によっては app ルートが 404 になる。discovery/checkout は API のみで
           ## 静的アセット配信が不要なので、front controller の index.php を直接 router にして確実に
           ## kernel へ通す (symfony の `php -S -t public public/index.php` と同等)。

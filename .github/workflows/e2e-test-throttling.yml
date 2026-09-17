@@ -230,7 +230,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run Playwright tests
         uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
