@@ -14,20 +14,24 @@
 namespace Eccube\Service\AgentCommerce\Ucp;
 
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageCode;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 
 /**
  * 中立メッセージ ({@link AgentCheckoutMessage}) を UCP の messages[] 表現へ写す.
  *
  * UCP のビジネスロジックエラーは HTTP 200 + messages[] で表現する。各メッセージは
- * `type` (error/warning/info) と、error は `severity` (recoverable/requires_buyer_input/
- * requires_buyer_review/unrecoverable) を持つ。
+ * `type` (error/warning/info) を持ち、error / warning は `code` が**必須**
+ * (message_error.json / message_warning.json の required)、error はさらに `severity`
+ * (recoverable/requires_buyer_input/requires_buyer_review/unrecoverable) を持つ。
  *
- * PurchaseFlow 由来のメッセージは自由文のため、標準では `severity: recoverable` (update で
- * 再試行可能) とし、`code` は付与しない (UCP では optional)。`out_of_stock` 等の構造化コード付与は
- * app/Customize での拡張余地とする。
+ * `code` は生成元が付けた中立コード ({@link AgentCheckoutMessageCode}) をそのまま出し、
+ * 無ければレベルに応じた既定値を補う。PurchaseFlow 由来の自由文メッセージは標準では
+ * `severity: recoverable` (update で再試行可能) とする。`out_of_stock` 等のより細かい
+ * 標準コードへの写像は app/Customize での拡張余地とする。
  *
- * @see https://github.com/Universal-Commerce-Protocol/ucp UCP message_error.json (type, severity, content)
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/shopping/types/message_error.json#L6 (required: type, code, content, severity)
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/shopping/types/message_warning.json#L6 (required: type, code, content)
  */
 class UcpMessageMapper
 {
@@ -59,9 +63,15 @@ class UcpMessageMapper
             'content_type' => 'plain',
         ];
 
-        // error のみ severity を付す。PurchaseFlow 由来は update での再入力で解消し得るため recoverable。
+        // error / warning は code が必須 (message_error.json / message_warning.json の required)。
+        // 中立コードの値は UCP の freeform code としてそのまま使う (payment_failed は標準コードと一致)。
+        // 生成元が code を付けていなければレベルに応じた既定値を補う。
         if ($message->level === AgentCheckoutMessageLevel::ERROR) {
+            $entry['code'] = ($message->code ?? AgentCheckoutMessageCode::INVALID)->value;
+            // PurchaseFlow 由来は update での再入力で解消し得るため recoverable。
             $entry['severity'] = 'recoverable';
+        } elseif ($message->level === AgentCheckoutMessageLevel::WARNING) {
+            $entry['code'] = ($message->code ?? AgentCheckoutMessageCode::LIMITED_AVAILABILITY)->value;
         }
 
         return $entry;

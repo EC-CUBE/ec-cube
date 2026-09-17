@@ -17,6 +17,7 @@ namespace Eccube\Tests\Service\AgentCommerce\Acp;
 
 use Eccube\Service\AgentCommerce\Acp\AcpMessageMapper;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageCode;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -45,6 +46,22 @@ final class AcpMessageMapperTest extends TestCase
         $this->assertSame('recoverable', $messages[0]['resolution']);
         $this->assertSame('plain', $messages[0]['content_type']);
         $this->assertSame('Out of stock', $messages[0]['content']);
+    }
+
+    /**
+     * 中立コードを ACP MessageError.code の enum へ写す (code 無しは従来どおり invalid).
+     */
+    public function testNeutralCodeIsMappedToAcpErrorCodeEnum(): void
+    {
+        $messages = $this->mapper->toAcpMessages([
+            new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'address', AgentCheckoutMessageCode::ADDRESS_REQUIRED),
+            new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'declined', AgentCheckoutMessageCode::PAYMENT_FAILED),
+            new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'generic', AgentCheckoutMessageCode::INVALID),
+        ]);
+
+        $this->assertSame('missing', $messages[0]['code'], 'ADDRESS_REQUIRED → ACP "missing" (required field absent)');
+        $this->assertSame('payment_declined', $messages[1]['code'], 'PAYMENT_FAILED → ACP "payment_declined"');
+        $this->assertSame('invalid', $messages[2]['code']);
     }
 
     public function testWarningCarriesCode(): void
