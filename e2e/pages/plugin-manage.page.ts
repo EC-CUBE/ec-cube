@@ -36,19 +36,22 @@ export class PluginManagePage {
     await this.dismissAlerts();
     const row = this.storePluginRow(code);
     const enableLink = row.locator('a[href*="/enable"]');
-    const disableLink = row.locator('a[href*="/disable"]');
     if (await enableLink.count() > 0) {
       await enableLink.click();
-    } else if (await disableLink.count() > 0) {
-      // 既に有効な場合は disable リンクの href から enable URL を構築
-      const disableHref = await disableLink.getAttribute('href');
-      const enableUrl = disableHref!.replace('/disable', '/enable');
-      await this.page.goto(enableUrl);
     } else {
-      // どちらもない場合はページをリロードして再試行
+      // 有効化リンクが無い場合はリロードして取り直す。
+      // ここで disable リンクの href から enable URL を組み立てて goto してはいけない。
+      // goto は GET だが admin_store_plugin_enable は POST 専用なので、
+      // 「既に有効です。」ではなく 405 (Method Not Allowed) になり原因が分からない失敗になる。
       await this.page.reload();
       await this.page.waitForLoadState('load');
-      await this.storePluginRow(code).locator('a[href*="/enable"]').click();
+      const reloaded = this.storePluginRow(code).locator('a[href*="/enable"]');
+      // リロードしてもリンクが無い＝既に有効で、画面がその操作を提供していない。
+      // 「既に有効です。」を出すには古い画面の有効化リンクが必要なので、
+      // マルチタブのテストが元タブを操作できていない可能性が高い。
+      await expect(reloaded, `${code} の有効化リンクが無い（既に有効な状態を画面から有効化はできない）`)
+        .toHaveCount(1);
+      await reloaded.click();
     }
     await this.page.waitForLoadState('load');
     await expect(this.page.locator(PluginManagePage.ALERT_SELECTOR).first()).toContainText(expectedMessage, { timeout: 30_000 });
@@ -59,18 +62,16 @@ export class PluginManagePage {
     await this.dismissAlerts();
     const row = this.storePluginRow(code);
     const disableLink = row.locator('a[href*="/disable"]');
-    const enableLink = row.locator('a[href*="/enable"]');
     if (await disableLink.count() > 0) {
       await disableLink.click();
-    } else if (await enableLink.count() > 0) {
-      const enableHref = await enableLink.getAttribute('href');
-      const disableUrl = enableHref!.replace('/enable', '/disable');
-      await this.page.goto(disableUrl);
     } else {
-      // 有効化/無効化リンクがどちらもない場合はページをリロードして再試行
+      // 無効化リンクが無い場合はリロードして取り直す（enable 側と同じ理由で goto は使わない）
       await this.page.reload();
       await this.page.waitForLoadState('load');
-      await this.storePluginRow(code).locator('a[href*="/disable"]').click();
+      const reloaded = this.storePluginRow(code).locator('a[href*="/disable"]');
+      await expect(reloaded, `${code} の無効化リンクが無い（既に無効な状態を画面から無効化はできない）`)
+        .toHaveCount(1);
+      await reloaded.click();
     }
     await this.page.waitForLoadState('load');
     await expect(this.page.locator(PluginManagePage.ALERT_SELECTOR).first()).toContainText(expectedMessage, { timeout: 30_000 });
