@@ -15,6 +15,7 @@ namespace Eccube\Controller\Admin;
 
 use Carbon\Carbon;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -129,7 +130,7 @@ class AdminController extends AbstractController
 
         // 受注ステータスの一覧.
         $Criteria = new Criteria();
-        $Criteria->where($Criteria::expr()->notIn('id', $excludes))->orderBy(['sort_no' => \Doctrine\Common\Collections\Order::Ascending]);
+        $Criteria->where($Criteria::expr()->notIn('id', $excludes))->orderBy(['sort_no' => Order::Ascending]);
         $OrderStatuses = $this->orderStatusRepository->matching($Criteria);
 
         /**
