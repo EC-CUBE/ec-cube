@@ -19,12 +19,23 @@ volumes:
 services:
   ### ECCube4 ##################################
   ec-cube:
+    ### 別バージョンの PHP でローカルビルドする場合は環境変数 TAG を指定します
+    ## TAG=8.3-apache docker compose build
+    ## TAG=8.3-apache docker compose build --no-cache
+    ## TAG=8.3-apache docker compose up -d --build
+    image: ${REGISTRY:-ghcr.io}/${IMAGE_NAME:-ec-cube/ec-cube-php}:${TAG:-8.2-apache}
     build:
       context: .
       args:
-        # ビルド時のECCubeインストールスクリプトをスキップする場合にtrueを指定する。
-        # ビルド時点でDBサーバの起動や接続が出来ない、という場合等にエラーとなるため。
-        SKIP_INSTALL_SCRIPT_ON_DOCKER_BUILD: "true"
+        TAG: ${TAG:-8.2-apache}
+        ## PHP 8.5 以降は opcache がコア組み込みのため docker-php-ext-install の対象から外す必要がある
+        ## (残したままだとイメージのビルドが `cp: cannot stat 'modules/*'` で失敗する)。
+        ## TAG を 8.5-apache 以降にする場合は EXT_INSTALL_ARGS も併せて指定する。
+        ## 既定値は Dockerfile と同じ (8.2〜8.4 向け)。 バージョンごとの値は
+        ## .github/workflows/dockerbuild.yml の matrix が正。
+        EXT_INSTALL_ARGS: "${EXT_INSTALL_ARGS:-zip gd mysqli pdo_mysql opcache intl}"
+      pull: true
+    pull_policy: missing
     ports:
       - 8080:80
       - 4430:443
@@ -39,8 +50,10 @@ services:
       APP_DEBUG: 1
       DATABASE_URL: "sqlite:///var/eccube.db"
       DATABASE_SERVER_VERSION: 3
-      MAILER_URL: "smtp://mailcatcher:1025"
+      DATABASE_CHARSET: 'utf8'
+      MAILER_DSN: "smtp://mailcatcher:1025"
       ECCUBE_AUTH_MAGIC: "<change.me>"
+      # TRUSTED_HOSTS: '^127.0.0.1$$,^localhost$$'
       # ECCUBE_LOCALE: "ja"
       # ECCUBE_TIMEZONE: "Asia/Tokyo"
       # ECCUBE_CURRENCY: "JPY"
@@ -48,6 +61,7 @@ services:
       # ECCUBE_USER_DATA_ROUTE: "user_data"
       # ECCUBE_ADMIN_ALLOW_HOSTS: []
       # ECCUBE_FORCE_SSL: false
+      # ECCUBE_PHPINFO_ENABLED=false
       # ECCUBE_TEMPLATE_CODE: "default"
       # ECCUBE_COOKIE_NAME: "eccube"
       # ECCUBE_COOKIE_PATH: "/"

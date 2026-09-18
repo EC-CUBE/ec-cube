@@ -43,14 +43,14 @@ file that was distributed with this source code.
                             <dd>
                                 <div class="ec-input{{ has_errors(form.password.first) ? ' error' }}">
                                     {{ form_widget(form.password.first, {
-                                        'attr': { 'placeholder': 'common.password_sample'|trans({ '%min%': eccube_config.eccube_password_min_len, '%max%': eccube_config.eccube_password_max_len }) },
+                                        'attr': { 'placeholder': 'common.password_sample'|trans({ '%min%': eccube_config.eccube_password_min_len, '%max%': eccube_config.eccube_password_max_len }), 'autocomplete': 'new-password' },
                                         'type': 'password'
                                     }) }}
                                     {{ form_errors(form.password.first) }}
                                 </div>
                                 <div class="ec-input{{ has_errors(form.password.second) ? ' error' }}">
                                     {{ form_widget(form.password.second, {
-                                        'attr': { 'placeholder': 'common.repeated_confirm'|trans },
+                                        'attr': { 'placeholder': 'common.repeated_confirm'|trans, 'autocomplete': 'new-password' },
                                         'type': 'password'
                                     }) }}
                                     {{ form_errors(form.password.second) }}

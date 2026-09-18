@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,42 +18,43 @@ namespace Eccube\Tests\Form\EventListener;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Test\FormInterface;
 
-class ConvertKanaListenerTest extends TestCase
+final class ConvertKanaListenerTest extends TestCase
 {
     public function testConvertKanaString()
     {
         $data = '１２３４５';
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->createStub(FormInterface::class);
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('12345', $event->getData());
+        $this->assertSame('12345', $event->getData());
     }
 
     public function testConvertKanaArray()
     {
         $data = ['１２３４５'];
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->createStub(FormInterface::class);
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals(['12345'], $event->getData());
+        $this->assertSame(['12345'], $event->getData());
     }
 
     public function testConvertKanaHiraganaToKana()
     {
         $data = 'あいうえお';
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->createStub(FormInterface::class);
         $event = new FormEvent($form, $data);
 
         $filter = new ConvertKanaListener('CV');
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('アイウエオ', $event->getData());
+        $this->assertSame('アイウエオ', $event->getData());
     }
 }

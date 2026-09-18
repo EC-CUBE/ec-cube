@@ -13,6 +13,8 @@
 
 namespace Eccube\Form\Type\Admin;
 
+use Eccube\Entity\AuthorityRole;
+use Eccube\Entity\Master\Authority;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -25,18 +27,17 @@ use Symfony\Component\Validator\Constraints\Regex;
 
 class AuthorityRoleType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('Authority', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\Authority',
+                'class' => Authority::class,
                 'expanded' => false,
                 'multiple' => false,
                 'required' => false,
@@ -45,13 +46,10 @@ class AuthorityRoleType extends AbstractType
             ->add('deny_url', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Regex([
-                        'pattern' => '/^\\/.*/',
-                        'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
-                    ]),
+                    new Regex(pattern: '/^\\/.*/', message: trans('admin.setting.system.authority.deny_url_is_invalid')),
                 ],
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 $Authority = $form['Authority']->getData();
@@ -69,17 +67,19 @@ class AuthorityRoleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\AuthorityRole',
+            'data_class' => AuthorityRole::class,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_authority_role';
     }

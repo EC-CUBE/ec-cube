@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,16 +16,16 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\SearchOrderType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+final class OrderSearchTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(SearchOrderType::class, null, [
@@ -74,7 +76,7 @@ class OrderSearchTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testPhoneNumberNotValidData()
     {
-        //意味あんだか良くわからんが一応書いとく
+        // 意味あんだか良くわからんが一応書いとく
         $formData = [
             'phone_number' => '+〇三=abcふれ',
         ];

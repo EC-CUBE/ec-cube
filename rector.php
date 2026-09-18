@@ -1,0 +1,143 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+use Eccube\Rector\CodingStyle\AttributeArgumentsOrderRector;
+use Eccube\Rector\CodingStyle\NormalizePhpDocArrayGenericSpacingRector;
+use Rector\Arguments\Rector\ClassMethod\ArgumentAdderRector;
+use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPublicMethodParameterRector;
+use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
+use Rector\PHPUnit\Set\PHPUnitSetList;
+use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
+use Rector\Set\ValueObject\LevelSetList;
+use Rector\Set\ValueObject\SetList;
+use Rector\Symfony\Set\SymfonySetList;
+use Rector\Symfony\Symfony34\Rector\Closure\ContainerGetNameToTypeInTestsRector;
+use Rector\Symfony\Symfony61\Rector\Class_\CommandConfigureToAttributeRector;
+use Rector\ValueObject\PhpVersion;
+
+// この設定ファイルは Rector の CLI 実行専用。
+// 公開ディレクトリに配置された場合に Web 経由で実行されないようガードする。
+if (PHP_SAPI !== 'cli') {
+    http_response_code(403);
+    exit;
+}
+
+return RectorConfig::configure()
+           // EC-CUBEのPHPバージョンに合わせて設定
+           ->withPhpVersion(PhpVersion::PHP_83)
+
+           // Rectorが解析するパスを指定
+           ->withPaths([
+               __DIR__.'/src',
+               // __DIR__ . '/app',
+               __DIR__.'/tests',
+               __DIR__.'/e2e/fixtures/plugins',
+               __DIR__.'/e2e/router.php',
+               // プラグインディレクトリ等、個別案件の場合は必要に応じて追加
+               // __DIR__ . '/app/Plugin',
+           ])
+           // スキップするパスやルールを指定
+           ->withSkip([
+               // 特定のファイルやディレクトリを除外する場合
+               __DIR__.'/rector',
+               // 特定のルールを除外する場合
+               // ストリームラッパーのメソッドは PHP が固定のシグネチャで呼ぶ規約 (streamWrapper)
+               // であり, 本体で参照していない引数も宣言したまま残す
+               RemoveUnusedPublicMethodParameterRector::class => [
+                   __DIR__.'/tests/Eccube/Tests/Service/FailingEnvStreamWrapper.php',
+               ],
+               // scandir() / explode() の戻り値要素はバージョンによって string と推論されたり
+               // されなかったりし、 NullToStrictStringFuncCallArgRector が追加する (string) キャストを
+               // RecastingRemovalRector が除去すると付け直す往復になるため、 キャストを維持する
+               // (ローカル/CI 間でのルール適用揺らぎ対策)
+               RecastingRemovalRector::class => [
+                   __DIR__.'/src/Eccube/Service/Composer/OutputParser.php',
+               ],
+               // ContainerGetNameToTypeInTestsRector は $container->get('service.id') の文字列サービスIDを
+               // get(Type::class) へ変換する。クラス名のエイリアスを持たない private サービス
+               // (例: 'doctrine.debug_data_holder', 'event_dispatcher', 'twig', 'session.factory') では
+               // ServiceNotFoundException になるため, それらはサービスIDを変数へ代入して get($serviceId) の
+               // 形にし変換対象から外すこと (ルールは無効化せず変数経由で回避する)。
+               // 既存例: AbstractWebTestCase / MailServiceTest / CartServiceTest / TwigExtensionPass
+               //
+               // shopping/order の各購入フローは同じ PurchaseFlow 型の別サービスであり、
+               // 型解決(get(PurchaseFlow::class))に置き換えると両者の区別が失われテストが無意味化する
+               ContainerGetNameToTypeInTestsRector::class => [
+                   __DIR__.'/tests/Eccube/Tests/Service/PurchaseFlow/OrderMemoFlowTest.php',
+                   // private / チャネル別ロガー ('security.firewall.map' / 'monolog.logger.mcp') も
+                   // 型でなく文字列 ID で取得するため FQCN 変換を除外する
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/Api44LifecycleContractTest.php',
+                   __DIR__.'/tests/Eccube/Tests/Service/Mcp/Contract/McpAuditLogIsolationContractTest.php',
+               ],
+               // 8.3以上で対応可能
+               AddTypeToConstRector::class, // [BC]定数に型を追加する PHP 8.3 以降で有効
+               RenameMethodRector::class, // addがaddCommandに変換されてしまうため一旦スキップ
+               // composer-based セットの設定では ContainerBuilder::addCompilerPass() に
+               // 第 2 引数 0 (int) を足すが, シグネチャは string $type なので TypeError になる。
+               // (例: addCompilerPass(new PluginPass(), 0, 0))
+               ArgumentAdderRector::class,
+               // EccubeCliToolCommand の description は runtime (ツールの description) で組み立てるため、
+               // #[AsCommand(description:)] へ移せない (属性は定数式のみ)。 このルールをスキップする。
+               CommandConfigureToAttributeRector::class => [
+                   __DIR__.'/src/Eccube/Command/EccubeCliToolCommand.php',
+               ],
+           ])
+           // 個別にルールを追加する場合はここに記述
+           ->withRules([
+               // 以下は composer-based セットに含まれるため withRules() では指定しない
+               // (二重登録になり rector 2.6.2 以降は警告が出る):
+               //   CommandConfigureToAttributeRector / CommandPropertyToAttributeRector
+               //   StaticDataProviderClassMethodRector / EventSubscriberInterfaceToAttributeRector
+               AttributeArgumentsOrderRector::class, // すべての Attribute の引数をコンストラクタ引数順序に統一する
+               NormalizePhpDocArrayGenericSpacingRector::class, // PHPDoc の配列ジェネリクス表記のカンマ後のスペースを統一する
+           ])
+           // よく使われるルールセットを有効化
+           ->withSets([
+               SetList::DEAD_CODE,
+               LevelSetList::UP_TO_PHP_84, // PHPバージョンに合わせる
+               // 各ルールが composer.json / installed.json を自分で見て,
+               // インストール済みバージョンに合うものだけ実行する。
+               // rector 2.6.2 でバージョン別のセット定数 (SYMFONY_74 等) は撤去された。
+               SymfonySetList::COMPOSER_BASED,
+               SymfonySetList::SYMFONY_CODE_QUALITY,
+               SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
+               DoctrineSetList::DOCTRINE_CODE_QUALITY,
+               DoctrineSetList::COMPOSER_BASED,
+               DoctrineSetList::ANNOTATIONS_TO_ATTRIBUTES, // Doctrine Annotations を Attributes に変換
+               PHPUnitSetList::PHPUNIT_CODE_QUALITY,
+               PHPUnitSetList::COMPOSER_BASED,
+           ])
+           // Symfony のコンテナ XML（EC-CUBE の構成に合わせて調整が必要な場合があります）
+           // debug.container.dump は kernel.build_dir 配下に出力される
+           ->withSymfonyContainerXml(__DIR__.'/var/build/dev/Eccube_KernelDevDebugContainer.xml')
+           // オプション: キャッシュ設定 (パフォーマンス向上のために推奨)
+           ->withCache(
+               // cacheClass は既定が FileCacheStorage で, rector 2.6.3 では
+               // 指定しても無視される (MemoryCacheStorage が撤去された) ため渡さない。
+               cacheDirectory: './var/rector_cache'
+           )
+           // オプション: import文の整理
+           ->withImportNames(
+               importShortClasses: false,
+               importDocBlockNames: true,
+               importNames: true
+           )
+           // アノテーション→アトリビュートの変更
+           ->withAttributesSets()
+           // オプション: Rectorの実行をパラレルで行う (パフォーマンス向上)
+           ->withParallel();

@@ -14,12 +14,14 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NoResultException;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Repository\TaxRuleRepository;
+use Eccube\Service\OrderHelper;
 use Eccube\Service\PurchaseFlow\ItemHolderPreprocessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\TaxRuleService;
@@ -27,43 +29,20 @@ use Eccube\Service\TaxRuleService;
 class TaxProcessor implements ItemHolderPreprocessor
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
-
-    /**
-     * @var TaxRuleService
-     */
-    protected $taxRuleService;
-
-    /**
      * TaxProcessor constructor.
-     *
-     * @param TaxRuleRepository $taxRuleRepository
-     * @param TaxRuleService $taxRuleService
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        TaxRuleRepository $taxRuleRepository,
-        TaxRuleService $taxRuleService
-    ) {
-        $this->entityManager = $entityManager;
-        $this->taxRuleRepository = $taxRuleRepository;
-        $this->taxRuleService = $taxRuleService;
+    public function __construct(protected EntityManagerInterface $entityManager, protected TaxRuleRepository $taxRuleRepository, protected TaxRuleService $taxRuleService, protected OrderHelper $orderHelper)
+    {
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 受注 or カート
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      */
-    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function process(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         if (!$itemHolder instanceof Order) {
             return;
@@ -77,14 +56,14 @@ class TaxProcessor implements ItemHolderPreprocessor
                 $item->setTaxType($this->getTaxType($OrderItemType));
             }
             if (!$item->getTaxDisplayType()) {
-                $item->setTaxDisplayType($this->getTaxDisplayType($OrderItemType));
+                $item->setTaxDisplayType($this->orderHelper->getTaxDisplayType($OrderItemType));
             }
 
             // 税区分: 非課税, 不課税
-            if ($item->getTaxType()->getId() != TaxType::TAXATION) {
-                $item->setTax(0);
-                $item->setTaxRate(0);
-                $item->setRoundingType(null);
+            if ($item->getTaxType() && $item->getTaxType()->getId() != TaxType::TAXATION) {
+                $item->setTax('0');
+                $item->setTaxRate('0');
+                $item->setRoundingType();
 
                 continue;
             }
@@ -125,11 +104,11 @@ class TaxProcessor implements ItemHolderPreprocessor
      * - 手数料: 課税
      * - ポイント値引き: 不課税
      *
-     * @param $OrderItemType
+     * @param OrderItemType|int $OrderItemType 明細種別
      *
-     * @return TaxType
+     * @return TaxType 税区分
      */
-    protected function getTaxType($OrderItemType)
+    protected function getTaxType(OrderItemType|int $OrderItemType): TaxType
     {
         if ($OrderItemType instanceof OrderItemType) {
             $OrderItemType = $OrderItemType->getId();
@@ -140,40 +119,5 @@ class TaxProcessor implements ItemHolderPreprocessor
             : TaxType::TAXATION;
 
         return $this->entityManager->find(TaxType::class, $TaxType);
-    }
-
-    /**
-     * 税表示区分を取得する.
-     *
-     * - 商品: 税抜
-     * - 送料: 税込
-     * - 値引き: 税抜
-     * - 手数料: 税込
-     * - ポイント値引き: 税込
-     *
-     * @param $OrderItemType
-     *
-     * @return TaxType
-     */
-    protected function getTaxDisplayType($OrderItemType)
-    {
-        if ($OrderItemType instanceof OrderItemType) {
-            $OrderItemType = $OrderItemType->getId();
-        }
-
-        switch ($OrderItemType) {
-            case OrderItemType::PRODUCT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::DELIVERY_FEE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::DISCOUNT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-            case OrderItemType::CHARGE:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            case OrderItemType::POINT:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::INCLUDED);
-            default:
-                return $this->entityManager->find(TaxDisplayType::class, TaxDisplayType::EXCLUDED);
-        }
     }
 }

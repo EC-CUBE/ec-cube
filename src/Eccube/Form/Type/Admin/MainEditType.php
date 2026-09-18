@@ -35,74 +35,42 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MainEditType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * MainEditType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
-     * @param DeviceTypeRepository $deviceTypeRepository
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        DeviceTypeRepository $deviceTypeRepository,
-        EccubeConfig $eccubeConfig
-    ) {
-        $this->entityManager = $entityManager;
-        $this->deviceTypeRepository = $deviceTypeRepository;
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EntityManagerInterface $entityManager, protected DeviceTypeRepository $deviceTypeRepository, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('url', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/'),
                 ],
             ])
             ->add('file_name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^([0-9a-zA-Z_\-]+\/?)+$/'),
                 ],
             ])
             ->add('tpl_data', TextareaType::class, [
@@ -117,40 +85,30 @@ class MainEditType extends AbstractType
             ->add('author', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('description', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('keyword', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('meta_robots', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
-            ])->add('meta_tags', TextAreaType::class, [
+            ])->add('meta_tags', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_lltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('PcLayout', EntityType::class, [
@@ -185,7 +143,7 @@ class MainEditType extends AbstractType
                         ->orderBy('l.id', 'DESC');
                 },
             ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
                 $Page = $event->getData();
                 if (is_null($Page->getId())) {
                     return;
@@ -201,7 +159,7 @@ class MainEditType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 /** @var Page $Page */
@@ -210,7 +168,7 @@ class MainEditType extends AbstractType
                 // urlの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
-                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->from(Page::class, 'p')
                     ->where('p.url = :url')
                     ->setParameter('url', $Page->getUrl());
 
@@ -221,7 +179,7 @@ class MainEditType extends AbstractType
                         ->setParameter('page_id', $Page->getId());
                 }
 
-                //確認ページの編集ページ存在している場合
+                // 確認ページの編集ページ存在している場合
                 if ($Page->getEditType() == Page::EDIT_TYPE_DEFAULT_CONFIRM && $Page->getMasterPage()) {
                     $qb
                         ->andWhere('p.id <> :master_page_id')
@@ -236,7 +194,7 @@ class MainEditType extends AbstractType
                 // Page::EDIT_TYPE_USER ファイルの重複チェック
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(p)')
-                    ->from('Eccube\\Entity\\Page', 'p')
+                    ->from(Page::class, 'p')
                     ->where('p.file_name = :file_name')
                     ->andWhere('p.edit_type = :edit_type')
                     ->setParameter('file_name', $Page->getFileName())
@@ -258,7 +216,7 @@ class MainEditType extends AbstractType
                 if (Page::EDIT_TYPE_USER === $Page->getEditType()) {
                     $qb = $this->entityManager->createQueryBuilder();
                     $qb->select('count(p)')
-                        ->from('Eccube\\Entity\\Page', 'p')
+                        ->from(Page::class, 'p')
                         ->where('p.file_name = :file_name')
                         ->andWhere('p.edit_type >= :edit_type')
                         ->setParameter('file_name', $Page->getFileName())
@@ -283,18 +241,11 @@ class MainEditType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Page::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'main_edit';
     }
 }

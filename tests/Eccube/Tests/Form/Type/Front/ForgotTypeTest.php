@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,54 +16,51 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\ForgotType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Form\FormInterface;
 
-class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+final class ForgotTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected $formData;
 
     /**
      * 異常系のデータパターンを返す
-     *
-     * @return array
      */
-    public function getInvalidTestData()
+    public static function getInvalidTestData(): \Iterator
     {
-        return [
+        yield [
             [
-                'data' => [
-                    'login_email' => '',
-                ],
+                'login_email' => '',
             ],
+        ];
+        yield [
             [
-                'data' => [
-                    'login_email' => 'example',
-                ],
+                'login_email' => 'example',
             ],
-            // [
-            //     'data' => [
-            //         'login_email' => 'a..a@aa',
-            //     ],
-            // ],
-            // [
-            //     'data' => [
-            //         'login_email' => 'aa.@aa',
-            //     ],
-            // ],
+        ];
+        // [
+        //     'data' => [
+        //         'login_email' => 'a..a@aa',
+        //     ],
+        // ],
+        // [
+        //     'data' => [
+        //         'login_email' => 'aa.@aa',
+        //     ],
+        // ],
+        yield [
             [
-                'data' => [
-                    'login_email' => 'aa@adf@a.com',
-                ],
+                'login_email' => 'aa@adf@a.com',
             ],
         ];
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(ForgotType::class, null, [
@@ -71,8 +70,9 @@ class ForgotTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     }
 
     /**
-     * @dataProvider getInvalidTestData
+     * @param mixed $data
      */
+    #[DataProvider(methodName: 'getInvalidTestData')]
     public function testInvalidData($data)
     {
         $this->form->submit($data);

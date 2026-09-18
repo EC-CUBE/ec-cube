@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 脆弱性報告(Vulnerability Report)
+    url: https://www.ec-cube.net/contact/
+    about: 公式サイトのお問い合わせフォームへ(概要と再現手順を必ずご記載ください)
+  - name: 質問(Question)
+    url: https://xoops.ec-cube.net/
+    about: 開発中に困ったことの相談や質問などは開発コミュニティへ

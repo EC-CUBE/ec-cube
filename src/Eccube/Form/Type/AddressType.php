@@ -26,26 +26,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 class AddressType extends AbstractType
 {
     /**
-     * @var array
-     */
-    protected $config;
-
-    /**
      * {@inheritdoc}
      *
      * AddressType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $config)
     {
-        $this->config = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $options['pref_options']['required'] = $options['required'];
         $options['addr01_options']['required'] = $options['required'];
@@ -66,9 +61,7 @@ class AddressType extends AbstractType
             ], $options['addr02_options']['constraints']);
         }
 
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
-        }
+        $options['options']['error_bubbling'] ??= $options['error_bubbling'];
 
         $builder
             ->add($options['pref_name'], PrefType::class, array_merge_recursive($options['options'], $options['pref_options']))
@@ -83,8 +76,11 @@ class AddressType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    #[\Override]
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $builder = $form->getConfig();
         $view->vars['pref_name'] = $builder->getAttribute('pref_name');
@@ -95,14 +91,15 @@ class AddressType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'options' => [],
             'pref_options' => ['constraints' => [], 'attr' => ['class' => 'p-region-id']],
             'addr01_options' => [
                 'constraints' => [
-                    new Assert\Length(['max' => $this->config['eccube_address1_len']]),
+                    new Assert\Length(max: $this->config['eccube_address1_len']),
                 ],
                 'attr' => [
                     'class' => 'p-locality p-street-address',
@@ -111,7 +108,7 @@ class AddressType extends AbstractType
             ],
             'addr02_options' => [
                 'constraints' => [
-                    new Assert\Length(['max' => $this->config['eccube_address2_len']]),
+                    new Assert\Length(max: $this->config['eccube_address2_len']),
                 ],
                 'attr' => [
                     'class' => 'p-extended-address',
@@ -125,10 +122,5 @@ class AddressType extends AbstractType
             'inherit_data' => true,
             'trim' => true,
         ]);
-    }
-
-    public function getBlockPrefix()
-    {
-        return 'address';
     }
 }

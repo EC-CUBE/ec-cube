@@ -16,45 +16,41 @@ namespace Eccube\Form\Type\Admin;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\ProductStock;
+use Eccube\Entity\Tag;
 use Eccube\Form\Type\Master\CategoryType as MasterCategoryType;
 use Eccube\Form\Type\Master\ProductStatusType;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductStatusRepository;
+use Eccube\Repository\TagRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class SearchProductType extends AbstractType
 {
     /**
-     * @var ProductStatusRepository
-     */
-    protected $productStatusRepository;
-
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
      * SearchProductType constructor.
-     *
-     * @param ProductStatusRepository $productStatusRepository
-     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(ProductStatusRepository $productStatusRepository, CategoryRepository $categoryRepository)
+    public function __construct(protected ProductStatusRepository $productStatusRepository, protected CategoryRepository $categoryRepository, protected TagRepository $tagRepository)
     {
-        $this->productStatusRepository = $productStatusRepository;
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('id', TextType::class, [
@@ -69,9 +65,7 @@ class SearchProductType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'choices' => $this->categoryRepository->getList(null, true),
-                'choice_value' => function (Category $Category = null) {
-                    return $Category ? $Category->getId() : null;
-                },
+                'choice_value' => fn (?Category $Category = null) => $Category ? $Category->getId() : null,
             ])
             ->add('status', ProductStatusType::class, [
                 'label' => 'admin.product.display_status',
@@ -92,13 +86,26 @@ class SearchProductType extends AbstractType
                 'expanded' => true,
                 'multiple' => true,
             ])
+            ->add('tag_id', EntityType::class, [
+                'class' => Tag::class,
+                'label' => 'admin.product.tag',
+                'placeholder' => 'common.select__all_products',
+                'choice_label' => 'name',
+                'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'query_builder' => fn ($er) => $er->createQueryBuilder('t')
+                ->orderBy('t.sort_no', 'DESC'),
+            ])
             ->add('create_date_start', DateType::class, [
                 'label' => 'admin.common.create_date__start',
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_start',
@@ -110,7 +117,9 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_start',
@@ -122,8 +131,10 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_date_end',
@@ -135,7 +146,9 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_end',
@@ -147,8 +160,10 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_start',
@@ -160,7 +175,9 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_start',
@@ -172,8 +189,10 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_date_end',
@@ -185,20 +204,55 @@ class SearchProductType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_update_datetime_end',
                     'data-toggle' => 'datetimepicker',
                 ],
             ])
+            // ソート用
+            ->add('sortkey', HiddenType::class, [
+                'label' => 'admin.list.sort.key',
+                'required' => false,
+            ])
+            ->add('sorttype', HiddenType::class, [
+                'label' => 'admin.list.sort.type',
+                'required' => false,
+            ])
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+                $form = $event->getForm();
+
+                // 登録日
+                $create_datetime_start = $form['create_datetime_start']->getData();
+                $create_datetime_end = $form['create_datetime_end']->getData();
+
+                if (!empty($create_datetime_start) && !empty($create_datetime_end)) {
+                    if ($create_datetime_start > $create_datetime_end) {
+                        $form['create_datetime_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+
+                // 更新日
+                $update_datetime_start = $form['update_datetime_start']->getData();
+                $update_datetime_end = $form['update_datetime_end']->getData();
+
+                if (!empty($update_datetime_start) && !empty($update_datetime_end)) {
+                    if ($update_datetime_start > $update_datetime_end) {
+                        $form['update_datetime_end']->addError(new FormError(trans('admin.product.date_range_error')));
+                    }
+                }
+            })
         ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_search_product';
     }

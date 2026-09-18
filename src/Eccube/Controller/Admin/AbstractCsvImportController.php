@@ -14,74 +14,58 @@
 namespace Eccube\Controller\Admin;
 
 use Eccube\Controller\AbstractController;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\CsvImportService;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractCsvImportController extends AbstractController
 {
     /**
      * アップロードされたCSVファイル名
-     *
-     * @var string
      */
-    protected $csvFileName;
+    protected string $csvFileName;
+
+    protected BaseInfoRepository $baseInfoRepository;
+
+    #[Required]
+    public function setBaseInfoRepository(BaseInfoRepository $baseInfoRepository): void
+    {
+        $this->baseInfoRepository = $baseInfoRepository;
+    }
 
     /**
      * アップロードされたCSVファイルの行ごとの処理
-     *
-     * @param UploadedFile $formFile
-     *
-     * @return CsvImportService|bool
      */
-    protected function getImportData(UploadedFile $formFile)
+    protected function getImportData(UploadedFile $formFile): CsvImportService|bool
     {
         // アップロードされたCSVファイルを一時ディレクトリに保存
         $this->csvFileName = 'upload_'.StringUtil::random().'.'.$formFile->getClientOriginalExtension();
         $formFile->move($this->eccubeConfig['eccube_csv_temp_realdir'], $this->csvFileName);
 
-        $file = file_get_contents($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
-
-        if ('\\' === DIRECTORY_SEPARATOR && PHP_VERSION_ID >= 70000) {
-            // Windows 環境の PHP7 の場合はファイルエンコーディングを CP932 に合わせる
-            // see https://github.com/EC-CUBE/ec-cube/issues/1780
-            setlocale(LC_ALL, ''); // 既定のロケールに設定
-            if (mb_detect_encoding($file) === 'UTF-8') { // UTF-8 を検出したら SJIS-win に変換
-                $file = mb_convert_encoding($file, 'SJIS-win', 'UTF-8');
-            }
-        } else {
-            // アップロードされたファイルがUTF-8以外は文字コード変換を行う
-            $encode = StringUtil::characterEncoding($file, $this->eccubeConfig['eccube_csv_import_encoding']);
-            if (!empty($encode) && $encode != 'UTF-8') {
-                $file = mb_convert_encoding($file, 'UTF-8', $encode);
-            }
-        }
-
-        $file = StringUtil::convertLineFeed($file);
-
-        $tmp = tmpfile();
-        fwrite($tmp, $file);
-        rewind($tmp);
-        $meta = stream_get_meta_data($tmp);
-        $file = new \SplFileObject($meta['uri']);
+        $file = new \SplFileObject($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
 
         set_time_limit(0);
 
         // アップロードされたCSVファイルを行ごとに取得
-        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure']);
+        $data = new CsvImportService($file, $this->eccubeConfig['eccube_csv_import_delimiter'], $this->eccubeConfig['eccube_csv_import_enclosure'], '\\', $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas());
 
         return $data->setHeaderRowNumber(0) ? $data : false;
     }
 
-    protected function sendTemplateResponse(Request $request, $columns, $filename)
+    /**
+     * @param array<int, mixed> $columns
+     */
+    protected function sendTemplateResponse(Request $request, array $columns, string $filename): StreamedResponse
     {
         set_time_limit(0);
 
         $response = new StreamedResponse();
-        $response->setCallback(function () use ($columns) {
+        $response->setCallback(function () use ($columns): void {
             // ヘッダ行の出力
             $row = [];
             foreach ($columns as $column) {
@@ -89,13 +73,12 @@ class AbstractCsvImportController extends AbstractController
             }
 
             $fp = fopen('php://output', 'w');
-            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator']);
+            fputcsv($fp, $row, $this->eccubeConfig['eccube_csv_export_separator'], '"', '\\');
             fclose($fp);
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Content-Disposition', 'attachment; filename='.$filename);
-        $response->send();
 
         return $response;
     }
@@ -103,13 +86,13 @@ class AbstractCsvImportController extends AbstractController
     /**
      * アップロードされたCSVファイルの削除
      */
-    protected function removeUploadedFile()
+    protected function removeUploadedFile(): void
     {
         if (!empty($this->csvFileName)) {
             try {
                 $fs = new Filesystem();
                 $fs->remove($this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$this->csvFileName);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 // エラーが発生しても無視する
             }
         }

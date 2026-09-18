@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,19 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class BlockControllerTest extends AbstractAdminWebTestCase
+final class BlockControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentBlockIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_block'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_block'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentBlockEdit()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl(
                 'admin_content_block_edit',
                 ['id' => 1]
@@ -38,7 +41,7 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminContentBlockEditWithPost()
     {
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_block_edit', ['id' => 1]),
             [
                 'block' => [
@@ -56,8 +59,8 @@ class BlockControllerTest extends AbstractAdminWebTestCase
         ));
 
         $dir = sprintf('%s/app/template/%s/Block',
-            self::$container->getParameter('kernel.project_dir'),
-            self::$container->getParameter('eccube.theme'));
+            static::getContainer()->getParameter('kernel.project_dir'),
+            static::getContainer()->getParameter('eccube.theme'));
 
         $this->expected = '<p>test</p>';
         $this->actual = file_get_contents($dir.'/file_name.twig');
@@ -73,14 +76,13 @@ class BlockControllerTest extends AbstractAdminWebTestCase
     {
         $this->loginTo($this->createMember());
 
-        $redirectUrl = $this->generateUrl('admin_content_block');
-
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_content_block_delete', ['id' => 1])
         );
 
+        $redirectUrl = $this->generateUrl('admin_content_block');
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
-        $this->assertSame(true, $actual);
+        $this->assertTrue($actual);
     }
 }

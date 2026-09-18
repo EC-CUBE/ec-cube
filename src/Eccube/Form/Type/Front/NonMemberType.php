@@ -28,24 +28,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NonMemberType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * NonMemberType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', NameType::class, [
@@ -56,10 +51,11 @@ class NonMemberType extends AbstractType
             ])
             ->add('company_name', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'autocomplete' => 'organization',
+                ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
@@ -77,7 +73,8 @@ class NonMemberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'nonmember';
     }

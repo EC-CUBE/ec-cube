@@ -32,38 +32,19 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ShippingType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
-     * @var DeliveryFeeRepository
-     */
-    protected $deliveryFeeRepository;
-
-    /**
      * ShippingType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param DeliveryRepository $deliveryRepository
-     * @param DeliveryFeeRepository $deliveryFeeRepository
      */
-    public function __construct(EccubeConfig $eccubeConfig, DeliveryRepository $deliveryRepository, DeliveryFeeRepository $deliveryFeeRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected DeliveryRepository $deliveryRepository, protected DeliveryFeeRepository $deliveryFeeRepository)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->deliveryRepository = $deliveryRepository;
-        $this->deliveryFeeRepository = $deliveryFeeRepository;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(
@@ -77,7 +58,7 @@ class ShippingType extends AbstractType
         // 配送業者のプルダウンを生成
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            function (FormEvent $event): void {
                 /* @var Shipping $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
@@ -104,7 +85,7 @@ class ShippingType extends AbstractType
                     [
                         'required' => false,
                         'label' => 'shipping.label.delivery_hour',
-                        'class' => 'Eccube\Entity\Delivery',
+                        'class' => Delivery::class,
                         'choice_label' => 'name',
                         'choices' => $Deliveries,
                         'placeholder' => false,
@@ -119,7 +100,7 @@ class ShippingType extends AbstractType
         // お届け日のプルダウンを生成
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            function (FormEvent $event): void {
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
@@ -196,8 +177,8 @@ class ShippingType extends AbstractType
         // お届け時間のプルダウンを生成
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
-                /** @var Shipping $Shipping */
+            function (FormEvent $event): void {
+                /** @var Shipping|null $Shipping */
                 $Shipping = $event->getData();
                 if (is_null($Shipping) || !$Shipping->getId()) {
                     return;
@@ -208,9 +189,7 @@ class ShippingType extends AbstractType
                 $Delivery = $Shipping->getDelivery();
                 if ($Delivery) {
                     $DeliveryTimes = $Delivery->getDeliveryTimes();
-                    $DeliveryTimes = $DeliveryTimes->filter(function (DeliveryTime $DeliveryTime) {
-                        return $DeliveryTime->isVisible();
-                    });
+                    $DeliveryTimes = $DeliveryTimes->filter(fn (DeliveryTime $DeliveryTime) => $DeliveryTime->isVisible());
 
                     foreach ($DeliveryTimes as $deliveryTime) {
                         if ($deliveryTime->getId() == $Shipping->getTimeId()) {
@@ -226,7 +205,7 @@ class ShippingType extends AbstractType
                     EntityType::class,
                     [
                         'label' => 'front.shopping.delivery_time',
-                        'class' => 'Eccube\Entity\DeliveryTime',
+                        'class' => DeliveryTime::class,
                         'choice_label' => 'deliveryTime',
                         'choices' => $DeliveryTimes,
                         'required' => false,
@@ -240,22 +219,22 @@ class ShippingType extends AbstractType
 
         // POSTされないデータをエンティティにセットする.
         // TODO PurchaseFlow で行うのが適切.
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var Shipping $Shipping */
             $Shipping = $event->getData();
             $form = $event->getForm();
-            /** @var Delivery $Delivery */
+            /** @var Delivery|null $Delivery */
             $Delivery = $form['Delivery']->getData();
             if ($Delivery) {
                 $Shipping->setShippingDeliveryName($Delivery->getName());
             } else {
-                $Shipping->setShippingDeliveryName(null);
+                $Shipping->setShippingDeliveryName();
             }
             $DeliveryDate = $form['shipping_delivery_date']->getData();
             if ($DeliveryDate) {
                 $Shipping->setShippingDeliveryDate(new \DateTime($DeliveryDate));
             } else {
-                $Shipping->setShippingDeliveryDate(null);
+                $Shipping->setShippingDeliveryDate();
             }
 
             $DeliveryTime = $form['DeliveryTime']->getData();
@@ -263,22 +242,27 @@ class ShippingType extends AbstractType
                 $Shipping->setShippingDeliveryTime($DeliveryTime->getDeliveryTime());
                 $Shipping->setTimeId($DeliveryTime->getId());
             } else {
-                $Shipping->setShippingDeliveryTime(null);
+                $Shipping->setShippingDeliveryTime();
                 $Shipping->setTimeId(null);
             }
         });
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritDoc}
+     */
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Eccube\Entity\Shipping',
+                'data_class' => Shipping::class,
             ]
         );
     }
 
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return '_shopping_shipping';
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,24 +16,24 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Master\CustomerStatus;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Email;
 
-class EntryControllerTest extends AbstractWebTestCase
+final class EntryControllerTest extends AbstractWebTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-        $this->client->enableProfiler();
-    }
+    use MailerAssertionsTrait;
 
     protected function createFormData()
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('?????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -52,7 +54,7 @@ class EntryControllerTest extends AbstractWebTestCase
                 'first' => $email,
                 'second' => $email,
             ],
-            'password' => [
+            'plain_password' => [
                 'first' => $password,
                 'second' => $password,
             ],
@@ -66,14 +68,12 @@ class EntryControllerTest extends AbstractWebTestCase
             'user_policy_check' => 1,
             Constant::TOKEN_NAME => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testRoutingIndex()
     {
         $client = $this->client;
-        $crawler = $client->request('GET', $this->generateUrl('entry'));
+        $crawler = $client->request(Request::METHOD_GET, $this->generateUrl('entry'));
 
         $this->expected = '新規会員登録';
         $this->actual = $crawler->filter('.ec-pageHeader > h1')->text();
@@ -84,7 +84,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testConfirm()
     {
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -101,7 +101,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testConfirmWithError()
     {
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => [
@@ -122,7 +122,7 @@ class EntryControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
 
-        $crawler = $client->request('POST',
+        $crawler = $client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -139,12 +139,12 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivate()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
-        $BaseInfo->setOptionCustomerActivate(1);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+        $BaseInfo->setOptionCustomerActivate(true);
         $this->entityManager->flush();
 
         $client = $this->client;
-        $crawler = $client->request('POST',
+        $client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $this->createFormData(),
@@ -154,9 +154,9 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
 
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
@@ -165,14 +165,14 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithActivateWithMultipartSanitize()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
-        $BaseInfo->setOptionCustomerActivate(1);
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+        $BaseInfo->setOptionCustomerActivate(true);
         $this->entityManager->flush();
 
         $client = $this->client;
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>'; // サニタイズ対象の文字列
-        $crawler = $client->request('POST',
+        $client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $form,
@@ -182,48 +182,43 @@ class EntryControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('entry_complete')));
 
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize＆＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '＜Sanitize＆＞', 'HTMLメールがサニタイズされている');
     }
 
     public function testRoutingComplete()
     {
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_complete'));
+        $client->request(Request::METHOD_GET, $this->generateUrl('entry_complete'));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
     }
 
     public function testActivate()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
+        $this->assertInstanceOf(CustomerStatus::class, $Status);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
+        $client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->getSubject();
         $this->verify();
@@ -231,38 +226,33 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithSanitize()
     {
-        $BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
         $Customer = $this->createCustomer();
         $Customer->setName01('<Sanitize&>');
         $secret_key = $Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
+        $this->assertInstanceOf(CustomerStatus::class, $Status);
         $Customer->setStatus($Status);
         $this->entityManager->flush();
 
         $client = $this->client;
-        $client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
+        $client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => $secret_key]));
 
         $this->assertTrue($client->getResponse()->isSuccessful());
-        $collectedMessages = $this->getMailCollector(false)->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
         $this->expected = '['.$BaseInfo->getShopName().'] 会員登録が完了しました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize&＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('&lt;Sanitize&amp;&gt;', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertEmailTextBodyContains($Message, '＜Sanitize&＞', 'テキストメールがサニタイズされている');
+        $this->assertEmailHtmlBodyContains($Message, '&lt;Sanitize&amp;&gt;', 'HTMLメールがサニタイズされている');
     }
 
     public function testActivateWithNotFound()
     {
-        $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => 'aaaaa']));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => 'aaaaa']));
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
@@ -270,7 +260,7 @@ class EntryControllerTest extends AbstractWebTestCase
 
     public function testActivateWithAbort()
     {
-        $this->client->request('GET', $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('entry_activate', ['secret_key' => '+++++++']));
         $this->expected = 404;
         $this->actual = $this->client->getResponse()->getStatusCode();
         $this->verify();
@@ -281,7 +271,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $formData = $this->createFormData();
         $formData['company_name'] = '<script>alert()</script>';
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $formData,
@@ -289,8 +279,8 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertEquals('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
+        $this->assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        $this->assertSame('＜script＞alert()＜/script＞', $crawler->filter('#entry_company_name')->attr('value'));
     }
 
     public function testConfirmWithAmpersand()
@@ -298,7 +288,7 @@ class EntryControllerTest extends AbstractWebTestCase
         $formData = $this->createFormData();
         $formData['company_name'] = '&';
 
-        $crawler = $this->client->request('POST',
+        $crawler = $this->client->request(Request::METHOD_POST,
             $this->generateUrl('entry'),
             [
                 'entry' => $formData,
@@ -306,7 +296,7 @@ class EntryControllerTest extends AbstractWebTestCase
             ]
         );
 
-        self::assertEquals('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
-        self::assertEquals('＆', $crawler->filter('#entry_company_name')->attr('value'));
+        $this->assertSame('新規会員登録(確認)', $crawler->filter('.ec-pageHeader > h1')->text());
+        $this->assertSame('＆', $crawler->filter('#entry_company_name')->attr('value'));
     }
 }

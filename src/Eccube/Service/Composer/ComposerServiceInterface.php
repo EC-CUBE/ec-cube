@@ -14,6 +14,7 @@
 namespace Eccube\Service\Composer;
 
 use Eccube\Entity\BaseInfo;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Interface ComposerServiceInterface
@@ -24,25 +25,23 @@ interface ComposerServiceInterface
      * Run execute command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @param null $output
-     *
-     * @return string
+     * @param string|null $from Path of composer repository
      */
-    public function execRequire($packageName, $output = null);
+    public function execRequire(string $packageName, ?OutputInterface $output = null, ?string $from = null): string;
 
     /**
      * Run remove command
      *
      * @param string $packageName format foo/bar or foo/bar:1.0.0 or "foo/bar 1.0.0"
-     * @param null $output
-     *
-     * @return string
      */
-    public function execRemove($packageName, $output = null);
+    public function execRemove(string $packageName, ?OutputInterface $output = null): string;
 
-    public function execConfig($key, $value = null);
+    /**
+     * @return array<int|string, array<int, string>>|null
+     */
+    public function execConfig(string $key, ?string $value = null): ?array;
 
-    public function configureRepository(BaseInfo $BaseInfo);
+    public function configureRepository(BaseInfo $BaseInfo): void;
 
-    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0);
+    public function foreachRequires(string $packageName, ?string $version, callable $callback, ?string $typeFilter = null, int $level = 0): void;
 }

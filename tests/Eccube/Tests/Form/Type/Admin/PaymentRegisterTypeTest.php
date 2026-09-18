@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,25 +16,26 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\PaymentRegisterType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+final class PaymentRegisterTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'method' => '1',
         'charge' => '10000',
         'rule_min' => '100',
         'rule_max' => '10000',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
@@ -40,7 +43,7 @@ class PaymentRegisterTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCa
                 'csrf_protection' => false,
             ])
             ->getForm();
-        self::$container->get('request_stack')->push(new Request());
+        static::getContainer()->get(RequestStack::class)->push(new Request());
     }
 
     public function testValidData()

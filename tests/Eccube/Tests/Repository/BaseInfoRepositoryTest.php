@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -28,27 +30,20 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class BaseInfoRepositoryTest extends EccubeTestCase
+final class BaseInfoRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  string
-     */
-    private $id;
+    private ?int $id = null;
 
-    /**
-     * @var  BaseInfoRepository
-     */
-    protected $baseInfoRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         // ダミーデータを生成する Faker
         $faker = $this->getFaker();
-
         // テスト用のデータを生成する.
         $BaseInfo = new BaseInfo();
         $BaseInfo
@@ -58,7 +53,6 @@ class BaseInfoRepositoryTest extends EccubeTestCase
             ->setAddr02($faker->secondaryAddress)
             ->setEmail01($faker->email)
             ->setUpdateDate($faker->dateTime('now'));
-
         /*
          * ここでは Doctrine ORM を使用しているが、オブジェクトキャッシュ等により、
          * 期待した結果が得られない場合がある.
@@ -67,7 +61,7 @@ class BaseInfoRepositoryTest extends EccubeTestCase
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush();
         $this->id = $BaseInfo->getId();
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
     }
 
     public function testGetBaseInfoWithId()
@@ -89,6 +83,6 @@ class BaseInfoRepositoryTest extends EccubeTestCase
     {
         $BaseInfo = $this->baseInfoRepository->get();
         $this->assertNotNull($BaseInfo);
-        $this->assertEquals(1, $BaseInfo->getId());
+        $this->assertSame(1, $BaseInfo->getId());
     }
 }

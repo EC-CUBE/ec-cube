@@ -13,12 +13,8 @@
 
 namespace Eccube\Form\Extension;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\Reader;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Eccube\Annotation\FormAppend;
-use Eccube\Annotation\FormExtension;
+use Eccube\Attribute\FormAppend;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,33 +29,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class DoctrineOrmExtension extends AbstractTypeExtension
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
-     * @var AnnotationReader
-     */
-    protected $reader;
-
-    public function __construct(EntityManagerInterface $em, Reader $reader)
+    public function __construct(protected EntityManagerInterface $em)
     {
-        $this->em = $em;
-        $this->reader = $reader;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) {
+            function (FormEvent $event): void {
                 $form = $event->getForm();
                 $config = $form->getConfig();
                 // data_classオプションが必要
+                /** @var class-string|null $class */
                 $class = $config->getDataClass();
                 if (is_null($class)) {
                     return;
@@ -67,23 +55,24 @@ class DoctrineOrmExtension extends AbstractTypeExtension
                 // メタデータの取得
                 try {
                     $meta = $this->em->getClassMetadata($class);
-                } catch (\Exception $e) {
+                } catch (\Exception) {
                     return;
                 }
 
-                /** @var \ReflectionProperty[] $props */
-                $props = $meta->getReflectionProperties();
-                foreach ($props as $prop) {
-                    $anno = $this->reader->getPropertyAnnotation($prop, FormAppend::class);
-                    if ($anno) {
-                        $options = is_null($anno->options) ? [] : $anno->options;
+                $accessors = $meta->getPropertyAccessors();
+                foreach ($accessors as $propName => $accessor) {
+                    $prop = $accessor->getUnderlyingReflector();
+                    $attrs = $prop->getAttributes(FormAppend::class);
+                    foreach ($attrs as $attr) {
+                        $instance = $attr->newInstance();
+                        $options = empty($instance->options) ? [] : $instance->options;
                         $options['eccube_form_options'] = [
-                            'auto_render' => (true === $anno->auto_render),
-                            'form_theme' => $anno->form_theme,
-                            'style_class' => $anno->style_class ? $anno->style_class : 'ec-select',
+                            'auto_render' => (true === $instance->auto_render),
+                            'form_theme' => $instance->form_theme,
+                            'style_class' => $instance->style_class ?: 'ec-select',
                         ];
-                        if (!isset($form[$prop->getName()])) {
-                            $form->add($prop->getName(), $anno->type, $options);
+                        if (!isset($form[$propName])) {
+                            $form->add($propName, $instance->type, $options);
                         }
                     }
                 }
@@ -91,7 +80,11 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         );
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    /**
+     * @param array<mixed> $options
+     */
+    #[\Override]
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $options = $form->getConfig()->getOption('eccube_form_options');
 
@@ -110,7 +103,8 @@ class DoctrineOrmExtension extends AbstractTypeExtension
         $view->vars['eccube_form_options'] = $options;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault(
             'eccube_form_options',
@@ -125,6 +119,7 @@ class DoctrineOrmExtension extends AbstractTypeExtension
     /**
      * Return the class of the type being extended.
      */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         // return FormType::class to modify (nearly) every field in the system

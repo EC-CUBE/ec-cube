@@ -15,6 +15,7 @@ namespace Eccube\Form\Validator;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Twig\Environment;
 use Twig\Error\Error;
 use Twig\Loader\ArrayLoader;
 use Twig\Source;
@@ -22,30 +23,19 @@ use Twig\Source;
 class TwigLintValidator extends ConstraintValidator
 {
     /**
-     * @var \Twig_Environment
-     */
-    protected $twig;
-
-    /**
      * TwigLintValidator constructor.
-     *
-     * @param \Twig_Environment $twig
      */
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(protected Environment $twig)
     {
-        $this->twig = $twig;
     }
 
     /**
      * @param mixed $value
-     * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint)
+    #[\Override]
+    public function validate($value, Constraint $constraint): void
     {
-        // valueがnullの場合は "Template is not defined"のエラーが投げられるので, 空文字でチェックする.
-        if (is_null($value)) {
-            $value = '';
-        }
+        $value ??= '';
 
         $realLoader = $this->twig->getLoader();
         try {
@@ -54,6 +44,7 @@ class TwigLintValidator extends ConstraintValidator
             $nodeTree = $this->twig->parse($this->twig->tokenize(new Source($value, '')));
             $this->twig->compile($nodeTree);
         } catch (Error $e) {
+            /** @var TwigLint $constraint */
             $this->context->buildViolation($constraint->message)
                 ->setParameter('{{ error }}', $e->getMessage())
                 ->addViolation();

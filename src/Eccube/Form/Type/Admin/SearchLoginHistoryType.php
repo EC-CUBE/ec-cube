@@ -24,23 +24,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchLoginHistoryType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * SearchContactType constructor.
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             // ログインID・IPアドレス
@@ -48,21 +44,21 @@ class SearchLoginHistoryType extends AbstractType
                 'label' => 'admin.setting.system.login_history.multi_search_label',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('user_name', TextType::class, [
                 'label' => 'admin.setting.system.login_history.user_name',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('client_ip', TextType::class, [
                 'label' => 'admin.setting.system.login_history.client_ip',
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('Status', LoginHistoryStatusType::class, [
@@ -76,7 +72,9 @@ class SearchLoginHistoryType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_start',
@@ -88,7 +86,9 @@ class SearchLoginHistoryType extends AbstractType
                 'required' => false,
                 'input' => 'datetime',
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd HH:mm:ss',
+                'constraints' => [
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
+                ],
                 'attr' => [
                     'class' => 'datetimepicker-input',
                     'data-target' => '#'.$this->getBlockPrefix().'_create_datetime_end',
@@ -101,7 +101,8 @@ class SearchLoginHistoryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_search_login_history';
     }

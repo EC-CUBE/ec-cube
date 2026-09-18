@@ -15,60 +15,35 @@ namespace Eccube\Controller\Admin\Content;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\Page;
-use Eccube\Entity\PageLayout;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
+use Eccube\Service\Content\PageContentService;
 use Eccube\Util\CacheUtil;
-use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
 class PageController extends AbstractController
 {
     /**
-     * @var PageRepository
-     */
-    protected $pageRepository;
-
-    /**
-     * @var PageLayoutRepository
-     */
-    protected $pageLayoutRepository;
-
-    /**
-     * @var DeviceTypeRepository
-     */
-    protected $deviceTypeRepository;
-
-    /**
      * PageController constructor.
-     *
-     * @param PageRepository $pageRepository
-     * @param DeviceTypeRepository $deviceTypeRepository
      */
-    public function __construct(
-        PageRepository $pageRepository,
-        PageLayoutRepository $pageLayoutRepository,
-        DeviceTypeRepository $deviceTypeRepository
-    ) {
-        $this->pageRepository = $pageRepository;
-        $this->pageLayoutRepository = $pageLayoutRepository;
-        $this->deviceTypeRepository = $deviceTypeRepository;
+    public function __construct(protected PageRepository $pageRepository, protected PageLayoutRepository $pageLayoutRepository, protected DeviceTypeRepository $deviceTypeRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil, private readonly PageContentService $pageContentService)
+    {
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page", name="admin_content_page", methods={"GET"})
-     * @Template("@admin/Content/page.twig")
+     * @return array<string, mixed>
      */
-    public function index(Request $request, RouterInterface $router)
+    #[Route(path: '/%eccube_admin_route%/content/page', name: 'admin_content_page', methods: ['GET'])]
+    #[Template(template: '@admin/Content/page.twig')]
+    public function index(Request $request): array
     {
         $Pages = $this->pageRepository->getPageList();
 
@@ -78,20 +53,23 @@ class PageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_INDEX_COMPLETE);
 
         return [
             'Pages' => $Pages,
-            'router' => $router,
+            'router' => $this->router,
         ];
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page/new", name="admin_content_page_new", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/content/page/{id}/edit", requirements={"id" = "\d+"}, name="admin_content_page_edit", methods={"GET", "POST"})
-     * @Template("@admin/Content/page_edit.twig")
+     * @param string|null $id
+     *
+     * @return RedirectResponse|array<string, mixed>
      */
-    public function edit(Request $request, $id = null, Environment $twig, RouterInterface $router, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/content/page/new', name: 'admin_content_page_new', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/content/page/{id}/edit', name: 'admin_content_page_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Content/page_edit.twig')]
+    public function edit(Request $request, $id = null): RedirectResponse|array
     {
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
@@ -111,7 +89,7 @@ class PageController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -126,7 +104,7 @@ class PageController extends AbstractController
                 $namespace = '';
             }
             // テンプレートファイルの取得
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext($namespace.$Page->getFileName().'.twig')
                 ->getCode();
 
@@ -134,7 +112,7 @@ class PageController extends AbstractController
 
             $fileName = $Page->getFileName();
         } elseif ($request->getMethod() === 'GET' && !$form->isSubmitted()) {
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext('@admin/empty_page.twig')
                 ->getCode();
             $form->get('tpl_data')->setData($source);
@@ -151,65 +129,18 @@ class PageController extends AbstractController
                     ->setFileName($PrevPage->getFileName())
                     ->setName($Page->getName());
             }
-            // DB登録
-            $this->entityManager->persist($Page);
-            $this->entityManager->flush();
-
-            // ファイル生成・更新
-            if ($isUserDataPage) {
-                $templatePath = $this->getParameter('eccube_theme_user_data_dir');
-            } else {
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
-            }
-            $filePath = $templatePath.'/'.$Page->getFileName().'.twig';
-
-            $fs = new Filesystem();
-            $pageData = $form->get('tpl_data')->getData();
-            $pageData = StringUtil::convertLineFeed($pageData);
-            $fs->dumpFile($filePath, $pageData);
-
-            // 更新でファイル名を変更した場合、以前のファイルを削除
-            if ($Page->getFileName() != $fileName && !is_null($fileName)) {
-                $oldFilePath = $templatePath.'/'.$fileName.'.twig';
-                if ($fs->exists($oldFilePath)) {
-                    $fs->remove($oldFilePath);
-                }
-            }
-
-            foreach ($Page->getPageLayouts() as $PageLayout) {
-                $Page->removePageLayout($PageLayout);
-                $this->entityManager->remove($PageLayout);
-                $this->entityManager->flush();
-            }
-
-            $Layout = $form['PcLayout']->getData();
-            $LastPageLayout = $this->pageLayoutRepository->findOneBy([], ['sort_no' => 'DESC']);
-            $sortNo = $LastPageLayout->getSortNo();
-
-            if ($Layout) {
-                $PageLayout = new PageLayout();
-                $PageLayout->setLayoutId($Layout->getId());
-                $PageLayout->setLayout($Layout);
-                $PageLayout->setPageId($Page->getId());
-                $PageLayout->setSortNo($sortNo++);
-                $PageLayout->setPage($Page);
-
-                $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush();
-            }
-
-            $Layout = $form['SpLayout']->getData();
-            if ($Layout) {
-                $PageLayout = new PageLayout();
-                $PageLayout->setLayoutId($Layout->getId());
-                $PageLayout->setLayout($Layout);
-                $PageLayout->setPageId($Page->getId());
-                $PageLayout->setSortNo($sortNo++);
-                $PageLayout->setPage($Page);
-
-                $this->entityManager->persist($PageLayout);
-                $this->entityManager->flush();
-            }
+            // DB 登録とテンプレートファイルの生成は Service に委譲する
+            $result = $this->pageContentService->save(
+                $Page,
+                (string) $form->get('tpl_data')->getData(),
+                $form['PcLayout']->getData(),
+                $form['SpLayout']->getData(),
+                $fileName
+            );
+            $templatePath = $this->pageContentService->getTemplateDir($Page);
+            // 本文が変わらないとテンプレートは書き出されないため, イベントには
+            // 書き込み結果ではなく書き込み先のパスを渡す
+            $filePath = $this->pageContentService->getFilePath($Page);
 
             $event = new EventArgs(
                 [
@@ -220,13 +151,13 @@ class PageController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_EDIT_COMPLETE);
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearTwigCache();
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearTwigCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }
@@ -236,7 +167,7 @@ class PageController extends AbstractController
             $url = '';
         } else {
             $templatePath = $this->getParameter('eccube_theme_front_dir');
-            $url = $router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
+            $url = $this->router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         }
         $projectDir = $this->getParameter('kernel.project_dir');
         $templatePath = str_replace($projectDir.'/', '', $templatePath);
@@ -252,9 +183,10 @@ class PageController extends AbstractController
     }
 
     /**
-     * @Route("/%eccube_admin_route%/content/page/{id}/delete", requirements={"id" = "\d+"}, name="admin_content_page_delete", methods={"DELETE"})
+     * @param string|null $id
      */
-    public function delete(Request $request, $id = null, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/content/page/{id}/delete', name: 'admin_content_page_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(Request $request, $id = null): RedirectResponse
     {
         $this->isTokenValid();
 
@@ -271,14 +203,7 @@ class PageController extends AbstractController
 
         // ユーザーが作ったページのみ削除する
         if ($Page->getEditType() == Page::EDIT_TYPE_USER) {
-            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
-            $file = $templatePath.'/'.$Page->getFileName().'.twig';
-            $fs = new Filesystem();
-            if ($fs->exists($file)) {
-                $fs->remove($file);
-            }
-            $this->entityManager->remove($Page);
-            $this->entityManager->flush();
+            $this->pageContentService->remove($Page);
 
             $event = new EventArgs(
                 [
@@ -286,13 +211,13 @@ class PageController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_CONTENT_PAGE_DELETE_COMPLETE);
 
             $this->addSuccess('admin.common.delete_complete', 'admin');
 
             // キャッシュの削除
-            $cacheUtil->clearTwigCache();
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearTwigCache();
+            $this->cacheUtil->clearDoctrineCache();
         }
 
         return $this->redirectToRoute('admin_content_page');

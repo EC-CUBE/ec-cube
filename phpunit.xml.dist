@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
+<!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/7.5/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
+         failOnDeprecation="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true"
 >
     <php>
+        <ini name="memory_limit" value="-1" />
+        <ini name="display_errors" value="1" />
         <ini name="error_reporting" value="-1" />
-        <env name="KERNEL_CLASS" value="Eccube\Kernel" />
-        <env name="APP_ENV" value="test" />
-        <env name="APP_DEBUG" value="1" />
-        <env name="SHELL_VERBOSITY" value="-1" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
-        <!-- define your env variables for the test env here -->
+        <server name="KERNEL_CLASS" value="Eccube\Kernel" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
     </php>
 
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>tests/</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist>
-            <directory>./src/</directory>
-            <exclude>
-              <directory suffix=".php">./src/Eccube/Resource</directory>
-              <directory suffix=".php">./src/Eccube/Command</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+    <!--
+        failOnDeprecation と組み合わせ、Symfony の SYMFONY_DEPRECATIONS_HELPER=max[direct]=0 と
+        同じ範囲だけを CI ゲートにする。
+        - direct   (自コードが PHP/vendor の非推奨 API を呼ぶ) … ゲート対象。修正すべきもの
+        - self     (自コードが自ら trigger_error する @deprecated 予告) … 対象外
+        - indirect (vendor 内部で発生し我々が修正できないもの) … 対象外
+    -->
+    <source ignoreSelfDeprecations="true"
+            ignoreIndirectDeprecations="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">./src/Eccube/Resource</directory>
+            <directory suffix=".php">./src/Eccube/Command</directory>
+        </exclude>
+    </source>
 
-    <listeners>
-        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
-        <listener class="\DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener" />
-    </listeners>
+    <extensions>
+        <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
 </phpunit>

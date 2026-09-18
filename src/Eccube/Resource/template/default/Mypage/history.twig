@@ -30,7 +30,7 @@ file that was distributed with this source code.
                 <div class="ec-orderOrder">
                     <div class="ec-definitions">
                         <dt>{{ 'front.mypage.order_date'|trans }}</dt>
-                        <dd>{{ Order.create_date|date_sec }}</dd>
+                        <dd>{{ Order.order_date|date_sec }}</dd>
                     </div>
                     <div class="ec-definitions">
                         <dt>{{ 'front.mypage.order_no'|trans }}</dt>
@@ -95,6 +95,14 @@ file that was distributed with this source code.
                                                 {{ 'front.mypage.current_price'|trans }}{{ orderItem.productClass.price02IncTax|price }}</p>
                                             {% set remessage = true %}
                                         {% endif %}
+                                        {% if Order.OrderStatus.id == constant('Eccube\\Entity\\Master\\OrderStatus::DELIVERED') and orderItem.Product is not null and orderItem.Product.isRefundAllowed %}
+                                            <div style="margin-top: 8px;">
+                                                <a href="{{ url('mypage_refund_request', { order_no: Order.order_no, order_item_id: orderItem.id }) }}" class="ec-inlineBtn ec-inlineBtn--action">{{ 'front.mypage.refund_request.apply'|trans }}</a>
+                                                {% if refundRequestCounts[orderItem.id]|default(0) > 0 %}
+                                                    <a href="{{ url('mypage_refund_request_item_history', { order_no: Order.order_no, order_item_id: orderItem.id }) }}" class="ec-inlineBtn">{{ 'front.mypage.refund_request.history'|trans }}</a>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
 
                                     </div>
                                 </div>
@@ -119,6 +127,12 @@ file that was distributed with this source code.
                             <dt>{{ 'front.mypage.delivery_time'|trans }} :</dt>
                             <dd>{{ Shipping.shipping_delivery_time|default('common.select__unspecified'|trans) }}</dd>
                         </div>
+                        {% if Shipping.tracking_number %}
+                            <div class="ec-definitions--soft">
+                                <dt>{{ 'front.mypage.tracking_number'|trans }} :</dt>
+                                <dd>{{ Shipping.tracking_number }}</dd>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
                 <div class="ec-orderPayment">
@@ -147,6 +161,7 @@ file that was distributed with this source code.
                         <p class="ec-reportDescription">{{ 'front.mypage.mail_not_found'|trans }}</p>
                     {% endfor %}
                 </div>
+
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
@@ -171,14 +186,7 @@ file that was distributed with this source code.
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span
                                 class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span
                                 class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
-                    {% for rate, total in Order.taxable_total_by_tax_rate %}
-                    <dl class="ec-totalBox__taxRate">
-                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
-                        <dd>{{ total|price }}</dd>
-                    </dl>
-                    {% endfor %}
                     {% for item in Order.tax_free_discount_items %}
-                        {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
                         <dl class="ec-totalBox__spec">
                             <dt>{{ item.product_name }}</dt>
                             <dd>{{ item.total_price|price }}</dd>
@@ -187,6 +195,12 @@ file that was distributed with this source code.
                     <div class="ec-totalBox__paymentTotal">{{ 'common.total'|trans }}<span
                                 class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span
                                 class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% for rate, total in Order.total_by_tax_rate %}
+                        <dl class="ec-totalBox__taxRate">
+                            <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                            <dd>{{ total|price }} ({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</dd>
+                        </dl>
+                    {% endfor %}
                     {% if stockOrder %}
                         <a href="{{ url('mypage_order', {'order_no': Order.order_no }) }}"
                        class="ec-blockBtn--action load-overlay" {{ csrf_token_for_anchor() }} data-method="put"
@@ -200,8 +214,10 @@ file that was distributed with this source code.
                 {% endif %}
             </div>
         </div>
-        <div class="ec-role">
-            <a href="{{ url('mypage') }}" class="ec-inlineBtn">{{ 'common.back'|trans }}</a>
+        <div class="ec-role ec-orderRole">
+            <div class="ec-orderRole__detail">
+                <a href="{{ url('mypage') }}" class="ec-inlineBtn ec-font-bold">{{ 'common.back'|trans }}</a>
+            </div>
         </div>
     </div>
 {% endblock %}

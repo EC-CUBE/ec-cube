@@ -17,15 +17,19 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\OrderHelper;
+use Eccube\Session\Session;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,70 +37,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ShippingMultipleItemType extends AbstractType
 {
     /**
-     * @var array
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
-
-    /**
-     * @var AuthorizationCheckerInterface
-     */
-    protected $authorizationChecker;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    protected $tokenStorage;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
      * ShippingMultipleItemType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param SessionInterface $session
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        SessionInterface $session,
-        AuthorizationCheckerInterface $authorizationChecker,
-        TokenStorageInterface $tokenStorage,
-        PrefRepository $prefRepository,
-        EntityManagerInterface $entityManager,
-        OrderHelper $orderHelper
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->session = $session;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->tokenStorage = $tokenStorage;
-        $this->prefRepository = $prefRepository;
-        $this->entityManager = $entityManager;
-        $this->orderHelper = $orderHelper;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Session $session, protected AuthorizationCheckerInterface $authorizationChecker, protected TokenStorageInterface $tokenStorage, protected PrefRepository $prefRepository, protected EntityManagerInterface $entityManager, protected OrderHelper $orderHelper)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('quantity', IntegerType::class, [
@@ -106,13 +59,11 @@ class ShippingMultipleItemType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\GreaterThanOrEqual([
-                        'value' => 1,
-                    ]),
-                    new Assert\Regex(['pattern' => '/^\d+$/']),
+                    new Assert\GreaterThanOrEqual(value: 1),
+                    new Assert\Regex(pattern: '/^\d+$/'),
                 ],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
                 $form = $event->getForm();
 
                 if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -130,7 +81,7 @@ class ShippingMultipleItemType extends AbstractType
                         $CustomerAddress->setFromCustomer($NonMember);
 
                         if ($CustomerAddresses = $this->session->get('eccube.front.shopping.nonmember.customeraddress')) {
-                            $CustomerAddresses = unserialize($CustomerAddresses);
+                            $CustomerAddresses = unserialize($CustomerAddresses, ['allowed_classes' => [CustomerAddress::class, Customer::class, Pref::class, Country::class]]);
                             $CustomerAddresses = array_merge([$CustomerAddress], $CustomerAddresses);
                             foreach ($CustomerAddresses as $Address) {
                                 $Pref = $this->prefRepository->find($Address->getPref()->getId());
@@ -148,10 +99,10 @@ class ShippingMultipleItemType extends AbstractType
                     ],
                 ]);
             })
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
-                /** @var \Eccube\Entity\Shipping $data */
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
+                /** @var Shipping|null $data */
                 $data = $event->getData();
-                /** @var \Symfony\Component\Form\Form $form */
+                /** @var Form $form */
                 $form = $event->getForm();
 
                 if (is_null($data)) {
@@ -168,23 +119,15 @@ class ShippingMultipleItemType extends AbstractType
                     }
                 }
 
-                $quantity = 0;
+                $quantity = '0';
                 // Check all shipment items
                 foreach ($data->getProductOrderItems() as $OrderItem) {
                     // Check item distinct for each quantity
                     if ($data->getProductClassOfTemp()->getId() == $OrderItem->getProductClass()->getId()) {
-                        $quantity += $OrderItem->getQuantity();
+                        $quantity = bcadd($quantity, $OrderItem->getQuantity(), 0);
                     }
                 }
                 $form['quantity']->setData($quantity);
             });
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'shipping_multiple_item';
     }
 }

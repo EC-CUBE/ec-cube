@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,26 +16,15 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class MasterdataControllerTest
  */
-class MasterdataControllerTest extends AbstractAdminWebTestCase
+final class MasterdataControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Session
-     */
-    private $session;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->session = self::$container->get('session');
-    }
-
     protected $entityTest = 'Eccube-Entity-Master-Sex';
 
     /**
@@ -42,7 +33,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     public function testRouting()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_masterdata')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -56,7 +47,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $formData = $this->createFormData($this->entityTest);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata'),
             [
                 'admin_system_masterdata' => $formData,
@@ -65,13 +56,13 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])
         );
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $crawler->filter('.table.table-sm')->html();
         $this->expected = $this->entityManager->getRepository($entityName)->find(1)->getName();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
@@ -80,7 +71,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_masterdata_edit')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -100,7 +91,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][1]['name'] = null;
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -108,7 +99,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
+        $this->assertStringContainsString('入力されていません。', $html);
 
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
@@ -130,7 +121,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][$id]['name'] = '';
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -138,12 +129,12 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         $html = $crawler->html();
-        $this->assertContains('入力されていません。', $html);
+        $this->assertStringContainsString('入力されていません。', $html);
 
         // Cannot save
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $actual = $this->entityManager->getRepository($entityName)->find($id);
-        $this->assertTrue(empty($actual));
+        $this->assertEmpty($actual);
     }
 
     /**
@@ -159,7 +150,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][1]['id'] = 0;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -175,9 +166,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -195,7 +186,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][$id]['name'] = 0;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -205,16 +196,16 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_masterdata_view', ['entity' => $formData['masterdata']])));
 
         $data = end($editForm['data']);
-        $this->expected = $data['name'];
+        $this->expected = (string) $data['name'];
 
         $entityName = str_replace('-', '\\', $formData['masterdata']);
         $this->actual = $this->entityManager->getRepository($entityName)->find($data['id'])->getName();
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -227,7 +218,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm = $this->createFormDataEdit($this->entityTest);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -244,9 +235,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -261,7 +252,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][1]['name'] = null;
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -278,9 +269,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -292,8 +283,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][$id]['id'] = 0;
         $editForm['data'][$id]['name'] = '0削除テスト';
 
-        $this->client->request(
-            'POST',
+        // $this->client->followRedirects(true);
+        $crawler = $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -310,9 +302,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -321,7 +313,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $entityName = str_replace('-', '\\', $this->entityTest);
 
         $id = $this->entityManager->getRepository($entityName)->findOneBy([], ['sort_no' => 'DESC'])->getSortNo() + 1;
-        $sex = new \Eccube\Entity\Master\Sex();
+        $sex = new Sex();
         $sex->setName('0削除テスト');
         $sex->setSortNo($id);
         $sex->setId(0);
@@ -350,7 +342,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         ];
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -363,9 +355,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertNull($this->entityManager->getRepository($entityName)->find(0));
 
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
     }
 
@@ -385,7 +377,7 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $editForm['data'][$id]['name'] = $status;
 
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_system_masterdata_edit'),
             [
                 'admin_system_masterdata' => $formData,
@@ -393,9 +385,9 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
             ]
         );
         // message check
-        $outPut = $this->session->getFlashBag()->get('eccube.admin.success');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_complete';
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = trans('admin.common.save_complete');
         $this->verify();
 
         /** @var OrderStatus $actual */
@@ -405,27 +397,15 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $this->assertFalse($actual->isDisplayOrderCount());
     }
 
-    /**
-     * @param string $entity
-     *
-     * @return array
-     */
-    protected function createFormData($entity = 'Eccube-Entity-Master-Sex')
+    protected function createFormData(string $entity = 'Eccube-Entity-Master-Sex'): array
     {
-        $formData = [
+        return [
             '_token' => 'dummy',
             'masterdata' => $entity,
         ];
-
-        return $formData;
     }
 
-    /**
-     * @param string $entity
-     *
-     * @return array
-     */
-    protected function createFormDataEdit($entity = 'Eccube-Entity-Master-Sex')
+    protected function createFormDataEdit(string $entity = 'Eccube-Entity-Master-Sex'): array
     {
         $entityName = str_replace('-', '\\', $entity);
         $masterData = $this->entityManager->getRepository($entityName)->findBy([], ['sort_no' => 'ASC']);
@@ -442,12 +422,10 @@ class MasterdataControllerTest extends AbstractAdminWebTestCase
         $data[$sortNo]['id'] = $id + 1;
         $data[$sortNo]['name'] = 'TestName';
 
-        $editForm = [
+        return [
             '_token' => 'dummy',
             'data' => $data,
             'masterdata_name' => $entity,
         ];
-
-        return $editForm;
     }
 }

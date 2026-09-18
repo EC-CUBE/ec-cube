@@ -17,32 +17,33 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Delivery;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Order;
 use Eccube\Entity\Payment;
 use Eccube\Repository\DeliveryRepository;
-use Eccube\Service\PurchaseFlow\ItemHolderValidator;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
+use Eccube\Service\PurchaseFlow\ItemHolderPostValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 /**
  * 支払い方法が一致しない明細がないかどうか.
  */
-class PaymentValidator extends ItemHolderValidator
+class PaymentValidator extends ItemHolderPostValidator
 {
     /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
-
-    /**
      * PaymentProcessor constructor.
-     *
-     * @param DeliveryRepository $deliveryRepository
      */
-    public function __construct(DeliveryRepository $deliveryRepository)
+    public function __construct(protected DeliveryRepository $deliveryRepository)
     {
-        $this->deliveryRepository = $deliveryRepository;
     }
 
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    /**
+     * @param ItemHolderInterface $itemHolder カート or 受注
+     * @param PurchaseContext $context 購入フローのコンテキスト
+     *
+     * @throws InvalidItemException 支払い方法が異なる場合
+     */
+    #[\Override]
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         // 明細の個数が1以下の場合はOK
         if (count($itemHolder->getItems()) <= 1) {
@@ -76,10 +77,25 @@ class PaymentValidator extends ItemHolderValidator
         if (empty($paymentIds)) {
             $this->throwInvalidItemException('front.shopping.different_payment_methods');
         }
+
+        if ($itemHolder instanceof Order) {
+            if (null === $itemHolder->getPayment()) {
+                return;
+            }
+
+            // 支払い方法が非表示の場合はエラー
+            if (false === $itemHolder->getPayment()->isVisible()) {
+                $this->throwInvalidItemException('front.shopping.not_available_payment_method');
+            }
+        }
     }
 
-    private function getDeliveries(SaleType $SaleType)
+    /**
+     * @return array<int, Delivery>
+     */
+    private function getDeliveries(SaleType $SaleType): array
     {
+        /** @var Delivery[] $Deliveries */
         $Deliveries = $this->deliveryRepository->findBy(
             [
                 'SaleType' => $SaleType,
@@ -93,9 +109,9 @@ class PaymentValidator extends ItemHolderValidator
     /**
      * @param Delivery[] $Deliveries
      *
-     * @return ArrayCollection|Payment[]
+     * @return ArrayCollection<int, Payment>
      */
-    private function getPayments($Deliveries)
+    private function getPayments(array $Deliveries): ArrayCollection
     {
         $Payments = new ArrayCollection();
         foreach ($Deliveries as $Delivery) {

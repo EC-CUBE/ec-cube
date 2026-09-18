@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,27 +16,26 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Entity\Master\TaxDisplayType;
 use Eccube\Entity\Order;
 use Eccube\Service\OrderHelper;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class OrderHelperTest extends EccubeTestCase
+final class OrderHelperTest extends EccubeTestCase
 {
-    /**
-     * @var OrderHelper
-     */
-    protected $helper;
+    protected ?OrderHelper $helper = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->helper = self::$container->get(OrderHelper::class);
+        $this->helper = static::getContainer()->get(OrderHelper::class);
     }
 
     public function testNewInstance()
     {
-        $this->assertInstanceOf(OrderHelper::class, $this->helper = self::$container->get(OrderHelper::class));
+        $this->assertInstanceOf(OrderHelper::class, $this->helper = static::getContainer()->get(OrderHelper::class));
     }
 
     /**
@@ -43,14 +44,14 @@ class OrderHelperTest extends EccubeTestCase
     public function testUpdateCustomerInfoOldCustomer()
     {
         $Order = new Order();
-        $Order->setCreateDate((new \DateTime('today')));
+        $Order->setCreateDate(new \DateTime('today'));
 
         $Customer = new Customer();
-        $Customer->setUpdateDate((new \DateTime('yesterday')));
+        $Customer->setUpdateDate(new \DateTime('yesterday'));
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
-        self::assertNull($Order->getName01());
+        $this->assertNull($Order->getName01());
     }
 
     /**
@@ -59,14 +60,44 @@ class OrderHelperTest extends EccubeTestCase
     public function testUpdateCustomerInfoNewCustomer()
     {
         $Order = new Order();
-        $Order->setCreateDate((new \DateTime('yesterday')));
+        $Order->setCreateDate(new \DateTime('yesterday'));
 
         $Customer = new Customer();
-        $Customer->setUpdateDate((new \DateTime('today')));
+        $Customer->setUpdateDate(new \DateTime('today'));
         $Customer->setName01('hoge');
 
         $this->helper->updateCustomerInfo($Order, $Customer);
-        self::assertNotNull($Order->getName01());
-        self::assertSame($Order->getName01(), $Customer->getName01());
+        $this->assertNotNull($Order->getName01());
+        $this->assertSame($Order->getName01(), $Customer->getName01());
+    }
+
+    /**
+     * 税表示区分が問題ないかを確認する
+     *
+     * @param mixed $OrderItemType
+     * @param mixed $TaxDisplayType
+     */
+    #[DataProvider(methodName: 'taxDisplayTypeProvider')]
+    public function testTaxDisplayType($OrderItemType, $TaxDisplayType)
+    {
+        $TaxDisplayType = $this->entityManager->find(TaxDisplayType::class, $TaxDisplayType);
+
+        $this->assertSame($this->helper->getTaxDisplayType($OrderItemType), $TaxDisplayType);
+    }
+
+    public static function taxDisplayTypeProvider(): \Iterator
+    {
+        // - 商品: 税抜
+        // - 送料: 税込
+        // - 手数料: 税込
+        // - 値引き: 税抜
+        // - 税: 税抜
+        // - ポイント値引き: 税込
+        yield [OrderItemType::PRODUCT, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::DELIVERY_FEE, TaxDisplayType::INCLUDED];
+        yield [OrderItemType::CHARGE, TaxDisplayType::INCLUDED];
+        yield [OrderItemType::DISCOUNT, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::TAX, TaxDisplayType::EXCLUDED];
+        yield [OrderItemType::POINT, TaxDisplayType::INCLUDED];
     }
 }

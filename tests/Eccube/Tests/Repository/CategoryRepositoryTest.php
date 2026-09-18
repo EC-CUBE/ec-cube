@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,26 +18,24 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * CategoryRepository test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class CategoryRepositoryTest extends EccubeTestCase
+final class CategoryRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
+        $this->categoryRepository = $this->entityManager->getRepository(Category::class);
         $this->remove();
         $this->createCategories();
     }
@@ -44,33 +44,33 @@ class CategoryRepositoryTest extends EccubeTestCase
     {
         $categories = [
             ['name' => '親1', 'hierarchy' => 1, 'sort_no' => 1,
-                  'child' => [
-                      ['name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
-                            'child' => [
-                                ['name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9],
-                            ],
-                      ],
-                  ],
+                'child' => [
+                    ['name' => '子1', 'hierarchy' => 2, 'sort_no' => 4,
+                        'child' => [
+                            ['name' => '孫1', 'hierarchy' => 3, 'sort_no' => 9],
+                        ],
+                    ],
+                ],
             ],
             ['name' => '親2', 'hierarchy' => 1, 'sort_no' => 2,
-                  'child' => [
-                      ['name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
-                            'child' => [
-                                ['name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10],
-                            ],
-                      ],
-                      ['name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6],
-                      ['name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7],
-                  ],
+                'child' => [
+                    ['name' => '子2-0', 'hierarchy' => 2, 'sort_no' => 5,
+                        'child' => [
+                            ['name' => '孫2', 'hierarchy' => 3, 'sort_no' => 10],
+                        ],
+                    ],
+                    ['name' => '子2-1', 'hierarchy' => 2, 'sort_no' => 6],
+                    ['name' => '子2-2', 'hierarchy' => 2, 'sort_no' => 7],
+                ],
             ],
             ['name' => '親3', 'hierarchy' => 1, 'sort_no' => 3,
-                  'child' => [
-                      ['name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
-                            'child' => [
-                                ['name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11],
-                            ],
-                      ],
-                  ],
+                'child' => [
+                    ['name' => '子3', 'hierarchy' => 2, 'sort_no' => 8,
+                        'child' => [
+                            ['name' => '孫3', 'hierarchy' => 3, 'sort_no' => 11],
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -203,7 +203,9 @@ class CategoryRepositoryTest extends EccubeTestCase
         $faker = $this->getFaker();
         $name = $faker->name;
         $Category = $this->categoryRepository->findOneBy(['name' => '子2-1']);
+        $this->assertInstanceOf(Category::class, $Category);
         $Category->setName($name);
+        $this->assertInstanceOf(Category::class, $Category);
         $updateDate = $Category->getUpdateDate();
         sleep(1);
         $this->categoryRepository->save($Category);
@@ -215,7 +217,7 @@ class CategoryRepositoryTest extends EccubeTestCase
 
         // 名前を変更したので null になっているはず
         $Category = $this->categoryRepository->findOneBy(['name' => '子2-1']);
-        $this->assertNull($Category);
+        $this->assertNotInstanceOf(Category::class, $Category);
     }
 
     public function testDelete()
@@ -225,9 +227,10 @@ class CategoryRepositoryTest extends EccubeTestCase
         $this->categoryRepository->delete($Category);
 
         $Category = $this->categoryRepository->findOneBy(['name' => '孫2']);
-        $this->assertNull($Category);
+        $this->assertNotInstanceOf(Category::class, $Category);
     }
 
+    #[DoesNotPerformAssertions]
     public function testDeleteFail()
     {
         // 商品をカテゴリに紐付けて作成.
@@ -238,8 +241,7 @@ class CategoryRepositoryTest extends EccubeTestCase
             // 紐付いた商品が存在している場合は削除できない.
             $this->categoryRepository->delete($Category);
             $this->fail();
-        } catch (\Exception $e) {
-            $this->addToAssertionCount(1);
+        } catch (\Exception) {
         }
     }
 }

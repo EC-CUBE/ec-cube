@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,7 +16,11 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Master\Country;
+use Eccube\Entity\Master\Pref;
 use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\Member;
+use Eccube\Entity\Product;
 use Eccube\Entity\TaxRule;
 use Eccube\Repository\Master\CountryRepository;
 use Eccube\Repository\Master\PrefRepository;
@@ -27,74 +33,41 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class TaxRuleRepositoryTest extends EccubeTestCase
+final class TaxRuleRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var \DateTime
-     */
-    protected $DateTimeNow;
+    protected ?\DateTime $DateTimeNow = null;
 
-    /**
-     * @var \Eccube\Entity\Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var TaxRule
-     */
-    protected $TaxRule1;
+    protected ?TaxRule $TaxRule1 = null;
 
-    /**
-     * @var TaxRule
-     */
-    protected $TaxRule2;
+    protected ?TaxRule $TaxRule2 = null;
 
-    /**
-     * @var TaxRule
-     */
-    protected $TaxRule3;
+    protected ?TaxRule $TaxRule3 = null;
 
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
+    protected ?PrefRepository $prefRepository = null;
 
-    /**
-     * @var CountryRepository
-     */
-    protected $countryRepository;
+    protected ?CountryRepository $countryRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->DateTimeNow = new \DateTime('+1 minutes');
-
         parent::setUp();
-
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
-        $this->prefRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
-        $this->countryRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Country::class);
-
-        $this->BaseInfo->setOptionProductTaxRule(0);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
+        $this->prefRepository = $this->entityManager->getRepository(Pref::class);
+        $this->countryRepository = $this->entityManager->getRepository(Country::class);
+        $this->BaseInfo->setOptionProductTaxRule(false);
         $this->Product = $this->createProduct('生活必需品');
         // 2017-04-01とか指定すると, 2017年以降で結果が変わってしまうので1年後の日付を指定する
         $ApplyDate = new \DateTime('+1 years');
@@ -107,24 +80,17 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     /**
      * Create TaxRule entity
-     *
-     * @param int $tax_rate
-     * @param null $apply_date
-     *
-     * @return TaxRule
      */
-    public function createTaxRule($tax_rate = 8, $apply_date = null)
+    public function createTaxRule(int $tax_rate = 8, ?\DateTime $apply_date = null): TaxRule
     {
         $TaxRule = new TaxRule();
         $RoundingType = $this->entityManager->find(RoundingType::class, 1);
         $Member = $this->memberRepository->find(2);
-        if (is_null($apply_date)) {
-            $apply_date = $this->DateTimeNow;
-        }
-        $TaxRule->setTaxRate($tax_rate)
+        $apply_date ??= $this->DateTimeNow;
+        $TaxRule->setTaxRate((string) $tax_rate)
             ->setApplyDate($apply_date)
             ->setRoundingType($RoundingType)
-            ->setTaxAdjust(0)
+            ->setTaxAdjust('0')
             ->setCreator($Member);
         $this->entityManager->persist($TaxRule);
         $this->entityManager->flush();
@@ -199,6 +165,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
         $oneDayBefore = new \DateTime('-1 days');
 
         $this->TaxRule2->setApplyDate($oneDayBefore);
+        $this->assertInstanceOf(Pref::class, $Pref);
         $this->TaxRule3
             ->setApplyDate($oneDayBefore)
             ->setPref($Pref);
@@ -216,6 +183,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
     {
         $Country = $this->countryRepository->find(300);
         $oneDayBefore = new \DateTime('-1 days');
+        $this->assertInstanceOf(Country::class, $Country);
 
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);
         $this->TaxRule3->setApplyDate($oneDayBefore);
@@ -232,7 +200,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithProduct()
     {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->BaseInfo->setOptionProductTaxRule(true); // 商品別税率ON
         $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
@@ -251,7 +219,7 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithProductClass()
     {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->BaseInfo->setOptionProductTaxRule(true); // 商品別税率ON
         $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
@@ -272,11 +240,12 @@ class TaxRuleRepositoryTest extends EccubeTestCase
 
     public function testGetByRuleWithMulti()
     {
-        $this->BaseInfo->setOptionProductTaxRule(1); // 商品別税率ON
+        $this->BaseInfo->setOptionProductTaxRule(true); // 商品別税率ON
         $this->entityManager->flush();
         $oneDayBefore = new \DateTime('-1 days');
 
         $Country = $this->countryRepository->find(300);
+        $this->assertInstanceOf(Country::class, $Country);
 
         // 国別設定
         $this->TaxRule2->setApplyDate($oneDayBefore)->setCountry($Country);

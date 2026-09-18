@@ -21,35 +21,17 @@ use Eccube\Service\PurchaseFlow\Processor\StockReduceProcessor;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Workflow\Event\Event;
-use Symfony\Component\Workflow\StateMachine;
+use Symfony\Component\Workflow\Transition;
+use Symfony\Component\Workflow\WorkflowInterface;
 
 class OrderStateMachine implements EventSubscriberInterface
 {
-    /**
-     * @var StateMachine
-     */
-    private $machine;
-
-    /**
-     * @var OrderStatusRepository
-     */
-    private $orderStatusRepository;
-
-    /**
-     * @var PointProcessor
-     */
-    private $pointProcessor;
-    /**
-     * @var StockReduceProcessor
-     */
-    private $stockReduceProcessor;
-
-    public function __construct(StateMachine $_orderStateMachine, OrderStatusRepository $orderStatusRepository, PointProcessor $pointProcessor, StockReduceProcessor $stockReduceProcessor)
-    {
-        $this->machine = $_orderStateMachine;
-        $this->orderStatusRepository = $orderStatusRepository;
-        $this->pointProcessor = $pointProcessor;
-        $this->stockReduceProcessor = $stockReduceProcessor;
+    public function __construct(
+        private readonly WorkflowInterface $_orderStateMachine,
+        private readonly OrderStatusRepository $orderStatusRepository,
+        private readonly PointProcessor $pointProcessor,
+        private readonly StockReduceProcessor $stockReduceProcessor,
+    ) {
     }
 
     /**
@@ -58,12 +40,12 @@ class OrderStateMachine implements EventSubscriberInterface
      * @param Order $Order 受注
      * @param OrderStatus $OrderStatus 遷移先ステータス
      */
-    public function apply(Order $Order, OrderStatus $OrderStatus)
+    public function apply(Order $Order, OrderStatus $OrderStatus): void
     {
         $context = $this->newContext($Order);
         $transition = $this->getTransition($context, $OrderStatus);
         if ($transition) {
-            $this->machine->apply($context, $transition->getName());
+            $this->_orderStateMachine->apply($context, $transition->getName());
         } else {
             throw new \InvalidArgumentException();
         }
@@ -75,16 +57,21 @@ class OrderStateMachine implements EventSubscriberInterface
      * @param Order $Order 受注
      * @param OrderStatus $OrderStatus 遷移先ステータス
      *
-     * @return boolean 指定ステータスに遷移できる場合はtrue
+     * @return bool 指定ステータスに遷移できる場合はtrue
      */
-    public function can(Order $Order, OrderStatus $OrderStatus)
+    public function can(Order $Order, OrderStatus $OrderStatus): bool
     {
+        // OrderStatusが設定されていない場合は遷移不可
+        if (!$Order->getOrderStatus()) {
+            return false;
+        }
+
         return !is_null($this->getTransition($this->newContext($Order), $OrderStatus));
     }
 
-    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus)
+    private function getTransition(OrderStateMachineContext $context, OrderStatus $OrderStatus): ?Transition
     {
-        $transitions = $this->machine->getEnabledTransitions($context);
+        $transitions = $this->_orderStateMachine->getEnabledTransitions($context);
         foreach ($transitions as $t) {
             if (in_array($OrderStatus->getId(), $t->getTos())) {
                 return $t;
@@ -97,7 +84,8 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.order.completed' => ['onCompleted'],
@@ -113,27 +101,25 @@ class OrderStateMachine implements EventSubscriberInterface
     /*
      * Event handlers.
      */
-
     /**
      * 入金日を更新する.
-     *
-     * @param Event $event
      */
-    public function updatePaymentDate(Event $event)
+    public function updatePaymentDate(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
-        $Order->setPaymentDate(new \DateTime());
+        // 管理者が入金日を手動でセットしている場合は上書きしない.
+        if (null === $Order->getPaymentDate()) {
+            $Order->setPaymentDate(new \DateTime());
+        }
     }
 
     /**
      * 会員の保有ポイントを減らす.
      *
-     * @param Event $event
-     *
      * @throws PurchaseFlow\PurchaseException
      */
-    public function commitUsePoint(Event $event)
+    public function commitUsePoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -142,10 +128,8 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 利用ポイントを会員に戻す.
-     *
-     * @param Event $event
      */
-    public function rollbackUsePoint(Event $event)
+    public function rollbackUsePoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -155,11 +139,9 @@ class OrderStateMachine implements EventSubscriberInterface
     /**
      * 在庫を減らす.
      *
-     * @param Event $event
-     *
      * @throws PurchaseFlow\PurchaseException
      */
-    public function commitStock(Event $event)
+    public function commitStock(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -168,10 +150,8 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 在庫を戻す.
-     *
-     * @param Event $event
      */
-    public function rollbackStock(Event $event)
+    public function rollbackStock(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
@@ -180,96 +160,92 @@ class OrderStateMachine implements EventSubscriberInterface
 
     /**
      * 会員に加算ポイントを付与する.
-     *
-     * @param Event $event
      */
-    public function commitAddPoint(Event $event)
+    public function commitAddPoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
         $Customer = $Order->getCustomer();
         if ($Customer) {
-            $Customer->setPoint(intval($Customer->getPoint()) + intval($Order->getAddPoint()));
+            $Customer->setPoint(bcadd((string) $Customer->getPoint(), (string) $Order->getAddPoint()));
         }
     }
 
     /**
      * 会員に付与した加算ポイントを取り消す.
-     *
-     * @param Event $event
      */
-    public function rollbackAddPoint(Event $event)
+    public function rollbackAddPoint(Event $event): void
     {
         /* @var Order $Order */
         $Order = $event->getSubject()->getOrder();
         $Customer = $Order->getCustomer();
         if ($Customer) {
-            $Customer->setPoint(intval($Customer->getPoint()) - intval($Order->getAddPoint()));
+            $Customer->setPoint(bcsub((string) $Customer->getPoint(), (string) $Order->getAddPoint()));
         }
     }
 
     /**
      * 受注ステータスを再設定.
      * {@link StateMachine}によって遷移が終了したときには{@link Order#OrderStatus}のidが変更されるだけなのでOrderStatusを設定し直す.
-     *
-     * @param Event $event
      */
-    public function onCompleted(Event $event)
+    public function onCompleted(Event $event): void
     {
-        /** @var $context OrderStateMachineContext */
+        /** @var OrderStateMachineContext $context */
         $context = $event->getSubject();
         $Order = $context->getOrder();
         $CompletedOrderStatus = $this->orderStatusRepository->find($context->getStatus());
         $Order->setOrderStatus($CompletedOrderStatus);
     }
 
-    private function newContext(Order $Order)
+    private function newContext(Order $Order): OrderStateMachineContext
     {
-        return new OrderStateMachineContext((string) $Order->getOrderStatus()->getId(), $Order);
+        $orderStatus = $Order->getOrderStatus();
+        $statusId = $orderStatus ? (string) $orderStatus->getId() : '';
+
+        return new OrderStateMachineContext($statusId, $Order);
     }
 }
 
 class OrderStateMachineContext
 {
-    /** @var string */
-    private $status;
-
-    /** @var Order */
-    private $Order;
-
     /**
      * OrderStateMachineContext constructor.
-     *
-     * @param string $status
-     * @param Order $Order
      */
-    public function __construct($status, Order $Order)
+    public function __construct(private string $status, private readonly Order $Order)
     {
-        $this->status = $status;
-        $this->Order = $Order;
     }
 
-    /**
-     * @return string
-     */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @param string $status
-     */
-    public function setStatus($status)
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
-    /**
-     * @return Order
-     */
-    public function getOrder()
+    public function getOrder(): Order
     {
         return $this->Order;
+    }
+
+    // order_state_machine.php の marking_store => property は、デフォルト値である marking を使用するよう強く推奨されている.
+    // EC-CUBE4.1 までは status を指定していたが、 Symfony5 よりエラーになるためエイリアスを作成して対応する.
+
+    /**
+     * Alias of getStatus()
+     */
+    public function getMarking(): string
+    {
+        return $this->getStatus();
+    }
+
+    /**
+     * Alias of setStatus()
+     */
+    public function setMarking(string $status): void
+    {
+        $this->setStatus($status);
     }
 }

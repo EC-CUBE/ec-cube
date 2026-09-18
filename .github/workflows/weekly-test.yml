@@ -1,0 +1,25 @@
+name: Weekly full-matrix test for EC-CUBE
+
+# PR/push の CI は最新 PHP のみで回すため、全 PHP バージョンの検証を週次でまとめて実行する。
+# cron は UTC 固定。日曜 15:00 UTC = 月曜 00:00 JST。
+on:
+  schedule:
+    - cron: '0 15 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e2e-test:
+    uses: ./.github/workflows/e2e-test.yml
+    with:
+      php-versions: "['8.2', '8.3', '8.4', '8.5']"
+  plugin-test:
+    uses: ./.github/workflows/plugin-test.yml
+    with:
+      php-versions: "['8.2', '8.3', '8.4', '8.5']"
+  e2e-test-throttling:
+    uses: ./.github/workflows/e2e-test-throttling.yml
+    with:
+      php-versions: "['8.2', '8.3', '8.4', '8.5']"

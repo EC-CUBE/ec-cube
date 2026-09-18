@@ -1,0 +1,8 @@
+id,name,sort_no,discriminator_type
+"1","incomplete","1","checkoutsessionstatus"
+"2","ready","2","checkoutsessionstatus"
+"3","completed","3","checkoutsessionstatus"
+"4","canceled","4","checkoutsessionstatus"
+"5","expired","5","checkoutsessionstatus"
+"6","requires_action","6","checkoutsessionstatus"
+"7","in_progress","7","checkoutsessionstatus"

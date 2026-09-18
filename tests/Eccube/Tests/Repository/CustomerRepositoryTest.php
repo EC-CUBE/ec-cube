@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,6 +17,7 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
+use Eccube\Entity\Master\OrderStatus;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -25,40 +28,26 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @author Kentaro Ohkouchi
  */
-class CustomerRepositoryTest extends EccubeTestCase
+final class CustomerRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var string
-     */
-    protected $email;
+    protected ?string $email = null;
 
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepo;
+    protected ?CustomerRepository $customerRepo = null;
 
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $masterOrderStatusRepo;
+    protected ?OrderStatusRepository $masterOrderStatusRepo = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->email = 'customer@example.com';
         $this->Customer = $this->createCustomer($this->email);
-
-        $this->customerRepo = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
-        $this->masterOrderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
+        $this->customerRepo = $this->entityManager->getRepository(Customer::class);
+        $this->masterOrderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
     }
 
     public function testNewCustomer()
@@ -74,11 +63,12 @@ class CustomerRepositoryTest extends EccubeTestCase
     public function testGetProvisionalCustomerBySecretKey()
     {
         $this->expected = $this->Customer->getSecretKey();
-        $Status = $this->entityManager->getRepository('Eccube\Entity\Master\CustomerStatus')->find(CustomerStatus::NONACTIVE);
+        $Status = $this->entityManager->getRepository(CustomerStatus::class)->find(CustomerStatus::PROVISIONAL);
         $this->Customer->setStatus($Status);
         $this->entityManager->flush();
 
         $Customer = $this->customerRepo->getProvisionalCustomerBySecretKey($this->expected);
+        $this->assertInstanceOf(Customer::class, $Customer);
         $this->actual = $Customer->getSecretKey();
         $this->verify('secretは'.$this->expected.'ではありません');
     }
@@ -89,12 +79,12 @@ class CustomerRepositoryTest extends EccubeTestCase
 
         // CustomerStatus::REGULARなので取得できないはず
         $Customer = $this->customerRepo->getProvisionalCustomerBySecretKey($secret);
-        $this->assertNull($Customer);
+        $this->assertNotInstanceOf(Customer::class, $Customer);
     }
 
     public function testGetRegularCustomerByEmail()
     {
-        // XXX loadUserByUsername() と同じ役割？
+        // XXX loadUserByIdentifier() と同じ役割？
         $this->actual = $this->Customer;
         $this->expected = $this->customerRepo->getRegularCustomerByEmail($this->email);
         $this->verify();
@@ -111,7 +101,7 @@ class CustomerRepositoryTest extends EccubeTestCase
 
         $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
 
-        $this->assertNotNull($Customer);
+        $this->assertInstanceOf(Customer::class, $Customer);
     }
 
     public function testGetRegularCustomerByResetKeyWithException()
@@ -124,7 +114,7 @@ class CustomerRepositoryTest extends EccubeTestCase
         $this->entityManager->flush();
 
         $Customer = $this->customerRepo->getRegularCustomerByResetKey($reset_key);
-        $this->assertNull($Customer);
+        $this->assertNotInstanceOf(Customer::class, $Customer);
     }
 
     public function testGetQueryBuilderBySearchDataByMulti2147483648()
@@ -134,13 +124,13 @@ class CustomerRepositoryTest extends EccubeTestCase
             ->getQuery()
             ->getResult();
 
-        self::assertEquals($Customer, $actual[0]);
+        $this->assertEquals($Customer, $actual[0]);
     }
 }
 
 class DummyCustomer implements UserInterface
 {
-    public function getRoles()
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
@@ -160,8 +150,13 @@ class DummyCustomer implements UserInterface
         return 'user';
     }
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
-        return;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        // FIXME deprecated
+        return $this->getUsername();
     }
 }

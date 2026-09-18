@@ -31,37 +31,33 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class TaxRuleType extends AbstractType
 {
-    protected $taxRuleRepository;
-
-    public function __construct(TaxRuleRepository $taxRuleRepository)
+    public function __construct(protected TaxRuleRepository $taxRuleRepository)
     {
-        $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('tax_rate', IntegerType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 0]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/u",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0),
+                    new Assert\Regex(pattern: "/^\d+(\.\d+)?$/u", message: 'form_error.float_only'),
                 ],
             ])
             ->add('rounding_type', RoundingTypeType::class, [
                 'required' => true,
             ])
             ->add('apply_date', DateTimeType::class, [
-                'date_widget' => 'choice',
+                'widget' => 'single_text',
                 'input' => 'datetime',
-                'format' => 'yyyy-MM-dd HH:mm',
                 'years' => range(date('Y'), date('Y') + 10),
                 'placeholder' => [
                     'year' => '----', 'month' => '--', 'day' => '--',
@@ -71,13 +67,14 @@ class TaxRuleType extends AbstractType
                 ],
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             /** @var TaxRule $TaxRule */
             $TaxRule = $event->getData();
             $qb = $this->taxRuleRepository->createQueryBuilder('t');
             $qb
                 ->select('count(t.id)')
                 ->where('t.apply_date = :apply_date')
+                ->andWhere('t.ProductClass IS NULL')
                 ->setParameter('apply_date', $TaxRule->getApplyDate());
 
             if ($TaxRule->getId()) {
@@ -97,18 +94,11 @@ class TaxRuleType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => TaxRule::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'tax_rule';
     }
 }

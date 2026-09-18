@@ -1,11 +1,6 @@
-@import "../mixins/variables";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/buttons";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/opacity";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
-
+@import "../mixins/_projects";
 $padding-base-vertical:     6px !default;
-
+$padding-base-horizontal:   12px !default;
 
 $btn-primary-bg: #5CB1B1;
 $btn-primary-color: #fff;
@@ -15,9 +10,82 @@ $btn-cancel-bg: #525263;
 $btn-cancel-color: #fff;
 $btn-default-bg: #F5F7F8;
 $btn-default-color: #525263;
+$btn-default-border: #ccc !default;
 
 $btn-border-radius-base: 0px;
+$cursor-disabled: not-allowed !default;
 
+// Bootstrap 5.2 から CSS variables に変更されたため、Bootstrap 5.1.3 の button-variant を移植することで互換性を維持
+// see https://getbootstrap.com/docs/5.3/migration/#more-css-variables
+// see https://github.com/twbs/bootstrap/blob/1a6fdfae6be09b09eaced8f0e442ca6f7680a61e/scss/mixins/_buttons.scss#L7-L74
+@mixin button-variant-compat(
+  $background,
+  $border,
+  $color: color-contrast($background),
+  $hover-background: if($color == $color-contrast-light, shade-color($background, $btn-hover-bg-shade-amount), tint-color($background, $btn-hover-bg-tint-amount)),
+  $hover-border: if($color == $color-contrast-light, shade-color($border, $btn-hover-border-shade-amount), tint-color($border, $btn-hover-border-tint-amount)),
+  $hover-color: color-contrast($hover-background),
+  $active-background: if($color == $color-contrast-light, shade-color($background, $btn-active-bg-shade-amount), tint-color($background, $btn-active-bg-tint-amount)),
+  $active-border: if($color == $color-contrast-light, shade-color($border, $btn-active-border-shade-amount), tint-color($border, $btn-active-border-tint-amount)),
+  $active-color: color-contrast($active-background),
+  $disabled-background: $background,
+  $disabled-border: $border,
+  $disabled-color: color-contrast($disabled-background)
+) {
+  color: $color;
+  @include gradient-bg($background);
+  border-color: $border;
+  @include box-shadow($btn-box-shadow);
+
+  &:hover {
+    color: $hover-color;
+    @include gradient-bg($hover-background);
+    border-color: $hover-border;
+  }
+
+  .btn-check:focus + &,
+  &:focus {
+    color: $hover-color;
+    @include gradient-bg($hover-background);
+    border-color: $hover-border;
+    @if $enable-shadows {
+      @include box-shadow($btn-box-shadow, 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5));
+    } @else {
+      // Avoid using mixin so we can pass custom focus shadow properly
+      box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5);
+    }
+  }
+
+  .btn-check:checked + &,
+  .btn-check:active + &,
+  &:active,
+  &.active,
+  .show > &.dropdown-toggle {
+    color: $active-color;
+    background-color: $active-background;
+    // Remove CSS gradients if they're enabled
+    background-image: if($enable-gradients, none, null);
+    border-color: $active-border;
+
+    &:focus {
+      @if $enable-shadows {
+        @include box-shadow($btn-active-box-shadow, 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5));
+      } @else {
+        // Avoid using mixin so we can pass custom focus shadow properly
+        box-shadow: 0 0 0 $btn-focus-width rgba(mix($color, $border, 15%), .5);
+      }
+    }
+  }
+
+  &:disabled,
+  &.disabled {
+    color: $disabled-color;
+    background-color: $disabled-background;
+    // Remove CSS gradients if they're enabled
+    background-image: if($enable-gradients, none, null);
+    border-color: $disabled-border;
+  }
+}
 
 @mixin _btn($color, $background, $border){
   display: inline-block;
@@ -30,7 +98,7 @@ $btn-border-radius-base: 0px;
   background-image: none; // Reset unusual Firefox-on-Android default style; see https://github.com/necolas/normalize.css/issues/214
   border: 1px solid transparent;
   white-space: nowrap;
-  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base, $btn-border-radius-base);
+  @include button-size($padding-base-vertical, $padding-base-horizontal, $font-size-base, $line-height-base);
   @include user-select(none);
   padding: 10px 16px;
   text-decoration: none;
@@ -66,7 +134,7 @@ $btn-border-radius-base: 0px;
     @include box-shadow(none);
   }
 
-  @include button-variant($color, $background, $border);
+  @include button-variant-compat($background, $border, $color, $disabled-color: $color);
   // [converter] extracted a& to a.btn
 
   .ec-icon img {

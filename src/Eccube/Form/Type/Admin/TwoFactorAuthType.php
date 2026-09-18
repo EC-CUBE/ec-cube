@@ -23,8 +23,11 @@ class TwoFactorAuthType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add(
@@ -33,29 +36,27 @@ class TwoFactorAuthType extends AbstractType
                     'required' => true,
                     'constraints' => [
                         new Assert\NotBlank(),
-                        new Assert\Length([
-                            'max' => 6,
-                            'min' => 6,
-                        ]),
+                        new Assert\Length(max: 6, min: 6),
                     ],
                     'attr' => [
                         'maxlength' => 6,
                         'style' => 'width: 100px;',
                     ],
-            ])
+                ])
             ->add(
                 'auth_key', HiddenType::class, [
                     'required' => true,
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
-            ]);
+                ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_two_factor_auth';
     }

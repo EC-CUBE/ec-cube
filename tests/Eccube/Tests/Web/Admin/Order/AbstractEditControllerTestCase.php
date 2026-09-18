@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,7 +16,10 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\Delivery;
+use Eccube\Entity\Master\OrderItemType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\TaxType;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -33,20 +38,17 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
     /**
      * 受注編集用フォーム作成.
      *
-     * @param Customer $Customer
-     * @param Product $Product
-     *
-     * @return array
+     * @param Product|null $Product $Product
      */
-    public function createFormData(Customer $Customer, Product $Product = null)
+    public function createFormData(Customer $Customer, ?Product $Product = null, ?int $charge = null): array
     {
         $faker = $this->getFaker();
-        $email = $faker->safeEmail;
+        $email = $faker->safeEmail();
 
         $shipping = $this->createShippingFormData();
-        $orderItems = $this->createOrderItemFormData($Product);
+        $orderItems = $this->createOrderItemFormData($Product, $charge);
 
-        $order = [
+        return [
             '_token' => 'dummy',
             'Customer' => $Customer->getId(),
             'OrderStatus' => OrderStatus::IN_PROGRESS,
@@ -65,7 +67,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'phone_number' => $faker->phoneNumber,
+            'phone_number' => $faker->phoneNumber(),
             'email' => $email,
             'message' => $faker->realText,
             'Payment' => 1,     // XXX ハードコーディング
@@ -77,20 +79,21 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
             'use_point' => 0,
             'Shipping' => $shipping,
         ];
-
-        return $order;
     }
 
     /**
      * 配送編集用フォーム作成.
      *
      * @param Product $Product
-     *
-     * @return array
      */
-    public function createShippingFormData(Product $Product = null)
+    public function createShippingFormData(?Product $Product = null): array
     {
         $faker = $this->getFaker();
+
+        // 最初のDeliveryエンティティのIDを取得
+        $deliveryRepository = $this->entityManager->getRepository(Delivery::class);
+        $delivery = $deliveryRepository->findOneBy(['visible' => true]);
+        $deliveryId = $delivery ? $delivery->getId() : 1;
 
         $shipping = [
             'name' => [
@@ -107,8 +110,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr01' => $faker->city,
                 'addr02' => $faker->streetAddress,
             ],
-            'phone_number' => $faker->phoneNumber,
-            'Delivery' => 1,
+            'phone_number' => $faker->phoneNumber(),
+            'Delivery' => $deliveryId,
         ];
 
         if ($Product) {
@@ -118,12 +121,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         return $shipping;
     }
 
-    /**
-     * @param Product $Product
-     *
-     * @return array
-     */
-    public function createOrderItemFormData(Product $Product)
+    public function createOrderItemFormData(?Product $Product, ?int $charge = null): array
     {
         $faker = $this->getFaker();
 
@@ -135,7 +133,18 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'price' => $ProductClasses[0]->getPrice02(),
                 'quantity' => $faker->numberBetween(1, 9),
                 'product_name' => $Product->getName(),
-                'order_item_type' => 1,
+                'order_item_type' => OrderItemType::PRODUCT,
+                'tax_rate' => '10', // Add default tax rate
+            ];
+        }
+        if (!is_null($charge)) {
+            $orderItems[] = [
+                'price' => $charge,
+                'quantity' => 1,
+                'product_name' => '手数料',
+                'order_item_type' => OrderItemType::CHARGE,
+                'tax_type' => TaxType::TAXATION,
+                'tax_rate' => '10', // Add default tax rate
             ];
         }
 
@@ -144,14 +153,10 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
     /**
      * 受注再編集用フォーム作成.
-     *
-     * @param Order $Order
-     *
-     * @return array
      */
-    public function createFormDataForEdit(Order $Order)
+    public function createFormDataForEdit(Order $Order): array
     {
-        //受注アイテム
+        // 受注アイテム
         $orderItem = $this->createOrderItemsFormDataEdit($Order->getOrderItems());
 
         $Customer = $Order->getCustomer();
@@ -164,7 +169,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
         $shipping = $this->createShippingFormDataForEdit($Shipping);
 
-        //受注フォーム
+        // 受注フォーム
         $order = [
             '_token' => 'dummy',
             'OrderStatus' => (string) $Order->getOrderStatus()->getId(),
@@ -202,12 +207,8 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
 
     /**
      * 受注再編集用フォーム作成.
-     *
-     * @param Shipping $Shipping
-     *
-     * @return array
      */
-    public function createShippingFormDataForEdit(Shipping $Shipping)
+    public function createShippingFormDataForEdit(Shipping $Shipping): array
     {
         $shipping = [
             'name' => [
@@ -225,7 +226,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'addr02' => $Shipping->getAddr02(),
             ],
             'phone_number' => $Shipping->getPhoneNumber(),
-            'Delivery' => 1,
+            'Delivery' => $Shipping->getDelivery()->getId(),
         ];
 
         if ($Shipping->getOrderItems()) {
@@ -235,10 +236,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
         return $shipping;
     }
 
-    /**
-     * @return array
-     */
-    public function createOrderItemsFormDataEdit($OrderItems)
+    public function createOrderItemsFormDataEdit(mixed $OrderItems): array
     {
         $orderItem = [];
 
@@ -253,6 +251,7 @@ abstract class AbstractEditControllerTestCase extends AbstractAdminWebTestCase
                 'product_name' => is_object($Product) ? $Product->getName() : '送料',
                 // XXX v3.1 より 送料等, Product の無い明細が追加される
                 'order_item_type' => $OrderItem->getOrderItemTypeId(),
+                'tax_rate' => $OrderItem->getTaxRate() ?? '10', // Add tax rate
             ];
         }
 

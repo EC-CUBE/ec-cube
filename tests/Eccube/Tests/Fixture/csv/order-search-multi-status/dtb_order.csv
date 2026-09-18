@@ -1,0 +1,4 @@
+id,customer_id,pref_id,sex_id,payment_id,order_status_id,name01,name02,kana01,kana02,company_name,postal_code,addr01,addr02,phone_number,email,order_no,payment_method,subtotal,discount,delivery_fee_total,charge,tax,total,payment_total,add_point,use_point,order_date,create_date,update_date,discriminator_type
+5001,4001,13,1,1,8,テスト,太郎,テスト,タロウ,テスト会社,5300001,大阪市北区,梅田1-1-1,0000000000,customer-multi-status@example.com,order-multi-status-1,Test,0,0,0,0,0,0,0,0,0,,2026-05-21 00:00:00,2026-05-21 00:00:00,order
+5002,4001,13,1,1,1,テスト,太郎,テスト,タロウ,テスト会社,5300001,大阪市北区,梅田1-1-1,0000000000,customer-multi-status@example.com,order-multi-status-2,Test,0,0,0,0,0,0,0,0,0,2026-05-21 00:00:00,2026-05-21 00:00:00,2026-05-21 00:00:00,order
+5003,4002,13,1,1,1,テスト,太郎,テスト,タロウ,テスト会社,5300001,大阪市北区,梅田1-1-1,0000000000,test@example.com,order-multi-status-3,Test,0,0,0,0,0,0,0,0,0,2026-05-21 00:00:00,2026-05-21 00:00:00,2026-05-21 00:00:00,order

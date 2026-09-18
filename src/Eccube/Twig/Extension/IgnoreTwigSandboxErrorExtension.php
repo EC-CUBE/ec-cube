@@ -1,0 +1,76 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Twig\Extension;
+
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\CoreExtension;
+use Twig\Extension\SandboxExtension;
+use Twig\Sandbox\SecurityError;
+use Twig\TemplateWrapper;
+use Twig\TwigFunction;
+
+/**
+ * \vendor\twig\twig\src\Extension\CoreExtension の拡張
+ */
+class IgnoreTwigSandboxErrorExtension extends AbstractExtension
+{
+    /**
+     * {@inheritdoc}
+     */
+    #[\Override]
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('include', $this->twig_include(...), ['needs_environment' => true, 'needs_context' => true, 'is_safe' => ['all']]),
+        ];
+    }
+
+    /**
+     * twig sandboxの例外を操作します
+     * app_env = devの場合、エラーを表示する
+     * app_env = prodの場合、エラーを表示しない
+     *
+     * CoreExtension::include() を使用してSandbox SecurityErrorを捕捉し、
+     * 環境に応じて適切に処理します。
+     *
+     * @param array<mixed> $context
+     * @param array<mixed>|string|TemplateWrapper $template
+     * @param array<mixed> $variables
+     *
+     * @throws SecurityError
+     */
+    public function twig_include(Environment $env, array $context, array|string|TemplateWrapper $template, array $variables = [], bool $withContext = true, bool $ignoreMissing = false, bool $sandboxed = false): ?string
+    {
+        try {
+            return CoreExtension::include($env, $context, $template, $variables, $withContext, $ignoreMissing, $sandboxed);
+        } catch (SecurityError $e) {
+            // devではエラー画面が表示されるようにする
+            $appEnv = env('APP_ENV');
+            if ($appEnv === 'dev') {
+                throw $e;
+            }
+            // ログ出力
+            log_warning($e->getMessage(), ['exception' => $e]);
+
+            // 例外がスローされた場合、sandboxが効いた状態になってしまうため追加
+            $sandbox = $env->getExtension(SandboxExtension::class);
+            if (!$sandbox->isSandboxedGlobally()) {
+                $sandbox->disableSandbox();
+            }
+
+            return null;
+        }
+    }
+}

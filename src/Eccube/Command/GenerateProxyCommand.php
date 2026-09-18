@@ -13,43 +13,28 @@
 
 namespace Eccube\Command;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
+use Eccube\Common\EccubeConfig;
 use Eccube\Service\EntityProxyService;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class GenerateProxyCommand extends ContainerAwareCommand
+#[AsCommand(name: 'eccube:generate:proxies', description: 'Generate entity proxies')]
+class GenerateProxyCommand extends Command
 {
-    protected static $defaultName = 'eccube:generate:proxies';
-
-    /**
-     * @var EntityProxyService
-     */
-    private $entityProxyService;
-
-    public function __construct(EntityProxyService $entityProxyService)
+    public function __construct(private readonly EntityProxyService $entityProxyService, private readonly EccubeConfig $eccubeConfig)
     {
         parent::__construct();
-        $this->entityProxyService = $entityProxyService;
     }
 
-    protected function configure()
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this
-            ->setDescription('Generate entity proxies');
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        // アノテーションを読み込めるように設定.
-        AnnotationRegistry::registerAutoloadNamespace('Eccube\Annotation', __DIR__.'/../../../src');
-
-        $container = $this->getContainer();
-        $projectDir = $container->getParameter('kernel.project_dir');
+        $projectDir = $this->eccubeConfig->get('kernel.project_dir');
         $includeDirs = [$projectDir.'/app/Customize/Entity'];
 
-        $enabledPlugins = $container->getParameter('eccube.plugins.enabled');
+        $enabledPlugins = $this->eccubeConfig->get('eccube.plugins.enabled');
         foreach ($enabledPlugins as $code) {
             if (file_exists($projectDir.'/app/Plugin/'.$code.'/Entity')) {
                 $includeDirs[] = $projectDir.'/app/Plugin/'.$code.'/Entity';
@@ -63,6 +48,6 @@ class GenerateProxyCommand extends ContainerAwareCommand
             $output
         );
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -25,24 +25,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RepeatedEmailType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * ContactType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'entry_type' => EmailType::class,
@@ -51,10 +44,8 @@ class RepeatedEmailType extends AbstractType
             'options' => [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_email_len']),
                 ],
             ],
             'first_options' => [
@@ -69,25 +60,16 @@ class RepeatedEmailType extends AbstractType
             ],
             'error_bubbling' => false,
             'trim' => true,
-            'error_mapping' => function (Options $options) {
-                return ['.' => $options['second_name']];
-            },
+            'error_mapping' => fn (Options $options) => ['.' => $options['second_name']],
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    #[\Override]
+    public function getParent(): ?string
     {
         return RepeatedType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'repeated_email';
     }
 }

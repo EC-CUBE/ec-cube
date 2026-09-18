@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,14 +17,14 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\AddressType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
-class AddressTypeTest extends AbstractTypeTestCase
+final class AddressTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'address' => [
             'pref' => '5',
             'addr01' => '北区',
@@ -30,10 +32,9 @@ class AddressTypeTest extends AbstractTypeTestCase
         ],
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->form = $this->formFactory
             ->createBuilder(FormType::class, null, ['csrf_protection' => false])
             ->add('address', AddressType::class)

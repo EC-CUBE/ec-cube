@@ -13,6 +13,10 @@
 
 namespace Eccube\Form\Type;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Category;
+use Eccube\Entity\Master\ProductListMax;
+use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Form\Type\Master\ProductListMaxType;
 use Eccube\Form\Type\Master\ProductListOrderByType;
 use Eccube\Repository\CategoryRepository;
@@ -26,24 +30,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SearchProductType extends AbstractType
 {
     /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    /**
      * SearchProductType constructor.
-     *
-     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(protected CategoryRepository $categoryRepository, protected EntityManagerInterface $entityManager)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $Categories = $this->categoryRepository
             ->getList(null, true);
@@ -52,7 +51,7 @@ class SearchProductType extends AbstractType
             'data' => 'search',
         ]);
         $builder->add('category_id', EntityType::class, [
-            'class' => 'Eccube\Entity\Category',
+            'class' => Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',
@@ -67,28 +66,23 @@ class SearchProductType extends AbstractType
         $builder->add('pageno', HiddenType::class, []);
         $builder->add('disp_number', ProductListMaxType::class, [
             'label' => false,
+            'choices' => $this->entityManager->getRepository(ProductListMax::class)->findBy([], ['sort_no' => 'ASC']),
         ]);
         $builder->add('orderby', ProductListOrderByType::class, [
             'label' => false,
+            'choices' => $this->entityManager->getRepository(ProductListOrderBy::class)->findBy([], ['sort_no' => 'ASC']),
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
             'allow_extra_fields' => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'search_product';
     }
 }

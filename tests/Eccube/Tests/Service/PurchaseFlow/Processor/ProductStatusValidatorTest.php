@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,35 +23,22 @@ use Eccube\Service\PurchaseFlow\Processor\ProductStatusValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 
-class ProductStatusValidatorTest extends EccubeTestCase
+final class ProductStatusValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var ProductStatusValidator
-     */
-    protected $validator;
+    protected ?ProductStatusValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = self::$container->get(ProductStatusValidator::class);
+        $this->validator = static::getContainer()->get(ProductStatusValidator::class);
         $this->cartItem = new CartItem();
         $this->cartItem->setQuantity(10);
         $this->cartItem->setProductClass($this->ProductClass);
@@ -57,7 +46,7 @@ class ProductStatusValidatorTest extends EccubeTestCase
 
     public function testInstance()
     {
-        self::assertInstanceOf(ProductStatusValidator::class, $this->validator);
+        $this->assertInstanceOf(ProductStatusValidator::class, $this->validator);
     }
 
     /**
@@ -70,7 +59,7 @@ class ProductStatusValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertEquals(10, $this->cartItem->getQuantity());
+        $this->assertSame('10', $this->cartItem->getQuantity());
     }
 
     /**
@@ -83,6 +72,18 @@ class ProductStatusValidatorTest extends EccubeTestCase
 
         $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertEquals(0, $this->cartItem->getQuantity());
+        $this->assertSame('0', $this->cartItem->getQuantity());
+    }
+
+    /**
+     * 無効になっている商品規格の場合は明細の個数を0に設定する.
+     */
+    public function testProductClassVisibleFalse()
+    {
+        $this->ProductClass->setVisible(false);
+
+        $this->validator->execute($this->cartItem, new PurchaseContext());
+
+        $this->assertSame('0', $this->cartItem->getQuantity());
     }
 }

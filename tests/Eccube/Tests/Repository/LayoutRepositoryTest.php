@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,40 +23,27 @@ use Eccube\Tests\EccubeTestCase;
 /**
  * LayoutRepository test cases.
  */
-class LayoutRepositoryTest extends EccubeTestCase
+final class LayoutRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var  DeviceType
-     */
-    protected $DeviceType;
+    protected ?DeviceType $DeviceType = null;
 
-    /**
-     * @var  string
-     */
-    private $layout_id;
-
-    /**
-     * @var  LayoutRepository
-     */
-    protected $layoutRepository;
+    protected ?LayoutRepository $layoutRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->layoutRepository = $this->entityManager->getRepository(\Eccube\Entity\Layout::class);
-        $this->DeviceType = $this->entityManager->getRepository(\Eccube\Entity\Master\DeviceType::class)
+        $this->layoutRepository = $this->entityManager->getRepository(Layout::class);
+        $this->DeviceType = $this->entityManager->getRepository(DeviceType::class)
             ->find(DeviceType::DEVICE_TYPE_PC);
-
         $Layout = new Layout();
         $Layout
             ->setName('テスト用レイアウト')
             ->setDeviceType($this->DeviceType);
         $this->entityManager->persist($Layout);
-        $this->entityManager->flush(); // ここで flush しないと, MySQL で ID が取得できない
-        $this->layout_id = $Layout->getId();
+        $this->entityManager->flush();
     }
 
     public function testGet()

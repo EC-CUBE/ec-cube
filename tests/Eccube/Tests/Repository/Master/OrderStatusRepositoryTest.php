@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -22,17 +24,14 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class OrderStatusRepositoryTest extends EccubeTestCase
+final class OrderStatusRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
+    protected ?OrderStatusRepository $orderStatusRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
@@ -84,9 +83,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id' => 'DESC']);
         $this->actual = implode(', ', array_map(
-            function ($OrderStatus) {
-                return $OrderStatus->getId();
-            }, $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
 
         $orderStatuses = [
             OrderStatus::RETURNED,
@@ -107,9 +104,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id']);
         $this->actual = implode(', ', array_map(
-            function ($OrderStatus) {
-                return $OrderStatus->getId();
-            }, $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
 
         $orderStatuses = [
             OrderStatus::NEW,
@@ -130,10 +125,8 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id'], 1);
         $this->actual = implode(', ', array_map(
-            function ($OrderStatus) {
-                return $OrderStatus->getId();
-            }, $OrderStatuses));
-        $this->expected = OrderStatus::NEW;
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
+        $this->expected = (string) OrderStatus::NEW;
         $this->verify();
     }
 
@@ -141,9 +134,7 @@ class OrderStatusRepositoryTest extends EccubeTestCase
     {
         $OrderStatuses = $this->orderStatusRepository->findNotContainsBy([], ['id'], 2, 2);
         $this->actual = implode(', ', array_map(
-            function ($OrderStatus) {
-                return $OrderStatus->getId();
-            }, $OrderStatuses));
+            fn ($OrderStatus) => $OrderStatus->getId(), $OrderStatuses));
         $this->expected = OrderStatus::IN_PROGRESS.', '.OrderStatus::DELIVERED;
         $this->verify();
     }

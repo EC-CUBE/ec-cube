@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,18 +18,20 @@ namespace Eccube\Tests\Web;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Service\OrderHelper;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class ShoppingControllerWithNonmemberTest
  */
-class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
+final class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTestCase
 {
-    /**
-     * @var BaseInfo
-     */
-    protected $BaseInfo;
+    use MailerAssertionsTrait;
 
-    public function setUp()
+    protected ?BaseInfo $BaseInfo = null;
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
@@ -35,7 +39,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testRoutingShoppingLogin()
     {
-        $crawler = $this->client->request('GET', '/shopping/login');
+        $crawler = $this->client->request(Request::METHOD_GET, '/shopping/login');
         $this->expected = 'ログイン';
         $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
         $this->verify();
@@ -44,10 +48,12 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     public function testIndexWithCartNotFound()
     {
         // お客様情報を入力済の状態にするため, セッションにエンティティをセット.
-        $session = self::$container->get('session');
+        $session = $this->createSession($this->client);
         $session->set(OrderHelper::SESSION_NON_MEMBER, new Customer());
+        $session->save();
 
-        $this->client->request('GET', '/shopping');
+        $crawl = $this->client->request(Request::METHOD_GET, '/shopping');
+        $crawl->text();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
     }
@@ -95,9 +101,9 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioCheckout();
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_complete')));
 
-        $mailCollector = $this->getMailCollector(false);
-        $Messages = $mailCollector->getMessages();
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $this->expected = '['.$this->BaseInfo->getShopName().'] ご注文ありがとうございます';
         $this->actual = $Message->getSubject();
@@ -106,10 +112,28 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
 
     public function testNonmemberWithCartUnlock()
     {
-        $client = $this->createClient();
-        $crawler = $client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('cart')));
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('cart')));
+    }
+
+    /**
+     * ゲスト購入が無効の場合、/shopping/nonmember へのアクセスはログイン画面へリダイレクトされる
+     */
+    public function testNonmemberRedirectToLoginWhenGuestPurchaseDisabled()
+    {
+        $this->BaseInfo->setOptionGuestPurchase(false);
+        $this->entityManager->flush();
+
+        try {
+            $this->scenarioCartIn();
+            $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
+
+            $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping_login')));
+        } finally {
+            $this->BaseInfo->setOptionGuestPurchase(true);
+            $this->entityManager->flush();
+        }
     }
 
     public function testNonmemberWithCustomerLogin()
@@ -119,7 +143,7 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->scenarioCartIn($Customer);
 
         $this->loginTo($Customer);
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
     }
 
@@ -127,23 +151,27 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     {
         $this->scenarioCartIn();
 
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping_nonmember'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping_nonmember'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testNonmemberInputWithPost()
     {
+        $session = $this->createSession($this->client);
+        $session->set('test', 1);
+        $session->save();
+
         $this->scenarioCartIn();
 
         $formData = $this->createNonmemberFormData();
         $this->scenarioInput($formData);
 
-        $Nonmember = self::$container->get(OrderHelper::class)->getNonMember('eccube.front.shopping.nonmember');
+        $Nonmember = $session->get('eccube.front.shopping.nonmember');
         $this->assertNotNull($Nonmember);
-        $this->assertNotNull(self::$container->get('session')->get('eccube.front.shopping.nonmember.customeraddress'));
+        $this->assertNotNull($session->get('eccube.front.shopping.nonmember.customeraddress'));
 
         $this->expected = $formData['name']['name01'];
-        $this->actual = $Nonmember->getName01();
+        $this->actual = $Nonmember['name01'];
         $this->verify();
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('shopping')));
@@ -152,30 +180,33 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
     /**
      * 購入確認画面→お届け先の設定画面(非会員)へ遷移する
      */
-    public function testShippingEdit()
+    public function testShippingEdit(): never
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
+        // 旧テンプレート由来のセレクタ(a.btn-shipping-edit / h1.page-heading)と
+        // mode/param 形式の shipping_edit_change 遷移が現行 UI に存在しないため保留.
+        $this->markTestIncomplete('お届け先編集の現行 UI に追従するまでスキップ');
 
         $faker = $this->getFaker();
-        $client = $this->createClient();
+        $client = $this->client;
 
-        $this->scenarioCartIn($client);
+        $this->scenarioCartIn();
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
-        $crawler = $this->scenarioConfirm($client);
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+        $crawler = $this->scenarioConfirm();
 
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
+        preg_match('/\/(\d)$/', (string) $shipping_edit_change_url, $matches);
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_redirect_to'),
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_redirect_to'),
             [
                 '_shopping_order' => [
                     'Shippings' => [
@@ -198,41 +229,44 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
 
         // お届け先設定画面が表示される.
-        $crawler = $client->request('GET', $shipping_edit_url);
+        $crawler = $client->request(Request::METHOD_GET, $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
     }
 
     /**
      * 購入確認画面→お届け先の設定(非会員)→お届け先変更→購入完了
      */
-    public function testShippingEditWithPostToComplete()
+    public function testShippingEditWithPostToComplete(): never
     {
         // FIXME お届け先情報編集機能が実装されたら有効にする
-        $this->markTestIncomplete('Shipping edit is not implemented.');
+        // 旧テンプレート由来のセレクタ(a.btn-shipping-edit / h1.page-heading)と
+        // mode/param 形式の shipping_edit_change 遷移が現行 UI に存在しないため保留.
+        $this->markTestIncomplete('お届け先編集の現行 UI に追従するまでスキップ');
 
         $faker = $this->getFaker();
-        $client = $this->createClient();
+        $client = $this->client;
 
-        $this->scenarioCartIn($client);
+        $this->scenarioCartIn();
         $formData = $this->createNonmemberFormData();
-        $this->scenarioInput($client, $formData);
-        $crawler = $this->scenarioConfirm($client);
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+        $crawler = $this->scenarioConfirm();
 
         $this->expected = 'ご注文内容のご確認';
         $this->actual = $crawler->filter('h1.page-heading')->text();
         $this->verify();
 
         $shipping_edit_change_url = $crawler->filter('a.btn-shipping-edit')->attr('href');
-        preg_match('/\/(\d)$/', $shipping_edit_change_url, $matches);
+        preg_match('/\/(\d)$/', (string) $shipping_edit_change_url, $matches);
 
         // 値を保持してお届け先設定画面へ遷移
         $crawler = $client->request(
-            'POST',
-            $this->app->path('shopping_redirect_to'),
+            Request::METHOD_POST,
+            $this->generateUrl('shopping_redirect_to'),
             [
                 '_shopping_order' => [
                     'Shippings' => [
@@ -255,33 +289,159 @@ class ShoppingControllerWithNonmemberTest extends AbstractShoppingControllerTest
         $this->assertTrue($client->getResponse()->isRedirect($shipping_edit_url));
 
         // お届け先設定画面が表示される.
-        $crawler = $client->request('GET', $shipping_edit_url);
+        $crawler = $client->request(Request::METHOD_GET, $shipping_edit_url);
         $this->assertTrue($client->getResponse()->isSuccessful());
 
         $this->expected = 'お届け先の変更';
         $this->actual = $crawler->filter('h1.page-heading')->text();
-        $this->assertContains($this->expected, $this->actual);
+        $this->assertStringContainsString($this->expected, $this->actual);
 
         // お届け先設定画面で、入力値を変更しPOST送信
         $formData = $this->createNonmemberFormData();
         unset($formData['email']);
 
-        $crawler = $client->request(
-            'POST',
+        $client->request(
+            Request::METHOD_POST,
             $shipping_edit_url,
             ['shopping_shipping' => $formData]
         );
 
-        $this->assertTrue($client->getResponse()->isRedirect($this->app->url('shopping')));
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('shopping')));
 
         // ご注文完了
-        $this->scenarioComplete($client, $this->app->path('shopping_confirm'));
+        $this->scenarioComplete(null, $this->generateUrl('shopping_confirm'));
+        $this->scenarioCheckout();
 
-        $BaseInfo = $this->app['eccube.repository.base_info']->get();
-        $Messages = $this->getMailCatcherMessages();
-        $Message = $this->getMailCatcherMessage($Messages[0]->id);
+        $this->assertEmailCount(1);
+        $this->getMailerMessage(0);
 
-//        $this->assertRegexp('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+        //        $this->assertMatchesRegularExpression('/111-111-111/', $this->parseMailCatcherSource($Message), '変更した FAX 番号が一致するか');
+    }
+
+    /**
+     * 非会員情報入力→注文者情報変更
+     */
+    public function testCustomer()
+    {
+        $this->scenarioCartIn();
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+
+        $crawler = $this->scenarioConfirm();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $faker = $this->getFaker();
+        $this->client->request(
+            Request::METHOD_POST,
+            '/shopping/customer',
+            [
+                'customer_name01' => $faker->lastName,
+                'customer_name02' => $faker->firstName,
+                'customer_kana01' => $faker->lastKanaName,
+                'customer_kana02' => $faker->firstKanaName,
+                'customer_company_name' => $faker->company,
+                'customer_phone_number' => str_replace('-', '', $faker->phoneNumber),
+                'customer_postal_code' => str_replace('-', '', $faker->postcode),
+                'customer_pref' => '秋田県',
+                'customer_addr01' => $faker->city,
+                'customer_addr02' => $faker->streetAddress,
+                'customer_email' => $faker->safeEmail,
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
+        );
+
+        $this->assertSame('OK', json_decode($this->client->getResponse()->getContent())->status);
+    }
+
+    /**
+     * 非会員情報入力→注文者情報変更_不正電話番号
+     */
+    public function testCustomerNonDigitPhoneNumber()
+    {
+        $this->scenarioCartIn();
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+
+        $crawler = $this->scenarioConfirm();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $faker = $this->getFaker();
+        $this->client->request(
+            Request::METHOD_POST,
+            '/shopping/customer',
+            [
+                'customer_name01' => $faker->lastName,
+                'customer_name02' => $faker->firstName,
+                'customer_kana01' => $faker->lastKanaName,
+                'customer_kana02' => $faker->firstKanaName,
+                'customer_company_name' => $faker->company,
+                'customer_phone_number' => '3.0e2',
+                'customer_postal_code' => str_replace('-', '', $faker->postcode),
+                'customer_pref' => '秋田県',
+                'customer_addr01' => $faker->city,
+                'customer_addr02' => $faker->streetAddress,
+                'customer_email' => $faker->safeEmail,
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
+        );
+
+        $this->assertSame('NG', json_decode($this->client->getResponse()->getContent())->status);
+    }
+
+    /**
+     * 非会員情報入力→注文者情報変更_不正郵便番号
+     */
+    public function testCustomerNonDigitPoastalCode()
+    {
+        $this->scenarioCartIn();
+
+        $formData = $this->createNonmemberFormData();
+        $this->scenarioInput($formData);
+        $this->client->followRedirect();
+
+        $crawler = $this->scenarioConfirm();
+        $this->expected = 'ご注文手続き';
+        $this->actual = $crawler->filter('.ec-pageHeader h1')->text();
+        $this->verify();
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $faker = $this->getFaker();
+        $this->client->request(
+            Request::METHOD_POST,
+            '/shopping/customer',
+            [
+                'customer_name01' => $faker->lastName,
+                'customer_name02' => $faker->firstName,
+                'customer_kana01' => $faker->lastKanaName,
+                'customer_kana02' => $faker->firstKanaName,
+                'customer_company_name' => $faker->company,
+                'customer_phone_number' => str_replace('-', '', $faker->phoneNumber),
+                'customer_postal_code' => '3.0e2',
+                'customer_pref' => '秋田県',
+                'customer_addr01' => $faker->city,
+                'customer_addr02' => $faker->streetAddress,
+                'customer_email' => $faker->safeEmail,
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest'],
+        );
+
+        $this->assertSame('NG', json_decode($this->client->getResponse()->getContent())->status);
     }
 
     public function createNonmemberFormData()

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,23 +15,22 @@
 
 namespace Eccube\Tests\Form\Type\Master;
 
+use Eccube\Entity\Master\Pref;
 use Eccube\Form\Type\Master\PrefType;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class PrefTypeTest extends AbstractTypeTestCase
+final class PrefTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var PrefRepository */
-    protected $prefRepo;
+    protected ?PrefRepository $prefRepo = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->prefRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Pref::class);
-
+        $this->prefRepo = $this->entityManager->getRepository(Pref::class);
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(PrefType::class, null)
@@ -50,7 +51,7 @@ class PrefTypeTest extends AbstractTypeTestCase
         $choices = $view->vars['choices'];
 
         // placeholder
-        $this->assertEquals('common.select__pref', $view->vars['placeholder']);
+        $this->assertSame('common.select__pref', $view->vars['placeholder']);
 
         $data = [];
         // attrなど含まれているので

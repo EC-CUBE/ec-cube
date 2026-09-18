@@ -1,0 +1,10 @@
+# 返品申請のエビデンスファイルは私的な証跡のため、Web からの直リンク配信を全面的に禁止する。
+# 配信はコントローラ(所有者チェック付き)経由に限定する。
+# Apache 2.4(mod_authz_core) / 2.2(mod_access_compat) の双方で deny を効かせる。
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>

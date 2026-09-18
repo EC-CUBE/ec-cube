@@ -38,6 +38,14 @@ Styleguide 15.1
       display: inline-block;
     }
   }
+  & &__success{
+    width: 100%;
+    text-align: center;
+    .ec-alert-success {
+      max-width: 80%;
+      display: inline-block;
+    }
+  }
   & &__totalText{
     margin-bottom: 0;
     padding: 16px 0 6px;
@@ -61,7 +69,7 @@ Styleguide 15.1
     text-align: right;
     width: 100%;
     @include media_desktop {
-      width:  20%;
+      width:  30%;
       margin-right: 10%;
     }
   }
@@ -228,6 +236,7 @@ Styleguide 15.1.4
     width: 46%;
     @include media_desktop {
       display: inline-block;
+      width: calc(100% - 130px);
       margin-left: 20px;
       vertical-align: middle;
     }
@@ -406,6 +415,15 @@ Styleguide 15.1.6
   background: #F99;
   margin-bottom: 20px;
 
+  & &__inner {
+    display: inline-block;
+
+    &__item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
 
   & &__icon {
     display: inline-block;
@@ -422,6 +440,36 @@ Styleguide 15.1.6
     font-weight: bold;
     color: #fff;
     position: relative;
+    flex: 1;
+    word-break: break-all;
+  }
+}
+
+.ec-alert-success {
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  background: #5cb85c;
+  margin-bottom: 20px;
+
+  & &__inner {
+    display: inline-block;
+
+    &__item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+
+  & &__text {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    position: relative;
+    flex: 1;
+    word-break: break-all;
   }
 }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,15 +17,13 @@ namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class ChangeControllerTest extends AbstractWebTestCase
+final class ChangeControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -33,10 +33,10 @@ class ChangeControllerTest extends AbstractWebTestCase
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $password = $faker->lexify('?????????????').'a1';
         $birth = $faker->dateTimeBetween;
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -57,7 +57,7 @@ class ChangeControllerTest extends AbstractWebTestCase
                 'first' => $email,
                 'second' => $email,
             ],
-            'password' => [
+            'plain_password' => [
                 'first' => $password,
                 'second' => $password,
             ],
@@ -70,8 +70,6 @@ class ChangeControllerTest extends AbstractWebTestCase
             'job' => 1,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testIndex()
@@ -79,7 +77,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_change')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -90,8 +88,8 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
         );
@@ -108,12 +106,12 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $form = $this->createFormData();
-        $form['password'] = [
+        $form['plain_password'] = [
             'first' => $this->eccubeConfig['eccube_default_password'],
             'second' => $this->eccubeConfig['eccube_default_password'],
         ];
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             ['entry' => $form]
         );
@@ -126,7 +124,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('mypage_change'),
             []
         );
@@ -138,7 +136,7 @@ class ChangeControllerTest extends AbstractWebTestCase
         $this->loginTo($this->Customer);
 
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_change_complete')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());

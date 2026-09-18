@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -25,12 +27,11 @@ use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Twig\Loader\LoaderInterface;
 
-class TwigExtensionPassTest extends TestCase
+final class TwigExtensionPassTest extends TestCase
 {
-    /** @var ContainerBuilder */
-    protected $containerBuilder;
+    protected ?ContainerBuilder $containerBuilder = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->containerBuilder = new ContainerBuilder();
 
@@ -44,20 +45,19 @@ class TwigExtensionPassTest extends TestCase
         $this->containerBuilder->register('twig', Environment::class)
             ->setPublic(true)
             ->setAutowired(true);
+        $this->containerBuilder->setAlias(Environment::class, 'twig')
+            ->setPublic(true);
     }
 
     public function testProcess()
     {
         $this->containerBuilder->setParameter('kernel.debug', false);
         $this->containerBuilder->addCompilerPass(new TwigExtensionPass());
-        $this->containerBuilder->compile();
+        $this->containerBuilder->compile(false);
 
         /** @var Environment $twig */
-        $twig = $this->containerBuilder->get('twig');
-        self::assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
-        self::assertInstanceOf(
-            IgnoreRoutingNotFoundExtension::class,
-            $twig->getExtension(IgnoreRoutingNotFoundExtension::class)
-        );
+        $twig = $this->containerBuilder->get(Environment::class);
+        $this->assertTrue($twig->hasExtension(IgnoreRoutingNotFoundExtension::class));
+        $this->assertInstanceOf(IgnoreRoutingNotFoundExtension::class, $twig->getExtension(IgnoreRoutingNotFoundExtension::class));
     }
 }

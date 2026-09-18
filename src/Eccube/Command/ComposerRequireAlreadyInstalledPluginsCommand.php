@@ -14,68 +14,48 @@
 namespace Eccube\Command;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Eccube\Common\Constant;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
 use Eccube\Service\PluginApiService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:composer:require-already-installed')]
 class ComposerRequireAlreadyInstalledPluginsCommand extends Command
 {
-    protected static $defaultName = 'eccube:composer:require-already-installed';
-
-    /**
-     * @var ComposerApiService
-     */
-    private $composerService;
-
-    /**
-     * @var PluginApiService
-     */
-    private $pluginApiService;
-
-    /**
-     * @var PluginRepository
-     */
-    private $pluginRepository;
-
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
     public function __construct(
-        ComposerApiService $composerService,
-        PluginRepository $pluginRepository,
-        PluginApiService $pluginApiService
+        private readonly ComposerApiService $composerService,
+        private readonly PluginRepository $pluginRepository,
+        private readonly PluginApiService $pluginApiService,
     ) {
         parent::__construct();
-        $this->composerService = $composerService;
-        $this->pluginApiService = $pluginApiService;
-        $this->pluginRepository = $pluginRepository;
     }
 
-    public function initialize(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    public function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $packageNames = [];
         $unSupportedPlugins = [];
 
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->notIn('source', ['', '0']))
-            ->orderBy(['code' => 'ASC']);
+        $criteria = Criteria::create()->where(Criteria::expr()->notIn('source', ['', '0']))->orderBy(['code' => Order::Ascending]);
         $Plugins = $this->pluginRepository->matching($criteria);
 
         foreach ($Plugins as $Plugin) {
-            $packageNames[] = 'ec-cube/'.$Plugin->getCode().':'.$Plugin->getVersion();
+            $packageNames[] = 'ec-cube/'.strtolower((string) $Plugin->getCode()).':'.$Plugin->getVersion();
             $data = $this->pluginApiService->getPlugin($Plugin->getCode());
             if (isset($data['version_check']) && !$data['version_check']) {
                 $unSupportedPlugins[] = $Plugin;
@@ -90,7 +70,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             ]);
             $question = new ConfirmationQuestion($message);
             if (!$this->io->askQuestion($question)) {
-                return;
+                return Command::SUCCESS;
             }
         }
 
@@ -98,6 +78,6 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             $this->composerService->execRequire(implode(' ', $packageNames), $this->io);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,31 +17,26 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
-class CssControllerTest extends AbstractAdminWebTestCase
+final class CssControllerTest extends AbstractAdminWebTestCase
 {
-    const CSS_FILE = 'customize.css';
+    public const CSS_FILE = 'customize.css';
 
-    /**
-     * @var string
-     */
-    private $dir;
+    private ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    private $contents;
+    private ?string $contents = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->dir = self::$container->getParameter('eccube_html_dir').'/user_data/assets/css/';
+        $this->dir = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/css/';
         $this->contents = file_get_contents($this->dir.self::CSS_FILE);
         $fs = new Filesystem();
         $fs->dumpFile($this->dir.self::CSS_FILE, '');
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         chmod($this->dir, 0755);
         $fs = new Filesystem();
@@ -49,7 +46,7 @@ class CssControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentCssIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_css'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_css'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -61,11 +58,11 @@ class CssControllerTest extends AbstractAdminWebTestCase
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
-                 'css' => $css,
-             ],
+                'css' => $css,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -73,7 +70,7 @@ __CSS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);
-        $this->assertEquals($css, $contents);
+        $this->assertSame($css, $contents);
     }
 
     public function testRoutingAdminContentCssEditFailure()
@@ -89,11 +86,11 @@ __CSS_CONTENTS__;
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
-                 'css' => $css,
-             ],
+                'css' => $css,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -114,11 +111,11 @@ __CSS_CONTENTS__;
 }
 __CSS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_css'),
             ['form' => [
-                 'css' => $css,
-             ],
+                'css' => $css,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -126,6 +123,6 @@ __CSS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_css')));
         $contents = file_get_contents($this->dir.self::CSS_FILE);
-        $this->assertEquals($css, $contents);
+        $this->assertSame($css, $contents);
     }
 }

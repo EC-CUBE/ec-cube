@@ -1,12 +1,9 @@
 @import "./variables";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/forms";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/vendor-prefixes";
-@import "../../../../../../node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins/tab-focus";
+@import "../../../../../../node_modules/bootstrap/scss/mixins/_forms";
 
 @mixin forms-reset{
   input[type="search"] {
-    @include box-sizing(border-box);
+    // @include box-sizing(border-box);
   }
 
   // Position radios and checkboxes better
@@ -78,7 +75,7 @@
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
-    background-color: $input-bg-disabled;
+    // background-color: $input-bg-disabled;
     opacity: 1; // iOS fix for unreadable disabled content; see https://github.com/twbs/bootstrap/issues/11655
   }
 

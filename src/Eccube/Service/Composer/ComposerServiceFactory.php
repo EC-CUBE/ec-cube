@@ -13,11 +13,11 @@
 
 namespace Eccube\Service\Composer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class ComposerServiceFactory
 {
-    public static function createService(ContainerInterface $container)
+    public static function createService(ContainerInterface $container): ?ComposerApiService
     {
         return $container->get(ComposerApiService::class);
     }

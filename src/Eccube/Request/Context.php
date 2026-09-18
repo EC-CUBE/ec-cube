@@ -14,43 +14,22 @@
 namespace Eccube\Request;
 
 use Eccube\Common\EccubeConfig;
-use Eccube\Entity\Customer;
-use Eccube\Entity\Member;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class Context
 {
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-
-    public function __construct(RequestStack $requestStack, EccubeConfig $eccubeConfig, TokenStorageInterface $tokenStorage)
+    public function __construct(protected RequestStack $requestStack, protected EccubeConfig $eccubeConfig, private readonly TokenStorageInterface $tokenStorage)
     {
-        $this->requestStack = $requestStack;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->tokenStorage = $tokenStorage;
     }
 
     /**
      * 管理画面へのアクセスかどうか.
-     *
-     * @return bool
      */
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (null === $request) {
             return false;
@@ -58,19 +37,17 @@ class Context
 
         $pathInfo = \rawurldecode($request->getPathInfo());
         $adminPath = $this->eccubeConfig->get('eccube_admin_route');
-        $adminPath = '/'.\trim($adminPath, '/').'/';
+        $adminPath = '/'.\trim((string) $adminPath, '/').'/';
 
-        return \strpos($pathInfo, $adminPath) === 0;
+        return str_starts_with($pathInfo, $adminPath);
     }
 
     /**
      * フロント画面へのアクセスかどうか.
-     *
-     * @return bool
      */
-    public function isFront()
+    public function isFront(): bool
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (null === $request) {
             return false;
@@ -79,12 +56,9 @@ class Context
         return false === $this->isAdmin();
     }
 
-    /**
-     * @return Member|Customer|null
-     */
-    public function getCurrentUser()
+    public function getCurrentUser(): ?UserInterface
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
 
         if (null === $request) {
             return null;

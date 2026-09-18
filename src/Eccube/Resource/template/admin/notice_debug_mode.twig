@@ -1,0 +1,8 @@
+{% if isDebugMode %}
+    <div class="alert alert-danger alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-warning fa-lg me-2"></i>
+        <span class="fw-bold">{{ 'admin.common.notice_debug_mode'|trans }}</span>
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+{% endif %}

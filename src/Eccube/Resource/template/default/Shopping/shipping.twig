@@ -25,17 +25,25 @@ file that was distributed with this source code.
                         <div class="ec-addressRole__actions"><a class="ec-inlineBtn" href="{{ url('shopping_shipping_edit', {'id': shippingId}) }}">{{ 'front.shopping.shipping_add_new_shipping'|trans }}</a></div>
                     {% else %}
                         <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__text">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}
+                            <div class="ec-alert-warning__inner">
+                                <div class="ec-alert-warning__inner__item">
+                                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                                    <div class="ec-alert-warning__text">
+                                        {{ 'common.customer_address_count_is_over'|trans({ '%count%': eccube_config.eccube_deliv_addr_max }) }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endif %}
                     {% if has_errors(form.addresses) %}
                         <div class="ec-alert-warning">
-                            <div class="ec-alert-warning__text">
-                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
-                                {{ 'front.shopping.shipping_unselected'|trans }}
+                            <div class="ec-alert-warning__inner">
+                                <div class="ec-alert-warning__inner__item">
+                                    <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"/></div>
+                                    <div class="ec-alert-warning__text">
+                                        {{ 'front.shopping.shipping_unselected'|trans }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     {% endif %}
@@ -43,7 +51,8 @@ file that was distributed with this source code.
 
                 <form method="post" action="{{ url('shopping_shipping', {'id': shippingId}) }}">
                     {{ form_widget(form._token) }}
-                    <div class="ec-addressList">
+                    {# ラジオ・住所・操作の3列構成のため, セル幅を固定する modifier を付与する #}
+                    <div class="ec-addressList ec-addressList--selectable">
                         {% for choice in form.addresses.vars.choices %}
                             {% set Address = choice.data %}
                         <div class="ec-addressList__item">
@@ -55,6 +64,13 @@ file that was distributed with this source code.
                                 <div>{{ Address.name01 }}&nbsp;{{ Address.name02 }}</div>
                                 <div>〒{{ Address.postal_code }} {{ Address.Pref }}{{ Address.addr01 }}{{ Address.addr02 }}</div>
                                 <div>{{ Address.phone_number }}</div>
+                            </div>
+                            {# 会員本人の住所(id=null)には編集・削除を出さないが, 列幅を揃えるため操作セルは常に描画する #}
+                            <div class="ec-addressList__action">
+                                {% if Address.id %}
+                                    <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_edit', {'id': shippingId, 'ca_id': Address.id}) }}">{{ 'common.change'|trans }}</a>
+                                    <a class="ec-inlineBtn" href="{{ url('shopping_shipping_customer_address_delete', {'id': shippingId, 'ca_id': Address.id}) }}" {{ csrf_token_for_anchor() }} data-method="delete">{{ 'common.delete'|trans }}</a>
+                                {% endif %}
                             </div>
                         </div>
                         {% endfor %}

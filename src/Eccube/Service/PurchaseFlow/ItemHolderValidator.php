@@ -22,13 +22,7 @@ abstract class ItemHolderValidator
 {
     use ValidatorTrait;
 
-    /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext     $context
-     *
-     * @return ProcessResult
-     */
-    final public function execute(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    final public function execute(ItemHolderInterface $itemHolder, PurchaseContext $context): ProcessResult
     {
         try {
             $this->validate($itemHolder, $context);
@@ -42,14 +36,11 @@ abstract class ItemHolderValidator
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
-     *
      * @throws InvalidItemException
      */
-    abstract protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context);
+    abstract protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void;
 
-    protected function handle(ItemHolderInterface $itemHolder)
+    protected function handle(ItemHolderInterface $itemHolder): void
     {
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,33 +16,34 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Customer;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\CustomerRepository;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Email;
 
-class ForgotControllerTest extends AbstractWebTestCase
+final class ForgotControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
+    use MailerAssertionsTrait;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?BaseInfoRepository $baseInfoRepository = null;
 
-    public function setUp()
+    protected ?CustomerRepository $customerRepository = null;
+
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client->enableProfiler();
-        $this->baseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
-        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
+        $this->baseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
+        $this->customerRepository = $this->entityManager->getRepository(Customer::class);
         $this->client->disableReboot();
     }
 
     public function testIndex()
     {
-        $crawler = $this->client->request('GET', $this->generateUrl('forgot'));
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('forgot'));
 
         $this->expected = 'パスワードの再発行';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
@@ -51,13 +54,12 @@ class ForgotControllerTest extends AbstractWebTestCase
 
     public function testIndexWithPostAndVerify()
     {
-        $this->markTestIncomplete('expected and actual is diff');
         $Customer = $this->createCustomer();
         $BaseInfo = $this->baseInfoRepository->get();
 
         // パスワード再発行リクエスト
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('forgot'),
             [
                 'login_email' => $Customer->getEmail(),
@@ -67,52 +69,53 @@ class ForgotControllerTest extends AbstractWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('forgot_complete')));
 
-        $mailCollector = $this->getMailCollector(false);
-
         // メール受信確認
-        $Messages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $Messages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+
         $this->expected = '['.$BaseInfo->getShopName().'] パスワード変更のご確認';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $cleanContent = quoted_printable_decode($Message->getBody());
-        $this->assertEquals(1, preg_match('|http://localhost(.*)|', $cleanContent, $urls));
+        $cleanContent = quoted_printable_decode((string) $Message->getTextBody());
+        $this->assertSame(1, preg_match('|http://localhost(.*)|', $cleanContent, $urls));
         $forgot_path = trim($urls[1]);
 
         // メール URL クリック
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $forgot_path
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = 'パスワード再発行(再設定ページ)';
+        $this->expected = 'パスワード再発行(再設定)';
         $this->actual = $crawler->filter('div.ec-pageHeader > h1')->text();
         $this->verify();
 
         // パスワード再設定リクエスト
         $password = 'password_Changed';
-        $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('forgot_reset'),
+        $this->client->request(
+            Request::METHOD_POST,
+            $forgot_path,
             [
                 'login_email' => $Customer->getEmail(),
-                'password[first]' => $password,
-                'password[second]' => $password,
+                'password' => [
+                    'first' => $password,
+                    'second' => $password,
+                ],
                 Constant::TOKEN_NAME => 'dummy',
             ]
         );
 
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_login')));
     }
 
     public function testResetWithInvalid()
     {
         $client = $this->client;
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             '/forgot/reset/a___aaa'
         );
 
@@ -125,8 +128,8 @@ class ForgotControllerTest extends AbstractWebTestCase
     {
         $client = $this->client;
         $client->request(
-           'GET',
-           '/forgot/reset/aaaa'
+            Request::METHOD_GET,
+            '/forgot/reset/aaaa'
         );
         $this->expected = 404;
         $this->actual = $client->getResponse()->getStatusCode();

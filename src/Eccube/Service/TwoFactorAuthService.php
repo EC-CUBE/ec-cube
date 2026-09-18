@@ -14,90 +14,46 @@
 namespace Eccube\Service;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Member;
+use RobThree\Auth\Providers\Qr\QRServerProvider;
 use RobThree\Auth\TwoFactorAuth;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class TwoFactorAuthService
 {
     /**
      * @var int デフォルトの認証の有効日数
      */
-    const DEFAULT_EXPIRE_DATE = 14;
+    public const DEFAULT_EXPIRE_DATE = 14;
 
     /**
      * @var string Cookieに保存する時のキー名
      */
-    const DEFAULT_COOKIE_NAME = 'eccube_2fa';
+    public const DEFAULT_COOKIE_NAME = 'eccube_2fa';
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ?Request $request;
 
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    protected string $cookieName = self::DEFAULT_COOKIE_NAME;
 
-    /**
-     * @var EncoderFactoryInterface
-     */
-    protected $encoderFactory;
+    protected int $expire = self::DEFAULT_EXPIRE_DATE;
 
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
-
-    /**
-     * @var Request
-     */
-    protected $request;
-
-    /**
-     * @var Encoder
-     */
-    protected $encoder;
-
-    /**
-     * @var string
-     */
-    protected $cookieName = self::DEFAULT_COOKIE_NAME;
-
-    /**
-     * @var int
-     */
-    protected $expire = self::DEFAULT_EXPIRE_DATE;
-
-    /**
-     * @var TwoFactorAuth
-     */
-    protected $tfa;
+    protected TwoFactorAuth $tfa;
 
     /**
      * constructor.
-     *
-     * @param ContainerInterface $container
-     * @param EccubeConfig $eccubeConfig
-     * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(
-        ContainerInterface $container,
-        EccubeConfig $eccubeConfig,
-        EncoderFactoryInterface $encoderFactory,
-        RequestStack $requestStack
+        protected EccubeConfig $eccubeConfig,
+        protected PasswordHasherFactoryInterface $passwordHasherFactory,
+        protected RequestStack $requestStack,
     ) {
-        $this->container = $container;
-        $this->eccubeConfig = $eccubeConfig;
-        $this->encoderFactory = $encoderFactory;
-        $this->requestStack = $requestStack;
-        $this->request = $requestStack->getCurrentRequest();
-        $this->encoder = $this->encoderFactory->getEncoder('Eccube\\Entity\\Member');
-        $this->tfa = new TwoFactorAuth();
+        $this->request = $this->requestStack->getCurrentRequest();
+        // v3 では QR プロバイダの注入が必須。QR 生成はテンプレート側(JS)で行い
+        // ライブラリの getQRCodeImage() は呼ばないため、注入しても外部通信は発生しない。
+        $this->tfa = new TwoFactorAuth(new QRServerProvider());
 
         if ($this->eccubeConfig->get('eccube_2fa_cookie_name')) {
             $this->cookieName = $this->eccubeConfig->get('eccube_2fa_cookie_name');
@@ -109,22 +65,21 @@ class TwoFactorAuthService
         }
     }
 
-    /**
-     * @param Eccube\Entity\Member
-     *
-     * @return boolean
-     */
-    public function isAuth($Member)
+    public function isAuth(Member $Member): bool
     {
-        if (($json = $this->request->cookies->get($this->cookieName))) {
+        // テスト環境ではコンストラクタ時点でリクエストが存在しない場合があるため、
+        // requestStackから現在のリクエストを再取得する
+        $request = $this->request ?? $this->requestStack->getCurrentRequest();
+        if ($request && $json = $request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
-            $encodedString = $this->encoder->encodePassword($Member->getId().$Member->getTwoFactorAuthKey(), $Member->getSalt());
+            $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
+
             if (
                 $configs
                 && isset($configs->{$Member->getId()})
                 && ($config = $configs->{$Member->getId()})
                 && property_exists($config, 'key')
-                && $config->key === $encodedString
+                && $hasher->verify($config->key, $Member->getId().$Member->getTwoFactorAuthKey())
                 && (
                     $this->expire == 0
                     || (property_exists($config, 'date') && ($config->date && $config->date > date('U', strtotime('-'.$this->expire.' day'))))
@@ -137,17 +92,13 @@ class TwoFactorAuthService
         return false;
     }
 
-    /**
-     * @param Eccube\Entity\Member
-     *
-     * @return Cookie
-     */
-    public function createAuthedCookie($Member)
+    public function createAuthedCookie(Member $Member): Cookie
     {
-        $encodedString = $this->encoder->encodePassword($Member->getId().$Member->getTwoFactorAuthKey(), $Member->getSalt());
+        $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
+        $encodedString = $hasher->hash($Member->getId().$Member->getTwoFactorAuthKey());
 
         $configs = json_decode('{}');
-        if (($json = $this->request->cookies->get($this->cookieName))) {
+        if ($json = $this->request->cookies->get($this->cookieName)) {
             $configs = json_decode($json);
         }
         $configs->{$Member->getId()} = [
@@ -155,47 +106,33 @@ class TwoFactorAuthService
             'date' => time(),
         ];
 
-        $cookie = new Cookie(
+        return new Cookie(
             $this->cookieName, // name
             json_encode($configs), // value
-            ($this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60)), // expire
-            $this->request->getBasePath().'/'.$this->eccubeConfig->get('eccube_admin_route'), //path
+            $this->expire == 0 ? 0 : time() + ($this->expire * 24 * 60 * 60), // expire
+            $this->request->getBasePath().'/'.$this->eccubeConfig->get('eccube_admin_route'), // path
             null, // domain
-            ($this->eccubeConfig->get('eccube_force_ssl') ? true : false), // secure
+            $this->eccubeConfig->get('eccube_force_ssl') ? true : false, // secure
             true, // httpOnly
             false, // raw
-            ($this->eccubeConfig->get('eccube_force_ssl') ? Cookie::SAMESITE_NONE : null) // sameSite
+            $this->eccubeConfig->get('eccube_force_ssl') ? Cookie::SAMESITE_NONE : null // sameSite
         );
-
-        return $cookie;
     }
 
-    /**
-     * @param Eccube\Entity\Member
-     * @param string
-     *
-     * @return boolean
-     */
-    public function verifyCode($authKey, $token)
+    public function verifyCode(string $authKey, string $token): bool
     {
         return $this->tfa->verifyCode($authKey, $token, 2);
     }
 
-    /**
-     * @return string
-     */
-    public function createSecret()
+    public function createSecret(): string
     {
         return $this->tfa->createSecret();
     }
 
-    /**
-     * @return bool
-     */
-    public function isEnabled()
+    public function isEnabled(): bool
     {
         $enabled = $this->eccubeConfig->get('eccube_2fa_enabled');
-        if (is_string($enabled) && $enabled === 'false' || $enabled === false) {
+        if (is_string($enabled) && $enabled === '0' || $enabled === false) {
             return false;
         }
 

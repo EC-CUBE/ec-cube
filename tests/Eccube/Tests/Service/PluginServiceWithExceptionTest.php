@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,6 +15,7 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\PluginService;
 use Symfony\Component\Yaml\Yaml;
@@ -25,34 +28,27 @@ use Symfony\Component\Yaml\Yaml;
  * このクラスは、 setUp()/tearDown() で begin/rollback しないようにし、
  * 実装コード内での rollback を検証する.
  */
-class PluginServiceWithExceptionTest extends AbstractServiceTestCase
+final class PluginServiceWithExceptionTest extends AbstractServiceTestCase
 {
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
+    protected ?PluginRepository $pluginRepository = null;
 
-    /**
-     * @var PluginService
-     */
-    protected $pluginService;
+    protected ?PluginService $pluginService = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->pluginRepository = $this->entityManager->getRepository(\Eccube\Entity\Plugin::class);
-        $this->pluginService = self::$container->get(PluginService::class);
+        $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
+        $this->pluginService = static::getContainer()->get(PluginService::class);
     }
 
     // インストーラが例外を上げた場合ロールバックできるか
     public function testInstallPluginWithBrokenManager()
     {
         // インストールするプラグインを作成する
-        $tmpname = 'dummy'.sha1(mt_rand());
+        $tmpname = 'dummy'.sha1((string) mt_rand());
         $config = [];
         $config['name'] = $tmpname;
         $config['code'] = $tmpname;
@@ -62,7 +58,7 @@ class PluginServiceWithExceptionTest extends AbstractServiceTestCase
         $tmpfile = $tmpdir.'/plugin.tar';
 
         $tar = new \PharData($tmpfile);
-        $tar->addFromString('config.yml', Yaml::dump($config));
+        $tar->addFromString('composer.json', Yaml::dump($config));
         $dummyManager = <<<'EOD'
 <?php
 namespace Plugin\@@@@ ;
@@ -83,18 +79,18 @@ EOD;
         try {
             $this->assertTrue($this->pluginService->install($tmpfile));
             $this->fail('BrokenManager dont throw exception.');
-        } catch (\Exception $e) {
+        } catch (\Exception) {
         }
 
         // インストーラで例外発生時にテーブルやファイスシステム上にゴミが残らないか
-        $this->assertFileNotExists(__DIR__."/../../../../app/Plugin/$tmpname");
+        $this->assertFileDoesNotExist(__DIR__."/../../../../app/Plugin/$tmpname");
         // XXX PHPUnit によってロールバックが遅延してしまうので, 検証できないが, 消えているはず
         $this->assertFalse((bool) $plugin = $this->pluginRepository->findOneBy(['name' => $tmpname]));
     }
 
     private function createTempDir()
     {
-        $t = sys_get_temp_dir().'/plugintest.'.sha1(mt_rand());
+        $t = sys_get_temp_dir().'/plugintest.'.sha1((string) mt_rand());
         if (!mkdir($t)) {
             throw new \Exception("$t ".$php_errormsg);
         }

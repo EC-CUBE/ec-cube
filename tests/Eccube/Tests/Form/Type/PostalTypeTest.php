@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,18 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\PostalType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
-class PostalTypeTest extends AbstractTypeTestCase
+final class PostalTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'postal_code' => '060-0000',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->form = $this->formFactory
@@ -40,6 +42,14 @@ class PostalTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
 
         $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidNotDigitOnly()
+    {
+        $this->formData['phone_number'] = '0.3e2';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidLengthMax()

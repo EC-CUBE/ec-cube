@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,11 +16,12 @@
 namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class SystemControllerTest
  */
-class SystemControllerTest extends AbstractAdminWebTestCase
+final class SystemControllerTest extends AbstractAdminWebTestCase
 {
     /**
      * testRoutingAdminSettingSystemSystemIndex
@@ -26,7 +29,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     public function testRoutingAdminSettingSystemSystemIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_system')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -38,7 +41,7 @@ class SystemControllerTest extends AbstractAdminWebTestCase
     public function testInfoAdminSettingSystemSystem()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_system_system', ['mode' => 'info'])
         );
 

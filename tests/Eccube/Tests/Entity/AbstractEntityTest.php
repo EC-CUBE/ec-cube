@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,6 +15,7 @@
 
 namespace Eccube\Tests\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Id;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Tests\EccubeTestCase;
@@ -22,7 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  *
  * @author Kentaro Ohkouchi
  */
-class AbstractEntityTest extends EccubeTestCase
+final class AbstractEntityTest extends EccubeTestCase
 {
     private $objEntity;
 
@@ -31,17 +34,17 @@ class AbstractEntityTest extends EccubeTestCase
         $arrProps = [
             'field1' => 1,
             'field2' => 2,
-            'field3' => 3,
             'testField4' => 4,
+            'field3' => 3,
         ];
         $this->objEntity = new TestEntity($arrProps);
-        $this->assertTrue(is_object($this->objEntity));
+        $this->assertIsObject($this->objEntity);
     }
 
     public function testNewInstanceEmptyParams()
     {
         $this->objEntity = new TestEntity();
-        $this->assertTrue(is_object($this->objEntity));
+        $this->assertIsObject($this->objEntity);
     }
 
     public function testToArray()
@@ -55,7 +58,7 @@ class AbstractEntityTest extends EccubeTestCase
         $this->objEntity = new TestEntity($arrProps);
         $expected = $arrProps;
         $actual = $this->objEntity->toArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testSetPropertiesFromArray()
@@ -75,10 +78,10 @@ class AbstractEntityTest extends EccubeTestCase
 
         $this->objEntity->setPropertiesFromArray($arrProps);
 
-        $this->assertEquals($this->objEntity->getField1(), 'a');
+        $this->assertEquals('a', $this->objEntity->getField1());
         $this->assertNull($this->objEntity->getField2(), 'field2 is null');
-        $this->assertEquals($this->objEntity->field3, 3);
-        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $this->assertEquals(3, $this->objEntity->field3);
+        $this->assertEquals(5, $this->objEntity->getTestField4());
     }
 
     public function testGetter()
@@ -90,10 +93,10 @@ class AbstractEntityTest extends EccubeTestCase
             'testField4' => 4,
         ];
         $this->objEntity = new TestEntity($arrProps);
-        $this->assertEquals($this->objEntity->getField1(), 1);
-        $this->assertEquals($this->objEntity->getField2(), 2);
-        $this->assertEquals($this->objEntity->field3, 3);
-        $this->assertEquals($this->objEntity->getTestField4(), 4);
+        $this->assertEquals(1, $this->objEntity->getField1());
+        $this->assertEquals(2, $this->objEntity->getField2());
+        $this->assertEquals(3, $this->objEntity->field3);
+        $this->assertEquals(4, $this->objEntity->getTestField4());
     }
 
     public function testExtends()
@@ -102,24 +105,24 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => 4,
             'testField4' => 5,
+            'field4' => 4,
         ];
         $this->objEntity = new TestExtendsEntity($arrProps);
-        $this->assertEquals($this->objEntity->getField1(), 1);
-        $this->assertEquals($this->objEntity->getField2(), 2);
-        $this->assertEquals($this->objEntity->field3, 3);
-        $this->assertEquals($this->objEntity->getField4(), 4);
-        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $this->assertEquals(1, $this->objEntity->getField1());
+        $this->assertEquals(2, $this->objEntity->getField2());
+        $this->assertEquals(3, $this->objEntity->field3);
+        $this->assertEquals(4, $this->objEntity->getField4());
+        $this->assertEquals(5, $this->objEntity->getTestField4());
         $expected = $arrProps;
         $actual = $this->objEntity->toArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testChildrens()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -133,11 +136,11 @@ class AbstractEntityTest extends EccubeTestCase
         ];
 
         $this->objEntity = new TestChildEntity($arrProps);
-        $this->assertEquals($this->objEntity->getField1(), 1);
-        $this->assertEquals($this->objEntity->getField2(), 2);
-        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals(1, $this->objEntity->getField1());
+        $this->assertEquals(2, $this->objEntity->getField2());
+        $this->assertEquals(3, $this->objEntity->field3);
         $this->assertEquals($this->objEntity->getField4(), $Date);
-        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $this->assertEquals(5, $this->objEntity->getTestField4());
         $expected = $arrProps;
         $actual = $this->objEntity->toArray();
 
@@ -147,7 +150,7 @@ class AbstractEntityTest extends EccubeTestCase
     public function testChildrensWithToNormalizedArray()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -155,17 +158,17 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => $Date,
             'testField4' => 5,
+            'field4' => $Date,
             'TestChildrens' => $TestChildrens,
         ];
 
         $this->objEntity = new TestChildEntity($arrProps);
-        $this->assertEquals($this->objEntity->getField1(), 1);
-        $this->assertEquals($this->objEntity->getField2(), 2);
-        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals(1, $this->objEntity->getField1());
+        $this->assertEquals(2, $this->objEntity->getField2());
+        $this->assertEquals(3, $this->objEntity->field3);
         $this->assertEquals($this->objEntity->getField4(), $Date);
-        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $this->assertEquals(5, $this->objEntity->getTestField4());
         $expected = $arrProps;
         $expected['field4'] = '2017-09-25T00:00:00Z';
         $expected['TestChildrens'] = [
@@ -174,13 +177,13 @@ class AbstractEntityTest extends EccubeTestCase
             ['childField' => 'child3'],
         ];
         $actual = $this->objEntity->toNormalizedArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testChildrensWithToJSON()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -188,17 +191,17 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => $Date,
             'testField4' => 5,
+            'field4' => $Date,
             'TestChildrens' => $TestChildrens,
         ];
 
         $this->objEntity = new TestChildEntity($arrProps);
-        $this->assertEquals($this->objEntity->getField1(), 1);
-        $this->assertEquals($this->objEntity->getField2(), 2);
-        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals(1, $this->objEntity->getField1());
+        $this->assertEquals(2, $this->objEntity->getField2());
+        $this->assertEquals(3, $this->objEntity->field3);
         $this->assertEquals($this->objEntity->getField4(), $Date);
-        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $this->assertEquals(5, $this->objEntity->getTestField4());
         $expected = $arrProps;
         $expected['field4'] = '2017-09-25T00:00:00Z';
         $expected['TestChildrens'] = [
@@ -208,13 +211,13 @@ class AbstractEntityTest extends EccubeTestCase
         ];
         $actual = $this->objEntity->toJSON();
 
-        $this->assertEquals($expected, json_decode($actual, true));
+        $this->assertSame($expected, json_decode($actual, true));
     }
 
     public function testChildrensWithToXML()
     {
         $Date = new \DateTime('2017-09-25 00:00:00 +00:00');
-        $TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $TestChildrens = new ArrayCollection();
         $TestChildrens[] = new TestChildren('child1');
         $TestChildrens[] = new TestChildren('child2');
         $TestChildrens[] = new TestChildren('child3');
@@ -228,11 +231,11 @@ class AbstractEntityTest extends EccubeTestCase
         ];
 
         $this->objEntity = new TestChildEntity($arrProps);
-        $this->assertEquals($this->objEntity->getField1(), 1);
-        $this->assertEquals($this->objEntity->getField2(), 2);
-        $this->assertEquals($this->objEntity->field3, 3);
+        $this->assertEquals(1, $this->objEntity->getField1());
+        $this->assertEquals(2, $this->objEntity->getField2());
+        $this->assertEquals(3, $this->objEntity->field3);
         $this->assertEquals($this->objEntity->getField4(), $Date);
-        $this->assertEquals($this->objEntity->getTestField4(), 5);
+        $this->assertEquals(5, $this->objEntity->getTestField4());
 
         $expected = '<?xml version="1.0"?>'.PHP_EOL;
         $expected .= '<TestChildEntity><field1>1</field1><field2>2</field2><field3>3</field3><testField4>5</testField4><field4>2017-09-25T00:00:00Z</field4><TestChildrens><childField>child1</childField></TestChildrens><TestChildrens><childField>child2</childField></TestChildrens><TestChildrens><childField>child3</childField></TestChildrens></TestChildEntity>'.PHP_EOL;
@@ -247,23 +250,23 @@ class AbstractEntityTest extends EccubeTestCase
             'field1' => 1,
             'field2' => 2,
             'field3' => 3,
-            'field4' => 4,
             'testField4' => 5,
+            'field4' => 4,
         ];
         $srcEntity = new TestExtendsEntity($arrProps);
         $destEntity = new TestExtendsEntity();
 
         // srcEntity から destEntity へフィールドをコピーする
         $destEntity->copyProperties($srcEntity);
-        $this->assertEquals($destEntity->getField1(), 1);
-        $this->assertEquals($destEntity->getField2(), 2);
-        $this->assertEquals($destEntity->field3, 3);
-        $this->assertEquals($destEntity->getField4(), 4);
-        $this->assertEquals($destEntity->getTestField4(), 5);
+        $this->assertEquals(1, $destEntity->getField1());
+        $this->assertEquals(2, $destEntity->getField2());
+        $this->assertEquals(3, $destEntity->field3);
+        $this->assertEquals(4, $destEntity->getField4());
+        $this->assertEquals(5, $destEntity->getTestField4());
 
         $expected = $arrProps;
         $actual = $destEntity->toArray();
-        $this->assertEquals($expected, $actual);
+        $this->assertSame($expected, $actual);
     }
 
     public function testExcludeAttribute()
@@ -280,10 +283,10 @@ class AbstractEntityTest extends EccubeTestCase
 
         $destEntity->copyProperties($srcEntity, ['field1']); // field1 は除外
         $this->assertNull($destEntity->getField1());
-        $this->assertEquals($destEntity->getField2(), 2);
-        $this->assertEquals($destEntity->field3, 3);
-        $this->assertEquals($destEntity->getField4(), 4);
-        $this->assertEquals($destEntity->getTestField4(), 5);
+        $this->assertEquals(2, $destEntity->getField2());
+        $this->assertEquals(3, $destEntity->field3);
+        $this->assertEquals(4, $destEntity->getField4());
+        $this->assertEquals(5, $destEntity->getTestField4());
 
         $expected = $arrProps;
         $expected['field1'] = null;
@@ -308,11 +311,11 @@ class AbstractEntityTest extends EccubeTestCase
         $srcEntity = new TestExtendsEntity($arrProps);
 
         $destEntity->copyProperties($srcEntity);
-        $this->assertEquals($destEntity->getField1(), 1);
+        $this->assertEquals(1, $destEntity->getField1());
         $this->assertNull($destEntity->getField2(), 'field2 is null');
-        $this->assertEquals($destEntity->field3, 3);
-        $this->assertEquals($destEntity->getField4(), 4);
-        $this->assertEquals($destEntity->getTestField4(), 5);
+        $this->assertEquals(3, $destEntity->field3);
+        $this->assertEquals(4, $destEntity->getField4());
+        $this->assertEquals(5, $destEntity->getTestField4());
     }
 }
 
@@ -392,7 +395,7 @@ class TestChildEntity extends TestExtendsEntity
 
     public function __construct($arrProps = [])
     {
-        $this->TestChildrens = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->TestChildrens = new ArrayCollection();
         if (is_array($arrProps) && count($arrProps) > 0) {
             $this->setPropertiesFromArray($arrProps);
         }
@@ -420,15 +423,16 @@ class TestChildEntity extends TestExtendsEntity
 
 class TestChildren extends AbstractEntity
 {
-    /**
-     * @Id
-     */
-    private $childField;
-
-    public function __construct($childField)
-    {
-        $this->childField = $childField;
+    public function __construct(
+        #[Id]
+        private $childField,
+    ) {
     }
+    //    public function __construct(
+    // #[Id]
+    //        private $childField,
+    // ) {
+    // }
 
     public function getChildField()
     {

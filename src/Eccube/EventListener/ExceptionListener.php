@@ -16,38 +16,27 @@ namespace Eccube\EventListener;
 use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Twig\Environment;
 
 class ExceptionListener implements EventSubscriberInterface
 {
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
-     * @var Context
-     */
-    protected $requestContext;
-
-    /**
      * ExceptionListener constructor.
      */
-    public function __construct(\Twig_Environment $twig, Context $requestContext)
+    public function __construct(private readonly Environment $twig, protected Context $requestContext)
     {
-        $this->twig = $twig;
-        $this->requestContext = $requestContext;
     }
 
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $title = trans('exception.error_title');
         $message = trans('exception.error_message');
         $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
 
         if ($exception instanceof HttpExceptionInterface) {
             $statusCode = $exception->getStatusCode();
@@ -64,6 +53,11 @@ class ExceptionListener implements EventSubscriberInterface
                     } else {
                         $message = trans('exception.error_message_can_not_access');
                     }
+                    break;
+                case 429:
+                    $infoMess = '試行回数の制限を超過しました。';
+                    $title = trans('exception.error_title_can_not_access');
+                    $message = trans('exception.error_message_rate_limit');
                     break;
                 case 404:
                     $infoMess = 'ページがみつかりません。';
@@ -96,11 +90,11 @@ class ExceptionListener implements EventSubscriberInterface
                 'error_title' => $title,
                 'error_message' => $message,
             ]);
-        } catch (\Exception $ignore) {
+        } catch (\Exception) {
             $content = $title;
         }
 
-        $event->setResponse(Response::create($content, $statusCode));
+        $event->setResponse(new Response($content, $statusCode));
     }
 
     /**
@@ -119,9 +113,10 @@ class ExceptionListener implements EventSubscriberInterface
      *  * array('eventName' => array('methodName', $priority))
      *  * array('eventName' => array(array('methodName1', $priority), array('methodName2')))
      *
-     * @return array The event names to listen to
+     * @return array<string, array<int, string>> The event names to listen to
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::EXCEPTION => ['onKernelException'],

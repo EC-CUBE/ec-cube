@@ -1,0 +1,13 @@
+{
+  "name": "ec-cube/install-test-plugin",
+  "description": "プラグインインストールテスト用プラグイン",
+  "version": "1.0.0",
+  "type": "eccube-plugin",
+  "require": {
+    "ec-cube/plugin-installer": "^2.0@dev"
+  },
+  "extra": {
+    "code": "InstallTestPlugin",
+    "id": 999
+  }
+}

@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\Template;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -23,52 +24,40 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class TemplateType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('code', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z]+$/',
-                    ]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Regex(pattern: '/^[0-9a-zA-Z]+$/'),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('file', FileType::class, [
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => trans('admin.common.select')]),
-                    new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
-                        'mimeTypesMessage' => trans('admin.store.template.invalid_upload_file'),
-                    ]),
+                    new Assert\NotBlank(message: trans('admin.common.select')),
+                    new Assert\File(mimeTypes: ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'], mimeTypesMessage: trans('admin.store.template.invalid_upload_file')),
                 ],
             ]);
     }
@@ -76,17 +65,19 @@ class TemplateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Template',
+            'data_class' => Template::class,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_template';
     }

@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Service\PurchaseFlow\Processor;
+
+use Eccube\Entity\Cart;
+use Eccube\Service\PurchaseFlow\Processor\PaymentTotalNegativeValidator;
+use Eccube\Service\PurchaseFlow\PurchaseContext;
+use Eccube\Tests\EccubeTestCase;
+
+final class PaymentTotalNegativeValidatorTest extends EccubeTestCase
+{
+    public function testPositiveValidate()
+    {
+        $validator = $this->newValidator();
+
+        $cart = new Cart();
+        $cart->setTotal(100);
+
+        $result = $validator->execute($cart, new PurchaseContext());
+        $this->assertTrue($result->isSuccess());
+    }
+
+    public function testNegativeValidate()
+    {
+        $validator = $this->newValidator();
+
+        $cart = new Cart();
+        $cart->setTotal(-100);
+
+        $result = $validator->execute($cart, new PurchaseContext());
+        $this->assertTrue($result->isError());
+    }
+
+    private function newValidator(): PaymentTotalNegativeValidator
+    {
+        return static::getContainer()->get(PaymentTotalNegativeValidator::class);
+    }
+}

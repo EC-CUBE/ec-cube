@@ -1,0 +1,5 @@
+id,customer_status_id,sex_id,pref_id,name01,name02,kana01,kana02,company_name,postal_code,addr01,addr02,email,phone_number,password,secret_key,point,create_date,update_date,discriminator_type
+3001,2,1,13,テスト,太郎,テスト,タロウ,テスト会社,5300001,大阪市北区,梅田1-1-1,customer@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-3001,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+3002,2,1,13,テスト,太郎1,テスト,タロウ1,テスト会社,5300001,大阪市北区,梅田1-1-1,customer1@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-3002,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+3003,2,1,13,テスト,太郎2,テスト,タロウ2,テスト会社,5300001,大阪市北区,梅田1-1-1,customer2@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-3003,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer
+3004,2,1,13,テスト,太郎3,テスト,タロウ3,テスト会社,5300001,大阪市北区,梅田1-1-1,customer3@example.com,0000000000,dummy_password_hash_for_csv_fixture,csv-secret-key-3004,0,2026-05-21 00:00:00,2026-05-21 00:00:00,customer

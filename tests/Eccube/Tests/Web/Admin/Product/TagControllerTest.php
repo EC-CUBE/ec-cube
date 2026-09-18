@@ -1,0 +1,174 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Web\Admin\Product;
+
+use Eccube\Entity\Tag;
+use Eccube\Repository\TagRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+final class TagControllerTest extends AbstractAdminWebTestCase
+{
+    private ?TagRepository $TagRepo = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->TagRepo = $this->entityManager->getRepository(Tag::class);
+    }
+
+    public function testRouting()
+    {
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_tag'));
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testMoveSortNo()
+    {
+        $idAndSortNo = [
+            1 => 4,
+            2 => 5,
+            3 => 6,
+        ];
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag_sort_no_move'),
+            $idAndSortNo,
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->expected = 6;
+        $Tag = $this->TagRepo->find(3);
+        $this->entityManager->refresh($Tag);
+        $this->assertInstanceOf(Tag::class, $Tag); // Refresh しないとリクエストの値(string)が入ってしまう
+        $this->actual = $Tag->getSortNo();
+        $this->verify();
+    }
+
+    /**
+     * @param $isSuccess
+     * @param $expected
+     */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
+    public function testAddNew($isSuccess, $expected)
+    {
+        $formData = $this->createFormData();
+        if (!$isSuccess) {
+            $formData['method'] = '';
+        }
+
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag'),
+            [
+                'admin_product_tag' => $formData,
+            ]
+        );
+
+        $this->expected = $expected;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+    }
+
+    public function testEdit()
+    {
+        $formData = $this->createFormData();
+
+        $Item = $this->TagRepo->find(1);
+        $this->assertInstanceOf(Tag::class, $Item);
+
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag'),
+            [
+                'tag_'.$Item->getId() => $formData,
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->expected = 'Tag-101';
+        $this->actual = $Item->getName();
+        $this->verify();
+    }
+
+    public function testEditInvalid()
+    {
+        $Item = $this->TagRepo->find(1);
+        $this->assertInstanceOf(Tag::class, $Item);
+
+        $crawler = $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag'),
+            [
+                'tag_'.$Item->getId() => [
+                    '_token' => 'dummy',
+                    'name' => '',
+                ],
+            ]
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringContainsString('入力されていません', $crawler->html());
+    }
+
+    public function testDeleteSuccess()
+    {
+        $Item = new Tag();
+        $Item->setName('Tag-102')
+            ->setSortNo(999);
+
+        $this->entityManager->persist($Item);
+        $this->entityManager->flush();
+
+        $TagId = $Item->getId();
+        $this->client->request(Request::METHOD_DELETE,
+            $this->generateUrl('admin_product_tag_delete', ['id' => $TagId])
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $Item = $this->TagRepo->find($TagId);
+        $this->assertNotInstanceOf(Tag::class, $Item);
+    }
+
+    public function testDeleteFailNotFound()
+    {
+        $tagId = 9999;
+        $this->client->request(
+            Request::METHOD_DELETE,
+            $this->generateUrl('admin_product_tag_delete', ['id' => $tagId])
+        );
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    public function createFormData()
+    {
+        return [
+            '_token' => 'dummy',
+            'name' => 'Tag-101',
+        ];
+    }
+
+    public static function dataSubmitProvider(): \Iterator
+    {
+        yield [false, false];
+        yield [true, true];
+    }
+}

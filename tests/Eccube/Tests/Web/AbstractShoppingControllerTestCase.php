@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,7 +17,9 @@ namespace Eccube\Tests\Web;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\Customer;
+use Eccube\Entity\ProductClass;
 use Eccube\Util\StringUtil;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ShoppingController 用 WebTest の抽象クラス.
@@ -26,21 +30,11 @@ use Eccube\Util\StringUtil;
  */
 abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     public function createShippingFormData()
     {
         $faker = $this->getFaker();
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -59,18 +53,16 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
-    protected function scenarioCartIn(Customer $Customer = null, $product_class_id = 1)
+    protected function scenarioCartIn(?Customer $Customer = null, $product_class_id = 2)
     {
         if ($Customer) {
             $this->loginTo($Customer);
         }
 
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl(
                 'cart_handle_item',
                 [
@@ -81,7 +73,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             [Constant::TOKEN_NAME => '_dummy']
         );
 
-        $ProductClass = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class)->find($product_class_id);
+        $ProductClass = $this->entityManager->getRepository(ProductClass::class)->find($product_class_id);
         if ($Customer) {
             $this->loginTo($Customer);
             $cart_key = $Customer->getId().'_'.$ProductClass->getSaleType()->getId();
@@ -90,7 +82,7 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         }
 
         return $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('cart_buystep', ['cart_key' => $cart_key])
         );
     }
@@ -98,23 +90,21 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
     protected function scenarioInput($formData)
     {
         $formData[Constant::TOKEN_NAME] = '_dummy';
-        $crawler = $this->client->request(
-            'POST',
+
+        return $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('shopping_nonmember'),
             ['nonmember' => $formData]
         );
-
-        return $crawler;
     }
 
-    protected function scenarioConfirm(Customer $Customer = null)
+    protected function scenarioConfirm(?Customer $Customer = null)
     {
         if ($Customer) {
             $this->loginTo($Customer);
         }
-        $crawler = $this->client->request('GET', $this->generateUrl('shopping'));
 
-        return $crawler;
+        return $this->client->request(Request::METHOD_GET, $this->generateUrl('shopping'));
     }
 
     protected function scenarioRedirectTo(Customer $Cusotmer, $parameters)
@@ -124,13 +114,13 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
         }
 
         return $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('shopping_redirect_to'),
             $parameters
         );
     }
 
-    protected function scenarioComplete(Customer $Customer = null, $confirm_url, array $shippings = [], $doComplete = false)
+    protected function scenarioComplete(?Customer $Customer = null, $confirm_url = null, array $shippings = [], $doComplete = false)
     {
         if ($Customer) {
             $this->loginTo($Customer);
@@ -168,16 +158,14 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             }
         }
 
-        $crawler = $this->client->request(
-            'POST',
+        return $this->client->request(
+            Request::METHOD_POST,
             $confirm_url,
             $parameters
         );
-
-        return $crawler;
     }
 
-    protected function scenarioCheckout(Customer $Customer = null)
+    protected function scenarioCheckout(?Customer $Customer = null)
     {
         if ($Customer) {
             $this->loginTo($Customer);
@@ -191,12 +179,10 @@ abstract class AbstractShoppingControllerTestCase extends AbstractWebTestCase
             ],
         ];
 
-        $crawler = $this->client->request(
-            'POST',
+        return $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('shopping_checkout'),
             $parameters
         );
-
-        return $crawler;
     }
 }

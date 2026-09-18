@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,16 +16,21 @@
 namespace Eccube\Tests\Web;
 
 use Eccube\Entity\BaseInfo;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Email;
 
-class ContactControllerTest extends AbstractWebTestCase
+final class ContactControllerTest extends AbstractWebTestCase
 {
+    use MailerAssertionsTrait;
+
     protected function createFormData()
     {
         $faker = $this->getFaker();
         $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $faker->lexify('????????');
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -43,55 +50,56 @@ class ContactControllerTest extends AbstractWebTestCase
             'contents' => $faker->realText(),
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testRoutingIndex()
     {
-        $this->client->request('GET', $this->generateUrl('contact'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('contact'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testConfirm()
     {
-        $this->markTestIncomplete('FIXME title');
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
-                  'mode' => 'confirm', ]
+                'mode' => 'confirm', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-        $this->expected = 'お問い合わせ(確認ページ)';
-        $this->actual = $crawler->filter('title')->text();
+        // 確認ページ(Contact/confirm.twig)がレンダリングされていること
+        $this->assertCount(1, $crawler->filter('.ec-contactConfirmRole'));
 
-        $this->assertRegexp('/'.preg_quote($this->expected).'$/', $this->actual);
+        // ContactController が Page(contact_confirm) を渡していること.
+        // contact_confirm の Page は meta_tags に noindex を持つ.
+        $this->assertSame('noindex', $crawler->filter('meta[name="robots"]')->attr('content'));
+
+        // <title> が確認ページ名になっていること.
+        // contact と contact_confirm は同一パス '/contact' のため, ルータは常に contact に
+        // マッチし, TwigInitializeListener が設定する twig グローバル title は
+        // 「入力ページ」のままになる. ContactController が subtitle を渡して上書きしている.
+        $this->assertMatchesRegularExpression('/お問い合わせ\(確認ページ\)$/', $crawler->filter('title')->text());
     }
 
     public function testComplete()
     {
-        $this->client->enableProfiler();
-
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $this->createFormData(),
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
 
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -100,39 +108,30 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithSanitize()
     {
-        $this->client->enableProfiler();
         $form = $this->createFormData();
         $form['name']['name01'] .= '<Sanitize&>';
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $form,
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
 
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
         $this->verify();
 
-        $this->assertContains('＜Sanitize＆＞', $Message->getBody(), 'テキストメールがサニタイズされている');
-
-        $MultiPart = $Message->getChildren();
-        foreach ($MultiPart as $Part) {
-            if ($Part->getContentType() == 'text/html') {
-                $this->assertContains('＜Sanitize＆＞', $Part->getBody(), 'HTMLメールがサニタイズされている');
-            }
-        }
+        $this->assertStringContainsString('＜Sanitize＆＞', (string) $Message->getTextBody(), 'テキストメールがサニタイズされている');
+        $this->assertStringContainsString('＜Sanitize＆＞', (string) $Message->getHtmlBody(), 'HTMLメールがサニタイズされている');
     }
 
     /**
@@ -152,22 +151,20 @@ class ContactControllerTest extends AbstractWebTestCase
         $formData['phone_number'] = null;
 
         $this->client->enableProfiler();
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
 
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -176,29 +173,25 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testCompleteWithLogin()
     {
-        // require for retrieving mail
-        $this->client->enableProfiler();
-
         // Always generate a form before login
         $formData = $this->createFormData();
         $this->logInTo($this->createCustomer());
 
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
-                  'mode' => 'complete', ]
+                'mode' => 'complete', ]
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
-        $mailCollector = $this->getMailCollector(false);
 
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
 
         $this->expected = '['.$BaseInfo->getShopName().'] お問い合わせを受け付けました。';
         $this->actual = $Message->getSubject();
@@ -207,8 +200,7 @@ class ContactControllerTest extends AbstractWebTestCase
 
     public function testRoutingComplete()
     {
-        $this->client = $this->createClient();
-        $this->client->request('GET', $this->generateUrl('contact_complete'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('contact_complete'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -218,8 +210,8 @@ class ContactControllerTest extends AbstractWebTestCase
         // RFCに準拠していないメールアドレスを設定
         $formData['email'] = 'aa..@example.com';
 
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('contact'),
             ['contact' => $formData,
                 'mode' => 'complete', ]

@@ -13,7 +13,6 @@
 
 namespace Eccube\Form\Extension;
 
-use Eccube\Annotation\FormExtension;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,16 +27,22 @@ class HelpTypeExtension extends AbstractTypeExtension
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->setAttribute('help', $options['help']);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<mixed> $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    #[\Override]
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['help'] = $form->getConfig()->getAttribute('help');
     }
@@ -45,14 +50,15 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'help' => null,
         ]);
     }
 
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return FormType::class;
     }
@@ -60,6 +66,7 @@ class HelpTypeExtension extends AbstractTypeExtension
     /**
      * Return the class of the type being extended.
      */
+    #[\Override]
     public static function getExtendedTypes(): iterable
     {
         // return FormType::class to modify (nearly) every field in the system

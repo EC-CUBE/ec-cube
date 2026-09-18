@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -19,37 +21,37 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EventArgsrTest extends EccubeTestCase
+final class EventArgsTest extends EccubeTestCase
 {
     public function testRequest()
     {
         $event = new EventArgs([]);
-        $this->assertNull($event->getRequest());
+        $this->assertNotInstanceOf(Request::class, $event->getRequest());
 
         $request = new Request();
         $event->setRequest($request);
 
-        $this->assertNotNull($event->getRequest());
+        $this->assertInstanceOf(Request::class, $event->getRequest());
     }
 
     public function testResponse()
     {
         $event = new EventArgs([]);
-        $this->assertNull($event->getResponse());
+        $this->assertNotInstanceOf(Response::class, $event->getResponse());
         $this->assertFalse($event->hasResponse());
 
         // 通常のレスポンスの検証
         $response = new Response();
         $event->setResponse($response);
 
-        $this->assertNotNull($event->getResponse());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertTrue($event->hasResponse());
 
         // リダイレクトレスポンスの検証
         $response = new RedirectResponse('http://www.ec-cube.net/');
         $event->setResponse($response);
 
-        $this->assertNotNull($event->getResponse());
+        $this->assertInstanceOf(Response::class, $event->getResponse());
         $this->assertTrue($event->hasResponse());
     }
 }

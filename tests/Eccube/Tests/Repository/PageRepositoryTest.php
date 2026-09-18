@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,25 +15,21 @@
 
 namespace Eccube\Tests\Repository;
 
+use Eccube\Entity\Page;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class PageRepositoryTest extends EccubeTestCase
+final class PageRepositoryTest extends EccubeTestCase
 {
-    /** @var PageRepository */
-    protected $pageRepo;
+    protected ?PageRepository $pageRepo = null;
 
-    protected $userDataRealDir;
-    protected $templateRealDir;
-    protected $templateDefaultRealDir;
-
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->pageRepo = $this->entityManager->getRepository(\Eccube\Entity\Page::class);
-        $this->userDataRealDir = self::$container->getParameter('eccube_theme_user_data_dir');
-        $this->templateRealDir = self::$container->getParameter('eccube_theme_app_dir');
-        $this->templateDefaultRealDir = self::$container->getParameter('eccube_theme_src_dir');
+        $this->pageRepo = $this->entityManager->getRepository(Page::class);
+        static::getContainer()->getParameter('eccube_theme_user_data_dir');
+        static::getContainer()->getParameter('eccube_theme_app_dir');
+        static::getContainer()->getParameter('eccube_theme_src_dir');
     }
 
     public function testGetByUrl()

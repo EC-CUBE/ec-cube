@@ -14,9 +14,12 @@
 namespace Eccube\Form\Validator;
 
 /**
- * @Annotation
- * @Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ * Annotation
+ * Target({"PROPERTY", "METHOD", "ANNOTATION"})
+ *
+ * ANNOTATIONは存在しないため、TARGET_CLASSとIS_REPEATABLE で代用
  */
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Email extends \Symfony\Component\Validator\Constraints\Email
 {
 }

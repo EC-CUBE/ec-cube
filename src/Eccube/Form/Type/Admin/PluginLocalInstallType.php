@@ -22,8 +22,11 @@ class PluginLocalInstallType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('plugin_archive', FileType::class, [
@@ -32,19 +35,8 @@ class PluginLocalInstallType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
-                        'mimeTypesMessage' => 'admin.store.template.invalid_upload_file',
-                    ]),
+                    new Assert\File(mimeTypes: ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'], mimeTypesMessage: 'admin.store.template.invalid_upload_file'),
                 ],
             ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'plugin_local_install';
     }
 }

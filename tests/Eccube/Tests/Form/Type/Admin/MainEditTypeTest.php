@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,14 +17,14 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class MainEditTypeTest extends AbstractTypeTestCase
+final class MainEditTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => 'テストページ',
         'url' => 'test',
         'file_name' => 'foo/bar/baz',
@@ -34,13 +36,12 @@ class MainEditTypeTest extends AbstractTypeTestCase
         'meta_tags' => '',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $options = [
             'csrf_protection' => false,
         ];
-
         $this->form = $this->formFactory
             ->createBuilder(MainEditType::class, $this->createPage(), $options)
             ->getForm();
@@ -258,7 +259,7 @@ class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidMetaTagsMaxLength()
     {
-        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_lltext_len'] + 1);
+        $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_ltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }

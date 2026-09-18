@@ -22,63 +22,30 @@ use Eccube\Repository\MemberRepository;
 use Eccube\Request\Context;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\AuthenticationEvents;
-use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
 
 class LoginHistoryListener implements EventSubscriberInterface
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @var Context
-     */
-    private $requestContext;
-    /**
-     * @var MemberRepository
-     */
-    private $memberRepository;
-
-    /**
-     * @var LoginHistoryStatusRepository
-     */
-    private $loginHistoryStatusRepository;
-
-    public function __construct(
-        EntityManagerInterface $em,
-        RequestStack $requestStack,
-        Context $requestContext,
-        MemberRepository $memberRepository,
-        LoginHistoryStatusRepository $loginHistoryStatusRepository
-    ) {
-        $this->entityManager = $em;
-        $this->requestStack = $requestStack;
-        $this->requestContext = $requestContext;
-        $this->memberRepository = $memberRepository;
-        $this->loginHistoryStatusRepository = $loginHistoryStatusRepository;
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly RequestStack $requestStack, private readonly Context $requestContext, private readonly MemberRepository $memberRepository, private readonly LoginHistoryStatusRepository $loginHistoryStatusRepository)
+    {
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             SecurityEvents::INTERACTIVE_LOGIN => 'onInteractiveLogin',
-            AuthenticationEvents::AUTHENTICATION_FAILURE => 'onAuthenticationFailure',
+            LoginFailureEvent::class => 'onAuthenticationFailure',
         ];
     }
 
-    public function onInteractiveLogin(InteractiveLoginEvent $event)
+    public function onInteractiveLogin(InteractiveLoginEvent $event): void
     {
         $request = $event->getRequest();
         $user = $event
@@ -96,14 +63,16 @@ class LoginHistoryListener implements EventSubscriberInterface
                 ->setLoginUser($user)
                 ->setUserName($user->getUsername())
                 ->setStatus($Status)
-                ->setClientIp($request->getClientIp());
+                ->setClientIp($request->getClientIp())
+                ->setCreateDate(new \DateTime())
+                ->setUpdateDate(new \DateTime());
 
             $this->entityManager->persist($LoginHistory);
             $this->entityManager->flush();
         }
     }
 
-    public function onAuthenticationFailure(AuthenticationFailureEvent $event)
+    public function onAuthenticationFailure(LoginFailureEvent $event): void
     {
         $request = $this->requestStack->getCurrentRequest();
 
@@ -116,18 +85,24 @@ class LoginHistoryListener implements EventSubscriberInterface
             return;
         }
 
-        $userName = $event->getAuthenticationToken()->getUsername();
-        $Member = null;
-        if ($userName) {
-            $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
+        // Bearer/AccessToken 系認証で passport 生成前に失敗した場合は null になる.
+        // UserBadge を持たない場合もユーザーを特定できないため、ログイン履歴の記録対象外とする.
+        $passport = $event->getPassport();
+        if ($passport === null || !$passport->hasBadge(UserBadge::class)) {
+            return;
         }
+
+        $userName = $passport->getBadge(UserBadge::class)->getUserIdentifier();
+        $Member = $this->memberRepository->findOneBy(['login_id' => $userName]);
 
         $LoginHistory = new LoginHistory();
         $LoginHistory
             ->setLoginUser($Member)
             ->setUserName($userName)
             ->setStatus($Status)
-            ->setClientIp($request->getClientIp());
+            ->setClientIp($request->getClientIp())
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
 
         $this->entityManager->persist($LoginHistory);
         $this->entityManager->flush();

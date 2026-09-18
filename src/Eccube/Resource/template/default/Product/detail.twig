@@ -107,10 +107,10 @@ file that was distributed with this source code.
 
         {% if form.classcategory_id2 is defined %}
         fnSetClassCategories(
-            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode|raw }}
+            $('#form1'), {{ form.classcategory_id2.vars.value|json_encode_safe }}
         );
         {% elseif form.classcategory_id1 is defined %}
-        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode|raw }}, null);
+        eccube.checkStock($('#form1'), {{ Product.id }}, {{ form.classcategory_id1.vars.value|json_encode_safe }}, null);
         {% endif %}
     </script>
     <script>
@@ -122,6 +122,40 @@ file that was distributed with this source code.
                 }
             });
 
+            // Core Web Vital の Cumulative Layout Shift(CLS)対策のため
+            // img タグに width, height が付与されている.
+            // 630px 未満の画面サイズでは縦横比が壊れるための対策
+            // see https://github.com/EC-CUBE/ec-cube/pull/5023
+            $('.ec-grid2__cell').hide();
+            var removeSize = function () {
+                $('.slide-item').height('');
+                $('.slide-item img')
+                    .removeAttr('width')
+                    .removeAttr('height')
+                    .removeAttr('style');
+            };
+            var slickInitial = function(slick) {
+                $('.ec-grid2__cell').fadeIn(1500);
+                var baseHeight = $(slick.target).height();
+                var baseWidth = $(slick.target).width();
+                var rate = baseWidth / baseHeight;
+
+                $('.slide-item').height(baseHeight * rate); // 余白を削除する
+                // transform を使用することでCLSの影響を受けないようにする
+                $('.slide-item img')
+                    .css(
+                        {
+                            'transform-origin': 'top left',
+                            'transform': 'scaleY(' + rate + ')',
+                            'transition': 'transform .1s'
+                        }
+                    );
+                // 正しいサイズに近くなったら属性を解除する
+                setTimeout(removeSize, 500);
+            };
+            $('.item_visual').on('init', slickInitial);
+            // リサイズ時は CLS の影響を受けないため属性を解除する
+            $(window).resize(removeSize);
             $('.item_visual').slick({
                 dots: false,
                 arrows: false,
@@ -184,7 +218,7 @@ file that was distributed with this source code.
                 }).done(function(data) {
                     // レスポンス内のメッセージをalertで表示
                     $.each(data.messages, function() {
-                        $('#ec-modal-header').html(this);
+                        $('#ec-modal-header').text(this);
                     });
 
                     $('.ec-modal').show()
@@ -214,32 +248,12 @@ file that was distributed with this source code.
             $('.ec-modal').hide()
         });
     </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": "{{ Product.name }}",
-        "image": [
-            {% for img in Product.ProductImage %}
-                "{{ app.request.schemeAndHttpHost }}{{ asset(img, 'save_image') }}"{% if not loop.last %},{% endif %}
-
-            {% else %}
-                "{{ app.request.schemeAndHttpHost }}{{ asset(''|no_image_product, 'save_image') }}"
-            {% endfor %}
-        ],
-        "description": "{{ Product.description_list | default(Product.description_detail) | replace({'\n': '', '\r': ''}) | slice(0,300) }}",
-        {% if Product.code_min %}
-        "sku": "{{ Product.code_min }}",
-        {% endif %}
-        "offers": {
-            "@type": "Offer",
-            "url": "{{ url('product_detail', {'id': Product.id}) }}",
-            "priceCurrency": "{{ eccube_config.currency }}",
-            "price": {{ Product.getPrice02IncTaxMin }},
-            "availability": "{{ Product.stock_find ? "InStock" : "OutOfStock" }}"
-        }
-    }
-    </script>
+    {% if product_json_ld is defined and product_json_ld %}
+    <script type="application/ld+json">{{ product_json_ld|json_ld }}</script>
+    {% endif %}
+    {% if faq_json_ld is defined and faq_json_ld %}
+    <script type="application/ld+json">{{ faq_json_ld|json_ld }}</script>
+    {% endif %}
 {% endblock %}
 
 {% block main %}
@@ -250,14 +264,14 @@ file that was distributed with this source code.
 
                     <div class="item_visual">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}"></div>
+                            <div class="slide-item"><img src="{{ asset(ProductImage, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}" width="550" height="550"{% if loop.index > 1 %} loading="lazy"{% endif %}></div>
                         {% else %}
-                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}" /></div>
+                            <div class="slide-item"><img src="{{ asset(''|no_image_product, 'save_image') }}" alt="{{ loop.first ? Product.name : '' }}" width="550" height="550"></div>
                         {% endfor %}
                     </div>
                     <div class="item_nav">
                         {% for ProductImage in Product.ProductImage %}
-                            <div class="slideThumb" data-index="{{ loop.index0 }}"><img src="{{ asset(ProductImage, 'save_image') }}" alt=""></div>
+                            <div class="slideThumb" data-index="{{ loop.index0 }}"><img src="{{ asset(ProductImage, 'save_image') }}" alt="" width="133" height="133" loading="lazy"></div>
                         {% endfor %}
                     </div>
                 </div>
@@ -322,16 +336,28 @@ file that was distributed with this source code.
                     {% if Product.ProductCategories is not empty %}
                         <div class="ec-productRole__category">
                             <div>{{ 'front.product.related_category'|trans }}</div>
-                            {% for ProductCategory in Product.ProductCategories %}
-                                <ul>
-                                    <li>
-                                        {% for Category in ProductCategory.Category.path %}
-                                            <a href="{{ url('product_list') }}?category_id={{ Category.id }}">{{ Category.name }}</a> {%- if loop.last == false %}
-                                            <span>＞</span>{% endif -%}
-                                        {% endfor %}
-                                    </li>
-                                </ul>
-                            {% endfor %}
+                            <ul>
+                                {% for ProductCategory in Product.ProductCategories %}
+                                    {# このカテゴリの子孫が商品に紐づいているかをチェック（子孫があれば非表示） #}
+                                    {% set is_deepest = true %}
+                                    {% for OtherCategory in Product.ProductCategories %}
+                                        {% if OtherCategory.Category.hierarchy > ProductCategory.Category.hierarchy %}
+                                            {% for PathCategory in OtherCategory.Category.path %}
+                                                {% if PathCategory.id == ProductCategory.Category.id %}
+                                                    {% set is_deepest = false %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if is_deepest %}
+                                        <li>
+                                            {% for ParentCategory in ProductCategory.Category.path %}
+                                                <a href="{{ url('product_list') }}?category_id={{ ParentCategory.id }}">{{ ParentCategory.name }}</a>{% if not loop.last %} &gt; {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
                         </div>
                     {% endif %}
                     <form action="{{ url('product_add_cart', {id:Product.id}) }}" method="post" id="form1" name="form1">
@@ -339,12 +365,12 @@ file that was distributed with this source code.
                             <div class="ec-productRole__actions">
                                 {% if form.classcategory_id1 is defined %}
                                     <div class="ec-select">
-                                        {{ form_widget(form.classcategory_id1) }}
+                                        {{ form_row(form.classcategory_id1) }}
                                         {{ form_errors(form.classcategory_id1) }}
                                     </div>
                                     {% if form.classcategory_id2 is defined %}
                                         <div class="ec-select">
-                                            {{ form_widget(form.classcategory_id2) }}
+                                            {{ form_row(form.classcategory_id2) }}
                                             {{ form_errors(form.classcategory_id2) }}
                                         </div>
                                     {% endif %}
@@ -384,29 +410,37 @@ file that was distributed with this source code.
                         </div>
                     </div>
                     {% if BaseInfo.option_favorite_product %}
-                        <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
-                            <div class="ec-productRole__btn">
-                                {% if is_favorite == false %}
+                        {% if is_favorite == false %}
+                            <form action="{{ url('product_add_favorite', {id:Product.id}) }}" method="post">
+                                <div class="ec-productRole__btn">
                                     <button type="submit" id="favorite" class="ec-blockBtn--cancel">
                                         {{ 'front.product.add_favorite'|trans }}
                                     </button>
-                                {% else %}
-                                    <button type="submit" id="favorite" class="ec-blockBtn--cancel"
-                                            disabled="disabled">{{ 'front.product.add_favorite_alrady'|trans }}
-                                    </button>
-                                {% endif %}
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="ec-productRole__btn">
+                                <a href="{{ url('product_delete_favorite', {id:Product.id}) }}"
+                                   id="favorite"
+                                   class="ec-blockBtn--cancel"
+                                   {{ csrf_token_for_anchor() }}
+                                   data-method="delete"
+                                   data-message="{{ 'front.product.delete_favorite_confirm'|trans }}">
+                                    {{ 'front.product.delete_favorite'|trans }}
+                                </a>
                             </div>
-                        </form>
+                        {% endif %}
                     {% endif %}
-                    <div class="ec-productRole__description">{{ Product.description_detail|raw|nl2br }}
+                    <div class="ec-productRole__description">{{ Product.description_detail|purify|nl2br }}
                     </div>
                 </div>
             </div>
         </div>
         {% if Product.freearea %}
              <div class="ec-productRole__description">
-                 {{ include(template_from_string(Product.freearea)) }}
+                 {{ include(template_from_string(Product.freearea), sandboxed = true) }}
             </div>
         {% endif %}
+        {% include '_faq_list.twig' with {'Faqs': Faqs|default([])} only %}
     </div>
 {% endblock %}

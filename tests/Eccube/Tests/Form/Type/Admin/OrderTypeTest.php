@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,15 +16,17 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+final class OrderTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -41,6 +45,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         'phone_number' => '012-345-6789',
         'email' => 'default@example.com',
         'discount' => '1',
+        'use_point' => '',
         'delivery_fee_total' => '1',
         'charge' => '1',
         'Payment' => '1', // dtb_payment?
@@ -64,10 +69,9 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         ],
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
@@ -75,7 +79,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
                 'csrf_protection' => false,
             ])
             ->getForm();
-        self::$container->get('request_stack')->push(new Request());
+        static::getContainer()->get(RequestStack::class)->push(new Request());
     }
 
     public function testInValidData()
@@ -88,15 +92,23 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $this->formData['phone_number'] = '';
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['phone_number']->isValid());
+    }
+
+    public function testInvalidPhoneNumberTooLong()
+    {
+        $this->formData['phone_number'] = '0123456789012345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['phone_number']->isValid());
     }
 
     public function testInvalidDiscountOverMaxLength()
     {
-        $this->formData['discount'] = '12345678910'; //Max 9
+        $this->formData['discount'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['discount']->isValid());
     }
 
     public function testInvalidDiscountNotNumeric()
@@ -104,7 +116,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['discount'] = 'abcde';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['discount']->isValid());
     }
 
     public function testInValidDiscountHasMinus()
@@ -112,15 +124,15 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['discount'] = '-12345';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['discount']->isValid());
     }
 
     public function testInvalidDeliveryFeeTotalOverMaxLength()
     {
-        $this->formData['delivery_fee_total'] = '12345678910'; //Max 9
+        $this->formData['delivery_fee_total'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['delivery_fee_total']->isValid());
     }
 
     public function testInvalidDeliveryFeeTotalNotNumeric()
@@ -128,7 +140,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['delivery_fee_total'] = 'abcde';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['delivery_fee_total']->isValid());
     }
 
     public function testInValidDeliveryFeeTotalHasMinus()
@@ -136,15 +148,15 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['delivery_fee_total'] = '-12345';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['delivery_fee_total']->isValid());
     }
 
     public function testInvalidChargeOverMaxLength()
     {
-        $this->formData['charge'] = '12345678910'; //Max 9
+        $this->formData['charge'] = '12345678910'; // Max 9
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['charge']->isValid());
     }
 
     public function testInvalidChargeNotNumeric()
@@ -152,7 +164,7 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['charge'] = 'abcde';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['charge']->isValid());
     }
 
     public function testInValidChargeHasMinus()
@@ -160,6 +172,43 @@ class OrderTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->formData['charge'] = '-12345';
 
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertFalse($this->form['charge']->isValid());
+    }
+
+    public function testInvalidPostalCodeToLong()
+    {
+        $this->formData['postal_code'] = '012345678';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['postal_code']->isValid());
+    }
+
+    public function testInvalidShippingPostalCodeBlank(): void
+    {
+        $this->formData['Shipping']['postal_code'] = '';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['Shipping']['postal_code']->isValid());
+    }
+
+    public function testShippingPostalCodeIsNotRequired(): void
+    {
+        // 管理画面の受注登録は required=false + NotBlank でサーバ側バリデーションに統一している.
+        // 出荷先の郵便番号だけ HTML の required 属性が出力されないことを確認する (#6054)
+        $view = $this->form->createView();
+        $this->assertFalse($view['Shipping']['postal_code']->vars['required']);
+    }
+
+    public function testInValidUsePointHasMinus()
+    {
+        $this->formData['use_point'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['use_point']->isValid());
+    }
+
+    public function testInvalidUsePointToLong()
+    {
+        $this->formData['use_point'] = '1234567890123';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form['use_point']->isValid());
     }
 }

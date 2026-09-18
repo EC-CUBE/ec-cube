@@ -13,46 +13,45 @@
 
 namespace Eccube\Command;
 
-use Eccube\Entity\Plugin;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+#[AsCommand(name: 'eccube:plugin:schema-update', description: 'Execute plugin schema update.')]
 class PluginSchemaUpdateCommand extends Command
 {
     use PluginCommandTrait;
 
-    protected static $defaultName = 'eccube:plugin:schema-update';
-
-    protected function configure()
+    #[\Override]
+    protected function configure(): void
     {
         $this
-            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code')
-            ->setDescription('Execute plugin schema update.');
+            ->addArgument('code', InputArgument::REQUIRED, 'Plugin code');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $code = $input->getArgument('code');
 
-        /** @var Plugin $Plugin */
         $Plugin = $this->pluginRepository->findByCode($code);
         if (!$Plugin) {
-            $io->error("No such plugin `${code}`.");
+            $io->error("No such plugin `{$code}`.");
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $config = $this->pluginService->readConfig($this->pluginService->calcPluginDir($code));
         $this->pluginService->generateProxyAndUpdateSchema($Plugin, $config);
-        $this->clearCache($io);
+        $cacheCleared = $this->clearCache($io);
 
         $io->success('Schema Updated.');
 
-        return 0;
+        return $cacheCleared ? Command::SUCCESS : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

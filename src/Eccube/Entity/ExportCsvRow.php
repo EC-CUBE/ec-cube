@@ -13,64 +13,55 @@
 
 namespace Eccube\Entity;
 
-if (!class_exists('\Eccube\Entity\ExportCsvRow')) {
-    class ExportCsvRow extends \Eccube\Entity\AbstractEntity
+class ExportCsvRow extends AbstractEntity
+{
+    /**
+     * @var array<int, string|null>
+     */
+    private array $row = [];
+
+    private ?string $data = null;
+
+    /**
+     * Set data
+     *
+     * @param string $data
+     */
+    public function setData(?string $data = null): ExportCsvRow
     {
-        /**
-         * @var \Doctrine\Common\Collections\Collection
-         */
-        private $row = [];
+        $this->data = $data;
 
-        /**
-         * @var string
-         */
-        private $data = null;
+        return $this;
+    }
 
-        /**
-         * Set data
-         *
-         * @param string $data
-         *
-         * @return \Eccube\Entity\ExportCsvRow
-         */
-        public function setData($data = null)
-        {
-            $this->data = $data;
-
-            return $this;
+    /**
+     * Is data null
+     */
+    public function isDataNull(): bool
+    {
+        if (is_null($this->data)) {
+            return true;
         }
 
-        /**
-         * Is data null
-         *
-         * @return boolean
-         */
-        public function isDataNull()
-        {
-            if (is_null($this->data)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
+        return false;
+    }
 
-        /**
-         * Push data
-         */
-        public function pushData()
-        {
-            $this->row[] = $this->data;
-            $this->data = null;
-        }
+    /**
+     * Push data
+     */
+    public function pushData(): void
+    {
+        $this->row[] = $this->data;
+        $this->data = null;
+    }
 
-        /**
-         * Get row
-         *
-         * @return \Doctrine\Common\Collections\Collection
-         */
-        public function getRow()
-        {
-            return $this->row;
-        }
+    /**
+     * Get row
+     *
+     * @return array<int, string|null>
+     */
+    public function getRow(): array
+    {
+        return $this->row;
     }
 }

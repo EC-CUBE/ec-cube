@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,27 +15,22 @@
 
 namespace Eccube\Tests\Twig\Extension;
 
+use Eccube\Entity\TaxRule;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Twig\Extension\TaxExtension;
 
-class TaxExtensionTest extends EccubeTestCase
+final class TaxExtensionTest extends EccubeTestCase
 {
-    /**
-     * @var TaxExtension
-     */
-    protected $taxExtension;
+    protected ?TaxExtension $taxExtension = null;
 
-    /**
-     * @var TaxRuleRepository
-     */
-    protected $taxRuleRepository;
+    protected ?TaxRuleRepository $taxRuleRepository = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->taxExtension = self::$container->get(TaxExtension::class);
-        $this->taxRuleRepository = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class);
+        $this->taxExtension = static::getContainer()->get(TaxExtension::class);
+        $this->taxRuleRepository = $this->entityManager->getRepository(TaxRule::class);
     }
 
     public function testIsReducedTaxRate()
@@ -42,9 +39,9 @@ class TaxExtensionTest extends EccubeTestCase
         $Order = $this->createOrder($Customer);
 
         $OrderItem = $Order->getProductOrderItems()[0];
-        self::assertFalse($this->taxExtension->isReducedTaxRate($OrderItem));
+        $this->assertFalse($this->taxExtension->isReducedTaxRate($OrderItem));
 
-        $OrderItem->setTaxRate(99);
-        self::assertTrue($this->taxExtension->isReducedTaxRate($OrderItem));
+        $OrderItem->setTaxRate('99');
+        $this->assertTrue($this->taxExtension->isReducedTaxRate($OrderItem));
     }
 }

@@ -27,11 +27,11 @@ class AdminCustomerCustomizer extends WhereCustomizer
      *
      * @return WhereClause[]
      */
-    protected function createStatements($params, $queryKey)
+    protected function createStatements(array $params, $queryKey): array
     {
         // travis-ciのテストが通らないため、コメントアウト
         // 試してみるにはコメントアウトを解除してください.
-        //return [WhereClause::gte('c.buy_times', ':buy_times', ['buy_times' => 1])];
+        // return [WhereClause::gte('c.buy_times', ':buy_times', ['buy_times' => 1])];
 
         return [];
     }
@@ -41,7 +41,7 @@ class AdminCustomerCustomizer extends WhereCustomizer
      *
      * @return string
      */
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return QueryKey::CUSTOMER_SEARCH;
     }

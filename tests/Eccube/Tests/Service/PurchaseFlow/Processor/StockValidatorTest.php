@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -21,53 +23,40 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class StockValidatorTest extends EccubeTestCase
+final class StockValidatorTest extends EccubeTestCase
 {
-    /**
-     * @var StockValidator
-     */
-    protected $validator;
+    protected ?StockValidator $validator = null;
 
-    /**
-     * @var CartItem
-     */
-    protected $cartItem;
+    protected ?CartItem $cartItem = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
-        $this->validator = self::$container->get(StockValidator::class);
+        $this->validator = static::getContainer()->get(StockValidator::class);
         $this->cartItem = new CartItem();
         $this->cartItem->setProductClass($this->ProductClass);
     }
 
     public function testInstance()
     {
-        self::assertInstanceOf(StockValidator::class, $this->validator);
-        self::assertSame($this->ProductClass, $this->cartItem->getProductClass());
+        $this->assertInstanceOf(StockValidator::class, $this->validator);
+        $this->assertSame($this->ProductClass, $this->cartItem->getProductClass());
     }
 
     public function testValidStock()
     {
         $this->cartItem->setQuantity(1);
         $this->validator->execute($this->cartItem, new PurchaseContext());
-        self::assertEquals(1, $this->cartItem->getQuantity());
+        $this->assertSame('1', $this->cartItem->getQuantity());
     }
 
     public function testValidStockFail()
@@ -75,21 +64,21 @@ class StockValidatorTest extends EccubeTestCase
         $this->cartItem->setQuantity(PHP_INT_MAX);
         $result = $this->validator->execute($this->cartItem, new PurchaseContext());
 
-        self::assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
-        self::assertTrue($result->isWarning());
+        $this->assertEquals($this->ProductClass->getStock(), $this->cartItem->getQuantity());
+        $this->assertTrue($result->isWarning());
     }
 
     public function testValidStockOrder()
     {
         $Customer = $this->createCustomer();
-        $Order = self::$container->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
+        $Order = static::getContainer()->get(Generator::class)->createOrder($Customer, [$this->ProductClass]);
 
-        self::assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
+        $this->assertEquals($Order->getOrderItems()[0]->getProductClass(), $this->ProductClass);
 
         $Order->getOrderItems()[0]->setQuantity(1);
-        $this->ProductClass->setStock(100);
+        $this->ProductClass->setStock('100');
 
         $this->validator->execute($Order->getOrderItems()[0], new PurchaseContext());
-        self::assertEquals(1, $Order->getOrderItems()[0]->getQuantity());
+        $this->assertSame('1', $Order->getOrderItems()[0]->getQuantity());
     }
 }

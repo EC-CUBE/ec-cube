@@ -51,6 +51,8 @@ Styleguide 12.1
     }
     img {
       width: 80%;
+      height: auto;
+      object-fit: cover;
     }
   }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,26 +18,21 @@ namespace Eccube\Tests\Web\Admin\Customer;
 use Eccube\Entity\Customer;
 use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CustomerEditControllerTest
  */
-class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
+final class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    /**
-     * @var CustomerAddress
-     */
-    protected $CustomerAddress;
+    protected ?CustomerAddress $CustomerAddress = null;
 
     /**
      * setUp
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -45,13 +42,12 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
 
     /**
      * createFormData
-     *
-     * @return array
      */
-    protected function deliveryFormData()
+    protected function deliveryFormData(): array
     {
         $faker = $this->getFaker();
-        $form = [
+
+        return [
             'name' => ['name01' => $faker->lastName, 'name02' => $faker->firstName],
             'kana' => ['kana01' => $faker->lastKanaName, 'kana02' => $faker->firstKanaName],
             'company_name' => $faker->company,
@@ -60,8 +56,6 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
             'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     /**
@@ -70,7 +64,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     public function testRoutingDelivery()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_customer_delivery_new', ['id' => $this->Customer->getId()])
         );
 
@@ -84,7 +78,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     {
         $form = $this->deliveryFormData();
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_customer_delivery_new', ['id' => $this->Customer->getId()]),
             ['customer_address' => $form]
         );
@@ -99,7 +93,7 @@ class CustomerDeliveryEditControllerTest extends AbstractAdminWebTestCase
     public function testDeliveryDelete()
     {
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_customer_delivery_delete', [
                 'id' => $this->Customer->getId(),
                 'did' => $this->CustomerAddress->getId(),

@@ -14,6 +14,20 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script>
+        // redirect_to初期化
+        // フォームの初期actionを保持する
+        var defaultFormAction = $('#shopping-form').attr('action');
+
+        $(window).on('pageshow', function(event) {
+            // bfcache からの復元時のみ初期化する
+            if (!event.originalEvent.persisted) {
+                return;
+            }
+
+            $('#shopping_order_redirect_to').val(null);
+            $('#shopping-form').attr('action', defaultFormAction);
+        });
+
         $(function() {
             var $redirectCallback = function() {
                 loadingOverlay();
@@ -31,12 +45,20 @@ file that was distributed with this source code.
             var edit = $('.customer-edit');
             var hidden = $('.customer-in');
             var form = $('.customer-form');
+            var originalPrefValue = null;
 
             $('#customer').click(function() {
                 $(edit).each(function(index) {
                     var name = $(this).text();
-                    var input = $('<input id="edit' + index + '" type="text" />').val(name);
-                    $(form[index]).empty().append(input);
+                    var $select = $(form[index]).children('select');
+                    if ($select.length) {
+                        // 都道府県フィールド: 元の値を保存してselectを表示
+                        originalPrefValue = $select.val();
+                        $select.show();
+                    } else {
+                        var input = $('<input id="edit' + index + '" type="text" />').val(name);
+                        $(form[index]).empty().append(input);
+                    }
                 });
 
                 $('.non-customer-display').hide();
@@ -46,7 +68,13 @@ file that was distributed with this source code.
 
             $('#customer-ok').click(function() {
                 $(form).each(function(index) {
-                    $(hidden[index]).val($(form[index]).children('input').val());
+                    var $select = $(form[index]).children('select');
+                    if ($select.length) {
+                        // 都道府県フィールド: selectから値を取得
+                        $(hidden[index]).val($select.val());
+                    } else {
+                        $(hidden[index]).val($(form[index]).children('input').val());
+                    }
                 });
 
                 var postData = {};
@@ -64,8 +92,15 @@ file that was distributed with this source code.
                 }).done(function(data) {
                     if (data.status == 'OK') {
                         $(form).each(function(index) {
-                            $(edit[index]).empty().text($(form[index]).children('input').val());
-                            $(form[index]).empty();
+                            var $select = $(form[index]).children('select');
+                            if ($select.length) {
+                                // 都道府県フィールド: selectから値を取得して表示を更新
+                                $(edit[index]).empty().text($select.val());
+                                $select.hide();
+                            } else {
+                                $(edit[index]).empty().text($(form[index]).children('input').val());
+                                $(form[index]).empty();
+                            }
                         });
 
                         // kana field
@@ -75,7 +110,7 @@ file that was distributed with this source code.
                         $('#customer-kana02').val(data.kana02);
                     }
                 }).fail(function() {
-                    alert('更新に失敗しました。入力内容を確認してください。');
+                    alert('{{ 'front.shopping.customer_update_failed'|trans }}');
                 }).always(function(data) {
                     // overlayを無効
                     loadingOverlay('hide');
@@ -87,6 +122,12 @@ file that was distributed with this source code.
             });
 
             $('#customer-cancel').click(function() {
+                // 都道府県のselectを元の値に戻して非表示にする
+                var $prefSelect = $('.customer-address_pref').children('select');
+                if (originalPrefValue !== null) {
+                    $prefSelect.val(originalPrefValue);
+                }
+                $prefSelect.hide();
                 $('.non-customer-display').show();
                 $('.non-customer-edit').hide();
                 $('.mod-button').hide();
@@ -227,7 +268,16 @@ file that was distributed with this source code.
                                         </div>
                                     </div>
                                     <div class="ec-select">
-                                        <span class="customer-form customer-address_pref"></span>
+                                        <span class="customer-form customer-address_pref">
+                                            {% if Prefs is defined and Prefs is not empty %}
+                                                <select style="display:none;">
+                                                    <option value="">{{ 'common.select__pref'|trans }}</option>
+                                                    {% for pref in Prefs %}
+                                                        <option value="{{ pref.name }}"{% if Order.pref and Order.pref.id == pref.id %} selected{% endif %}>{{ pref.name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                        </span>
                                     </div>
                                     <div class="ec-input">
                                         <span class="customer-form customer-address_addr01"></span>
@@ -277,6 +327,31 @@ file that was distributed with this source code.
                         <input type="hidden" id="customer-email" class="customer-in" name="customer_email" value="{{ Order.email }}">
                     {% endif %}
                 </div>
+                {# 保存された配送方法・支払い方法の情報ボックス(会員のみ) #}
+                {% if is_granted('ROLE_USER') %}
+                    {% if preferredPaymentName is defined and preferredPaymentName and preferredDeliveryName is defined and preferredDeliveryName %}
+                        <div class="ec-orderPreferred">
+                            <div class="ec-rectHeading">
+                                <h2>{{ 'front.shopping.preferred_info_title'|trans }}</h2>
+                            </div>
+                            <p>{{ 'front.shopping.preferred_delivery_label'|trans }}: {{ preferredDeliveryName }}</p>
+                            <p>{{ 'front.shopping.preferred_payment_label'|trans }}: {{ preferredPaymentName }}</p>
+                            {% if isMultipleShipping is defined and isMultipleShipping %}
+                                <p>{{ 'front.shopping.preferred_multiple_shipping_notice'|trans }}</p>
+                            {% else %}
+                                <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}" value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                                <button type="submit" formaction="{{ url('shopping_restore_preferred') }}" class="ec-inlineBtn">{{ 'front.shopping.use_preferred_button'|trans }}</button>
+                            {% endif %}
+                        </div>
+                    {% elseif preferredUnavailableReason is defined and preferredUnavailableReason %}
+                        <div class="ec-orderPreferred">
+                            <div class="ec-alert-warning">
+                                <div class="ec-alert-warning__icon"><img src="{{ asset('assets/icon/exclamation-white.svg') }}"></div>
+                                <div class="ec-alert-warning__text">{{ preferredUnavailableReason|trans }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
                 <div class="ec-orderDelivery">
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.shopping.delivery_info'|trans }}</h2>
@@ -382,6 +457,16 @@ file that was distributed with this source code.
                         {{ form_errors(form.message) }}
                     </div>
                 </div>
+                {% for activeTradeLaw in activeTradeLaws|filter(t => t.name and t.description) %}
+                    <div class="ec-orderConfirm">
+                        <div class="ec-rectHeading">
+                            <h2>{{ activeTradeLaw.name }}</h2>
+                        </div>
+                        <div class="ec-input">
+                            {{ activeTradeLaw.description|raw }}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="ec-orderRole__summary">
                 <div class="ec-totalBox">
@@ -404,20 +489,19 @@ file that was distributed with this source code.
                     </dl>
                     {% endif %}
                     <div class="ec-totalBox__total">{{ 'common.total'|trans }}<span class="ec-totalBox__price">{{ Order.taxable_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
-                    {% for rate, total in Order.taxable_total_by_tax_rate %}
-                    <dl class="ec-totalBox__taxRate">
-                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
-                        <dd>{{ total|price }}</dd>
-                    </dl>
-                    {% endfor %}
                     {% for item in Order.tax_free_discount_items %}
-                        {% if loop.first %}<div class="ec-totalBox__total"></div>{% endif %}
                         <dl class="ec-totalBox__spec">
                             <dt>{{ item.product_name }}</dt>
                             <dd>{{ item.total_price|price }}</dd>
                         </dl>
                     {% endfor %}
                     <div class="ec-totalBox__paymentTotal">{{ 'common.payment_total'|trans }}<span class="ec-totalBox__price">{{ Order.payment_total|price }}</span><span class="ec-totalBox__taxLabel">{{ 'common.tax_include'|trans }}</span></div>
+                    {% for rate, total in Order.total_by_tax_rate %}
+                    <dl class="ec-totalBox__taxRate">
+                        <dt>{{ 'common.tax_rate_target'|trans({ '%rate%': rate }) }}</dt>
+                        <dd>{{ total|price }} ({{ 'common.tax_amount'|trans }} {{ Order.tax_by_tax_rate[rate]|price }})</dd>
+                    </dl>
+                    {% endfor %}
                     {% if BaseInfo.isOptionPoint and Order.Customer is not null %}
                     <div class="ec-totalBox__pointBlock">
                         <dl class="ec-totalBox__spec">

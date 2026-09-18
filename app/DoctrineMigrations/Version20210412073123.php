@@ -28,7 +28,7 @@ final class Version20210412073123 extends AbstractMigration
     public function up(Schema $schema): void
     {
         if ($schema->hasTable('plg_admin_record_config')) {
-            $denyHostsPlugin = $this->connection->fetchColumn('select admin_deny_hosts FROM plg_admin_record_config') ?: '';
+            $denyHostsPlugin = $this->connection->fetchOne('select admin_deny_hosts FROM plg_admin_record_config') ?: '';
             $denyHostsPlugin = array_filter(\explode("\n", StringUtil::convertLineFeed($denyHostsPlugin)), function ($str) {
                 return StringUtil::isNotBlank($str);
             });
@@ -42,7 +42,7 @@ final class Version20210412073123 extends AbstractMigration
             $env = file_get_contents($envFile);
 
             $env = StringUtil::replaceOrAddEnv($env, [
-                'ECCUBE_ADMIN_DENY_HOSTS' => "'${denyHosts}'",
+                'ECCUBE_ADMIN_DENY_HOSTS' => "'{$denyHosts}'",
             ]);
 
             file_put_contents($envFile, $env);
@@ -53,9 +53,9 @@ final class Version20210412073123 extends AbstractMigration
                 ->select('*')
                 ->from('plg_admin_record')
                 ->orderBy('id', 'ASC')
-                ->execute();
+                ->executeQuery();
 
-            while ($row = $stmt->fetch()) {
+            while ($row = $stmt->fetchAssociative()) {
                 $this->addSql(
                     "INSERT INTO dtb_login_history (user_name, client_ip, create_date, update_date, login_history_status_id, member_id, discriminator_type) VALUES (?, ?, ?, ?, ?, ?, 'loginhistory')",
                     [

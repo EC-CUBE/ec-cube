@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,8 +15,10 @@
 
 namespace Eccube\Tests\Service;
 
+use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Order;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\Master\SaleTypeRepository;
@@ -24,74 +28,49 @@ use Eccube\Service\Cart\CartItemComparator;
 use Eccube\Service\CartService;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
+use Eccube\Session\Session;
 use Eccube\Util\StringUtil;
 
-class CartServiceTest extends AbstractServiceTestCase
+final class CartServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?Product $Product = null;
 
-    /**
-     * @var Product
-     */
-    protected $Product2;
+    protected ?Product $Product2 = null;
 
-    /**
-     * @var SaleType
-     */
-    protected $SaleType1;
+    protected ?SaleType $SaleType1 = null;
 
-    /**
-     * @var SaleType
-     */
-    protected $SaleType2;
+    protected ?SaleType $SaleType2 = null;
 
-    /**
-     * @var CartService
-     */
-    protected $cartService;
+    protected ?CartService $cartService = null;
 
-    /**
-     * @var SaleTypeRepository
-     */
-    protected $saleTypeRepository;
+    protected ?SaleTypeRepository $saleTypeRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?OrderRepository $orderRepository = null;
 
-    /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
+    protected ?ProductClassRepository $productClassRepository = null;
 
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
+    protected ?PurchaseFlow $purchaseFlow = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->cartService = self::$container->get(CartService::class);
-        $this->saleTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\SaleType::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->productClassRepository = $this->entityManager->getRepository(\Eccube\Entity\ProductClass::class);
-        $this->purchaseFlow = self::$container->get('eccube.purchase.flow.cart');
-
+        $this->cartService = static::getContainer()->get(CartService::class);
+        $refClass = new \ReflectionClass(CartService::class);
+        $refClass->getProperty('session')->setValue($this->cartService, new SessionMock());
+        $this->saleTypeRepository = $this->entityManager->getRepository(SaleType::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
+        $this->productClassRepository = $this->entityManager->getRepository(ProductClass::class);
+        // PurchaseFlowは同じクラスで複数インスタンス（cart/shopping/order）があるため、
+        // クラス名のエイリアスを作成できないため、文字列サービスIDのまま使用
+        $serviceId = 'eccube.purchase.flow.cart';
+        $this->purchaseFlow = static::getContainer()->get($serviceId);
         $this->SaleType1 = $this->saleTypeRepository->find(1);
         $this->SaleType2 = $this->saleTypeRepository->find(2);
-        $this->Product = $this->createProduct();
-
-        // SaleType 2 の商品を作成
-        $this->Product2 = $this->createProduct();
+        // 2 商品を bulk INSERT (2 個目は後段で SaleType2 に切り替え)
+        [$this->Product, $this->Product2] = $this->createProducts(2);
         foreach ($this->Product2->getProductClasses() as $ProductClass) {
             $ProductClass->setSaleType($this->SaleType2);
         }
@@ -100,7 +79,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
     public function testClear()
     {
-        $this->cartService->addProduct(1);
+        $this->cartService->addProduct(2);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
@@ -108,7 +87,7 @@ class CartServiceTest extends AbstractServiceTestCase
 
         $this->cartService->clear();
 
-        $this->assertNull($this->cartService->getCart());
+        $this->assertNotInstanceOf(Cart::class, $this->cartService->getCart());
     }
 
     public function testAddProductsProductClassEntity()
@@ -118,32 +97,24 @@ class CartServiceTest extends AbstractServiceTestCase
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
 
-        $this->assertEquals(1, $CartItems[0]->getProductClassId());
+        $this->assertSame(1, $CartItems[0]->getProductClassId());
     }
 
     public function testAddProductsQuantity()
     {
         $this->cartService->addProduct(1);
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
-        });
-        $this->assertEquals(1, $quantity);
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn ($q, $item) => $q + $item->getQuantity());
+        $this->assertSame(1, $quantity);
     }
 
     public function testAddProductsQuantityOverSaleLimit()
     {
-        $this->cartService->addProduct(10, 6);
+        $this->cartService->addProduct(10, '6');
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
-        });
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn ($q, $item) => $q + $item->getQuantity());
         // 明細の丸め処理はpurchaseFlowで実行されるため、販売制限数を超えてもカートには入る
-        $this->assertEquals(6, $quantity);
+        $this->assertSame(6, $quantity);
     }
 
     public function testAddProductsQuantityMultiItems()
@@ -151,20 +122,16 @@ class CartServiceTest extends AbstractServiceTestCase
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find(11);
 
-        $this->cartService->addProduct($ProductClass, 101);
+        $this->cartService->addProduct($ProductClass, '101');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $this->cartService->addProduct($ProductClass, 6);
+        $this->cartService->addProduct($ProductClass, '6');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
-        });
-        $this->assertEquals(5, $quantity);
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn ($q, $item) => $q + $item->getQuantity());
+        $this->assertSame(5, $quantity);
     }
 
     public function testAddProductsWithCartItemComparator()
@@ -172,33 +139,33 @@ class CartServiceTest extends AbstractServiceTestCase
         // 同じ商品規格で同じ数量なら同じ明細とみなすようにする
         $this->cartService->setCartItemComparator(new CartServiceTest_CartItemComparator());
 
-        $ProductClass = $this->productClassRepository->find(1);
+        $ProductClass = $this->productClassRepository->find(2);
 
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $this->cartService->addProduct($ProductClass, 1);
-        $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
-        $this->cartService->save();
-
-        /* @var \Eccube\Entity\CartItem[] $CartItems */
-        $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertEquals(1, count($CartItems));
-        self::assertEquals(1, $CartItems[0]->getProductClassId());
-        self::assertEquals(2, $CartItems[0]->getQuantity());
-
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
         /* @var \Eccube\Entity\CartItem[] $CartItems */
         $CartItems = $this->cartService->getCart()->getCartItems();
-        self::assertEquals(2, count($CartItems));
-        self::assertEquals(1, $CartItems[0]->getProductClassId());
-        self::assertEquals(2, $CartItems[0]->getQuantity());
-        self::assertEquals(1, $CartItems[1]->getProductClassId());
-        self::assertEquals(1, $CartItems[1]->getQuantity());
+        $this->assertCount(1, $CartItems);
+        $this->assertSame(2, $CartItems[0]->getProductClassId());
+        $this->assertSame('2', $CartItems[0]->getQuantity());
+
+        $this->cartService->addProduct($ProductClass, '1');
+        $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
+        $this->cartService->save();
+
+        /* @var \Eccube\Entity\CartItem[] $CartItems */
+        $CartItems = $this->cartService->getCart()->getCartItems();
+        $this->assertCount(2, $CartItems);
+        $this->assertSame(2, $CartItems[0]->getProductClassId());
+        $this->assertSame('2', $CartItems[0]->getQuantity());
+        $this->assertSame(2, $CartItems[1]->getProductClassId());
+        $this->assertSame('1', $CartItems[1]->getQuantity());
     }
 
     public function testUpProductQuantity()
@@ -206,19 +173,15 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->clear();
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find(10);
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
-        });
-        $this->assertEquals(2, $quantity);
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn ($q, $item) => $q + $item->getQuantity());
+        $this->assertSame(2, $quantity);
     }
 
     public function testDownProductQuantity()
@@ -226,30 +189,26 @@ class CartServiceTest extends AbstractServiceTestCase
         $this->cartService->clear();
         /** @var ProductClass $ProductClass */
         $ProductClass = $this->productClassRepository->find(10);
-        $this->cartService->addProduct($ProductClass, 2);
+        $this->cartService->addProduct($ProductClass, '2');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
-        $this->cartService->addProduct($ProductClass, -1);
+        $this->cartService->addProduct($ProductClass, '-1');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
-        $quantity = $this->cartService->getCart()->getItems()->reduce(function ($q, $item) {
-            $q += $item->getQuantity();
-
-            return $q;
-        });
-        $this->assertEquals(1, $quantity);
+        $quantity = $this->cartService->getCart()->getItems()->reduce(fn ($q, $item) => $q + $item->getQuantity());
+        $this->assertSame(1, $quantity);
     }
 
     public function testRemoveProduct()
     {
-        $this->cartService->addProduct(1, 2);
+        $this->cartService->addProduct(1, '2');
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
         $this->cartService->save();
 
         $this->cartService->removeProduct(1);
 
-        $this->assertNull($this->cartService->getCart());
+        $this->assertNotInstanceOf(Cart::class, $this->cartService->getCart());
     }
 
     public function testSave()
@@ -257,7 +216,7 @@ class CartServiceTest extends AbstractServiceTestCase
         $preOrderId = sha1(StringUtil::random(32));
 
         $ProductClass = $this->productClassRepository->find(1);
-        $this->cartService->addProduct($ProductClass, 1);
+        $this->cartService->addProduct($ProductClass, '1');
         $this->cartService->setPreOrderId($preOrderId);
         $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
 
@@ -278,11 +237,48 @@ class CartServiceTest_CartItemComparator implements CartItemComparator
      * @param CartItem $item1 明細1
      * @param CartItem $item2 明細2
      *
-     * @return boolean 同じ明細になる場合はtrue
+     * @return bool 同じ明細になる場合はtrue
      */
-    public function compare(CartItem $item1, CartItem $item2)
+    public function compare(CartItem $item1, CartItem $item2): bool
     {
         return $item1->getProductClassId() == $item2->getProductClassId()
             && $item1->getQuantity() == $item2->getQuantity();
+    }
+}
+
+class SessionMock extends Session
+{
+    private ?array $bag = [];
+
+    public function __construct()
+    {
+        // 親クラスのコンストラクタを呼ばない
+    }
+
+    #[\Override]
+    public function set(string $name, mixed $value): void
+    {
+        $this->bag[$name] = $value;
+    }
+
+    #[\Override]
+    public function get(string $name, mixed $default = null): mixed
+    {
+        return $this->bag[$name] ?? $default;
+    }
+
+    #[\Override]
+    public function has(string $name): bool
+    {
+        return isset($this->bag[$name]);
+    }
+
+    #[\Override]
+    public function remove(string $name): mixed
+    {
+        $value = $this->bag[$name] ?? null;
+        unset($this->bag[$name]);
+
+        return $value;
     }
 }

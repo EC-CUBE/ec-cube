@@ -14,34 +14,29 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\ProductClass;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class SaleLimitMultipleValidator extends ItemHolderValidator
 {
     /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 商品
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @throws InvalidItemException 商品の購入数が在庫数を超えている場合
      */
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         $OrderItemsByProductClass = [];
         foreach ($itemHolder->getItems() as $Item) {
@@ -52,6 +47,7 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
         }
 
         foreach ($OrderItemsByProductClass as $id => $Items) {
+            /** @var ProductClass $ProductClass */
             $ProductClass = $this->productClassRepository->find($id);
             $limit = $ProductClass->getSaleLimit();
             if (null === $limit) {
@@ -59,11 +55,11 @@ class SaleLimitMultipleValidator extends ItemHolderValidator
             }
             $isOver = false;
             foreach ($Items as $Item) {
-                if ($limit - $Item->getQuantity() >= 0) {
-                    $limit = $limit - $Item->getQuantity();
+                if (bcsub($limit, $Item->getQuantity()) >= 0) {
+                    $limit = bcsub($limit, $Item->getQuantity());
                 } else {
                     $Item->setQuantity($limit);
-                    $limit = 0;
+                    $limit = '0';
                     $isOver = true;
                 }
             }

@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\EventListener\ConvertKanaListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,34 +23,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 class KanaType extends AbstractType
 {
     /**
-     * @var \Eccube\Common\EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * KanaType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // ひらがなをカタカナに変換する
         // 引数はmb_convert_kanaのもの
-        $builder->addEventSubscriber(new \Eccube\Form\EventListener\ConvertKanaListener('CV'));
+        $builder->addEventSubscriber(new ConvertKanaListener('CV'));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'lastname_options' => [
@@ -57,13 +54,8 @@ class KanaType extends AbstractType
                     'placeholder' => 'common.last_name_kana',
                 ],
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        'message' => 'form_error.kana_only',
-                    ]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_kana_len'],
-                    ]),
+                    new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u', message: 'form_error.kana_only'),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
                 ],
             ],
             'firstname_options' => [
@@ -71,13 +63,8 @@ class KanaType extends AbstractType
                     'placeholder' => 'common.first_name_kana',
                 ],
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        'message' => 'form_error.kana_only',
-                    ]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_kana_len'],
-                    ]),
+                    new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u', message: 'form_error.kana_only'),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
                 ],
             ],
         ]);
@@ -86,16 +73,9 @@ class KanaType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    #[\Override]
+    public function getParent(): ?string
     {
         return NameType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'kana';
     }
 }

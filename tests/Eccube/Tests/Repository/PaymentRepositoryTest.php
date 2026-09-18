@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,39 +17,30 @@ namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\Delivery;
 use Eccube\Entity\Master\SaleType;
+use Eccube\Entity\Payment;
 use Eccube\Entity\PaymentOption;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\PaymentOptionRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class PaymentRepositoryTest extends EccubeTestCase
+final class PaymentRepositoryTest extends EccubeTestCase
 {
-    /**
-     * @var DeliveryRepository
-     */
-    protected $deliveryRepository;
+    protected ?DeliveryRepository $deliveryRepository = null;
 
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
+    protected ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var PaymentOptionRepository
-     */
-    protected $paymentOptionRepository;
+    protected ?PaymentOptionRepository $paymentOptionRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->deliveryRepository = $this->entityManager->getRepository(\Eccube\Entity\Delivery::class);
-        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->paymentOptionRepository = $this->entityManager->getRepository(\Eccube\Entity\PaymentOption::class);
+        $this->deliveryRepository = $this->entityManager->getRepository(Delivery::class);
+        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
+        $this->paymentOptionRepository = $this->entityManager->getRepository(PaymentOption::class);
     }
 
     public function testFindAllowedPaymentEmpty()
@@ -116,7 +109,7 @@ class PaymentRepositoryTest extends EccubeTestCase
             'delivery_id' => 1,
             'payment_id' => 3,
         ]);
-        $this->assertNotNull($PaymentOption);
+        $this->assertInstanceOf(PaymentOption::class, $PaymentOption);
         $this->entityManager->remove($PaymentOption);
         $this->entityManager->flush();
 
@@ -151,16 +144,16 @@ class PaymentRepositoryTest extends EccubeTestCase
 
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
-        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([1, 2], $actualIds);
+        $actualIds = array_values(array_map(fn ($p) => $p['id'], $actual));
+        $this->assertSame([1, 2], $actualIds);
 
         $delivery1 = $this->createDelivery('テスト配送1', $typeA, [$payment1, $payment2]);
         $delivery2 = $this->createDelivery('テスト配送2', $typeA, [$payment3]);
 
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
-        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([1, 2, 3], $actualIds);
+        $actualIds = array_values(array_map(fn ($p) => $p['id'], $actual));
+        $this->assertSame([1, 2, 3], $actualIds);
     }
 
     /**
@@ -187,8 +180,8 @@ class PaymentRepositoryTest extends EccubeTestCase
 
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
-        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([1], $actualIds);
+        $actualIds = array_values(array_map(fn ($p) => $p['id'], $actual));
+        $this->assertSame([1], $actualIds);
 
         // 共通する支払方法がない場合
 
@@ -197,8 +190,8 @@ class PaymentRepositoryTest extends EccubeTestCase
 
         $actual = $paymentRepository->findAllowedPayments([$delivery1, $delivery2]);
 
-        $actualIds = array_values(array_map(function ($p) { return $p['id']; }, $actual));
-        self::assertEquals([], $actualIds);
+        $actualIds = array_values(array_map(fn ($p) => $p['id'], $actual));
+        $this->assertSame([], $actualIds);
     }
 
     private function createSaleType($name, $id)
@@ -242,7 +235,7 @@ class PaymentRepositoryTest extends EccubeTestCase
     {
         $Results = $this->paymentRepository->findAllArray();
 
-        $this->assertTrue(is_array($Results));
+        $this->assertIsArray($Results);
 
         $this->expected = '銀行振込';
         $this->actual = $Results[3]['method'];
@@ -264,7 +257,7 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->actual = count($payments);
         $this->verify();
 
-        $this->assertTrue(is_array($payments[0]));
+        $this->assertIsArray($payments[0]);
     }
 
     public function testFindPaymentsAsObjects()
@@ -282,6 +275,6 @@ class PaymentRepositoryTest extends EccubeTestCase
         $this->actual = count($payments);
         $this->verify();
 
-        $this->assertTrue(is_object($payments[0]));
+        $this->assertIsObject($payments[0]);
     }
 }

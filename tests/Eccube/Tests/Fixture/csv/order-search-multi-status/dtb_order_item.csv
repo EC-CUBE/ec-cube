@@ -1,0 +1,13 @@
+id,order_id,shipping_id,product_id,product_class_id,tax_type_id,tax_display_type_id,order_item_type_id,product_name,price,quantity,tax,tax_rate,tax_adjust,discriminator_type
+5001,5001,5001,,,1,1,1,商品-1,1000,1,0,0,0,orderitem
+5002,5001,,,,1,2,2,送料,0,1,0,0,0,orderitem
+5003,5001,,,,1,2,3,手数料,0,1,0,0,0,orderitem
+5004,5001,,,,2,2,4,値引き,0,1,0,0,0,orderitem
+5005,5002,5002,,,1,1,1,商品-2,1000,1,0,0,0,orderitem
+5006,5002,,,,1,2,2,送料,0,1,0,0,0,orderitem
+5007,5002,,,,1,2,3,手数料,0,1,0,0,0,orderitem
+5008,5002,,,,2,2,4,値引き,0,1,0,0,0,orderitem
+5009,5003,5003,,,1,1,1,商品-3,1000,1,0,0,0,orderitem
+5010,5003,,,,1,2,2,送料,0,1,0,0,0,orderitem
+5011,5003,,,,1,2,3,手数料,0,1,0,0,0,orderitem
+5012,5003,,,,2,2,4,値引き,0,1,0,0,0,orderitem

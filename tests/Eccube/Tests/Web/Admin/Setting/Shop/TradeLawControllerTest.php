@@ -1,0 +1,235 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Web\Admin\Setting\Shop;
+
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\String\ByteString;
+
+final class TradeLawControllerTest extends AbstractAdminWebTestCase
+{
+    public function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+    }
+
+    /**
+     * 正式的に設定画面が読み込まれ、正しい初期入力フィールドが表示されることを確認するテスト
+     * Test to confirm settings index page loads and displays the correct initial input fields
+     */
+    public function testIndexView(): void
+    {
+        $response = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_tradelaw'));
+        // Has success code response
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $inputFieldsName = $response->filter('input[id*="_name"]');
+        $inputFieldsDescription = $response->filter('textarea[id*="_description"]');
+
+        // Contains 15x2 initial input fields + toggle switch
+        $this->assertCount(15, $inputFieldsName);
+        $this->assertCount(15, $inputFieldsDescription);
+        $this->assertCount(15, $response->filter('.c-toggleSwitch'));
+
+        // Check initial fields show and in order
+        $notFoundNames = [
+            '販売業者',
+            '代表責任者',
+            '所在地',
+            '電話番号',
+            'メールアドレス',
+            'URL',
+            '商品代金以外の必要料金',
+            '引き渡し時期',
+            'お支払方法',
+            '返品・交換について',
+        ];
+
+        $loopId = 0;
+
+        // Ensure initial values keys are filled
+        $inputFieldsName->each(function ($inputFieldName) use ($notFoundNames, &$loopId) {
+            if ($loopId < 10) {
+                $this->assertEquals($notFoundNames[$loopId], $inputFieldName->attr('value'));
+            }
+            $loopId++;
+        });
+
+        // Ensure initial value descriptions are empty
+        $inputFieldsDescription->each(function ($inputFieldName) {
+            $this->assertNull($inputFieldName->attr('value'));
+        });
+    }
+
+    /**
+     * 名称入力欄が255文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
+     * Validation check on setting name with characters over 255
+     */
+    public function testValidationNameMoreThan255Characters(): void
+    {
+        $form = $this->createBaseForm();
+        $form['TradeLaws'][0]['name'] = ByteString::fromRandom(256)->toString();
+        $responseCrawler = $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_tradelaw'),
+            ['form' => $form]
+        );
+        // Validation errors return success response.
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $failedInput = $responseCrawler->filter('#form_TradeLaws_0_name.is-invalid');
+        // Check that the correct cell is failing validation with red border
+        $this->assertCount(1, $failedInput);
+
+        // Check Text
+        $this->assertSame('<span class="form-error-message">長すぎます。この値は255文字以下で入力してください。</span>',
+            $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
+    }
+
+    /**
+     * 説明入力欄が4000文字以上の場合、バリデーションエラーが発生されるかどうかのチェック
+     * Validation check on setting name with characters over 4000
+     */
+    public function testValidationDescriptionMoreThan4000Characters(): void
+    {
+        $form = $this->createBaseForm();
+        $form['TradeLaws'][0]['description'] = ByteString::fromRandom(4001)->toString();
+        $responseCrawler = $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_tradelaw'),
+            ['form' => $form]
+        );
+        // Validation errors return success response.
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $failedInput = $responseCrawler->filter('#form_TradeLaws_0_description.is-invalid');
+        // Check that the correct cell is failing validation with red border
+        $this->assertCount(1, $failedInput);
+
+        // Check Text
+        $this->assertSame('<span class="form-error-message">長すぎます。この値は4000文字以下で入力してください。</span>',
+            $failedInput->nextAll()->filter('.form-error-message')->outerHtml());
+    }
+
+    /**
+     * 正しいデータでフォーム内容が更新されるかどうかのチェック
+     * With correct input entries, check if the data is correctly saved.
+     */
+    public function testUpdate(): void
+    {
+        $form = $this->createBaseForm();
+        $form['TradeLaws'][10]['name'] = 'UTテスト：名称';
+        $form['TradeLaws'][10]['description'] = 'UTテスト: 説明';
+        $form['TradeLaws'][10]['displayOrderScreen'] = '1';
+
+        $responseCrawler = $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_tradelaw'),
+            ['form' => $form]
+        );
+        // Validation errors return success response with redirect 302 (error will respond 200).
+        $this->assertSame(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $responseCrawler = $this->client->followRedirect();
+
+        $editedName = $responseCrawler->filter('#form_TradeLaws_10_name');
+        $editedDescription = $responseCrawler->filter('#form_TradeLaws_10_description');
+        $editedToggle = $responseCrawler->filter('#form_TradeLaws_10_displayOrderScreen');
+
+        // Check that the correct cell is *not* failing validation with red border and contains registered value
+        $this->assertStringNotContainsString('is-invalid', (string) $editedName->attr('class'));
+        $this->assertSame('UTテスト：名称', $editedName->attr('value'));
+
+        $this->assertStringNotContainsString('is-invalid', (string) $editedDescription->attr('class'));
+        $this->assertSame('UTテスト: 説明', $editedDescription->innerText());
+
+        $this->assertStringNotContainsString('is-invalid', $editedToggle->attr('class') ?: '');
+        $this->assertSame('1', $editedToggle->attr('value'));
+
+        // Check save success message exists
+        $this->assertCount(1, $responseCrawler->filter('.alert.alert-success'));
+    }
+
+    protected function createBaseForm(): array
+    {
+        return [
+            '_token' => 'dummy',
+            'TradeLaws' => [
+                0 => [
+                    'name' => '販売業者',
+                    'description' => '',
+                ],
+                1 => [
+                    'name' => '代表責任者',
+                    'description' => '',
+                ],
+                2 => [
+                    'name' => '所在地',
+                    'description' => '',
+                ],
+                3 => [
+                    'name' => '電話番号',
+                    'description' => '',
+                ],
+                4 => [
+                    'name' => 'メールアドレス',
+                    'description' => '',
+                ],
+                5 => [
+                    'name' => 'URL',
+                    'description' => '',
+                ],
+                6 => [
+                    'name' => '商品代金以外の必要料金',
+                    'description' => '',
+                ],
+                7 => [
+                    'name' => '引き渡し時期',
+                    'description' => '',
+                ], 8 => [
+                    'name' => 'お支払方法',
+                    'description' => '',
+                ],
+                9 => [
+                    'name' => '返品・交換について',
+                    'description' => '',
+                ],
+                10 => [
+                    'name' => '',
+                    'description' => '',
+                ],
+                11 => [
+                    'name' => '',
+                    'description' => '',
+                ],
+                12 => [
+                    'name' => '',
+                    'description' => '',
+                ],
+                13 => [
+                    'name' => '',
+                    'description' => '',
+                ],
+                14 => [
+                    'name' => '',
+                    'description' => '',
+                ],
+            ],
+        ];
+    }
+}

@@ -19,44 +19,30 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\ContactType;
 use Eccube\Repository\PageRepository;
 use Eccube\Service\MailService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ContactController extends AbstractController
 {
     /**
-     * @var MailService
-     */
-    protected $mailService;
-
-    /**
-     * @var PageRepository
-     */
-    private $pageRepository;
-
-    /**
      * ContactController constructor.
-     *
-     * @param MailService $mailService
-     * @param PageRepository $pageRepository
      */
-    public function __construct(
-        MailService $mailService,
-        PageRepository $pageRepository)
+    public function __construct(protected MailService $mailService, private readonly PageRepository $pageRepository)
     {
-        $this->mailService = $mailService;
-        $this->pageRepository = $pageRepository;
     }
 
     /**
      * お問い合わせ画面.
      *
-     * @Route("/contact", name="contact", methods={"GET", "POST"})
-     * @Route("/contact", name="contact_confirm", methods={"GET", "POST"})
-     * @Template("Contact/index.twig")
+     * @return Response|RedirectResponse|array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/contact', name: 'contact', methods: ['GET', 'POST'])]
+    #[Route(path: '/contact', name: 'contact_confirm', methods: ['GET', 'POST'])]
+    #[Template(template: 'Contact/index.twig')]
+    public function index(Request $request): Response|RedirectResponse|array
     {
         $builder = $this->formFactory->createBuilder(ContactType::class);
 
@@ -86,7 +72,7 @@ class ContactController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_CONTACT_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -94,9 +80,16 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             switch ($request->get('mode')) {
                 case 'confirm':
+                    $Page = $this->pageRepository->getPageByRoute('contact_confirm');
+
                     return $this->render('Contact/confirm.twig', [
                         'form' => $form->createView(),
-                        'Page' => $this->pageRepository->getPageByRoute('contact_confirm'),
+                        'Page' => $Page,
+                        // contact と contact_confirm は同一パス '/contact' のため, ルータは常に
+                        // contact にマッチする. TwigInitializeListener が _route から引く
+                        // twig グローバル title は「入力ページ」のままになるので,
+                        // title より優先される subtitle で確認ページ名を上書きする.
+                        'subtitle' => $Page->getName(),
                     ]);
 
                 case 'complete':
@@ -109,14 +102,14 @@ class ContactController extends AbstractController
                         ],
                         $request
                     );
-                    $this->eventDispatcher->dispatch(EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE, $event);
+                    $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_CONTACT_INDEX_COMPLETE);
 
                     $data = $event->getArgument('data');
 
                     // メール送信
                     $this->mailService->sendContactMail($data);
 
-                    return $this->redirect($this->generateUrl('contact_complete'));
+                    return $this->redirectToRoute('contact_complete');
             }
         }
 
@@ -128,10 +121,11 @@ class ContactController extends AbstractController
     /**
      * お問い合わせ完了画面.
      *
-     * @Route("/contact/complete", name="contact_complete", methods={"GET"})
-     * @Template("Contact/complete.twig")
+     * @return array<empty>
      */
-    public function complete()
+    #[Route(path: '/contact/complete', name: 'contact_complete', methods: ['GET'])]
+    #[Template(template: 'Contact/complete.twig')]
+    public function complete(): array
     {
         return [];
     }

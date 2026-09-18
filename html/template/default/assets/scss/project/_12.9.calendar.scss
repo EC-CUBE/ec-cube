@@ -1,0 +1,113 @@
+@import "../mixins/media";
+@import "../mixins/clearfix";
+
+/*
+見出し
+
+トップページで使用されているカレンダーのスタイルです。
+
+ex [トップページ](http://demo3.ec-cube.net/)
+
+Markup:
+sg-wrapper:
+<div class="ec-role">
+  <sg-wrapper-content/>
+</div>
+
+Styleguide 12.9.1
+*/
+
+/* 背景や文字の色調整 */
+$calander-default-bg: #F8F8F8;//月〜金までの背景色
+$calander-default-color: #333;//月〜金までの文字色
+$calander-sun-bg: #F8F8F8;//日曜の背景色
+$calander-sun-color: #DE5D50;//日曜の文字色
+$calander-sat-bg: #F8F8F8;//土曜の背景色
+$calander-sat-color: #5CB1B1;//土曜の文字色
+
+$calander-day-bg: #FFF;//日付の背景色
+$calander-day-color: #333;//日付の文字色
+$calander-holiday-bg: #FFF;//休日の背景色
+$calander-holiday-color: #DE5D50;//休日の文字色
+$calander-today-bg: #FFFDE7;//本日の背景色
+$calander-today-color: #333;//本日の文字色
+
+$calander-padding: 8px;//カレンダーの数字周りの余白
+
+$calander-border: #f3f3f3;//カレンダーの線の色
+
+
+
+.ec-calendar{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+
+  @media screen and (min-width:768px){
+    flex-direction: row;
+    margin-left: -30px;
+  }
+
+  &__month{
+    border-collapse: collapse;
+    margin-top: 30px;
+    @media screen and (min-width:768px){
+      margin-top: 0;
+      margin-left: 30px;
+    }
+
+    th,td{
+      border-top: 1px solid $calander-border;
+      border-bottom: 1px solid $calander-border;
+      padding: $calander-padding;
+      text-align: center;
+      vertical-align: middle;
+    }//th,td
+  }//.ec-calendar__month
+  & &__title{
+    border: 0;
+  }//.ec-calendar__title
+  & &__sun{
+    background: $calander-sun-bg;
+    color: $calander-sun-color;
+  }//.ec-calendar__sun
+  & &__mon,
+  & &__tue,
+  & &__wed,
+  & &__thu,
+  & &__fri{
+    background: $calander-default-bg;
+    color: $calander-default-color;
+  }
+  & &__sat{
+    background: $calander-sat-bg;
+    color: $calander-sat-color;
+  }//.ec-calendar__sat
+  & &__day{
+    background: $calander-day-bg;
+    color: $calander-day-color;
+  }//.ec-calendar__day
+  & &__holiday{
+    background: $calander-holiday-bg;
+    color: $calander-holiday-color !important;
+  }//.ec-calendar__holiday
+  & &__today{
+    color: $calander-today-color;
+    position: relative;
+    z-index: 1;
+    &::before{
+      content:"";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: $calander-today-bg;
+      transform: translate(-50%,-50%);
+      z-index: -1;
+    }
+  }//.ec-calendar__today
+
+}//.ec-calendar

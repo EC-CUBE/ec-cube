@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,20 +15,22 @@
 
 namespace Eccube\Tests\Form\EventListener;
 
+use Eccube\Form\EventListener\TruncateHyphenListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\Test\FormInterface;
 
-class TruncateHyphenListenerTest extends TestCase
+final class TruncateHyphenListenerTest extends TestCase
 {
     public function testTruncateHyphen()
     {
         $data = '0123-456-789';
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
+        $form = $this->createStub(FormInterface::class);
         $event = new FormEvent($form, $data);
 
-        $filter = new \Eccube\Form\EventListener\TruncateHyphenListener();
+        $filter = new TruncateHyphenListener();
         $filter->onPreSubmit($event);
 
-        $this->assertEquals('0123456789', $event->getData());
+        $this->assertSame('0123456789', $event->getData());
     }
 }

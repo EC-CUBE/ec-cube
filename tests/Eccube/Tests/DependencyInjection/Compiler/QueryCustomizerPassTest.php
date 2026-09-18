@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -20,7 +22,7 @@ use Eccube\Repository\QueryKey;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class QueryCustomizerPassTest extends TestCase
+final class QueryCustomizerPassTest extends TestCase
 {
     public function testAppendCustomizerToQueries()
     {
@@ -32,28 +34,28 @@ class QueryCustomizerPassTest extends TestCase
             ->addTag(QueryCustomizerPass::QUERY_CUSTOMIZER_TAG);
 
         $container->addCompilerPass(new QueryCustomizerPass());
-        $container->compile();
+        $container->compile(true);
 
         // Queriesにカスタマイザが追加されていることを確認
         $queries = $container->get(Queries::class);
         $ref = new \ReflectionObject($queries);
         $prop = $ref->getProperty('customizers');
-        $prop->setAccessible(true);
         $customizers = $prop->getValue($queries);
 
-        self::assertCount(1, $customizers);
-        self::assertArrayHasKey(QueryKey::CUSTOMER_SEARCH, $customizers);
-        self::assertInstanceOf(TestQueryCustomizer::class, $customizers[QueryKey::CUSTOMER_SEARCH][0]);
+        $this->assertCount(1, $customizers);
+        $this->assertArrayHasKey(QueryKey::CUSTOMER_SEARCH, $customizers);
+        $this->assertInstanceOf(TestQueryCustomizer::class, $customizers[QueryKey::CUSTOMER_SEARCH][0]);
     }
 }
 
 class TestQueryCustomizer extends WhereCustomizer
 {
-    protected function createStatements($params, $queryKey)
+    protected function createStatements($params, $queryKey): array
     {
+        return [];
     }
 
-    public function getQueryKey()
+    public function getQueryKey(): string
     {
         return QueryKey::CUSTOMER_SEARCH;
     }

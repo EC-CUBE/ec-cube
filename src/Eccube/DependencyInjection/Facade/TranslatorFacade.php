@@ -13,52 +13,31 @@
 
 namespace Eccube\DependencyInjection\Facade;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * XXX ContainerInterface は不要かも
- */
 class TranslatorFacade
 {
     /** @var self|null */
-    private static $instance = null;
+    private static ?self $instance = null;
 
-    /** @var ContainerInterface */
-    private static $Container;
+    private static ?TranslatorInterface $Translator = null;
 
-    /** @var TranslatorInterface */
-    private static $Translator;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    private function __construct(ContainerInterface $container, TranslatorInterface $Translator)
+    private function __construct(TranslatorInterface $Translator)
     {
-        self::$Container = $container;
         self::$Translator = $Translator;
     }
 
-    /**
-     * @param ContainerInterface $container
-     *
-     * @return TranslatorFacade|null
-     */
-    public static function init(ContainerInterface $container, TranslatorInterface $Translator)
+    public static function init(TranslatorInterface $Translator): ?TranslatorFacade
     {
-        if (null === self::$instance) {
-            self::$instance = new self($container, $Translator);
-        }
+        self::$instance ??= new self($Translator);
 
         return self::$instance;
     }
 
     /**
-     * @return TranslatorInterface
-     *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): TranslatorInterface
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');

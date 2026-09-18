@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -17,36 +19,41 @@ use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Customer;
 use Eccube\Entity\MailHistory;
 use Eccube\Entity\MailTemplate;
+use Eccube\Entity\Member;
 use Eccube\Entity\Order;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mime\Email;
 
-class MailControllerTest extends AbstractAdminWebTestCase
+final class MailControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    use MailerAssertionsTrait;
 
-    /**
-     * @var Order
-     */
-    protected $Order;
+    protected ?Customer $Customer = null;
 
-    public function setUp()
+    protected ?Order $Order = null;
+
+    protected ?Member $Member = null;
+
+    /** @var array<int, MailHistory>|null */
+    protected ?array $MailHistories = null;
+
+    protected function setUp(): void
     {
         parent::setUp();
         $faker = $this->getFaker();
         $this->Member = $this->createMember();
         $this->Customer = $this->createCustomer();
         $this->Order = $this->createOrder($this->Customer);
-
         $MailTemplate = new MailTemplate();
         $MailTemplate
-            ->setName($faker->word)
-            ->setMailSubject($faker->word)
+            ->setName($faker->word())
+            ->setMailSubject($faker->word())
             ->setCreator($this->Member);
         $this->entityManager->persist($MailTemplate);
         $this->entityManager->flush();
+        $this->MailHistories = [];
         for ($i = 0; $i < 3; $i++) {
             $this->MailHistories[$i] = new MailHistory();
             $this->MailHistories[$i]
@@ -64,19 +71,19 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function createFormData()
     {
         $faker = $this->getFaker();
-        $form = [
+
+        return [
             'template' => 1,
-            'mail_subject' => $faker->word,
+            'mail_subject' => $faker->word(),
+            'tpl_data' => $faker->realText(),
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -85,8 +92,8 @@ class MailControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithConfirm()
     {
         $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'mail' => $form,
@@ -98,10 +105,9 @@ class MailControllerTest extends AbstractAdminWebTestCase
 
     public function testComplete()
     {
-        $this->client->enableProfiler();
         $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
                 'admin_order_mail' => $form,
@@ -110,33 +116,55 @@ class MailControllerTest extends AbstractAdminWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_order_edit', ['id' => $this->Order->getId()])));
 
-        $mailCollector = $this->getMailCollector(false);
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-
-        $collectedMessages = $mailCollector->getMessages();
-        /** @var \Swift_Message $Message */
-        $Message = $collectedMessages[0];
+        $this->assertEmailCount(1);
+        /** @var Email $Message */
+        $Message = $this->getMailerMessage(0);
 
         $BaseInfo = $this->entityManager->find(BaseInfo::class, 1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
         $this->expected = '['.$BaseInfo->getShopName().'] '.$form['mail_subject'];
         $this->actual = $Message->getSubject();
         $this->verify();
     }
 
-    public function testView()
+    /**
+     * メールテンプレートを選択する
+     */
+    public function testSelectMailTemplate(): void
     {
+        $form = $this->createFormData();
+        // 注文完了メール
+        $form['template'] = 1;
         $crawler = $this->client->request(
-            'POST',
-            $this->generateUrl('admin_order_mail_view'),
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
             [
-                'id' => $this->MailHistories[0]->getId(),
-            ],
-            [],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
-                'CONTENT_TYPE' => 'application/json',
+                'admin_order_mail' => $form,
+                'mode' => 'change',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->assertTrue($this->client->getResponse()->isOk());
+
+        $this->actual = $crawler->filter('input[name="admin_order_mail[mail_subject]"]')->attr('value');
+        $this->expected = 'ご注文ありがとうございます';
+        $this->verify();
+
+        // 会員仮登録完了メール
+        $form['template'] = 2;
+        $crawler = $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_mail', ['id' => $this->Order->getId()]),
+            [
+                'admin_order_mail' => $form,
+                'mode' => 'change',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isOk());
+
+        $this->actual = $crawler->filter('input[name="admin_order_mail[mail_subject]"]')->attr('value');
+        $this->expected = '会員登録のご確認';
+        $this->verify();
     }
 }

@@ -4,6 +4,8 @@
 /*
 ファイルアップロード
 
+DEPRECATED: jQuery-File-Upload で使用していたコンポーネントです. EC-CUBE本体では現在使用されていません
+
 画像のアップロードを行うフォームコンポーネントです。
 画像がアップロードされた際に表示されるサムネイルのみオリジナルコンポーネントで、
 アップロード部分に関してはFontAwesomeとBootstrapで構成されています。
@@ -52,8 +54,9 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
 
     .delete-image {
       display: none;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 18px;
+      font-weight: 400;
       line-height: 1;
       color: #54687A;
       padding: 5px;
@@ -71,8 +74,9 @@ p 項目の内容はドラッグ＆ドロップで変更可能です。
 
     .delete-image {
       display: inline-block;
-      font-family: FontAwesome;
+      font-family: 'Font Awesome 5 Free';
       font-size: 18px;
+      font-weight: 400;
       line-height: 1;
       color: #54687A;
       padding: 5px;

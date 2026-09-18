@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,163 +16,164 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
-use Eccube\Repository\TaxRuleRepository;
+use Eccube\Entity\Master\RoundingType;
+use Eccube\Entity\TaxRule;
 use Eccube\Service\TaxRuleService;
+use PHPUnit\Framework\Attributes\Group;
 
-class TaxRuleServiceTest extends AbstractServiceTestCase
+final class TaxRuleServiceTest extends AbstractServiceTestCase
 {
-    /**
-     * @var TaxRuleService
-     */
-    private $taxRuleService;
+    private ?TaxRuleService $taxRuleService = null;
 
-    /**
-     * @var  TaxRuleRepository
-     */
-    protected $TaxRule1;
+    protected ?TaxRule $TaxRule1 = null;
 
-    /**
-     * @var  BaseInfo
-     */
-    protected $BaseInfo;
+    protected ?BaseInfo $BaseInfo = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->BaseInfo = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class)->get();
-        $this->BaseInfo->setOptionProductTaxRule(0);
-        $this->TaxRule1 = $this->entityManager->getRepository(\Eccube\Entity\TaxRule::class)->find(1);
+        $this->BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->get();
+        $this->BaseInfo->setOptionProductTaxRule(false);
+        $this->TaxRule1 = $this->entityManager->getRepository(TaxRule::class)->find(1);
         $this->TaxRule1->setApplyDate(new \DateTime('-1 day'));
-        self::$container->get('doctrine')->getManager()->flush();
-        $this->taxRuleService = self::$container->get(TaxRuleService::class);
+        $this->entityManager->flush();
+        $this->taxRuleService = static::getContainer()->get(TaxRuleService::class);
     }
 
+    #[Group(name: 'decimal')]
     public function testRoundByCalcRuleWithDefault()
     {
-        $input = 100.4;
-        $this->expected = 101;
+        $input = '100.4';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 101;
+        $input = '100.5';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
+        $input = '100';
+        $this->expected = '100';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
+        $input = '101';
+        $this->expected = '101';
         $this->actual = $this->taxRuleService->roundByRoundingType($input, 999);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithCeil()
     {
-        $input = 100.4;
-        $this->expected = 101;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
+        $input = '100.4';
+        $this->expected = '101';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 101;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
+        $input = '100.5';
+        $this->expected = '101';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
+        $input = '100';
+        $this->expected = '100';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::CEIL);
+        $input = '101';
+        $this->expected = '101';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::CEIL);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithRound()
     {
-        $input = 100.4;
-        $this->expected = 100;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
+        $input = '100.4';
+        $this->expected = '100';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 101;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
+        $input = '100.5';
+        $this->expected = '101';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
+        $input = '100';
+        $this->expected = '100';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::ROUND);
+        $input = '101';
+        $this->expected = '101';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::ROUND);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testRoundByRoundingTypeWithFloor()
     {
-        $input = 100.4;
-        $this->expected = 100;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
+        $input = '100.4';
+        $this->expected = '100';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
 
-        $input = 100.5;
-        $this->expected = 100;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
+        $input = '100.5';
+        $this->expected = '100';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
 
-        $input = 100;
-        $this->expected = 100;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
+        $input = '100';
+        $this->expected = '100';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
 
-        $input = 101;
-        $this->expected = 101;
-        $this->actual = $this->taxRuleService->roundByRoundingType($input, \Eccube\Entity\Master\RoundingType::FLOOR);
+        $input = '101';
+        $this->expected = '101';
+        $this->actual = $this->taxRuleService->roundByRoundingType($input, RoundingType::FLOOR);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testCalcTax()
     {
-        $input = 1000;
-        $rate = 8;
-        $this->expected = 80.0;
-        $this->actual = $this->taxRuleService->calcTax($input, $rate, \Eccube\Entity\Master\RoundingType::ROUND);
+        $input = '1000';
+        $rate = '8';
+        $this->expected = '80.00';
+        $this->actual = $this->taxRuleService->calcTax($input, $rate, RoundingType::ROUND);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testCalcTaxWithAdjust()
     {
-        $input = 1008;
-        $rate = 8;
-        $adjust = -1;
-        $this->expected = 80.0;
-        $this->actual = $this->taxRuleService->calcTax($input, $rate, \Eccube\Entity\Master\RoundingType::ROUND, $adjust);
+        $input = '1008';
+        $rate = '8';
+        $adjust = '-1';
+        $this->expected = '80.00';
+        $this->actual = $this->taxRuleService->calcTax($input, $rate, RoundingType::ROUND, $adjust);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testGetTax()
     {
-        $input = 1000;
-        $this->expected = 100.0;
+        $input = '1000';
+        $this->expected = '100.00';
         $this->actual = $this->taxRuleService->getTax($input);
         $this->verify();
     }
 
+    #[Group(name: 'decimal')]
     public function testCalcIncTax()
     {
-        $input = 1000;
-        $this->expected = 1100.0;
+        $input = '1000';
+        $this->expected = '1100.00';
         $this->actual = $this->taxRuleService->getPriceIncTax($input);
         $this->verify();
     }

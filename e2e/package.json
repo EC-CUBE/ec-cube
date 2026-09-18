@@ -1,0 +1,25 @@
+{
+  "name": "eccube-plugin-e2e",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:install": "playwright test plugin-install",
+    "test:update": "playwright test plugin-update",
+    "test:extend": "playwright test plugin-extend",
+    "test:depend": "playwright test plugin-depend",
+    "test:assets": "playwright test plugin-assets",
+    "test:misc": "playwright test plugin-misc"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.5.0",
+    "@types/pg": "^8.23.1",
+    "mysql2": "^3.24.4",
+    "pg": "^8.23.0",
+    "tar": "^7.5.22",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "@otplib/preset-default": "^12.0.1"
+  }
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,44 +15,40 @@
 
 namespace Eccube\Tests\Repository;
 
+use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Eccube\Entity\Master\Work;
 use Eccube\Entity\Member;
 use Eccube\Repository\MemberRepository;
+use Eccube\Security\PasswordHasher\PasswordHasher;
 use Eccube\Tests\EccubeTestCase;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
 /**
  * MemberRepository test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class MemberRepositoryTest extends EccubeTestCase
+final class MemberRepositoryTest extends EccubeTestCase
 {
-    /** @var Member */
-    protected $Member;
-    /** @var MemberRepository */
-    protected $memberRepo;
+    protected ?Member $Member = null;
+    protected ?MemberRepository $memberRepo = null;
 
-    /** @var EncoderFactoryInterface */
-    protected $encoderFactory;
+    protected ?PasswordHasher $passwordHasher = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->encoderFactory = self::$container->get('security.encoder_factory');
-        $this->memberRepo = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
+        $this->passwordHasher = static::getContainer()->get(PasswordHasher::class);
+        $this->memberRepo = $this->entityManager->getRepository(Member::class);
         $this->Member = $this->memberRepo->find(1);
-        $Work = $this->entityManager->getRepository('Eccube\Entity\Master\Work')
-            ->find(\Eccube\Entity\Master\Work::ACTIVE);
-
+        $Work = $this->entityManager->getRepository(Work::class)
+            ->find(Work::ACTIVE);
         for ($i = 0; $i < 3; $i++) {
             $Member = new Member();
-            $salt = bin2hex(openssl_random_pseudo_bytes(5));
             $password = 'password';
-            $encoder = $this->encoderFactory->getEncoder($Member);
+            $password = $this->passwordHasher->hash($password);
             $Member
                 ->setLoginId('member-1')
-                ->setPassword($encoder->encodePassword($password, $salt))
-                ->setSalt($salt)
+                ->setPassword($password)
                 ->setSortNo($i)
                 ->setWork($Work);
             $this->entityManager->persist($Member);
@@ -96,7 +94,7 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->verify();
     }
 
-    public function testDownWithException()
+    public function testDownWithException(): never
     {
         $this->expectException(\Exception::class);
         $this->Member->setSortNo(0);
@@ -119,6 +117,7 @@ class MemberRepositoryTest extends EccubeTestCase
 
         // verify
         $member = $this->memberRepo->findOneBy(['login_id' => 'member-100']);
+        $this->assertInstanceOf(Member::class, $member);
         $this->actual = $member->getPassword();
         $this->expected = $Member->getPassword();
         $this->verify();
@@ -153,12 +152,12 @@ class MemberRepositoryTest extends EccubeTestCase
         $this->memberRepo->delete($Member);
 
         $Member = $this->memberRepo->find($id);
-        $this->assertNull($Member);
+        $this->assertNotInstanceOf(Member::class, $Member);
     }
 
     public function testDeleteWithException()
     {
-        if ($this->entityManager->getConnection()->getDatabasePlatform()->getName() == 'sqlite') {
+        if ($this->entityManager->getConnection()->getDatabasePlatform() instanceof SQLitePlatform) {
             $this->markTestSkipped('Can not support for sqlite3');
         }
 
@@ -176,7 +175,7 @@ class MemberRepositoryTest extends EccubeTestCase
     /**
      * https://github.com/EC-CUBE/ec-cube/issues/5119
      */
-    public function testDeleteWithException_SelfForeignKey()
+    public function testDeleteWithExceptionSelfForeignKey()
     {
         $Member1 = $this->createMember();
         $Member1->setCreator($Member1);
@@ -184,6 +183,6 @@ class MemberRepositoryTest extends EccubeTestCase
 
         // 削除できることを確認
         $this->memberRepo->delete($Member1);
-        self::assertNull($Member1->getId());
+        $this->assertNull($Member1->getId());
     }
 }

@@ -15,66 +15,61 @@ namespace Eccube\Service\PurchaseFlow;
 
 use Eccube\Entity\Customer;
 use Eccube\Entity\ItemHolderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * PurchaseFlowの実行中コンテキスト.
+ *
+ * @extends \SplObjectStorage<ItemHolderInterface, mixed>
  */
 class PurchaseContext extends \SplObjectStorage
 {
-    private $user;
+    private ?string $flowType = null;
 
-    private $originHolder;
+    public const ORDER_FLOW = 'order';
 
-    private $flowType;
+    public const SHOPPING_FLOW = 'shopping';
 
-    const ORDER_FLOW = 'order';
+    public const CART_FLOW = 'cart';
 
-    const SHOPPING_FLOW = 'shopping';
-
-    const CART_FLOW = 'cart';
-
-    public function __construct(ItemHolderInterface $originHolder = null, ?Customer $user = null)
-    {
-        $this->originHolder = $originHolder;
-        $this->user = $user;
+    public function __construct(
+        private readonly ?ItemHolderInterface $originHolder = null,
+        private readonly UserInterface|Customer|null $user = null,
+    ) {
     }
 
     /**
      * PurchaseFlow実行前の{@link ItemHolderInterface}を取得.
-     *
-     * @return ItemHolderInterface
      */
-    public function getOriginHolder()
+    public function getOriginHolder(): ?ItemHolderInterface
     {
         return $this->originHolder;
     }
 
     /**
      * 会員情報を取得.
-     *
-     * @return Customer
      */
-    public function getUser()
+    public function getUser(): Customer|UserInterface|null
     {
         return $this->user;
     }
 
-    public function setFlowType($flowType)
+    public function setFlowType(?string $flowType): void
     {
         $this->flowType = $flowType;
     }
 
-    public function isOrderFlow()
+    public function isOrderFlow(): bool
     {
         return $this->flowType === self::ORDER_FLOW;
     }
 
-    public function isShoppingFlow()
+    public function isShoppingFlow(): bool
     {
         return $this->flowType === self::SHOPPING_FLOW;
     }
 
-    public function isCartFlow()
+    public function isCartFlow(): bool
     {
         return $this->flowType === self::CART_FLOW;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,122 +15,111 @@
 
 namespace Eccube\Tests\Doctrine\ORM\Tools;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\ConnectionException;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
+use Doctrine\ORM\OptimisticLockException;
+use Eccube\Entity\Member;
+use Eccube\Entity\Product;
 use Eccube\Entity\ProductTag;
+use Eccube\Entity\Tag;
 use Eccube\Repository\MemberRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TagRepository;
 use Eccube\Tests\EccubeTestCase;
 use Knp\Component\Pager\PaginatorInterface;
 
-class PaginationTest extends EccubeTestCase
+final class PaginationTest extends EccubeTestCase
 {
-    /**
-     * @var array
-     */
-    protected $expectedIds = [];
+    protected ?array $expectedIds = null;
 
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
 
-    /**
-     * @var PaginatorInterface
-     */
-    protected $paginator;
+    protected ?PaginatorInterface $paginator = null;
 
-    /**
-     * @var TagRepository
-     */
-    protected $tagRepository;
+    protected ?TagRepository $tagRepository = null;
 
-    /**
-     * @var MemberRepository
-     */
-    protected $memberRepository;
+    protected ?MemberRepository $memberRepository = null;
 
     /**
      * {@inheritdoc}
      *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ConnectionException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-        $this->paginator = self::$container->get(PaginatorInterface::class);
-        $this->tagRepository = $this->entityManager->getRepository(\Eccube\Entity\Tag::class);
-        $this->memberRepository = $this->entityManager->getRepository(\Eccube\Entity\Member::class);
-
-        // mysqlの場合, トランザクション中にcreate tableを行うと暗黙的にcommitされてしまい, テストデータをロールバックできない
-        // そのため, create tableを行った後に, 再度トランザクションを開始するようにしている
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
+        $this->paginator = static::getContainer()->get(PaginatorInterface::class);
+        $this->tagRepository = $this->entityManager->getRepository(Tag::class);
+        $this->memberRepository = $this->entityManager->getRepository(Member::class);
+        // TEMPORARY テーブルを作成（暗黙的コミットを引き起こさない）
         /** @var EntityManager $em */
         $em = $this->entityManager;
         $conn = $em->getConnection();
-        if (!$conn->isConnected()) {
-            $conn->connect();
-        }
-        if ($conn->isTransactionActive()) {
-            $conn->rollback();
-        }
-
-        $this->dropTable($conn->getWrappedConnection());
-        $this->createTable($conn->getWrappedConnection());
-        $conn->beginTransaction();
-
+        $this->createTable($conn);
         // テスト用のエンティティを用意
         $config = $em->getConfiguration();
-        $driver = $config->newDefaultAnnotationDriver(__DIR__, false);
-        $chain = $config->getMetadataDriverImpl();
-        $chain->addDriver($driver, __NAMESPACE__);
-
+        $driver = new AttributeDriver([__DIR__]);
+        $config->setMetadataDriverImpl($driver);
         // 初期データより大きい値を指定
         $price02 = $this->getFaker()->randomNumber(9);
-        for ($i = 0; $i < 5; $i++) {
-            $Product = $this->createProduct(null, 3);
+        $products = $this->createProducts(5);
+        foreach ($products as $i => $Product) {
             $this->expectedIds[] = $Product->getId();
-
             $ProductClasses = $Product->getProductClasses();
             foreach ($ProductClasses as $ProductClass) {
                 // product.idの昇順になるよう, product_class.price02を設定する
-                $ProductClass->setPrice02($price02 - $i);
-                $em->flush($ProductClass);
+                $ProductClass->setPrice02(bcsub((string) $price02, (string) $i, 0));
             }
         }
+        $em->flush();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
+        // TEMPORARY テーブルを明示的に削除
         /** @var EntityManager $em */
         $em = $this->entityManager;
         if ($em) {
             $conn = $em->getConnection();
-            $conn->rollback();
-            $this->dropTable($conn->getWrappedConnection());
-            $conn->beginTransaction();
+            $dbalPlatform = $conn->getDatabasePlatform();
+            $platform = match (true) {
+                $dbalPlatform instanceof AbstractMySQLPlatform => 'mysql',
+                $dbalPlatform instanceof PostgreSQLPlatform => 'postgresql',
+                $dbalPlatform instanceof SQLitePlatform => 'sqlite',
+                default => '',
+            };
+            $this->dropTable($conn, $platform);
         }
-
         parent::tearDown();
     }
 
-    protected function createTable(\Doctrine\DBAL\Driver\Connection $conn)
+    protected function createTable(Connection $conn)
     {
-        $sql = 'CREATE TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        $sql = 'CREATE TEMPORARY TABLE test_entity(id INT, col INT, PRIMARY KEY(id));';
+        $conn->executeStatement($sql);
     }
 
-    protected function dropTable(\Doctrine\DBAL\Driver\Connection $conn)
+    protected function dropTable(Connection $conn, string $platform)
     {
-        $sql = 'DROP TABLE IF EXISTS test_entity;';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
+        // MySQLでは DROP TEMPORARY TABLE、SQLite/PostgreSQLでは DROP TABLE を使用
+        $sql = match ($platform) {
+            'mysql' => 'DROP TEMPORARY TABLE IF EXISTS test_entity;',
+            default => 'DROP TABLE IF EXISTS test_entity;',
+        };
+
+        $conn->executeStatement($sql);
     }
 
     /**
@@ -159,7 +150,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('product_class.price02 降順なので, id 昇順にソートされるはず');
-        $this->assertEquals($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertCount($pageMax, $this->actual, 'paginatorの結果は'.$pageMax.'件');
     }
 
     /**
@@ -185,7 +176,7 @@ class PaginationTest extends EccubeTestCase
         // テスト用のエンティティとjoinし,ソートする.
         $qb
             ->addSelect('COALESCE(test.col, 0) as HIDDEN col')
-            ->leftJoin('Eccube\Tests\Doctrine\ORM\Tools\TestEntity', 'test', 'WITH', 'p.id = test.id')
+            ->leftJoin(TestEntity::class, 'test', 'WITH', 'p.id = test.id')
             ->groupBy('p')
             ->addGroupBy('test')
             ->orderBy('col', 'DESC')
@@ -221,7 +212,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = array_slice($this->expectedIds, 0, $pageMax);
         $this->actual = $actualIds;
         $this->verify('test_entity.col 降順なので, id 昇順にソートされるはず');
-        $this->assertEquals($pageMax, count($this->actual), 'paginatorの結果は'.$pageMax.'件');
+        $this->assertCount($pageMax, $this->actual, 'paginatorの結果は'.$pageMax.'件');
     }
 
     /**
@@ -230,7 +221,13 @@ class PaginationTest extends EccubeTestCase
     public function testWhereWithJoinEntity()
     {
         // `新商品`のTagが登録されたProductを生成
-        $Tag = $this->tagRepository->find(1);
+        $MaxTag = $this->tagRepository->findOneBy([], ['sort_no' => 'DESC']);
+        $Tag = new Tag();
+        $Tag->setName('join-test');
+        $Tag->setSortNo($MaxTag->getSortNo() + 1);
+        $this->entityManager->persist($Tag);
+        $this->entityManager->flush();
+
         $Member = $this->memberRepository->find(2);
         $Product = $this->productRepository->find(reset($this->expectedIds));
 
@@ -241,7 +238,7 @@ class PaginationTest extends EccubeTestCase
         $Product->addProductTag($ProductTag);
 
         $this->entityManager->persist($ProductTag);
-        $this->entityManager->flush([$Product, $ProductTag]);
+        $this->entityManager->flush();
 
         $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
@@ -272,7 +269,7 @@ class PaginationTest extends EccubeTestCase
         $this->expected = $expectedIds;
         $this->actual = $actualIds;
         // tagが登録されたProductは1件のみ.
-        $this->assertTrue(count($this->actual) === 1);
+        $this->assertCount(1, $this->actual);
         $this->verify();
     }
 
@@ -290,7 +287,7 @@ class PaginationTest extends EccubeTestCase
         $qb = $this->productRepository->getQueryBuilderBySearchData([]);
 
         // テスト用のエンティティを検索するクエリ
-        $repository = $this->entityManager->getRepository('Eccube\Tests\Doctrine\ORM\Tools\TestEntity');
+        $repository = $this->entityManager->getRepository(TestEntity::class);
         $testQb = $repository->createQueryBuilder('test');
         $testQb->select('test.id');
         $testQb->where('test.col = :col');
@@ -324,30 +321,25 @@ class PaginationTest extends EccubeTestCase
         $this->expected = $expectedIds;
         $this->actual = $actualIds;
         // 1件のみマッチする
-        $this->assertTrue(count($this->actual) === 1);
+        $this->assertCount(1, $this->actual);
         $this->verify();
     }
 }
 
 /**
  * テスト用のエンティティ
- *
- * @ORM\Entity(repositoryClass="Eccube\Tests\Doctrine\ORM\Tools\TestRepository")
- * @ORM\Table(name="test_entity")
  */
+#[ORM\Table(name: 'test_entity')]
+#[ORM\Entity(repositoryClass: TestRepository::class)]
 class TestEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    public $id;
+    #[ORM\Id]
+    #[ORM\Column(type: Types::INTEGER)]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    public ?int $id = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    public $col;
+    #[ORM\Column(type: Types::INTEGER)]
+    public ?int $col = null;
 }
 
 class TestRepository extends EntityRepository

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,6 +15,7 @@
 
 namespace Eccube\Tests\Service\PurchaseFlow\Processor;
 
+use Eccube\Entity\BaseInfo;
 use Eccube\Entity\Order;
 use Eccube\Entity\OrderItem;
 use Eccube\Entity\Product;
@@ -23,35 +26,27 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\Fixture\Generator;
 
-class DeliveryFeeProcessorTest extends EccubeTestCase
+final class DeliveryFeeProcessorTest extends EccubeTestCase
 {
-    /** @var BaseInfoRepository */
-    protected $BaseInfoRepository;
-    /**
-     * @var Product
-     */
-    protected $Product;
+    protected ?BaseInfoRepository $BaseInfoRepository = null;
+    protected ?Product $Product = null;
 
-    /**
-     * @var ProductClass
-     */
-    protected $ProductClass;
+    protected ?ProductClass $ProductClass = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->BaseInfoRepository = $this->entityManager->getRepository(\Eccube\Entity\BaseInfo::class);
+        $this->BaseInfoRepository = $this->entityManager->getRepository(BaseInfo::class);
         $this->Product = $this->createProduct('テスト商品', 1);
         $this->ProductClass = $this->Product->getProductClasses()[0];
     }
 
     public function testProcess()
     {
-        $processor = self::$container->get(DeliveryFeePreprocessor::class);
+        $processor = static::getContainer()->get(DeliveryFeePreprocessor::class);
         $Order = $this->createOrder($this->createCustomer());
         /*
          * @var OrderItem
@@ -62,7 +57,7 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
             }
         }
         $processor->process($Order, new PurchaseContext());
-        self::assertNotEmpty($this->getDeliveryFees($Order));
+        $this->assertNotEmpty($this->getDeliveryFees($Order));
     }
 
     public function testProcessWithDeliveryFeePerProduct()
@@ -72,13 +67,13 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
         $this->entityManager->persist($BaseInfo);
         $this->entityManager->flush($BaseInfo);
         $deliveryFee = 10000;
-        $this->ProductClass->setDeliveryFee($deliveryFee);
+        $this->ProductClass->setDeliveryFee((string) $deliveryFee);
         $this->entityManager->persist($this->ProductClass);
         $this->entityManager->flush($this->ProductClass);
 
-        $processor = self::$container->get(DeliveryFeePreprocessor::class);
+        $processor = static::getContainer()->get(DeliveryFeePreprocessor::class);
         /** @var Order $Order */
-        $Order = self::$container->get(Generator::class)->createOrder($this->createCustomer(), [$this->ProductClass]);
+        $Order = static::getContainer()->get(Generator::class)->createOrder($this->createCustomer(), [$this->ProductClass]);
 
         $quantity = 0;
         foreach ($Order->getOrderItems() as $orderItem) {
@@ -107,8 +102,6 @@ class DeliveryFeeProcessorTest extends EccubeTestCase
 
     private function getDeliveryFees(Order $Order)
     {
-        return array_filter($Order->getOrderItems()->toArray(), function ($OrderItem) {
-            return $OrderItem->isDeliveryFee();
-        });
+        return array_filter($Order->getOrderItems()->toArray(), fn ($OrderItem) => $OrderItem->isDeliveryFee());
     }
 }

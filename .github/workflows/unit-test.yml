@@ -1,17 +1,11 @@
 name: Unit test for EC-CUBE
+
 on:
-  push:
-    branches:
-      - '*'
-    tags:
-      - '*'
-    paths:
-      - '**'
-      - '!*.md'
-  pull_request:
-    paths:
-      - '**'
-      - '!*.md'
+  workflow_call:
+
+permissions:
+  contents: read
+
 jobs:
   phpunit:
     name: PHPUnit
@@ -19,85 +13,279 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: [ ubuntu-18.04 ]
-        php: [ 7.1, 7.2, 7.3, 7.4 ]
-        db: [ mysql, pgsql, sqlite3 ]
+        operating-system: [ ubuntu-24.04 ]
+        php: [ '8.2', '8.3', '8.4', '8.5' ]
+        db: [ mysql, pgsql, pgsql13, sqlite3 ]
         include:
+          ## database_version: setup アクションでインストールするバージョン
+          ## database_server_version: Doctrine の server_version 設定値
           - db: mysql
             database_url: mysql://root:password@127.0.0.1:3306/eccube_db
-            database_server_version: 5
+            database_version: '8.4'
+            database_server_version: 8
+            database_charset: utf8mb4
           - db: pgsql
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
-            database_server_version: 11
+            database_version: '18'
+            database_server_version: 18
+            database_charset: utf8
+          # サポート最小バージョンの PostgreSQL でも検証する
+          - db: pgsql13
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_version: '13'
+            database_server_version: 13
+            database_charset: utf8
           - db: sqlite3
             database_url: sqlite:///var/eccube.db
             database_server_version: 3
-
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      postgres:
-        image: postgres:11
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+            database_charset: utf8
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          persist-credentials: false
+
+      # CVE-2026-24765 (GHSA-vvj3-c3rp-c85p) 対策 (多層防御):
+      # 悪意ある *.coverage ファイルが PHPUnit の PHPT ランナーで unserialize され
+      # RCE に至るのを防ぐため、テスト実行前に削除する。
+      - name: Remove potentially malicious coverage files
+        run: find . -name "*.coverage" -delete
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt/同梱版) でインストールする
+      - name: Setup MySQL
+        if: matrix.db == 'mysql'
+        uses: ankane/setup-mysql@7fef9e1e6d7041dccbe4cda8e2c5940e49db8f30  # v1
+        with:
+          mysql-version: ${{ matrix.database_version }}
+      - name: Configure MySQL
+        if: matrix.db == 'mysql'
+        run: |
+          for _ in $(seq 1 30); do mysqladmin ping -h 127.0.0.1 --silent && break; sleep 1; done
+          mysqladmin ping -h 127.0.0.1 --silent || { echo 'MySQL did not become ready within 30s'; exit 1; }
+          ## DATABASE_URL は TCP(127.0.0.1) 接続のため、TCP 経路でアクセスする root@'%' にも認証情報を設定する
+          sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'password'; CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED WITH caching_sha2_password BY 'password'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+          ## DATABASE_URL と同一経路 (TCP/root/password) で接続できることを検証
+          mysql -h 127.0.0.1 -P 3306 -u root -ppassword -e 'SELECT VERSION()'
+
+      - name: Setup PostgreSQL
+        if: startsWith(matrix.db, 'pgsql')
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: ${{ matrix.database_version }}
+          user: postgres
+      - name: Configure PostgreSQL
+        if: startsWith(matrix.db, 'pgsql')
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: ${{ matrix.php }}
+          github-token: ''
+          extensions: :xdebug, redis
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
 
-      - name: composer install
-        run: composer install --dev --no-interaction -o --apcu-autoloader
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Cache Database Schema
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        id: schema-cache
+        with:
+          path: |
+            var/cache/test/schema.sql
+            var/cache/test/db_populated
+          key: ${{ runner.os }}-schema-${{ hashFiles('src/Eccube/Entity/**/*.php', 'app/Customize/Entity/**/*.php') }}
+          restore-keys: |
+            ${{ runner.os }}-schema-
 
       - name: Setup EC-CUBE
         env:
+          APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          # SQLite はファイルベースで CREATE DATABASE が無く, DBAL 4 では
+          # SQLitePlatform::getCreateDatabaseSQL が未サポートで例外になるためスキップする
+          # (schema:create が DB ファイルを生成する)。
+          if [ "${{ matrix.db }}" != 'sqlite3' ]; then
+            bin/console doctrine:database:create
+          fi
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
+
+      # Agent Commerce (#6794) の UCP スキーマ契約テスト用に UCP 公式 schema を取得する。
+      # リポジトリには同梱しない (Apache-2.0)。docblock の参照バージョンと一致するリリースタグ
+      # v2026-04-08 に固定し、var/ (gitignore) へ clone する。未取得環境では該当テストは skip。
+      - name: Fetch UCP spec schemas (tag v2026-04-08)
+        run: |
+          git clone --filter=blob:none --branch v2026-04-08 --single-branch --quiet \
+            https://github.com/Universal-Commerce-Protocol/ucp.git var/agent-commerce-spec/ucp
+
+      - name: PHPUnit
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
+        with:
+          timeout_minutes: 10
+          max_attempts: 2
+          retry_on: error
+          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service --exclude-group mcp
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.11025'
+      - name: PHPUnit (cache-clear)
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.11025'
+        run: |
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group cache-clear
+          php -c php.ini vendor/bin/phpunit --group cache-clear-install
+      - name: PHPUnit (update-schema-doctrine)
+        if: startsWith(matrix.db, 'pgsql')
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.11025'
+        run: |
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
+          php -c php.ini vendor/bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+      ## XXX MySQL で Syntax error or access violation: 1305 SAVEPOINT DOCTRINE2_SAVEPOINT_3 does not exist が
+      ## 発生するため \DAMA\DoctrineTestBundle\PHPUnit\PHPUnitListener を削除する
+      ## see https://github.com/dmaicher/doctrine-test-bundle/issues/58#issuecomment-391081408
+      - run: sed -e '/DoctrineTestBundle/d' phpunit.xml.dist > phpunit.xml
+        if: ${{ matrix.db == 'mysql' }}
+      - name: PHPUnit (plugin-service)
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_CHARSET: ${{ matrix.database_charset }}
+          MAILER_URL: 'smtp://127.0.0.11025'
+        run: |
+          rm -r app/Plugin/*
+          git checkout app/Plugin
+          rm -rf var/cache var/build var/runtime
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group plugin-service
+
+  ## MCP は Api44 (OAuth2 / scope / allow_list) が前提のため、 メインのマトリクスからは
+  ## --exclude-group mcp で外し、 ここで Api44 を導入した専用環境で --group mcp を実走する。
+  ## Api44 は packagist 非公開のため、 eccube-api4 を checkout → mock-package-api で配信して
+  ## eccube:composer:require する (Api44 自身の CI と同じ方式)。
+  mcp:
+    name: PHPUnit (mcp)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+
+      ## MCP の scope 認可と /admin/mcp 用 OAuth2 firewall は Api44 の feat/mcp-server-scorp に実装されており、
+      ## eccube-api4 の 4.4 にはまだ無い (このブランチに無いと firewall が prepend されず /admin/mcp が
+      ## ログインへ 302 リダイレクトし、 McpFirewallContractTest 等が 401/200 を得られず失敗する)。
+      ## 当該ブランチが 4.4 にマージされたら ref を '4.4' に戻すこと。
+      - name: Checkout Api44 plugin
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          repository: 'EC-CUBE/eccube-api4'
+          ref: 'feat/mcp-server-scorp'
+          path: 'eccube-api4'
+
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '16'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
+        with:
+          php-version: '8.3'
+          github-token: ''
+          extensions: :xdebug, redis
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Setup mock-package-api
+        run: |
+          # eccube-api4 自身の CI と同じ形式で固める (.git/.github 等の dotfiles を除外し ./* で固める)。
+          # .git を含めると composer の dist 展開が失敗する (Install of ec-cube/api44 failed)。
+          ( cd eccube-api4 && tar cvzf "$GITHUB_WORKSPACE/Api44.tar.gz" ./* )
+          mkdir -p /tmp/repos
+          cp "$GITHUB_WORKSPACE/Api44.tar.gz" /tmp/repos/Api44.tgz
+          docker run --name package-api -d -v /tmp/repos:/repos -e MOCK_REPO_DIR=/repos -p 8080:8080 eccube/mock-package-api:composer2
+
+      - name: Setup EC-CUBE
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          DATABASE_CHARSET: utf8
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           bin/console doctrine:database:create
           bin/console doctrine:schema:create
           bin/console eccube:fixtures:load
 
-      - name: PHPUnit
+      - name: Install Api44
         env:
           APP_ENV: 'test'
-          DATABASE_URL: ${{ matrix.database_url }}
-          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          DATABASE_CHARSET: utf8
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          USE_SELFSIGNED_SSL_CERTIFICATE: '1'
+        run: |
+          bin/console doctrine:query:sql "update dtb_base_info set authentication_key='dummy'"
+          bin/console eccube:composer:require ec-cube/api44
+          bin/console eccube:plugin:enable --code=Api44
+          bin/console doctrine:schema:update --force --dump-sql
+          bin/console cache:clear --no-warmup
+          chmod 600 app/PluginData/Api44/oauth/private.key
+
+      - name: PHPUnit (mcp)
+        env:
+          APP_ENV: 'test'
+          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
+          DATABASE_SERVER_VERSION: 16
+          DATABASE_CHARSET: utf8
           MAILER_URL: 'smtp://127.0.0.11025'
         run: |
-          bin/phpunit --exclude-group cache-clear,cache-clear-install,update-schema-doctrine
-          bin/phpunit --group cache-clear
-          bin/phpunit --group cache-clear-install
-          bin/phpunit --group update-schema-doctrine --exclude-group update-schema-doctrine-install
-          bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithNoProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testInstallPluginWithProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithNoProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testEnablePluginWithProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithNoProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testDisablePluginWithProxy
-          bin/phpunit --group update-schema-doctrine-install --filter=testCreateEntityAndTrait
+          echo "session.save_path=$PWD/var/sessions/test" > php.ini
+          echo "memory_limit=512M" >> php.ini
+          php -c php.ini vendor/bin/phpunit --group mcp

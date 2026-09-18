@@ -27,43 +27,41 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NewsType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('publish_date', DateTimeType::class, [
-                'date_widget' => 'choice',
+                'widget' => 'single_text',
                 'input' => 'datetime',
-                'format' => 'yyyy-MM-dd hh:mm',
                 'years' => range($this->eccubeConfig['eccube_news_start_year'], date('Y') + 3),
+                'with_seconds' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
             ])
             ->add('title', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_mtext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                 ],
             ])
             ->add('url', TextType::class, [
                 'required' => false,
                 'constraints' => [
                     new Assert\Url(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_mtext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),
                 ],
             ])
             ->add('link_method', CheckboxType::class, [
@@ -73,11 +71,12 @@ class NewsType extends AbstractType
             ])
             ->add('description', TextareaType::class, [
                 'required' => false,
+                'purify_html' => true,
                 'attr' => [
                     'rows' => 8,
                 ],
                 'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_ltext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('visible', ChoiceType::class, [
@@ -91,7 +90,8 @@ class NewsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => News::class,
@@ -101,7 +101,8 @@ class NewsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_news';
     }

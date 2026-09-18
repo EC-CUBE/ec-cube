@@ -7,20 +7,29 @@ volumes:
 services:
   ec-cube:
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       DATABASE_URL: "postgres://dbuser:secret@postgres/eccubedb"
-      DATABASE_SERVER_VERSION: 10
+      DATABASE_SERVER_VERSION: 18
+      DATABASE_CHARSET: 'utf8'
 
   postgres:
-    image: postgres:10
+    image: postgres:18
     environment:
-      POSTGRES_DB: eccubedb
       POSTGRES_USER: dbuser
       POSTGRES_PASSWORD: secret
+      # postgres:18 で PGDATA のデフォルトレイアウトが変わり、従来の volume
+      # マウント先 (/var/lib/postgresql/data) だけでは起動に失敗するため明示する
+      PGDATA: /var/lib/postgresql/data
     ports:
       - 15432:5432
     volumes:
       - pg-database:/var/lib/postgresql/data
     networks:
       - backend
+    healthcheck:
+      test: pg_isready -U dbuser
+      interval: 3s
+      timeout: 3s
+      retries: 3

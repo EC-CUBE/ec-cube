@@ -1,0 +1,1 @@
+{"name":"ec-cube\/emperor","description":"\u30a8\u30f3\u30da\u30e9\u30fc","version":"1.0.0","type":"eccube-plugin","require":{"ec-cube\/horizon":"~1.0.0"},"extra":{"code":"Emperor","id":101}}

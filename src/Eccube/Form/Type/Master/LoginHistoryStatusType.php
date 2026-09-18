@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\LoginHistoryStatus;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,10 +23,11 @@ class LoginHistoryStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\LoginHistoryStatus',
+            'class' => LoginHistoryStatus::class,
             'expanded' => false,
         ]);
     }
@@ -33,16 +35,9 @@ class LoginHistoryStatusType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    #[\Override]
+    public function getParent(): ?string
     {
         return MasterType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'login_history_status';
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,8 +16,12 @@
 namespace Eccube\Tests\Repository;
 
 use Eccube\Entity\CustomerFavoriteProduct;
-use Eccube\Tests\EccubeTestCase;
+use Eccube\Entity\Product;
+use Eccube\Entity\ProductTag;
+use Eccube\Entity\Tag;
 use Eccube\Repository\ProductRepository;
+use Eccube\Repository\TagRepository;
+use Eccube\Tests\EccubeTestCase;
 
 /**
  * ProductRepository test cases.
@@ -24,20 +30,18 @@ use Eccube\Repository\ProductRepository;
  */
 abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
 {
-    /**
-     * @var ProductRepository
-     */
-    protected $productRepository;
+    protected ?ProductRepository $productRepository = null;
+
+    protected ?TagRepository $tagRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->productRepository = $this->entityManager->getRepository(\Eccube\Entity\Product::class);
-
+        $this->productRepository = $this->entityManager->getRepository(Product::class);
+        $this->tagRepository = $this->entityManager->getRepository(Tag::class);
         $tables = [
             'dtb_product_image',
             'dtb_product_stock',
@@ -46,9 +50,10 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
             'dtb_product',
         ];
         $this->deleteAllRows($tables);
-        for ($i = 0; $i < 3; $i++) {
-            $this->createProduct('商品-'.$i);
-        }
+        $this->createProducts(3, [
+            'nameTemplate' => fn (int $i): string => '商品-'.$i,
+            'withCategoriesAndTags' => true,
+        ]);
     }
 
     /**
@@ -64,6 +69,29 @@ abstract class AbstractProductRepositoryTestCase extends EccubeTestCase
             $Fav->setProduct($Product)
                 ->setCustomer($Customer);
             $this->entityManager->persist($Fav);
+        }
+        $this->entityManager->flush();
+    }
+
+    /**
+     * 商品にタグをつける
+     */
+    protected function setProductTags(Product $Product, array $tagIds)
+    {
+        $ProductTags = $Product->getProductTag();
+        foreach ($ProductTags as $ProductTag) {
+            $Product->removeProductTag($ProductTag);
+            $this->entityManager->remove($ProductTag);
+        }
+
+        $Tags = $this->tagRepository->findBy(['id' => $tagIds]);
+        foreach ($Tags as $Tag) {
+            $ProductTag = new ProductTag();
+            $ProductTag
+                ->setProduct($Product)
+                ->setTag($Tag);
+            $Product->addProductTag($ProductTag);
+            $this->entityManager->persist($ProductTag);
         }
         $this->entityManager->flush();
     }

@@ -13,73 +13,59 @@
 
 namespace Eccube\Controller;
 
-use Eccube\Entity\Customer;
+use Eccube\Entity\BaseInfo;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Front\NonMemberType;
 use Eccube\Form\Validator\Email;
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Service\CartService;
 use Eccube\Service\OrderHelper;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class NonMemberShoppingController extends AbstractShoppingController
 {
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var PrefRepository
-     */
-    protected $prefRepository;
-
-    /**
-     * @var OrderHelper
-     */
-    protected $orderHelper;
-
-    /**
-     * @var CartService
-     */
-    protected $cartService;
+    protected BaseInfo $BaseInfo;
 
     /**
      * NonMemberShoppingController constructor.
-     *
-     * @param ValidatorInterface $validator
-     * @param PrefRepository $prefRepository
-     * @param OrderHelper $orderHelper
-     * @param CartService $cartService
      */
     public function __construct(
-        ValidatorInterface $validator,
-        PrefRepository $prefRepository,
-        OrderHelper $orderHelper,
-        CartService $cartService
+        protected ValidatorInterface $validator,
+        protected PrefRepository $prefRepository,
+        protected OrderHelper $orderHelper,
+        protected CartService $cartService,
+        BaseInfoRepository $baseInfoRepository,
     ) {
-        $this->validator = $validator;
-        $this->prefRepository = $prefRepository;
-        $this->orderHelper = $orderHelper;
-        $this->cartService = $cartService;
+        $this->BaseInfo = $baseInfoRepository->get();
     }
 
     /**
      * 非会員処理
      *
-     * @Route("/shopping/nonmember", name="shopping_nonmember", methods={"GET", "POST"})
-     * @Template("Shopping/nonmember.twig")
+     * @return RedirectResponse|Response|array<string, mixed>
      */
-    public function index(Request $request)
+    #[Route(path: '/shopping/nonmember', name: 'shopping_nonmember', methods: ['GET', 'POST'])]
+    #[Template(template: 'Shopping/nonmember.twig')]
+    public function index(Request $request): RedirectResponse|Response|array
     {
         // ログイン済みの場合は, 購入画面へリダイレクト.
         if ($this->isGranted('ROLE_USER')) {
             return $this->redirectToRoute('shopping');
+        }
+
+        // ゲスト購入が無効の場合は, ログイン画面へリダイレクト.
+        if (!$this->BaseInfo->isOptionGuestPurchase()) {
+            return $this->redirectToRoute('shopping_login');
         }
 
         // カートチェック.
@@ -96,7 +82,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_NONMEMBER_INITIALIZE);
 
         $form = $builder->getForm();
 
@@ -117,7 +103,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_NONMEMBER_COMPLETE);
 
             if ($event->getResponse() !== null) {
                 return $event->getResponse();
@@ -136,9 +122,10 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * お客様情報の変更(非会員)
      *
-     * @Route("/shopping/customer", name="shopping_customer", methods={"POST"})
+     * @throws \Exception
      */
-    public function customer(Request $request)
+    #[Route(path: '/shopping/customer', name: 'shopping_customer', methods: ['POST'])]
+    public function customer(Request $request): JsonResponse|RedirectResponse
     {
         if (!$request->isXmlHttpRequest()) {
             return $this->json(['status' => 'NG'], 400);
@@ -185,21 +172,19 @@ class NonMemberShoppingController extends AbstractShoppingController
 
             $this->entityManager->flush();
 
-            $Customer = new Customer();
-            $Customer
-                ->setName01($data['customer_name01'])
-                ->setName02($data['customer_name02'])
-                ->setKana01($data['customer_kana01'])
-                ->setKana02($data['customer_kana02'])
-                ->setCompanyName($data['customer_company_name'])
-                ->setPhoneNumber($data['customer_phone_number'])
-                ->setPostalCode($data['customer_postal_code'])
-                ->setPref($pref)
-                ->setAddr01($data['customer_addr01'])
-                ->setAddr02($data['customer_addr02'])
-                ->setEmail($data['customer_email']);
-
-            $this->session->set(OrderHelper::SESSION_NON_MEMBER, $Customer);
+            $this->session->set(OrderHelper::SESSION_NON_MEMBER, [
+                'name01' => $data['customer_name01'],
+                'name02' => $data['customer_name02'],
+                'kana01' => $data['customer_kana01'],
+                'kana02' => $data['customer_kana02'],
+                'company_name' => $data['customer_company_name'],
+                'phone_number' => $data['customer_phone_number'],
+                'postal_code' => $data['customer_postal_code'],
+                'pref' => $pref,
+                'addr01' => $data['customer_addr01'],
+                'addr02' => $data['customer_addr02'],
+                'email' => $data['customer_email'],
+            ]);
 
             $event = new EventArgs(
                 [
@@ -208,7 +193,7 @@ class NonMemberShoppingController extends AbstractShoppingController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::FRONT_SHOPPING_CUSTOMER_INITIALIZE);
             log_info('非会員お客様情報変更処理完了', [$Order->getId()]);
             $message = ['status' => 'OK', 'kana01' => $data['customer_kana01'], 'kana02' => $data['customer_kana02']];
 
@@ -225,11 +210,11 @@ class NonMemberShoppingController extends AbstractShoppingController
     /**
      * 非会員でのお客様情報変更時の入力チェック
      *
-     * @param array $data リクエストパラメータ
+     * @param array<mixed> $data リクエストパラメータ
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface[]
+     * @return ConstraintViolationListInterface[]
      */
-    protected function customerValidation(array &$data)
+    protected function customerValidation(array &$data): array
     {
         // 入力チェック
         $errors = [];
@@ -238,10 +223,8 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_name01'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_name_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form_error.not_contain_spaces']
-                ),
+                new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
             ]
         );
 
@@ -249,35 +232,41 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_name02'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_name_len']]),
-                new Assert\Regex(
-                    ['pattern' => '/^[^\s ]+$/u', 'message' => 'form_error.not_contain_spaces']
-                ),
+                new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
             ]
         );
 
-        $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        if (is_string($data['customer_kana01'])) {
+            $data['customer_kana01'] = mb_convert_kana($data['customer_kana01'], 'CV', 'utf-8');
+        } else {
+            $data['customer_kana01'] = '';
+        }
         $errors[] = $this->validator->validate(
             $data['customer_kana01'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+                new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
+                new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u'),
             ]
         );
-        $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        if (is_string($data['customer_kana02'])) {
+            $data['customer_kana02'] = mb_convert_kana($data['customer_kana02'], 'CV', 'utf-8');
+        } else {
+            $data['customer_kana02'] = '';
+        }
         $errors[] = $this->validator->validate(
             $data['customer_kana02'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_kana_len']]),
-                new Assert\Regex(['pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u']),
+                new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
+                new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u'),
             ]);
 
         $errors[] = $this->validator->validate(
             $data['customer_company_name'],
             [
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
             ]
         );
 
@@ -285,9 +274,9 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_phone_number'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(type: 'digit', message: 'form_error.numeric_only'),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_tel_len_max']]
+                    max: $this->eccubeConfig['eccube_tel_len_max']
                 ),
             ]
         );
@@ -296,9 +285,9 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_postal_code'],
             [
                 new Assert\NotBlank(),
-                new Assert\Type(['type' => 'numeric', 'message' => 'form_error.numeric_only']),
+                new Assert\Type(type: 'digit', message: 'form_error.numeric_only'),
                 new Assert\Length(
-                    ['max' => $this->eccubeConfig['eccube_postal_code']]
+                    max: $this->eccubeConfig['eccube_postal_code']
                 ),
             ]
         );
@@ -307,7 +296,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_addr01'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_address1_len']]),
+                new Assert\Length(max: $this->eccubeConfig['eccube_address1_len']),
             ]
         );
 
@@ -315,7 +304,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_addr02'],
             [
                 new Assert\NotBlank(),
-                new Assert\Length(['max' => $this->eccubeConfig['eccube_address2_len']]),
+                new Assert\Length(max: $this->eccubeConfig['eccube_address2_len']),
             ]
         );
 
@@ -323,7 +312,7 @@ class NonMemberShoppingController extends AbstractShoppingController
             $data['customer_email'],
             [
                 new Assert\NotBlank(),
-                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
             ]
         );
 

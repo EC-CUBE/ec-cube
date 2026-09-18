@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,25 +16,25 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Entity\Master\DeviceType;
+use Eccube\Entity\PageLayout;
 use Eccube\Form\Type\Admin\LayoutType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class LayoutTypeTest extends AbstractTypeTestCase
+final class LayoutTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => 'テスト用レイアウト',
         'DeviceType' => DeviceType::DEVICE_TYPE_PC,
         'Page' => 2,
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(LayoutType::class, null, [
@@ -67,8 +69,9 @@ class LayoutTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPageInvalid()
     {
-        $PageLayout = $this->entityManager->getRepository('Eccube\Entity\PageLayout')
+        $PageLayout = $this->entityManager->getRepository(PageLayout::class)
             ->findOneBy([], ['page_id' => 'DESC']);
+        $this->assertInstanceOf(PageLayout::class, $PageLayout);
         $id = $PageLayout->getPageId() + 1;
 
         $this->formData['Page'] = $id;

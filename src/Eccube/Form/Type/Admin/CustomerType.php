@@ -41,24 +41,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CustomerType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * CustomerType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', NameType::class, [
@@ -70,9 +65,7 @@ class CustomerType extends AbstractType
             ->add('company_name', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class, [
@@ -88,7 +81,8 @@ class CustomerType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                    new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_email_len']),
                 ],
                 'attr' => [
                     'placeholder' => 'common.mail_address_sample',
@@ -105,24 +99,13 @@ class CustomerType extends AbstractType
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\LessThanOrEqual([
-                        'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form_error.select_is_future_or_now_date',
-                    ]),
+                    new Assert\LessThanOrEqual(value: date('Y-m-d', strtotime('-1 day')), message: 'form_error.select_is_future_or_now_date'),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
             ])
-            ->add('password', RepeatedPasswordType::class, [
-                // 'type' => 'password',
-                'first_options' => [
-                    'label' => 'member.label.pass',
-                ],
-                'second_options' => [
-                    'label' => 'member.label.verify_pass',
-                ],
-            ])
+            ->add('plain_password', RepeatedPasswordType::class)
             ->add('status', CustomerStatusType::class, [
                 'required' => true,
                 'constraints' => [
@@ -135,32 +118,28 @@ class CustomerType extends AbstractType
                 [
                     'required' => false,
                     'constraints' => [
-                        new Assert\Regex([
-                            'pattern' => "/^\d+$/u",
-                            'message' => 'form_error.numeric_only',
-                        ]),
+                        new Assert\NotBlank(),
+                        new Assert\Range(min: '-'.$this->eccubeConfig['eccube_price_max'], max: $this->eccubeConfig['eccube_price_max']),
                     ],
                 ]
             )
             ->add('note', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ]);
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $Customer = $event->getData();
 
             // ポイント数が入力されていない場合0を登録
@@ -173,17 +152,19 @@ class CustomerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => Customer::class,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_customer';
     }

@@ -19,9 +19,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PaymentMethodPass implements CompilerPassInterface
 {
-    const PAYMENT_METHOD_TAG = 'eccube.payment.method';
+    public const PAYMENT_METHOD_TAG = 'eccube.payment.method';
 
-    public function process(ContainerBuilder $container)
+    /**
+     * @throws \InvalidArgumentException
+     */
+    #[\Override]
+    public function process(ContainerBuilder $container): void
     {
         $ids = $container->findTaggedServiceIds(self::PAYMENT_METHOD_TAG);
 

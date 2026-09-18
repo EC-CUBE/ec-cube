@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,16 +16,15 @@
 namespace Eccube\Tests\Web\Mypage;
 
 use Eccube\Entity\Customer;
+use Eccube\Entity\CustomerAddress;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
-class DeliveryControllerTest extends AbstractWebTestCase
+final class DeliveryControllerTest extends AbstractWebTestCase
 {
-    /**
-     * @var Customer
-     */
-    protected $Customer;
+    protected ?Customer $Customer = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->Customer = $this->createCustomer();
@@ -33,10 +34,9 @@ class DeliveryControllerTest extends AbstractWebTestCase
     protected function createFormData()
     {
         $faker = $this->getFaker();
-        $email = $faker->safeEmail;
-        $password = $faker->lexify('????????');
+        $faker->lexify('????????');
 
-        $form = [
+        return [
             'name' => [
                 'name01' => $faker->lastName,
                 'name02' => $faker->firstName,
@@ -55,8 +55,6 @@ class DeliveryControllerTest extends AbstractWebTestCase
             'phone_number' => $faker->phoneNumber,
             '_token' => 'dummy',
         ];
-
-        return $form;
     }
 
     public function testIndex()
@@ -65,7 +63,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -77,7 +75,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery_new')
         );
         $this->assertTrue($client->getResponse()->isSuccessful());
@@ -89,8 +87,8 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $client = $this->client;
 
         $form = $this->createFormData();
-        $crawler = $client->request(
-            'POST',
+        $client->request(
+            Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_new'),
             ['customer_address' => $form]
         );
@@ -103,12 +101,13 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
         $client = $this->client;
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
 
-        $crawler = $client->request(
-            'GET',
+        $client->request(
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()])
         );
 
@@ -119,13 +118,14 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
 
         $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'POST',
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
+        $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('mypage_delivery_edit', ['id' => $CustomerAddress->getId()]),
             ['customer_address' => $form]
         );
@@ -141,29 +141,30 @@ class DeliveryControllerTest extends AbstractWebTestCase
     {
         $this->logInTo($this->Customer);
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->findOneBy(
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->findOneBy(
             ['Customer' => $this->Customer]
         );
+        $this->assertInstanceOf(CustomerAddress::class, $CustomerAddress);
         $id = $CustomerAddress->getId();
 
-        $form = $this->createFormData();
-        $crawler = $this->client->request(
-            'DELETE',
+        $this->createFormData();
+        $this->client->request(
+            Request::METHOD_DELETE,
             $this->generateUrl('mypage_delivery_delete', ['id' => $id])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('mypage_delivery')));
 
-        $CustomerAddress = $this->entityManager->getRepository(\Eccube\Entity\CustomerAddress::class)->find($id);
-        $this->assertNull($CustomerAddress);
+        $CustomerAddress = $this->entityManager->getRepository(CustomerAddress::class)->find($id);
+        $this->assertNotInstanceOf(CustomerAddress::class, $CustomerAddress);
     }
 
     public function testDeleteWithFailure()
     {
         $this->logInTo($this->Customer);
 
-        $crawler = $this->client->request(
-            'DELETE',
+        $this->client->request(
+            Request::METHOD_DELETE,
             $this->generateUrl('mypage_delivery_delete', ['id' => 999999999])
         );
 
@@ -180,7 +181,7 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->logInTo($this->Customer);
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
 
@@ -188,13 +189,13 @@ class DeliveryControllerTest extends AbstractWebTestCase
         $this->assertCount(0, $crawler->filter('span.ec-errorMessage'));
 
         // お届け先上限まで登録
-        $max = self::$container->getParameter('eccube_deliv_addr_max');
+        $max = static::getContainer()->getParameter('eccube_deliv_addr_max');
         for ($i = 0; $i < $max; $i++) {
             $this->createCustomerAddress($this->Customer);
         }
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('mypage_delivery')
         );
 

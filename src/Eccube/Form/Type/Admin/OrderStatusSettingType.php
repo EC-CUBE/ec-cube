@@ -19,6 +19,7 @@ use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Repository\Master\CustomerOrderStatusRepository;
 use Eccube\Repository\Master\OrderStatusColorRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -28,55 +29,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderStatusSettingType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var OrderStatusColorRepository
-     */
-    protected $orderStatusColorRepository;
-
-    /**
-     * @var CustomerOrderStatusRepository
-     */
-    protected $customerOrderStatusRepository;
-
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        OrderStatusColorRepository $orderStatusColorRepository,
-        CustomerOrderStatusRepository $customerOrderStatusRepository
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->orderStatusColorRepository = $orderStatusColorRepository;
-        $this->customerOrderStatusRepository = $customerOrderStatusRepository;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected OrderStatusColorRepository $orderStatusColorRepository, protected CustomerOrderStatusRepository $customerOrderStatusRepository)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('customer_order_status_name', TextType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
-            ->add('color', TextType::class, [
+            ->add('color', ColorType::class, [
                 'mapped' => false,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('display_order_count', ToggleSwitchType::class, [
@@ -86,7 +69,7 @@ class OrderStatusSettingType extends AbstractType
             ])
         ;
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
             $data = $event->getData();
             $form = $event->getForm();
 
@@ -108,7 +91,8 @@ class OrderStatusSettingType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => OrderStatus::class,

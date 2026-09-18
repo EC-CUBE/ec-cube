@@ -20,8 +20,9 @@ use Symfony\Component\Form\FormEvents;
 class HTMLPurifierListener implements EventSubscriberInterface
 {
     /**
-     * @return array[]
+     * @return array<string, array<int, string|int>>
      */
+    #[\Override]
     public static function getSubscribedEvents(): array
     {
         return [
@@ -31,6 +32,9 @@ class HTMLPurifierListener implements EventSubscriberInterface
 
     public function purifySubmittedData(FormEvent $event): void
     {
-        $event->setData(str_replace(['<', '>', '&'], ['＜', '＞', '＆'], $event->getData()));
+        $data = $event->getData();
+        if (is_string($data)) {
+            $event->setData(str_replace(['<', '>', '&'], ['＜', '＞', '＆'], $data));
+        }
     }
 }

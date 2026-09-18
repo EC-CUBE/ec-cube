@@ -22,14 +22,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class PluginManagementType extends AbstractType
 {
-    public function __construct()
-    {
-    }
-
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $plugin_id = $options['plugin_id'];
 
@@ -45,11 +44,8 @@ class PluginManagementType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
-                    new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
-                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
-                    ]),
+                    new Assert\NotBlank(message: 'ファイルを選択してください。'),
+                    new Assert\File(mimeTypes: ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'], mimeTypesMessage: 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。'),
                 ],
             ]);
     }
@@ -57,15 +53,8 @@ class PluginManagementType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'plugin_management';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['plugin_id']);
     }

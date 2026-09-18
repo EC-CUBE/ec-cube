@@ -1,0 +1,92 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_login_history.zst",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "https://ec-cube/admin/setting/system/login_history/1?page_count\u003d50",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not_A Brand\";v\u003d\"99\", \"Google Chrome\";v\u003d\"109\", \"Chromium\";v\u003d\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "response": {
+        "url": "https://ec-cube/admin/setting/system/login_history/1?page_count\u003d60",
+        "headers": "",
+        "body": "",
+        "statusCode": 200,
+        "responseTimeInMs": 68,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675694990285,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "admin_search_login_history__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/system/login_history",
+      "data": "admin_search_login_history%5B_token%5D\u003d{{csrf1}}\u0026admin_search_login_history%5Bmulti%5D\u003d\u0026admin_search_login_history%5Buser_name%5D\u003dadmin\u0026admin_search_login_history%5Bclient_ip%5D\u003d172.23.0.1\u0026admin_search_login_history%5Bcreate_datetime_start%5D\u003d2023-02-01T23%3A49\u0026admin_search_login_history%5Bcreate_datetime_end%5D\u003d2100-12-31T23%3A59\u0026admin_search_login_history%5BStatus%5D%5B%5D\u003d1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 486\r\nsec-ch-ua: \"Not_A Brand\";v\u003d\"99\", \"Google Chrome\";v\u003d\"109\", \"Chromium\";v\u003d\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "response": {
+        "url": "https://ec-cube/admin/setting/system/login_history",
+        "headers": "",
+        "body": "",
+        "statusCode": 200,
+        "responseTimeInMs": 175,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675694982301,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

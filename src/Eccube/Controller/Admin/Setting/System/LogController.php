@@ -17,25 +17,27 @@ use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\LogType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class LogController extends AbstractController
 {
     /**
-     * @Route("/%eccube_admin_route%/setting/system/log", name="admin_setting_system_log", methods={"GET", "POST"})
-     * @Template("@admin/Setting/System/log.twig")
-     *
-     * @return array|Symfony\Component\HttpFoundation\StreamedResponse
+     * @return array<string, mixed>|StreamedResponse
      */
-    public function index(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/system/log', name: 'admin_setting_system_log', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/System/log.twig')]
+    public function index(Request $request): array|StreamedResponse
     {
         $formData = [];
         // default
         $formData['files'] = 'site_'.date('Y-m-d').'.log';
         $formData['line_max'] = '50';
+        $formData['log_level'] = '';
+        $formData['keyword'] = '';
 
         $builder = $this->formFactory
             ->createBuilder(LogType::class);
@@ -47,7 +49,7 @@ class LogController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_INITIALIZE);
         $formData = $event->getArgument('data');
 
         $form = $builder->getForm();
@@ -63,44 +65,47 @@ class LogController extends AbstractController
                 ],
                 $request
             );
-            $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE, $event);
+            $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SYSTEM_LOG_INDEX_COMPLETE);
         }
         $logDir = $this->getParameter('kernel.logs_dir').DIRECTORY_SEPARATOR.$this->getParameter('kernel.environment');
         $logFile = $logDir.'/'.$formData['files'];
+        /** @var Form $form */
+        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download' && $form->isValid()) {
+            $fileSizeLogFile = filesize($logFile);
+            if ($fileSizeLogFile === false) {
+                throw new \Exception('ファイルサイズの取得に失敗しました。');
+            }
 
-        if ($form->getClickedButton() && $form->getClickedButton()->getName() === 'download') {
             $bufferSize = 1024 * 50;
             $response = new StreamedResponse();
-            $response->headers->set('Content-Length', filesize($logFile));
+            $response->headers->set('Content-Length', (string) $fileSizeLogFile);
             $response->headers->set('Content-Disposition', 'attachment; filename='.basename($logFile));
             $response->headers->set('Content-Type', 'application/octet-stream');
-            $response->setCallback(function () use ($logFile, $bufferSize) {
+            $response->setCallback(function () use ($logFile, $bufferSize): void {
                 if ($fh = fopen($logFile, 'r')) {
                     while (!feof($fh)) {
                         echo fread($fh, $bufferSize);
                     }
                 }
             });
-            $response->send();
 
             return $response;
-        } else {
-            return [
-                'form' => $form->createView(),
-                'log' => $this->parseLogFile($logFile, $formData),
-            ];
         }
+
+        return [
+            'form' => $form->createView(),
+            'log' => $this->parseLogFile($logFile, $formData),
+        ];
     }
 
     /**
      * parse log file
      *
-     * @param string $logFile
-     * @param $formData
+     * @param array<string, string> $formData
      *
-     * @return array
+     * @return array<int, mixed>
      */
-    private function parseLogFile($logFile, $formData)
+    private function parseLogFile(string $logFile, array $formData): array
     {
         $log = [];
 
@@ -108,15 +113,83 @@ class LogController extends AbstractController
             return $log;
         }
 
-        foreach (array_reverse(file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES)) as $line) {
-            // 上限に達した場合、処理を抜ける
+        // ログレベルの階層定義
+        $levelHierarchy = [
+            'DEBUG' => 100,
+            'INFO' => 200,
+            'NOTICE' => 250,
+            'WARNING' => 300,
+            'ERROR' => 400,
+            'CRITICAL' => 500,
+            'ALERT' => 550,
+            'EMERGENCY' => 600,
+        ];
+
+        // 最小レベルの閾値を取得
+        $minLevelThreshold = null;
+        if (!empty($formData['log_level']) && isset($levelHierarchy[$formData['log_level']])) {
+            $minLevelThreshold = $levelHierarchy[$formData['log_level']];
+        }
+
+        // キーワード（大文字小文字を区別しない）
+        $keyword = !empty($formData['keyword']) ? mb_strtolower(trim($formData['keyword'])) : null;
+
+        // ファイルを逆順で読み込み（新しいログが先）
+        $lines = array_reverse(file($logFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES));
+
+        foreach ($lines as $line) {
+            // 必要な件数に達したら終了
             if (count($log) >= $formData['line_max']) {
                 break;
             }
 
-            $log[] = $line;
+            // ログレベルを抽出
+            $level = $this->extractLogLevel($line);
+
+            // 最小レベルフィルタを適用
+            if ($minLevelThreshold !== null) {
+                $lineLevel = $levelHierarchy[$level] ?? 0;
+                if ($lineLevel < $minLevelThreshold) {
+                    continue;
+                }
+            }
+
+            // キーワードフィルタを適用
+            if ($keyword !== null && mb_strpos(mb_strtolower((string) $line), $keyword) === false) {
+                continue;
+            }
+
+            // フィルタリングされたエントリーを追加
+            $log[] = [
+                'raw' => $line,
+                'level' => $level,
+            ];
         }
 
         return $log;
+    }
+
+    /**
+     * ログ行からログレベルを抽出
+     *
+     * @return string ログレベル（DEBUG, INFO等）、見つからない場合は空文字列
+     */
+    private function extractLogLevel(string $line): string
+    {
+        // Monologフォーマットにマッチする正規表現
+        // 例: [2025-01-10 14:23:45] admin.ERROR
+        if (preg_match('/\[\d{4}-\d{2}-\d{2}[^\]]*\]\s+\w+\.(DEBUG|INFO|NOTICE|WARNING|ERROR|CRITICAL|ALERT|EMERGENCY)/i', $line, $matches)) {
+            return strtoupper($matches[1]);
+        }
+
+        // フォールバック: 標準フォーマット以外の場合
+        $levels = ['EMERGENCY', 'ALERT', 'CRITICAL', 'ERROR', 'WARNING', 'NOTICE', 'INFO', 'DEBUG'];
+        foreach ($levels as $level) {
+            if (stripos($line, '.'.$level) !== false) {
+                return $level;
+            }
+        }
+
+        return '';
     }
 }

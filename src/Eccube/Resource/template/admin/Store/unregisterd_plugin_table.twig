@@ -12,7 +12,7 @@ file that was distributed with this source code.
     <table class="table table-sm">
         <thead>
         <tr>
-            <th class="border-top-0 pl-3 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.941'|trans}}</th>
+            <th class="border-top-0 ps-3 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.941'|trans}}</th>
             <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.942'|trans}}</th>
             <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.943'|trans}}</th>
             <th class="border-top-0 pt-2 pb-2">{{'admin.store.unregistered_plugin_table.944'|trans}}</th>
@@ -24,11 +24,11 @@ file that was distributed with this source code.
             <form id="{{ Plugin.name }}" name="{{ Plugin.name }}" method="post" action="">
                 <tr class="{% if Plugin.enabled == false %}active{% endif %}">
                     {% if Plugin.name is defined %}
-                        <td class="align-middle pl-3">
+                        <td class="align-middle ps-3">
                             <strong>{{ Plugin.name }}</strong>
                         </td>
                     {% else %}
-                        <td class="align-middle pl-3">
+                        <td class="align-middle ps-3">
                             <strong>{{'admin.store.unregistered_plugin_table.946'|trans}}</strong>
                         </td>
                     {% endif %}
@@ -40,7 +40,7 @@ file that was distributed with this source code.
                     {% if Plugin.code is defined %}
                         <td class="align-middle"><p>{{ Plugin.code }}</p>
                             {% if attribute(app.config[Plugin.code].const, 'readme') is defined %}
-                                <a href="#" class="view_readme" data-toggle="modal" data-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
+                                <a href="#" class="view_readme" data-bs-toggle="modal" data-bs-target="#readmeModal" data-name="{{ Plugin.name }}" data-readme="{{ attribute(app.config[Plugin.code].const, 'readme')  }}">{{ 'admin.store.plugin_table.897'|trans }}</a>
                             {% endif %}
                         </td>
                     {% else %}

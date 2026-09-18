@@ -53,12 +53,8 @@ Styleguide 13.2.1
     display: flex;
     flex-direction: column;
     &-image {
-      height: 150px;
       margin-bottom: 10px;
       text-align: center;
-      @include media_desktop() {
-        height: 250px;
-      }
     }
     img{
       width: auto;
@@ -128,12 +124,8 @@ Styleguide 13.2.2
     margin-bottom: 36px;
     width: 50%;
     &-image {
-      height: 150px;
       margin-bottom: 10px;
       text-align: center;
-      @include media_desktop() {
-        height: 250px;
-      }
     }
     img{
       width: auto;

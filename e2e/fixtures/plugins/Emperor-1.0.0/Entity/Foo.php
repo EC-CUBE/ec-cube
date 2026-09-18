@@ -1,0 +1,39 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Plugin\Emperor\Entity;
+
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Plugin\Emperor\Repository\FooRepository;
+
+if (!class_exists(Foo::class)) {
+    /**
+     * Plugin
+     */
+    #[ORM\Table(name: 'dtb_foo')]
+    #[ORM\InheritanceType('SINGLE_TABLE')]
+    #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+    #[ORM\HasLifecycleCallbacks]
+    #[ORM\Entity(repositoryClass: FooRepository::class)]
+    class Foo
+    {
+        #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+        #[ORM\Id]
+        #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+        public ?int $id = null;
+
+        #[ORM\Column(name: 'name', type: Types::STRING, length: 255)]
+        public ?string $name = null;
+    }
+}

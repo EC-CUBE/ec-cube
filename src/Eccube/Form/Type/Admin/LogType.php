@@ -26,40 +26,35 @@ use Symfony\Component\Validator\Constraints as Assert;
 class LogType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var KernelInterface
-     */
-    protected $kernel;
-
-    /**
      * LogType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param KernelInterface $kernel
      */
-    public function __construct(EccubeConfig $eccubeConfig, KernelInterface $kernel)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected KernelInterface $kernel)
     {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->kernel = $kernel;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $files = [];
         $finder = new Finder();
         $finder->name('*.log')
             ->depth('== 0')
-            ->sort(function (\SplFileInfo $a, \SplFileInfo $b) {
-                return strcmp($b->getMTime(), $a->getMTime());
-            });
+            ->sort(fn (\SplFileInfo $a, \SplFileInfo $b) => strcmp((string) $b->getMTime(), (string) $a->getMTime()));
         $dirs = $this->kernel->getLogDir().DIRECTORY_SEPARATOR.$this->kernel->getEnvironment();
+
+        // ログディレクトリが存在しない場合は作成（Monolog StreamHandlerと同様の実装）
+        // モードを 0777 のままにするのは, 実効値を ECCUBE_UMASK に委ねるため.
+        // 0755 を直接指定すると ECCUBE_UMASK=0000 を設定しても 0777 にならず,
+        // Web サーバーと CLI が別ユーザーで同じログへ書き込む構成が成立しなくなる.
+        if (!is_dir($dirs)) {
+            mkdir($dirs, 0777, true);
+        }
+
         foreach ($finder->in($dirs) as $file) {
             $files[$file->getFilename()] = $file->getFilename();
         }
@@ -81,7 +76,33 @@ class LogType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Range(['min' => 1, 'max' => 50000]),
+                    new Assert\Range(min: 1, max: 50000),
+                ],
+            ])
+            ->add('log_level', ChoiceType::class, [
+                'label' => 'admin.setting.system.log.log_level',
+                'choices' => [
+                    'admin.setting.system.log.level.all' => '',
+                    'admin.setting.system.log.level.debug' => 'DEBUG',
+                    'admin.setting.system.log.level.info' => 'INFO',
+                    'admin.setting.system.log.level.notice' => 'NOTICE',
+                    'admin.setting.system.log.level.warning' => 'WARNING',
+                    'admin.setting.system.log.level.error' => 'ERROR',
+                    'admin.setting.system.log.level.critical' => 'CRITICAL',
+                ],
+                'required' => false,
+                'placeholder' => false,
+                'data' => '',
+            ])
+            ->add('keyword', TextType::class, [
+                'label' => 'admin.setting.system.log.keyword',
+                'required' => false,
+                'attr' => [
+                    'maxlength' => 255,
+                    'placeholder' => 'admin.setting.system.log.keyword_placeholder',
+                ],
+                'constraints' => [
+                    new Assert\Length(max: 255),
                 ],
             ])
             ->add('download', SubmitType::class, [
@@ -92,7 +113,8 @@ class LogType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_system_log';
     }

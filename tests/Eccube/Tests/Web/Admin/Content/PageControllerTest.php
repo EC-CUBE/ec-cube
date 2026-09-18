@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,20 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Twig\Environment;
 
-class PageControllerTest extends AbstractAdminWebTestCase
+final class PageControllerTest extends AbstractAdminWebTestCase
 {
     public function testRoutingAdminContentPageIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_page'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_page'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingAdminContentPageEdit()
     {
-        $this->client->request('GET',
+        $this->client->request(Request::METHOD_GET,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => 1]
@@ -39,7 +43,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $redirectUrl = $this->generateUrl('admin_content_page');
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl(
                 'admin_content_page_delete',
                 ['id' => 1]
@@ -61,7 +65,7 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->persist($Page);
         $this->entityManager->flush();
 
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl(
                 'admin_content_page_delete',
                 ['id' => $Page->getId()]
@@ -74,18 +78,16 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
 
-        $editable = false;
+        $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
+        $Page = $this->entityManager->getRepository(Page::class)->find(1);
 
-        $templatePath = self::$container->getParameter('eccube_theme_front_dir');
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(1);
-
-        $source = self::$container->get('twig')
+        $source = static::getContainer()->get(Environment::class)
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => $Page->getId()]
@@ -118,12 +120,12 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $faker = $this->getFaker();
 
-        $templatePath = self::$container->getParameter('eccube_theme_user_data_dir');
+        $templatePath = static::getContainer()->getParameter('eccube_theme_user_data_dir');
 
-        $name = $faker->word;
+        $name = $faker->word();
         $source = $faker->realText();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_new'
             ),
@@ -139,8 +141,8 @@ class PageControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($client->getResponse()->isRedirection());
-        preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find($matches[1]);
+        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
+        $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
 
         $this->expected = $name;
         $this->actual = $Page->getName();
@@ -155,16 +157,16 @@ class PageControllerTest extends AbstractAdminWebTestCase
     {
         $client = $this->client;
 
-        $templatePath = self::$container->getParameter('eccube_theme_front_dir');
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find(42); // Shoppin/index
+        $templatePath = static::getContainer()->getParameter('eccube_theme_front_dir');
+        $Page = $this->entityManager->getRepository(Page::class)->find(42); // Shoppin/index
 
-        $source = self::$container->get('twig')
+        $source = static::getContainer()->get(Environment::class)
             ->getLoader()
             ->getSourceContext($Page->getFileName().'.twig')
             ->getCode();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => $Page->getId()]
@@ -197,12 +199,12 @@ class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $faker = $this->getFaker();
 
-        $templatePath = self::$container->getParameter('eccube_theme_user_data_dir');
+        $templatePath = static::getContainer()->getParameter('eccube_theme_user_data_dir');
 
-        $name = $faker->word;
+        $name = $faker->word();
         $source = $faker->realText();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_new'
             ),
@@ -218,20 +220,20 @@ class PageControllerTest extends AbstractAdminWebTestCase
         );
 
         $this->assertTrue($client->getResponse()->isRedirection());
-        preg_match('|content/page/([0-9]+)/edit|', $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->entityManager->getRepository(\Eccube\Entity\Page::class)->find($matches[1]);
+        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
+        $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
 
         $this->expected = $name;
         $this->actual = $Page->getName();
         $this->verify('ページ新規作成');
 
-        $source = self::$container->get('twig')
+        $source = static::getContainer()->get(Environment::class)
             ->getLoader()
             ->getSourceContext('@user_data/'.$Page->getFileName().'.twig')
             ->getCode();
 
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_edit',
                 ['id' => $Page->getId()]
@@ -252,10 +254,10 @@ class PageControllerTest extends AbstractAdminWebTestCase
                 $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()])),
             'ファイル名 Shopping/index は使用不可');
 
-        $name = $faker->word;
+        $name = $faker->word();
         $source = $faker->realText();
         $client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl(
                 'admin_content_page_new'
             ),

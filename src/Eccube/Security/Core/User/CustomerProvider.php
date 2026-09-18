@@ -13,50 +13,24 @@
 
 namespace Eccube\Security\Core\User;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CustomerStatus;
 use Eccube\Repository\CustomerRepository;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class CustomerProvider implements UserProviderInterface
+/**
+ * @implements UserProviderInterface<Customer>
+ */
+class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterface
 {
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
-
-    public function __construct(CustomerRepository $customerRepository)
+    public function __construct(protected CustomerRepository $customerRepository, private readonly EntityManagerInterface $entityManager)
     {
-        $this->customerRepository = $customerRepository;
-    }
-
-    /**
-     * Loads the user for the given username.
-     *
-     * This method must throw UsernameNotFoundException if the user is not
-     * found.
-     *
-     * @param string $username The username
-     *
-     * @return UserInterface
-     *
-     * @throws UsernameNotFoundException if the user is not found
-     */
-    public function loadUserByUsername($username)
-    {
-        $Customer = $this->customerRepository->findOneBy([
-            'email' => $username,
-            'Status' => CustomerStatus::REGULAR,
-        ]);
-
-        if (null === $Customer) {
-            throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
-        }
-
-        return $Customer;
     }
 
     /**
@@ -67,28 +41,47 @@ class CustomerProvider implements UserProviderInterface
      * object can just be merged into some internal array of users / identity
      * map.
      *
-     * @return UserInterface
-     *
      * @throws UnsupportedUserException if the user is not supported
      */
-    public function refreshUser(UserInterface $user)
+    #[\Override]
+    public function refreshUser(UserInterface $user): UserInterface
     {
         if (!$user instanceof Customer) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
-        return $this->loadUserByUsername($user->getUsername());
+        return $this->loadUserByIdentifier($user->getUsername());
     }
 
     /**
      * Whether this provider supports the given user class.
-     *
-     * @param string $class
-     *
-     * @return bool
      */
-    public function supportsClass($class)
+    #[\Override]
+    public function supportsClass(string $class): bool
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
+    }
+
+    #[\Override]
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        $Customer = $this->customerRepository->findOneBy([
+            'email' => $identifier,
+            'Status' => CustomerStatus::REGULAR,
+        ]);
+
+        if (null === $Customer) {
+            throw new UserNotFoundException(sprintf('Username "%s" does not exist.', $identifier));
+        }
+
+        return $Customer;
+    }
+
+    #[\Override]
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    {
+        /** @var Customer $user */
+        $user->setPassword($newHashedPassword);
+        $this->entityManager->flush();
     }
 }

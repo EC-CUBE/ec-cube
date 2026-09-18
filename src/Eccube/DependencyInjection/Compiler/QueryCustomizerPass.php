@@ -21,9 +21,10 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class QueryCustomizerPass implements CompilerPassInterface
 {
-    const QUERY_CUSTOMIZER_TAG = 'eccube.query_customizer';
+    public const QUERY_CUSTOMIZER_TAG = 'eccube.query_customizer';
 
-    public function process(ContainerBuilder $container)
+    #[\Override]
+    public function process(ContainerBuilder $container): void
     {
         $queries = $container->getDefinition(Queries::class);
         $ids = $container->findTaggedServiceIds(self::QUERY_CUSTOMIZER_TAG);

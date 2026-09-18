@@ -1,0 +1,35 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Plugin\Template\Controller;
+
+use Eccube\Controller\AbstractController;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Routing\Attribute\Route;
+
+class Controller extends AbstractController
+{
+    #[Route(path: '/template', name: 'template')]
+    #[Template(template: '@Template/index.twig')]
+    public function front()
+    {
+        return [];
+    }
+
+    #[Route(path: '/%eccube_admin_route%/template', name: 'template_admin')]
+    #[Template(template: '@Template/admin/index.twig')]
+    public function admin()
+    {
+        return [];
+    }
+}

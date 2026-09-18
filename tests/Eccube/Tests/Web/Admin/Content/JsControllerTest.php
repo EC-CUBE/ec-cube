@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,31 +17,26 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\Request;
 
-class JsControllerTest extends AbstractAdminWebTestCase
+final class JsControllerTest extends AbstractAdminWebTestCase
 {
-    const JS_FILE = 'customize.js';
+    public const JS_FILE = 'customize.js';
 
-    /**
-     * @var string
-     */
-    private $dir;
+    private ?string $dir = null;
 
-    /**
-     * @var string
-     */
-    private $contents;
+    private ?string $contents = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->dir = self::$container->getParameter('eccube_html_dir').'/user_data/assets/js/';
+        $this->dir = static::getContainer()->getParameter('eccube_html_dir').'/user_data/assets/js/';
         $this->contents = file_get_contents($this->dir.self::JS_FILE);
         $fs = new Filesystem();
         $fs->dumpFile($this->dir.self::JS_FILE, '');
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         chmod($this->dir, 0755);
         $fs = new Filesystem();
@@ -49,7 +46,7 @@ class JsControllerTest extends AbstractAdminWebTestCase
 
     public function testRoutingAdminContentJsIndex()
     {
-        $this->client->request('GET', $this->generateUrl('admin_content_js'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_js'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
@@ -61,11 +58,11 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
-                 'js' => $js,
-             ],
+                'js' => $js,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -73,7 +70,7 @@ __JS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
         $contents = file_get_contents($this->dir.self::JS_FILE);
-        $this->assertEquals($js, $contents);
+        $this->assertSame($js, $contents);
     }
 
     public function testRoutingAdminContentJsEditFailure()
@@ -89,11 +86,11 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
-                 'js' => $js,
-             ],
+                'js' => $js,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -114,11 +111,11 @@ $(function() {
 });
 __JS_CONTENTS__;
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_content_js'),
             ['form' => [
-                 'js' => $js,
-             ],
+                'js' => $js,
+            ],
             ]
         );
         $form = $crawler->selectButton('登録')->form();
@@ -126,6 +123,6 @@ __JS_CONTENTS__;
         $this->client->submit($form);
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_js')));
         $contents = file_get_contents($this->dir.self::JS_FILE);
-        $this->assertEquals($js, $contents);
+        $this->assertSame($js, $contents);
     }
 }

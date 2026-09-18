@@ -9,8 +9,9 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 #}
 <ul class="list-inline">
-    {% for child in form.children if child.vars.name != '_token' and child.vars.data is not empty %}
-        <li class="list-inline-item"><span class="font-weight-bold">{{ child.vars.label|trans }}:&nbsp;</span>
+    {% for child in form.children|filter(child => (child.vars.name != '_token' and child.vars.data is not empty)) %}
+        {% if false == (child.vars.label == 'admin.list.sort.key' or child.vars.label == 'admin.list.sort.type') %}{# ソートの選択結果は表示しない #}
+        <li class="list-inline-item"><span class="fw-bold">{{ child.vars.label|trans }}:&nbsp;</span>
             {%- if child.vars.data is iterable -%}
                 {%- for value in child.vars.value -%}
                     {# ChoiceType -> multiple:true #}
@@ -21,7 +22,7 @@ file that was distributed with this source code.
                     {%- endfor -%}
                     {{ not loop.last ? ',&nbsp;' }}
                 {%- endfor -%}
-            {%- elseif php_is_a(child.vars.data, '\DateTime') -%}
+            {%- elseif child.vars.data.timestamp is defined -%}
                 {# DateTimeType の時は分まで表示 #}
                 {% if 'datetime' in child.vars.id %}
                     {{ child.vars.data|date_sec }}
@@ -37,9 +38,14 @@ file that was distributed with this source code.
                         {%- endif %}
                     {%- endfor -%}
                 {%- else -%}
-                    {{ child.vars.data }}
+                    {%- if child.vars.data is integer -%}
+                        {{ child.vars.data|number_format }}
+                    {%- else -%}
+                        {{ child.vars.data }}
+                    {%- endif -%}
                 {%- endif-%}
             {%- endif -%}
         </li>
+        {% endif %}
     {% endfor %}
 </ul>

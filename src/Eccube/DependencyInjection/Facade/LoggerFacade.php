@@ -16,49 +16,32 @@ namespace Eccube\DependencyInjection\Facade;
 use Eccube\Log\Logger;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * XXX ContainerInterface は不要かも
- */
 class LoggerFacade
 {
     /** @var self|null */
-    private static $instance = null;
+    private static ?self $instance = null;
 
-    /** @var ContainerInterface */
-    private static $Container;
+    private static ?ContainerInterface $Container = null;
 
-    /** @var Logger */
-    private static $Logger;
+    private static ?Logger $Logger = null;
 
-    /**
-     * @param ContainerInterface $container
-     */
     private function __construct(ContainerInterface $container, Logger $Logger)
     {
         self::$Container = $container;
         self::$Logger = $Logger;
     }
 
-    /**
-     * @param ContainerInterface $container
-     *
-     * @return LoggerFacade|null
-     */
-    public static function init(ContainerInterface $container, Logger $Logger)
+    public static function init(ContainerInterface $container, Logger $Logger): ?LoggerFacade
     {
-        if (null === self::$instance) {
-            self::$instance = new self($container, $Logger);
-        }
+        self::$instance ??= new self($container, $Logger);
 
         return self::$instance;
     }
 
     /**
-     * @return Logger
-     *
      * @throws \Exception
      */
-    public static function create()
+    public static function create(): Logger
     {
         if (null === self::$instance) {
             throw new \Exception('Facade is not instantiated');
@@ -67,13 +50,8 @@ class LoggerFacade
         return self::$Logger;
     }
 
-    /**
-     * @deprecated
-     *
-     * @return ContainerInterface
-     */
-    public static function getContainer()
+    public static function getLoggerBy(string $channel): \Monolog\Logger
     {
-        return self::$Container;
+        return self::$Container->get('monolog.logger.'.$channel);
     }
 }

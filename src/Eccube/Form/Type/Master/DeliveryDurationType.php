@@ -13,7 +13,9 @@
 
 namespace Eccube\Form\Type\Master;
 
-use Eccube\Form\Type\MasterType;
+use Doctrine\ORM\EntityRepository;
+use Eccube\Entity\DeliveryDuration;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,27 +27,26 @@ class DeliveryDurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\DeliveryDuration',
+            'class' => DeliveryDuration::class,
             'placeholder' => 'common.select__unspecified',
+            'multiple' => false,
+            'expanded' => false,
+            'required' => false,
+            'query_builder' => fn (EntityRepository $er) => $er->createQueryBuilder('m')
+                ->orderBy('m.sort_no', 'ASC'),
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getParent(): ?string
     {
-        return 'delivery_duration';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return MasterType::class;
+        return EntityType::class;
     }
 }

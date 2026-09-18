@@ -1,0 +1,216 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Tests\Web\Admin\Product;
+
+use Eccube\Common\Constant;
+use Eccube\Entity\ClassCategory;
+use Eccube\Entity\ClassName;
+use Eccube\Entity\Member;
+use Eccube\Entity\ProductClass;
+use Eccube\Repository\ClassCategoryRepository;
+use Eccube\Repository\ClassNameRepository;
+use Eccube\Repository\ProductClassRepository;
+use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\HttpFoundation\Request;
+
+final class ClassNameControllerTest extends AbstractAdminWebTestCase
+{
+    private ?Member $Member = null;
+
+    private ?ProductClassRepository $productClassRepo = null;
+
+    private ?ClassCategoryRepository $classCategoryRepo = null;
+
+    private ?ClassNameRepository $classNameRepo = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->productClassRepo = $this->entityManager->getRepository(ProductClass::class);
+        $this->classCategoryRepo = $this->entityManager->getRepository(ClassCategory::class);
+        $this->classNameRepo = $this->entityManager->getRepository(ClassName::class);
+        $this->Member = $this->entityManager->getRepository(Member::class)->find(1);
+        $this->removeClass();
+        for ($i = 0; $i < 3; $i++) {
+            $ClassName = new ClassName();
+            $ClassName
+                ->setName('class-'.$i)
+                ->setBackendName('class-'.$i)
+                ->setCreator($this->Member)
+                ->setSortNo($i)
+            ;
+            $this->entityManager->persist($ClassName);
+        }
+        $this->entityManager->flush();
+    }
+
+    public function removeClass()
+    {
+        $ProductClasses = $this->productClassRepo->findAll();
+        foreach ($ProductClasses as $ProductClass) {
+            $this->entityManager->remove($ProductClass);
+        }
+        $ClassCategories = $this->classCategoryRepo->findAll();
+        foreach ($ClassCategories as $ClassCategory) {
+            $this->entityManager->remove($ClassCategory);
+        }
+        $this->entityManager->flush();
+        $All = $this->classNameRepo->findAll();
+        foreach ($All as $ClassName) {
+            $this->entityManager->remove($ClassName);
+        }
+        $this->entityManager->flush();
+    }
+
+    public function testRoutingAdminProductClassName()
+    {
+        $this->client->request(Request::METHOD_GET,
+            $this->generateUrl('admin_product_class_name')
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testIndexWithPost()
+    {
+        $client = $this->client;
+        $client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_class_name'),
+            [
+                'admin_class_name' => [
+                    'name' => '規格1',
+                    Constant::TOKEN_NAME => 'dummy',
+                ], ]
+        );
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
+    }
+
+    public function testIndexWithPostBackendName()
+    {
+        $client = $this->client;
+        $client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_class_name'),
+            [
+                'admin_class_name' => [
+                    'backend_name' => '規格1',
+                    'name' => '表示規格1',
+                    Constant::TOKEN_NAME => 'dummy',
+                ], ]
+        );
+        $this->assertTrue($client->getResponse()->isRedirect($this->generateUrl('admin_product_class_name')));
+    }
+
+    public function testRoutingAdminProductClassBackendNameEdit()
+    {
+        // before
+        $TestCreator = $this->Member;
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
+            ->findOneBy([
+                'backend_name' => $TestClassName->getBackendName(),
+            ])
+            ->getId();
+
+        // main
+        $this->client->request(Request::METHOD_GET,
+            $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminProductClassNameEdit()
+    {
+        // before
+        $TestCreator = $this->Member;
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
+            ->findOneBy([
+                'name' => $TestClassName->getName(),
+            ])
+            ->getId();
+
+        // main
+        $this->client->request(Request::METHOD_GET,
+            $this->generateUrl('admin_product_class_name_edit', ['id' => $test_class_name_id])
+        );
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testRoutingAdminProductClassNameDelete()
+    {
+        // before
+        $TestCreator = $this->Member;
+        $TestClassName = $this->newTestClassName($TestCreator);
+        $this->entityManager->persist($TestClassName);
+        $this->entityManager->flush();
+        $test_class_name_id = $this->classNameRepo
+            ->findOneBy([
+                'backend_name' => $TestClassName->getBackendName(),
+            ])
+            ->getId();
+
+        // main
+        $redirectUrl = $this->generateUrl('admin_product_class_name');
+        $this->client->request(Request::METHOD_DELETE,
+            $this->generateUrl('admin_product_class_name_delete', ['id' => $test_class_name_id]),
+            [
+                Constant::TOKEN_NAME => 'dummy',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    }
+
+    public function testMoveSortNo()
+    {
+        $ClassName = $this->classNameRepo->findOneBy(['backend_name' => 'class-1']);
+        $this->assertInstanceOf(ClassName::class, $ClassName);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_class_name_sort_no_move'),
+            [$ClassName->getId() => 10],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'HTTP_ECCUBE_CSRF_TOKEN' => 'dummy',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $MovedClassName = $this->classNameRepo->find($ClassName->getId());
+        $this->entityManager->refresh($MovedClassName); // Refresh しないとリクエストの値(string)が入ってしまう
+        $this->expected = 10;
+        $this->assertInstanceOf(ClassName::class, $MovedClassName);
+        $this->actual = $MovedClassName->getSortNo();
+        $this->verify();
+    }
+
+    private function newTestClassName($TestCreator)
+    {
+        $TestClassName = new ClassName();
+        $TestClassName->setBackendName('形状')
+            ->setName('表示形状')
+            ->setSortNo(100)
+            ->setCreator($TestCreator);
+
+        return $TestClassName;
+    }
+}

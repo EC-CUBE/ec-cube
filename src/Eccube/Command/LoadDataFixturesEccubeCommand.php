@@ -14,74 +14,64 @@
 namespace Eccube\Command;
 
 use Doctrine\Bundle\DoctrineBundle\Command\DoctrineCommand;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\Persistence\ManagerRegistry;
 use Eccube\Common\EccubeConfig;
+use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
+use Eccube\Entity\Member;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class LoadDataFixturesEccubeCommand extends DoctrineCommand
-{
-    protected static $defaultName = 'eccube:fixtures:load';
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct();
-        $this->container = $container;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Load data fixtures to your database.')
-            ->setHelp(<<<EOF
+#[AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures to your database.', help: <<<'TXT'
 The <info>%command.name%</info> command loads data fixtures from EC-CUBE.
 
   <info>php %command.full_name%</info>
-EOF
-            );
+TXT)]
+class LoadDataFixturesEccubeCommand extends DoctrineCommand
+{
+    public function __construct(ManagerRegistry $registry, protected EccubeConfig $eccubeConfig, protected UserPasswordHasherInterface $passwordHasher)
+    {
+        parent::__construct($registry);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    #[\Override]
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $em = $this->getEntityManager(null);
+        $em = $this->getEntityManager($this->getDoctrine()->getDefaultManagerName());
 
         // for full locale code cases
         $locale = env('ECCUBE_LOCALE', 'ja_JP');
         $locale = str_replace('_', '-', $locale);
         $locales = \Locale::parseLocale($locale);
-        $localeDir = is_null($locales) ? 'ja' : $locales['language'];
+        $localeDir = empty($locales) ? 'ja' : $locales['language'];
 
-        $loader = new \Eccube\Doctrine\Common\CsvDataFixtures\Loader();
+        $loader = new Loader();
         $loader->loadFromDirectory(__DIR__.'/../Resource/doctrine/import_csv/'.$localeDir);
-        $executer = new \Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor($em);
+        $executer = new DbalExecutor($em);
         $fixtures = $loader->getFixtures();
         $executer->execute($fixtures);
 
         $login_id = env('ECCUBE_ADMIN_USER', 'admin');
         $login_password = env('ECCUBE_ADMIN_PASS', 'password');
 
-        $eccubeConfig = $this->container->get(EccubeConfig::class);
-        $encoder = new \Eccube\Security\Core\Encoder\PasswordEncoder($eccubeConfig);
-
-        $salt = \Eccube\Util\StringUtil::random(32);
-        $password = $encoder->encodePassword($login_password, $salt);
+        $password = $this->passwordHasher->hashPassword(new Member(), $login_password);
 
         $conn = $em->getConnection();
-        $member_id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-            ? $conn->fetchColumn("select nextval('dtb_member_id_seq')")
+        $member_id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
+            ? $conn->fetchOne("select nextval('dtb_member_id_seq')")
             : null;
 
         $conn->insert('dtb_member', [
             'id' => $member_id,
             'login_id' => $login_id,
             'password' => $password,
-            'salt' => $salt,
+            // 'salt' => 'n/a',
             'work_id' => 1,
             'authority_id' => 0,
             'creator_id' => 1,
@@ -92,15 +82,15 @@ EOF
             'department' => 'EC-CUBE SHOP',
             'discriminator_type' => 'member',
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
-            'create_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+            'update_date' => Types::DATETIMETZ_MUTABLE,
+            'create_date' => Types::DATETIMETZ_MUTABLE,
         ]);
 
         $shop_name = env('ECCUBE_SHOP_NAME', 'EC-CUBE SHOP');
         $admin_mail = env('ECCUBE_ADMIN_MAIL', 'admin@example.com');
 
-        $id = ('postgresql' === $conn->getDatabasePlatform()->getName())
-            ? $conn->fetchColumn("select nextval('dtb_base_info_id_seq')")
+        $id = ($conn->getDatabasePlatform() instanceof PostgreSQLPlatform)
+            ? $conn->fetchOne("select nextval('dtb_base_info_id_seq')")
             : null;
 
         $conn->insert('dtb_base_info', [
@@ -112,30 +102,31 @@ EOF
             'email04' => $admin_mail,
             'update_date' => new \DateTime(),
             'discriminator_type' => 'baseinfo',
+            'option_mail_notifier' => true,
         ], [
-            'update_date' => \Doctrine\DBAL\Types\Type::DATETIME,
+            'update_date' => Types::DATETIMETZ_MUTABLE,
         ]);
 
         $faviconPath = '/assets/img/common/favicon.ico';
-        if (!file_exists($this->container->getParameter('eccube_html_dir').'/user_data'.$faviconPath)) {
+        if (!file_exists($this->eccubeConfig->get('eccube_html_dir').'/user_data'.$faviconPath)) {
             $file = new Filesystem();
             $file->copy(
-                $this->container->getParameter('eccube_html_front_dir').$faviconPath,
-                $this->container->getParameter('eccube_html_dir').'/user_data'.$faviconPath
+                $this->eccubeConfig->get('eccube_html_front_dir').$faviconPath,
+                $this->eccubeConfig->get('eccube_html_dir').'/user_data'.$faviconPath
             );
         }
 
         $logoPath = '/assets/pdf/logo.png';
-        if (!file_exists($this->container->getParameter('eccube_html_dir').'/user_data'.$logoPath)) {
+        if (!file_exists($this->eccubeConfig->get('eccube_html_dir').'/user_data'.$logoPath)) {
             $file = new Filesystem();
             $file->copy(
-                $this->container->getParameter('eccube_html_admin_dir').$logoPath,
-                $this->container->getParameter('eccube_html_dir').'/user_data'.$logoPath
+                $this->eccubeConfig->get('eccube_html_admin_dir').$logoPath,
+                $this->eccubeConfig->get('eccube_html_dir').'/user_data'.$logoPath
             );
         }
 
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'Finished Successful!'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

@@ -1,0 +1,18 @@
+eccube:
+    rate_limiter:
+        shopping_confirm_ip:
+            route: ~ # routeがnullの場合は自動適用されない
+            limit: 1024
+            interval: '30 minutes'
+        shopping_confirm_customer:
+            route: ~
+            limit: 1024
+            interval: '30 minutes'
+        shopping_checkout_ip:
+            route: ~
+            limit: 1024
+            interval: '30 minutes'
+        shopping_checkout_customer:
+            route: ~
+            limit: 1024
+            interval: '30 minutes'

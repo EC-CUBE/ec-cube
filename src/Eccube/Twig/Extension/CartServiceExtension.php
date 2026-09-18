@@ -15,61 +15,42 @@ namespace Eccube\Twig\Extension;
 
 use Eccube\Entity\Cart;
 use Eccube\Service\CartService;
-use Twig\Extension\AbstractExtension;
+use Twig\Attribute\AsTwigFunction;
 
-class CartServiceExtension extends AbstractExtension
+class CartServiceExtension
 {
-    /**
-     * @var CartService
-     */
-    protected $cartService;
-
-    public function __construct(CartService $cartService)
+    public function __construct(protected CartService $cartService)
     {
-        $this->cartService = $cartService;
     }
 
-    public function getFunctions()
-    {
-        return [
-            new \Twig_Function('get_cart', [$this, 'get_cart'], ['is_safe' => ['all']]),
-            new \Twig_Function('get_all_carts', [$this, 'get_all_carts'], ['is_safe' => ['all']]),
-            new \Twig_Function('get_carts_total_price', [$this, 'get_carts_total_price'], ['is_safe' => ['all']]),
-            new \Twig_Function('get_carts_total_quantity', [$this, 'get_carts_total_quantity'], ['is_safe' => ['all']]),
-        ];
-    }
-
-    public function get_cart()
+    #[AsTwigFunction(name: 'get_cart', isSafe: ['all'])]
+    public function get_cart(): ?Cart
     {
         return $this->cartService->getCart();
     }
 
-    public function get_all_carts()
+    /**
+     * @return Cart[]
+     */
+    #[AsTwigFunction(name: 'get_all_carts', isSafe: ['all'])]
+    public function get_all_carts(): array
     {
         return $this->cartService->getCarts();
     }
 
-    public function get_carts_total_price()
+    #[AsTwigFunction(name: 'get_carts_total_price', isSafe: ['all'])]
+    public function get_carts_total_price(): string
     {
         $Carts = $this->cartService->getCarts();
-        $totalPrice = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalPrice();
 
-            return $total;
-        }, 0);
-
-        return $totalPrice;
+        return array_reduce($Carts, fn (string $total, Cart $Cart) => bcadd($total, $Cart->getTotalPrice()), '0');
     }
 
-    public function get_carts_total_quantity()
+    #[AsTwigFunction(name: 'get_carts_total_quantity', isSafe: ['all'])]
+    public function get_carts_total_quantity(): string
     {
         $Carts = $this->cartService->getCarts();
-        $totalQuantity = array_reduce($Carts, function ($total, Cart $Cart) {
-            $total += $Cart->getTotalQuantity();
 
-            return $total;
-        }, 0);
-
-        return $totalQuantity;
+        return array_reduce($Carts, fn ($total, Cart $Cart) => bcadd($total, $Cart->getTotalQuantity()), '0');
     }
 }

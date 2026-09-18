@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type;
 
+use Eccube\Entity\Category;
 use Eccube\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,26 +23,23 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductBlockType extends AbstractType
 {
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
-
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(protected CategoryRepository $categoryRepository)
     {
-        $this->categoryRepository = $categoryRepository;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $Categories = $this->categoryRepository
             ->getList(null, true);
 
         $builder->add('category_id', EntityType::class, [
-            'class' => 'Eccube\Entity\Category',
+            'class' => Category::class,
             'choice_label' => 'NameWithLevel',
             'choices' => $Categories,
             'placeholder' => 'common.select__all_products',
@@ -59,19 +57,12 @@ class SearchProductBlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,
             'allow_extra_fields' => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'search_product_block';
     }
 }

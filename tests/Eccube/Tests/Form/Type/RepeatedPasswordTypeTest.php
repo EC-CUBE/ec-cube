@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,21 +17,21 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\RepeatedPasswordType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
-class RepeatedPasswordTypeTest extends AbstractTypeTestCase
+final class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'password' => [
-            'first' => 'eccube@example.com',
-            'second' => 'eccube@example.com',
+            'first' => 'eccube1@example.com',
+            'second' => 'eccube1@example.com',
         ],
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->form = $this->formFactory
@@ -38,10 +40,20 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->form = null;
+    }
+
+    /**
+     * 同じパスワードを両欄に設定して送信するヘルパ.
+     */
+    private function submitPassword(string $password): void
+    {
+        $this->formData['password']['first'] = $password;
+        $this->formData['password']['second'] = $password;
+        $this->form->submit($this->formData);
     }
 
     public function testValidData()
@@ -60,80 +72,110 @@ class RepeatedPasswordTypeTest extends AbstractTypeTestCase
 
     public function testInvalidNotBlank()
     {
-        $this->formData['password']['first'] = '';
-        $this->formData['password']['second'] = '';
-        $this->form->submit($this->formData);
+        $this->submitPassword('');
 
         $this->assertFalse($this->form->isValid());
     }
 
     public function testInvalidLengthMin()
     {
-        $password = str_repeat('1', $this->eccubeConfig['eccube_password_min_len'] - 1);
-
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
-        $this->form->submit($this->formData);
+        // NIST SP 800-63B-4 対応で min は 15. min-1 文字は不可.
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1);
+        $this->submitPassword($password);
 
         $this->assertFalse($this->form->isValid());
+    }
+
+    public function testValidLengthMin()
+    {
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+        $this->submitPassword($password);
+
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInvalidLengthMax()
     {
-        $password = str_repeat('1', $this->eccubeConfig['eccube_password_max_len'] + 1);
-
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
-        $this->form->submit($this->formData);
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] + 1);
+        $this->submitPassword($password);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testInvalidHiragana()
-    {
-        $password = str_repeat('あ', $this->eccubeConfig['eccube_password_max_len']);
-
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
-        $this->form->submit($this->formData);
-
-        $this->assertFalse($this->form->isValid());
-    }
-
-    /* 環境依存で通るっぽい
-    public function testValid_ZenkakuAlpha()
-    {
-        // これ通っていいのかな?
-        $password = str_repeat('Ａ', $this->eccubeConfig['eccube_password_max_len']);
-
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
-        $this->form->submit($this->formData);
-
-        $this->assertTrue($this->form->isValid());
-    }
+    /**
+     * NIST SP 800-63B-4 では文字種の複雑さを求めないため, ひらがなのみでも有効.
      */
-
-    public function testInvalidSpaceOnly()
+    public function testValidHiragana()
     {
-        $password = str_repeat(' ', $this->eccubeConfig['eccube_password_max_len']);
+        $password = str_repeat('あ', $this->eccubeConfig['eccube_password_min_len']);
+        $this->submitPassword($password);
 
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
-        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 英字のみ(数字・記号なし)でも有効.
+     */
+    public function testValidAlphabetOnly()
+    {
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+        $this->submitPassword($password);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 数字のみでも有効.
+     */
+    public function testValidNumericOnly()
+    {
+        $password = '987654321098765';
+        $this->submitPassword($password);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * パスワード中のスペースは許可される.
+     */
+    public function testValidContainsSpace()
+    {
+        $password = 'correct horse battery staple';
+        $this->submitPassword($password);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 検証は NFKC 正規化後の値で行われる(CodeRabbit 指摘の回避経路対策).
+     * 結合文字で見かけ上16文字でも, 正規化後は8文字となり min15 未満として拒否される.
+     */
+    public function testInvalidLengthAfterNormalization()
+    {
+        $password = str_repeat("e\u{0301}", 8); // 16コードポイント → NFKC で "é"×8 = 8文字
+        $this->submitPassword($password);
 
         $this->assertFalse($this->form->isValid());
     }
 
-    public function testValidSpace()
+    /**
+     * 制御文字(改行・タブ)を含む場合は不可.
+     */
+    public function testInvalidControlCharacter()
     {
-        // これも通っていいのか？
-        $password = '1234 \n\s\t78';
+        $password = "abcdefghijklmno\nabc";
+        $this->submitPassword($password);
 
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
-        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
 
-        $this->assertTrue($this->form->isValid());
+    /**
+     * ブロックリストに掲載されたパスワードは不可.
+     */
+    public function testInvalidBlocklisted()
+    {
+        $this->submitPassword('passwordpassword');
+
+        $this->assertFalse($this->form->isValid());
     }
 }

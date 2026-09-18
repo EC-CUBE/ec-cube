@@ -55,7 +55,7 @@ file that was distributed with this source code.
                         {{ form_widget(searchForm._token) }}
                         <div class="c-outsideBlock__contents mb-4">
                             <div class="row justify-content-start">
-                                <div class="col-3 pl-0">
+                                <div class="col-3 ps-0">
                                     <label class="col-form-label">{{ searchForm.category_id.vars.label|trans }}</label>
                                     {{ form_widget(searchForm.category_id) }}
                                 </div>
@@ -69,13 +69,13 @@ file that was distributed with this source code.
                                 </div>
                             </div>
                         </div>
-                        <div class="c-outsideBlock__contents mb-2 pl-0">
+                        <div class="c-outsideBlock__contents mb-2 ps-0">
                             <button class="btn btn-ec-conversion px-5 py-2" type="submit">{{ 'admin.store.plugin_owners_search.search_button'|trans }}</button>
                         </div>
                     </div>
                     <div class="row justify-content-between mb-2">
-                        <div class="col-12 text-right">
-                            <div class="d-inline-block mr-2">
+                        <div class="col-12 text-end">
+                            <div class="d-inline-block me-2">
                                 {{ form_widget(searchForm.sort, {attr: {onchange: 'document.forms.search.submit();'}}) }}
                             </div>
                             <div class="d-inline-block">

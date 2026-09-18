@@ -1,0 +1,34 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Attribute;
+
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class ForwardOnly
+{
+    /**
+     * Returns the alias name for an annotated configuration.
+     */
+    public function getAliasName(): string
+    {
+        return 'forward_only';
+    }
+
+    /**
+     * Returns whether multiple annotations of this type are allowed.
+     */
+    public function allowArray(): bool
+    {
+        return false;
+    }
+}

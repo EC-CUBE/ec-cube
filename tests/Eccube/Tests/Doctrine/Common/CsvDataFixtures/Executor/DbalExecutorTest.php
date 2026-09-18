@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,41 +17,33 @@ namespace Eccube\Tests\Doctrine\Common\CsvDataFixtures\Executor;
 
 use Eccube\Doctrine\Common\CsvDataFixtures\CsvFixture;
 use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
+use Eccube\Entity\Master\Job;
 use Eccube\Repository\Master\JobRepository;
 use Eccube\Tests\EccubeTestCase;
 
-class DbalExecutorTest extends EccubeTestCase
+final class DbalExecutorTest extends EccubeTestCase
 {
-    /**
-     * @var \SplFileObject
-     */
-    protected $file;
+    protected ?\SplFileObject $file = null;
 
     /**
-     * @var CsvFixture[]
+     * @var CsvFixture[]|null
      */
-    protected $fixtures;
+    protected ?array $fixtures = null;
 
-    /**
-     * @var JobRepository
-     */
-    protected $jobRepository;
+    protected ?JobRepository $jobRepository = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->jobRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Job::class);
-
+        $this->jobRepository = $this->entityManager->getRepository(Job::class);
         $Jobs = $this->jobRepository->findAll();
         foreach ($Jobs as $Job) {
             $this->entityManager->remove($Job);
         }
         $this->entityManager->flush();
-
         $this->file = new \SplFileObject(
             __DIR__.'/../../../../../../Fixtures/import_csv/mtb_job.csv'
         );
@@ -63,7 +57,7 @@ class DbalExecutorTest extends EccubeTestCase
 
         $this->file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::READ_AHEAD | \SplFileObject::SKIP_EMPTY);
         $this->file->rewind();
-        $headers = $this->file->current();
+        $this->file->current();
         $this->file->next();
 
         // ファイルのデータ行を取得しておく

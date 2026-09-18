@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,16 @@ namespace Eccube\Tests\Form\Type;
 
 use Eccube\Form\Type\NameType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormInterface;
 
-class NameTypeTest extends AbstractTypeTestCase
+final class NameTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     protected $maxLength = 50;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -36,7 +36,7 @@ class NameTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->form = $this->formFactory
@@ -45,7 +45,7 @@ class NameTypeTest extends AbstractTypeTestCase
             ->getForm();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->form = null;

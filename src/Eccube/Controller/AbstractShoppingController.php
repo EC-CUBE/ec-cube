@@ -18,32 +18,23 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\PurchaseFlow\PurchaseFlowResult;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class AbstractShoppingController extends AbstractController
 {
-    /**
-     * @var PurchaseFlow
-     */
-    protected $purchaseFlow;
+    protected PurchaseFlow $purchaseFlow;
 
-    /**
-     * @param PurchaseFlow $shoppingPurchaseFlow
-     * @required
-     */
-    public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow)
+    #[Required]
+    public function setPurchaseFlow(PurchaseFlow $shoppingPurchaseFlow): void
     {
         $this->purchaseFlow = $shoppingPurchaseFlow;
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
      * @param bool $returnResponse レスポンスを返すかどうか. falseの場合はPurchaseFlowResultを返す.
-     *
-     * @return PurchaseFlowResult|RedirectResponse|null
      */
-    protected function executePurchaseFlow(ItemHolderInterface $itemHolder, $returnResponse = true)
+    protected function executePurchaseFlow(ItemHolderInterface $itemHolder, bool $returnResponse = true): PurchaseFlowResult|RedirectResponse|null
     {
-        /** @var PurchaseFlowResult $flowResult */
         $flowResult = $this->purchaseFlow->validate($itemHolder, new PurchaseContext(clone $itemHolder, $itemHolder->getCustomer()));
         foreach ($flowResult->getWarning() as $warning) {
             $this->addWarning($warning->getMessage());

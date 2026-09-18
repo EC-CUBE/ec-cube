@@ -14,73 +14,71 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemHolderInterface;
+use Eccube\Entity\Order;
+use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\ProductClassRepository;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
 class StockMultipleValidator extends ItemHolderValidator
 {
     /**
-     * @var ProductClassRepository
-     */
-    protected $productClassRepository;
-
-    /**
      * StockProcessor constructor.
-     *
-     * @param ProductClassRepository $productClassRepository
      */
-    public function __construct(ProductClassRepository $productClassRepository)
+    public function __construct(protected ProductClassRepository $productClassRepository)
     {
-        $this->productClassRepository = $productClassRepository;
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder 商品
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @throws InvalidItemException
      */
-    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    public function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
-        $OrderItemsByProductClass = [];
-        /** @var Shipping $Shipping */
-        foreach ($itemHolder->getShippings() as $Shipping) {
-            foreach ($Shipping->getOrderItems() as $Item) {
-                if ($Item->isProduct()) {
-                    $id = $Item->getProductClass()->getId();
-                    $OrderItemsByProductClass[$id][] = $Item;
+        if ($itemHolder instanceof Order) {
+            $OrderItemsByProductClass = [];
+            /** @var Shipping $Shipping */
+            foreach ($itemHolder->getShippings() as $Shipping) {
+                foreach ($Shipping->getOrderItems() as $Item) {
+                    if ($Item->isProduct()) {
+                        $id = $Item->getProductClass()->getId();
+                        $OrderItemsByProductClass[$id][] = $Item;
+                    }
                 }
             }
-        }
 
-        foreach ($OrderItemsByProductClass as $id => $Items) {
-            /** @var ProductClass $ProductClass */
-            $ProductClass = $this->productClassRepository->find($id);
-            if ($ProductClass->isStockUnlimited()) {
-                continue;
-            }
-            $stock = $ProductClass->getStock();
+            foreach ($OrderItemsByProductClass as $id => $Items) {
+                /** @var ProductClass $ProductClass */
+                $ProductClass = $this->productClassRepository->find($id);
+                if ($ProductClass->isStockUnlimited()) {
+                    continue;
+                }
+                $stock = $ProductClass->getStock();
 
-            if ($stock == 0) {
+                if ($stock == 0) {
+                    foreach ($Items as $Item) {
+                        $Item->setQuantity('0');
+                    }
+                    $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
+                }
+                $isOver = false;
                 foreach ($Items as $Item) {
-                    $Item->setQuantity(0);
+                    if (bcsub((string) $stock, $Item->getQuantity()) >= 0) {
+                        $stock = bcsub((string) $stock, $Item->getQuantity());
+                    } else {
+                        $Item->setQuantity($stock);
+                        $stock = 0;
+                        $isOver = true;
+                    }
                 }
-                $this->throwInvalidItemException('front.shopping.out_of_stock_zero', $ProductClass, true);
-            }
-            $isOver = false;
-            foreach ($Items as $Item) {
-                if ($stock - $Item->getQuantity() >= 0) {
-                    $stock = $stock - $Item->getQuantity();
-                } else {
-                    $Item->setQuantity($stock);
-                    $stock = 0;
-                    $isOver = true;
+                if ($isOver) {
+                    $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
                 }
-            }
-            if ($isOver) {
-                $this->throwInvalidItemException('front.shopping.out_of_stock', $ProductClass, true);
             }
         }
     }

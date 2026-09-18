@@ -19,14 +19,15 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MailType;
 use Eccube\Repository\MailTemplateRepository;
+use Eccube\Service\Content\MailTemplateContentService;
 use Eccube\Util\CacheUtil;
-use Eccube\Util\StringUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
+use Twig\Error\LoaderError;
 
 /**
  * Class MailController
@@ -34,27 +35,23 @@ use Twig\Environment;
 class MailController extends AbstractController
 {
     /**
-     * @var MailTemplateRepository
-     */
-    protected $mailTemplateRepository;
-
-    /**
      * MailController constructor.
-     *
-     * @param MailTemplateRepository $mailTemplateRepository
      */
-    public function __construct(MailTemplateRepository $mailTemplateRepository)
+    public function __construct(protected MailTemplateRepository $mailTemplateRepository, private readonly Environment $twig, private readonly CacheUtil $cacheUtil, private readonly MailTemplateContentService $mailTemplateContentService)
     {
-        $this->mailTemplateRepository = $mailTemplateRepository;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail", name="admin_setting_shop_mail", methods={"GET", "POST"})
-     * @Route("/%eccube_admin_route%/setting/shop/mail/{id}", requirements={"id" = "\d+"}, name="admin_setting_shop_mail_edit", methods={"GET", "POST"})
-     * @Template("@admin/Setting/Shop/mail.twig")
+     * @return RedirectResponse|array<string, mixed>
+     *
+     * @throws LoaderError
      */
-    public function index(Request $request, MailTemplate $Mail = null, Environment $twig, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail', name: 'admin_setting_shop_mail', methods: ['GET', 'POST'])]
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}', name: 'admin_setting_shop_mail_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/mail.twig')]
+    public function index(Request $request, ?MailTemplate $Mail = null): RedirectResponse|array
     {
+        $Mail ??= new MailTemplate();
         $builder = $this->formFactory
             ->createBuilder(MailType::class, $Mail);
 
@@ -65,22 +62,25 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
-        $form['template']->setData($Mail);
-        $htmlFileName = $Mail ? $this->getHtmlFileName($Mail->getFileName()) : null;
 
         // 更新時
-        if (!is_null($Mail)) {
+        if (null !== $Mail->getId()) {
+            $form['template']->setData($Mail);
+
             // テンプレートファイルの取得
-            $source = $twig->getLoader()
+            $source = $this->twig->getLoader()
                 ->getSourceContext($Mail->getFileName())
                 ->getCode();
 
             $form->get('tpl_data')->setData($source);
-            if ($twig->getLoader()->exists($htmlFileName)) {
-                $source = $twig->getLoader()
+
+            $htmlFileName = $this->getHtmlFileName($Mail->getFileName());
+
+            if ($this->twig->getLoader()->exists($htmlFileName)) {
+                $source = $this->twig->getLoader()
                     ->getSourceContext($htmlFileName)
                     ->getCode();
 
@@ -91,31 +91,22 @@ class MailController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
 
-            // 新規登録は現時点では未実装とする.
-            if (is_null($Mail)) {
-                $this->addError('admin.common.save_error', 'admin');
+            if ($form->isSubmitted() && $form->isValid()) {
+                $Mail = $form->getData();
+                $Mail->setDeletable(true);
 
-                return $this->redirectToRoute('admin_setting_shop_mail');
-            }
-
-            if ($form->isValid()) {
-                $this->entityManager->flush();
-
-                // ファイル生成・更新
-                $templatePath = $this->getParameter('eccube_theme_front_dir');
-                $filePath = $templatePath.'/'.$Mail->getFileName();
-
-                $fs = new Filesystem();
-                $mailData = $form->get('tpl_data')->getData();
-                $mailData = StringUtil::convertLineFeed($mailData);
-                $fs->dumpFile($filePath, $mailData);
-
-                // HTMLファイル用
+                // DB 登録とテンプレートファイルの生成は Service に委譲する.
+                // HTML 本文が null の場合は HTML パートのファイルを削除する.
                 $htmlMailData = $form->get('html_tpl_data')->getData();
-                if (!is_null($htmlMailData)) {
-                    $htmlMailData = StringUtil::convertLineFeed($htmlMailData);
-                    $fs->dumpFile($templatePath.'/'.$htmlFileName, $htmlMailData);
-                }
+                $result = $this->mailTemplateContentService->save(
+                    $Mail,
+                    (string) $form->get('tpl_data')->getData(),
+                    null === $htmlMailData ? null : (string) $htmlMailData
+                );
+                $templatePath = $this->mailTemplateContentService->getTemplateDir();
+                // 本文が変わらないとテンプレートは書き出されないため, イベントには
+                // 書き込み結果ではなく書き込み先のパスを渡す
+                $filePath = $this->mailTemplateContentService->getFilePath($Mail);
 
                 $event = new EventArgs(
                     [
@@ -126,12 +117,12 @@ class MailController extends AbstractController
                     ],
                     $request
                 );
-                $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE, $event);
+                $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_INDEX_COMPLETE);
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
                 // キャッシュの削除
-                $cacheUtil->clearTwigCache();
+                $this->cacheUtil->clearTwigCache();
 
                 return $this->redirectToRoute('admin_setting_shop_mail_edit', ['id' => $Mail->getId()]);
             }
@@ -139,17 +130,19 @@ class MailController extends AbstractController
 
         return [
             'form' => $form->createView(),
-            'id' => is_null($Mail) ? null : $Mail->getId(),
+            'id' => $Mail->getId(),
+            'Mail' => $Mail,
         ];
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop/mail/preview", name="admin_setting_shop_mail_preview", methods={"POST"})
-     * @Template("@admin/Setting/Shop/mail_view.twig")
+     * @return array<string, mixed>
      */
-    public function preview(Request $request)
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/preview', name: 'admin_setting_shop_mail_preview', methods: ['POST'])]
+    #[Template(template: '@admin/Setting/Shop/mail_view.twig')]
+    public function preview(Request $request): array
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$request->isXmlHttpRequest() || !$this->isTokenValid()) {
             throw new BadRequestHttpException();
         }
 
@@ -161,26 +154,46 @@ class MailController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_MAIL_PREVIEW_COMPLETE);
 
         return [
             'html_body' => $html_body,
         ];
     }
 
+    #[Route(path: '/%eccube_admin_route%/setting/shop/mail/{id}/delete', name: 'admin_setting_shop_mail_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    public function delete(MailTemplate $Mail): RedirectResponse
+    {
+        $this->isTokenValid();
+
+        if (!$Mail->isDeletable()) {
+            return $this->redirectToRoute('admin_setting_shop_mail');
+        }
+
+        log_info('メールテンプレート削除開始', [$Mail->getId()]);
+
+        $this->mailTemplateContentService->remove($Mail);
+
+        $this->addSuccess('admin.common.delete_complete', 'admin');
+
+        log_info('メールテンプレート削除完了', [$Mail->getId()]);
+
+        return $this->redirectToRoute('admin_setting_shop_mail');
+    }
+
     /**
      * HTML用テンプレート名を取得する
-     *
-     * @param  string $fileName
-     *
-     * @return string
      */
-    protected function getHtmlFileName($fileName)
+    protected function getHtmlFileName(string $fileName): string
     {
-        // HTMLテンプレートファイルの取得
-        $targetTemplate = pathinfo($fileName);
-        $suffix = '.html';
+        return $this->mailTemplateContentService->getHtmlFileName($fileName);
+    }
 
-        return $targetTemplate['dirname'].DIRECTORY_SEPARATOR.$targetTemplate['filename'].$suffix.'.'.$targetTemplate['extension'];
+    /**
+     * テンプレートディレクトリ配下のパスかどうかを検証する
+     */
+    protected function validateFilePath(string $path): bool
+    {
+        return $this->mailTemplateContentService->isInsideTemplateDir($path);
     }
 }

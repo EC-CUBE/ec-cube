@@ -25,25 +25,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class NameType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * NameType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(
-        EccubeConfig $eccubeConfig
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
+    public function __construct(protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $options['lastname_options']['required'] = $options['required'];
         $options['firstname_options']['required'] = $options['required'];
@@ -59,9 +53,7 @@ class NameType extends AbstractType
             ], $options['firstname_options']['constraints']);
         }
 
-        if (!isset($options['options']['error_bubbling'])) {
-            $options['options']['error_bubbling'] = $options['error_bubbling'];
-        }
+        $options['options']['error_bubbling'] ??= $options['error_bubbling'];
 
         if (empty($options['lastname_name'])) {
             $options['lastname_name'] = $builder->getName().'01';
@@ -81,8 +73,11 @@ class NameType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    #[\Override]
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $builder = $form->getConfig();
         $view->vars['lastname_name'] = $builder->getAttribute('lastname_name');
@@ -92,7 +87,8 @@ class NameType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'options' => [],
@@ -101,13 +97,8 @@ class NameType extends AbstractType
                     'placeholder' => 'common.last_name',
                 ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_name_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form_error.not_contain_spaces',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                    new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
                 ],
             ],
             'firstname_options' => [
@@ -115,13 +106,8 @@ class NameType extends AbstractType
                     'placeholder' => 'common.first_name',
                 ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_name_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[^\s ]+$/u',
-                        'message' => 'form_error.not_contain_spaces',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_name_len']),
+                    new Assert\Regex(pattern: '/^[^\s ]+$/u', message: 'form_error.not_contain_spaces'),
                 ],
             ],
             'lastname_name' => '',
@@ -130,13 +116,5 @@ class NameType extends AbstractType
             'inherit_data' => true,
             'trim' => true,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'name';
     }
 }

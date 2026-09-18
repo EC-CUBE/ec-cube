@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,63 +18,42 @@ namespace Eccube\Tests\Repository;
 use Eccube\Entity\Category;
 use Eccube\Entity\Master\ProductListMax;
 use Eccube\Entity\Master\ProductListOrderBy;
+use Eccube\Entity\Product;
 use Eccube\Repository\CategoryRepository;
 use Eccube\Repository\Master\ProductListOrderByRepository;
-use Knp\Component\Pager\Paginator;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * ProductRepository#getQueryBuilderBySearchData test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRepositoryTestCase
+final class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRepositoryTestCase
 {
-    /**
-     * @var array
-     */
-    protected $Results;
+    protected ?array $Results = null;
 
-    /**
-     * @var array
-     */
-    protected $searchData;
+    protected ?array $searchData = null;
 
-    /**
-     * @var ProductListMax
-     */
-    protected $ProductListMax;
+    protected ?ProductListMax $ProductListMax = null;
 
-    /**
-     * @var ProductListOrderBy
-     */
-    protected $ProductListOrderBy;
+    protected ?ProductListOrderBy $ProductListOrderBy = null;
 
-    /**
-     * @var CategoryRepository
-     */
-    protected $categoryRepository;
+    protected ?CategoryRepository $categoryRepository = null;
 
-    /**
-     * @var ProductListOrderByRepository
-     */
-    protected $productListOrderByRepository;
+    protected ?ProductListOrderByRepository $productListOrderByRepository = null;
 
-    /**
-     * @var Paginator
-     */
-    protected $paginator;
+    protected ?PaginatorInterface $paginator = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->categoryRepository = $this->entityManager->getRepository(\Eccube\Entity\Category::class);
-        $this->productListOrderByRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\ProductListOrderBy::class);
-        $this->paginator = self::$container->get('knp_paginator');
-
+        $this->categoryRepository = $this->entityManager->getRepository(Category::class);
+        $this->productListOrderByRepository = $this->entityManager->getRepository(ProductListOrderBy::class);
+        $this->paginator = static::getContainer()->get(PaginatorInterface::class);
         $this->ProductListMax = new ProductListMax();
         $this->ProductListOrderBy = new ProductListOrderBy();
     }
@@ -144,15 +125,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(100);
+            $ProductClass->setPrice02('100');
         }
         $Products[1]->setName('アイス');
         foreach ($Products[1]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(1000);
+            $ProductClass->setPrice02('1000');
         }
         $Products[2]->setName('お鍋');
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(10000);
+            $ProductClass->setPrice02('10000');
         }
         $this->entityManager->flush();
 
@@ -165,8 +146,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->expected = ['りんご', 'アイス', 'お鍋'];
         $this->actual = [$this->Results[0]->getName(),
-                              $this->Results[1]->getName(),
-                              $this->Results[2]->getName(), ];
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName(), ];
         $this->verify();
     }
 
@@ -178,15 +159,15 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         $Products = $this->productRepository->findAll();
         $Products[0]->setName('りんご');
         foreach ($Products[0]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(100);
+            $ProductClass->setPrice02('100');
         }
         $Products[1]->setName('アイス');
         foreach ($Products[1]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(1000);
+            $ProductClass->setPrice02('1000');
         }
         $Products[2]->setName('お鍋');
         foreach ($Products[2]->getProductClasses() as $ProductClass) {
-            $ProductClass->setPrice02(10000);
+            $ProductClass->setPrice02('10000');
         }
         $this->entityManager->flush();
 
@@ -228,8 +209,8 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         $this->expected = ['りんご', 'アイス', 'お鍋'];
         $this->actual = [$this->Results[0]->getName(),
-                              $this->Results[1]->getName(),
-                              $this->Results[2]->getName(), ];
+            $this->Results[1]->getName(),
+            $this->Results[2]->getName(), ];
 
         $this->verify();
     }
@@ -303,10 +284,10 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         ];
         $this->scenario();
 
-        /** @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination $pagination */
+        /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate(
             $this->Results,
-            $this->searchData['pageno'],
+            (int) $this->searchData['pageno'], // フォームからはstringで来るが、paginateはintを要求
             $this->searchData['disp_number']->getId()
         );
 
@@ -335,10 +316,10 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
         ];
         $this->scenario();
 
-        /** @var \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination $pagination */
+        /** @var SlidingPagination $pagination */
         $pagination = $this->paginator->paginate(
             $this->Results,
-            $this->searchData['pageno'],
+            (int) $this->searchData['pageno'], // フォームからはstringで来るが、paginateはintを要求
             $this->searchData['disp_number']->getId()
         );
 
@@ -354,6 +335,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
             'dtb_product_stock',
             'dtb_product_class',
             'dtb_product_category',
+            'dtb_product_tag',
             'dtb_product',
         ];
         $this->deleteAllRows($tables);
@@ -368,7 +350,7 @@ class ProductRepositoryGetQueryBuilderBySearchDataTest extends AbstractProductRe
 
         // 商品作成時間同じにする
         $QueryBuilder = $this->entityManager->createQueryBuilder();
-        $QueryBuilder->update('Eccube\Entity\Product', 'p');
+        $QueryBuilder->update(Product::class, 'p');
         $QueryBuilder->set('p.create_date', ':createDate');
         $QueryBuilder->setParameter(':createDate', new \DateTime());
         $QueryBuilder->getQuery()->execute();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,156 +17,293 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 
 use Eccube\Entity\MailTemplate;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class MailControllerTest
  */
-class MailControllerTest extends AbstractAdminWebTestCase
+final class MailControllerTest extends AbstractAdminWebTestCase
 {
-    public function tearDown()
+    protected function tearDown(): void
     {
-        $themeDir = self::$container->getParameter('eccube_theme_front_dir');
-        if (file_exists($themeDir.'/Mail/order.twig')) {
-            unlink($themeDir.'/Mail/order.twig');
-        }
-        if (file_exists($themeDir.'/Mail/order.html.twig')) {
-            unlink($themeDir.'/Mail/order.html.twig');
-        }
+        $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
+        $fs = new Filesystem();
+        $fs->remove((new Finder())->in($themeDir)->name('test_*.twig'));
         parent::tearDown();
     }
 
     /**
-     * @return mixed
+     * メール設定画面の表示
      */
-    public function createMail()
+    public function testRouting(): void
     {
-        $faker = $this->getFaker();
-        // create new mail
-        $Mail = new MailTemplate();
-        $Mail->setName($faker->word);
-        $Mail->setFileName('Mail/order.twig');
-        $Mail->setMailSubject($faker->word);
-        $this->entityManager->persist($Mail);
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_mail'));
+        $this->assertTrue($this->client->getResponse()->isOk());
+    }
+
+    /**
+     * 新規登録
+     */
+    public function testCreate(): void
+    {
+        // 新規登録
+        $crawler = $this->senarioCreate();
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+    }
+
+    /**
+     * 本文を空のまま新規登録しても, 登録後の編集画面が表示できる.
+     *
+     * MailType の tpl_data には NotBlank が無いため本文を空で登録でき, テンプレートを
+     * 書き出さないと dtb_mail_template だけが残って編集画面が
+     * 「Unable to find template」で落ちる.
+     */
+    public function testCreateWithEmptyBody(): void
+    {
+        $this->senarioCreate(['tpl_data' => '', 'html_tpl_data' => '']);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isOk(), '登録後の編集画面を表示できる');
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+    }
+
+    /**
+     * バリデーションエラー
+     */
+    public function testValidationError(): void
+    {
+        // 必須項目を空で登録し、バリデーションエラーを発生させる
+        $crawler = $this->senarioCreate(['file_name' => '']);
+        $this->assertTrue($this->client->getResponse()->isOk());
+        $this->actual = $crawler->filter('span.form-error-message')->text();
+        $this->expected = '入力されていません。';
+        $this->verify();
+    }
+
+    /**
+     * ファイル名が既に使用されている
+     */
+    public function testFileAlreadyExists(): void
+    {
+        // 新規登録
+        $crawler = $this->senarioCreate(['file_name' => 'test_exists']);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // 同一ファイル名で新規登録
+        $crawler = $this->senarioCreate(['file_name' => 'test_exists']);
+        $this->assertFalse($this->client->getResponse()->isRedirect());
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->actual = $crawler->filter('span.form-error-message')->text();
+        $this->expected = 'このファイル名はすでに使用されています。';
+        $this->verify();
+    }
+
+    /**
+     * 編集
+     */
+    public function testEdit(): void
+    {
+        // 新規登録
+        $crawler = $this->senarioCreate();
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $location = $this->client->getResponse()->headers->get('location');
+        $id = str_replace('/admin/setting/shop/mail/', '', $location);
+
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // 編集画面を表示
+        $this->client->request(Request::METHOD_GET,
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $id])
+        );
+        $this->assertTrue($this->client->getResponse()->isOk());
+
+        // 件名を更新
+        $subject = 'test_edit_mail_subejct';
+        $this->senarioEdit($id, ['mail_subject' => $subject]);
+
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // 更新を確認
+        $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
+        $this->expected = $subject;
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
+        $this->actual = $MailTemplate->getMailSubject();
+        $this->verify();
+    }
+
+    /**
+     * HTMLを空で登録すると、HTMLテンプレートファイルが削除されることを確認
+     */
+    public function testEditClearHtml(): void
+    {
+        // 新規登録
+        $crawler = $this->senarioCreate([
+            'file_name' => 'test_edit_clear_html',
+            'html_tpl_data' => '<strong>html</strong>',
+        ]);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $location = $this->client->getResponse()->headers->get('location');
+        $id = str_replace('/admin/setting/shop/mail/', '', $location);
+
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // テンプレートファイルが生成されていることを確認
+        $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.twig');
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.html.twig');
+
+        // HTMLを空で更新
+        $this->senarioEdit($id, ['html_tpl_data' => '']);
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // HTMLテンプレートファイルが削除されていることを確認
+        $themeDir = static::getContainer()->getParameter('eccube_theme_front_dir');
+        $this->assertFileExists($themeDir.'/Mail/test_edit_clear_html.twig');
+        $this->assertFileDoesNotExist($themeDir.'/Mail/test_edit_clear_html.html.twig');
+    }
+
+    /**
+     * 存在しないテンプレートIDを指定
+     */
+    public function testEditNotExists(): void
+    {
+        $id = 99999;
+        $crawler = $this->senarioEdit($id);
+
+        $this->assertTrue($this->client->getResponse()->isOk());
+        $this->actual = $crawler->filter('span.form-error-message')->text();
+        $this->expected = '選択した値は無効です。';
+        $this->verify();
+    }
+
+    /**
+     * 削除
+     */
+    public function testDelete(): void
+    {
+        // 新規登録
+        $crawler = $this->senarioCreate();
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $location = $this->client->getResponse()->headers->get('location');
+        $id = str_replace('/admin/setting/shop/mail/', '', $location);
+
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // 削除
+        $crawler = $this->senarioDelete($id);
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '削除しました';
+        $this->verify();
+    }
+
+    /**
+     * 削除不可のテンプレートを削除
+     */
+    public function testDeleteNotDeletable(): void
+    {
+        // 新規登録
+        $crawler = $this->senarioCreate();
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $location = $this->client->getResponse()->headers->get('location');
+        $id = str_replace('/admin/setting/shop/mail/', '', $location);
+
+        $crawler = $this->client->followRedirect();
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+
+        // deletable => falseに更新
+        $MailTemplate = $this->entityManager->find(MailTemplate::class, $id);
+        $this->assertInstanceOf(MailTemplate::class, $MailTemplate);
+        $MailTemplate->setDeletable(false);
         $this->entityManager->flush();
 
-        return $Mail;
-    }
+        // 削除
+        $this->senarioDelete($id);
 
-    /**
-     * Routing
-     */
-    public function testRouting()
-    {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_mail'));
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    /**
-     * Edit
-     */
-    public function testRoutingEdit()
-    {
-        $MailTemplate = $this->createMail();
-        $this->client->request('GET',
-            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()])
-        );
-
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
-
-    /**
-     * Edit
-     */
-    public function testEdit()
-    {
-        $MailTemplate = $this->createMail();
-        $form = [
-            '_token' => 'dummy',
-            'template' => $MailTemplate->getId(),
-            'mail_subject' => 'Test Subject',
-            'tpl_data' => 'Test TPL Data',
-        ];
+        // 削除されず残っている
         $this->client->request(
-            'POST',
+            Request::METHOD_GET,
             $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]),
-            ['mail' => $form]
         );
-
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $this->actual = $form['mail_subject'];
-        $this->expected = $MailTemplate->getMailSubject();
-        $this->verify();
+        // 編集画面を表示可能
+        $this->assertTrue($this->client->getResponse()->isOk());
     }
 
-    /**
-     * Edit Html
-     */
-    public function testEditHtml()
+    private function senarioCreate(array $form = [])
     {
-        $MailTemplate = $this->createMail();
-        $form = [
+        $faker = $this->getFaker();
+        $form = array_merge([
             '_token' => 'dummy',
-            'template' => $MailTemplate->getId(),
-            'mail_subject' => 'Test Subject',
-            'tpl_data' => 'Test TPL Data',
-            'html_tpl_data' => '<font color="red">Test HTML TPL Data</font>',
-        ];
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]),
-            ['mail' => $form]
-        );
+            'name' => $faker->word(),
+            'file_name' => 'test_'.$faker->lexify('????????'),
+            'mail_subject' => $faker->word(),
+            'tpl_data' => $faker->realText,
+            'html_tpl_data' => $faker->realText,
+        ], $form);
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $MailTemplate->getId()]);
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $this->actual = $form['mail_subject'];
-        $this->expected = $MailTemplate->getMailSubject();
-        $this->verify();
-    }
-
-    public function testEditFail()
-    {
-        $mid = 99999;
-        $form = [
-            '_token' => 'dummy',
-            'template' => $mid,
-            'mail_subject' => 'Test Subject',
-        ];
-        $this->client->request(
-            'POST',
-            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $mid]),
-            ['mail' => $form]
-        );
-
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
-
-        $outPut = self::$container->get('session')->getFlashBag()->get('eccube.admin.error');
-        $this->actual = array_shift($outPut);
-        $this->expected = 'admin.common.save_error';
-        $this->verify();
-    }
-
-    /**
-     * Create
-     */
-    public function testCreateFail()
-    {
-        $form = [
-            '_token' => 'dummy',
-            'template' => null,
-            'mail_subject' => null,
-        ];
-        $this->client->request(
-            'POST',
+        return $this->client->request(
+            Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_mail'),
             ['mail' => $form]
         );
+    }
 
-        $redirectUrl = $this->generateUrl('admin_setting_shop_mail');
-        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+    private function senarioEdit($id, array $form = [])
+    {
+        $faker = $this->getFaker();
+        $form = array_merge([
+            '_token' => 'dummy',
+            'template' => $id,
+            'name' => $faker->word(),
+            'mail_subject' => $faker->word(),
+            'tpl_data' => $faker->realText,
+            'html_tpl_data' => $faker->realText,
+        ], $form);
+
+        return $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_mail_edit', ['id' => $id]),
+            ['mail' => $form]
+        );
+    }
+
+    private function senarioDelete($id)
+    {
+        return $this->client->request(
+            Request::METHOD_DELETE,
+            $this->generateUrl('admin_setting_shop_mail_delete', ['id' => $id]),
+        );
     }
 }

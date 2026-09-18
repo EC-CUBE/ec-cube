@@ -15,6 +15,7 @@ namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Eccube\Entity\ItemInterface;
 use Eccube\Entity\OrderItem;
+use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemValidator;
 use Eccube\Service\PurchaseFlow\PurchaseContext;
 
@@ -24,12 +25,13 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class PriceChangeValidator extends ItemValidator
 {
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
+     * @param ItemInterface $item 明細アイテム
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws \Eccube\Service\PurchaseFlow\InvalidItemException
+     * @throws InvalidItemException 販売価格が変更されている場合
      */
-    public function validate(ItemInterface $item, PurchaseContext $context)
+    #[\Override]
+    public function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if (!$item->isProduct()) {
             return;

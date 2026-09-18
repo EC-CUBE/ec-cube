@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,25 +16,24 @@
 namespace Eccube\Tests\Form\Type\Front;
 
 use Eccube\Form\Type\Front\PasswordResetType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class PasswordResetTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+final class PasswordResetTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
-    /** @var array */
-    protected $formData = [
+    protected ?array $formData = [
         'login_email' => 'hideki_okajima@ec-cube.co.jp',
         'password' => [
-            'first' => 'password',
-            'second' => 'password',
+            'first' => 'password1234abc',
+            'second' => 'password1234abc',
         ],
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         $this->form = $this->formFactory
             ->createBuilder(PasswordResetType::class, null, [

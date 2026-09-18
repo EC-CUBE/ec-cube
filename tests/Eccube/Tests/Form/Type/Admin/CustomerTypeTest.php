@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,14 +16,15 @@
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\CustomerType;
+use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
+final class CustomerTypeTest extends AbstractTypeTestCase
 {
-    /** @var \Symfony\Component\Form\FormInterface */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /** @var array デフォルト値（正常系）を設定 */
-    protected $formData = [
+    protected ?array $formData = [
         'name' => [
             'name01' => 'たかはし',
             'name02' => 'しんいち',
@@ -38,22 +41,22 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
             'addr02' => '梅田',
         ],
         'phone_number' => '012-345-6789',
-        'email' => 'default@example.com',
+        'email' => 'default1@example.com',
         'sex' => 1,
         'job' => 1,
         'birth' => '1983-2-14',
-        'password' => [
-            'first' => 'password',
-            'second' => 'password',
+        'plain_password' => [
+            'first' => 'password1234abc',
+            'second' => 'password1234abc',
         ],
         'status' => 1,
         'note' => 'note',
+        'point' => '0',
     ];
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
@@ -173,6 +176,14 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
+    public function testInvalidEmailLong()
+    {
+        $this->formData['email'] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTU@a';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testValidJobBlank()
     {
         $this->formData['job'] = '';
@@ -200,8 +211,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPasswordMinLength()
     {
-        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
-        $this->formData['password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+        $this->formData['plain_password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1).'1';
+        $this->formData['plain_password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1).'1';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -211,8 +222,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len'] - 1);
 
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -220,8 +231,8 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
     public function testValidPasswordMaxLength()
     {
-        $this->formData['password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
-        $this->formData['password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len']);
+        $this->formData['plain_password']['first'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] - 1).'1';
+        $this->formData['plain_password']['second'] = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] - 1).'1';
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -231,20 +242,76 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
     {
         $password = str_repeat('a', $this->eccubeConfig['eccube_password_max_len'] + 1);
 
-        $this->formData['password']['first'] = $password;
-        $this->formData['password']['second'] = $password;
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
 
+    /**
+     * NIST SP 800-63B-4 では文字種の複雑さを求めないため, 英字のみでも有効.
+     */
+    public function testValidPasswordAlphabetOnly()
+    {
+        $password = str_repeat('a', $this->eccubeConfig['eccube_password_min_len']);
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 数字のみでも有効.
+     */
+    public function testValidPasswordNumericOnly()
+    {
+        $password = '987654321098765';
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * ブロックリストに掲載されたパスワードは不可.
+     */
+    public function testInvalidPasswordBlocklisted()
+    {
+        $password = 'passwordpassword';
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * 制御文字(改行)を含む場合は不可.
+     */
+    public function testInvalidPasswordControlCharacter()
+    {
+        $password = "abcdefghijklmno\nabc";
+
+        $this->formData['plain_password']['first'] = $password;
+        $this->formData['plain_password']['second'] = $password;
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+    }
+
     public function testInvalidPasswordEqualEmail()
     {
-        $this->formData['password']['first'] = $this->formData['email'];
-        $this->formData['password']['second'] = $this->formData['email'];
+        $this->formData['plain_password']['first'] = $this->formData['email'];
+        $this->formData['plain_password']['second'] = $this->formData['email'];
 
         $this->form->submit($this->formData);
-        $this->assertEquals(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
+        $this->assertSame(trans('common.password_eq_email'), $this->form->getErrors(true)[0]->getMessage());
     }
 
     public function testInvalidStatusBlank()
@@ -261,5 +328,45 @@ class CustomerTypeTest extends \Eccube\Tests\Form\Type\AbstractTypeTestCase
 
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidPointPlus()
+    {
+        $this->formData['point'] = '123';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidPointMinus()
+    {
+        $this->formData['point'] = '-123';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidPointBlank()
+    {
+        $this->formData['point'] = '';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPointMin()
+    {
+        $this->formData['point'] = '-1234567890123';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidPointMax()
+    {
+        $this->formData['point'] = '1234567890123';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
     }
 }

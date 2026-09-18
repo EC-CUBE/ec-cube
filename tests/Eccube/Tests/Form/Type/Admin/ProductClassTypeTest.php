@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,18 +17,17 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\ProductClassType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use Symfony\Component\Form\FormInterface;
 
-class ProductClassTypeTest extends AbstractTypeTestCase
+final class ProductClassTypeTest extends AbstractTypeTestCase
 {
-    /**
-     * @var \Symfony\Component\Form\FormInterface
-     */
-    protected $form;
+    protected ?FormInterface $form = null;
 
     /**
      * @var array デフォルト値（正常系）を設定
      */
-    protected $formData = [
+    protected ?array $formData = [
+        'code' => 'code',
         'stock' => '100',
         'sale_limit' => '100',
         'price01' => '100',
@@ -38,10 +39,9 @@ class ProductClassTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
         // CSRF tokenを無効にしてFormを作成
         // 会員管理会員登録・編集
         $this->form = $this->formFactory
@@ -73,7 +73,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidSaleLimitOverMaxLength()
     {
-        $this->formData['sale_limit'] = '12345678910'; //Max 10
+        $this->formData['sale_limit'] = '12345678910'; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -97,7 +97,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPrice01OverMaxLength()
     {
-        $this->formData['price01'] = '12345678910'; //Max 10
+        $this->formData['price01'] = '12345678910'; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -121,7 +121,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPrice02Blank()
     {
-        $this->formData['price02'] = ''; //Max 10
+        $this->formData['price02'] = ''; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -129,7 +129,7 @@ class ProductClassTypeTest extends AbstractTypeTestCase
 
     public function testInvalidPrice02OverMaxLength()
     {
-        $this->formData['price02'] = '12345678910'; //Max 10
+        $this->formData['price02'] = '12345678910'; // Max 10
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -186,6 +186,14 @@ class ProductClassTypeTest extends AbstractTypeTestCase
     public function testInvalidDeliveryFeeHasMinus()
     {
         $this->formData['delivery_fee'] = '-12345';
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInvalidCodeLong()
+    {
+        $this->formData['code'] = 'この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです。文字の大きさ、量、字間、行間等を確認するために入れています。この文章はダミーです';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());

@@ -1,6 +1,6 @@
 {
   "name": "eccube",
-  "version": "4.1.0",
+  "version": "4.4.0-dev",
   "description": "EC-CUBE EC open platform.",
   "main": "index.js",
   "directories": {
@@ -9,8 +9,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "echo \"Error: no clean specified\" && exit 1",
-    "build": "gulp",
-    "start": "gulp start"
+    "build": "node esbuild.config.mjs",
+    "start": "node esbuild.config.mjs --watch",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -24,34 +25,34 @@
   "homepage": "https://www.ec-cube.net/",
   "lint-staged": {
     "*.php": [
-      "cross-env vendor/bin/php-cs-fixer --config=.php_cs.dist --path-mode=intersection fix"
+      "cross-env vendor/bin/php-cs-fixer --config=.php-cs-fixer.dist.php --path-mode=intersection fix"
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged 2>&1 | echo || node -e ''"
-    }
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "ace-builds": "^1.44.0",
+    "bootstrap": "^5.3.8",
+    "chart.js": "^4.5.1",
+    "filepond": "^4.32.12",
+    "filepond-plugin-file-validate-size": "^2.2.8",
+    "filepond-plugin-file-validate-type": "^1.2.9",
+    "filepond-plugin-image-preview": "^4.6.12",
+    "jquery": "^3.7.1",
+    "jquery.qrcode": "^1.0.3",
+    "ladda": "^2.0.3",
+    "slick-carousel": "^1.8.1",
+    "sortablejs": "^1.15.7",
+    "spin.js": "^4.1.2"
   },
-  "dependencies": {},
   "devDependencies": {
-    "autoprefixer": "^9.6.4",
-    "bootstrap": "^4.3.1",
-    "bootstrap-sass": "^3.4.1",
-    "browser-sync": "^2.26.14",
-    "cross-env": "^7.0.2",
-    "css-mqpacker": "^7.0.0",
-    "gulp": "^4.0.2",
-    "gulp-clean-css": "^4.2.0",
-    "gulp-notify": "^3.2.0",
-    "gulp-plumber": "^1.2.1",
-    "gulp-postcss": "^8.0.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-sass": "^4.0.2",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.11",
-    "normalize.css": "^5.0.0",
-    "postcss-import": "^12.0.1",
-    "process": "^0.11.10",
-    "sort-css-media-queries": "^1.4.3"
+    "autoprefixer": "^10.5.4",
+    "cross-env": "^10.1.0",
+    "esbuild": "^0.28.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.5.0",
+    "normalize.css": "^8.0.1",
+    "postcss": "^8.5.26",
+    "postcss-sort-media-queries": "^6.7.1",
+    "sass-embedded": "^1.103.1"
   }
 }

@@ -19,61 +19,32 @@ use Eccube\Request\Context;
 use Eccube\Service\TwoFactorAuthService;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class TwoFactorAuthListener implements EventSubscriberInterface
 {
     /**
-     * @var array 2段階認証のチェックを除外するroute
+     * @var array<string> 2段階認証のチェックを除外するroute
      */
-    const ROUTE_EXCLUDE = ['admin_two_factor_auth', 'admin_two_factor_auth_set'];
+    public const ROUTE_EXCLUDE = ['admin_two_factor_auth'];
 
     /**
-     * @var EccubeConfig
+     * @var array<string> 2段階認証キー未設定時のみ除外するroute
      */
-    protected $eccubeConfig;
+    public const ROUTE_EXCLUDE_WHEN_NOT_CONFIGURED = ['admin_two_factor_auth_set'];
 
     /**
-     * @var Context
+     * @param Context $requestContext,
      */
-    protected $requestContext;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
-    protected $router;
-
-    /**
-     * @var TwoFactorAuthService
-     */
-    protected $twoFactorAuthService;
-
-    /**
-     * @param EccubeConfig $eccubeConfig
-     * @param Context $context,
-     * @param UrlGeneratorInterface $router
-     * @param EncoderFactoryInterface $encoderFactory
-     */
-    public function __construct(
-        EccubeConfig $eccubeConfig,
-        Context $requestContext,
-        UrlGeneratorInterface $router,
-        TwoFactorAuthService $twoFactorAuthService
-    ) {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->requestContext = $requestContext;
-        $this->router = $router;
-        $this->twoFactorAuthService = $twoFactorAuthService;
+    public function __construct(protected EccubeConfig $eccubeConfig, protected Context $requestContext, protected UrlGeneratorInterface $router, protected TwoFactorAuthService $twoFactorAuthService)
+    {
     }
 
-    /**
-     * @param FilterControllerEvent $event
-     */
-    public function onKernelController(FilterControllerEvent $event)
+    public function onKernelController(ControllerArgumentsEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -90,9 +61,18 @@ class TwoFactorAuthListener implements EventSubscriberInterface
             return;
         }
 
+        $Member = $this->requestContext->getCurrentUser();
+
+        // 2FAキー未設定時のみ除外するルートのチェック
+        // 既に2FAキーが設定されている場合は除外しない（認証が必要）
+        if (in_array($route, self::ROUTE_EXCLUDE_WHEN_NOT_CONFIGURED)) {
+            if ($Member instanceof Member && !$Member->getTwoFactorAuthKey()) {
+                return;
+            }
+        }
+
         if (
-            ($Member = $this->requestContext->getCurrentUser())
-            && $Member instanceof Member
+            $Member instanceof Member
             && $Member->isTwoFactorAuthEnabled()
             && !$this->twoFactorAuthService->isAuth($Member)
         ) {
@@ -105,16 +85,15 @@ class TwoFactorAuthListener implements EventSubscriberInterface
             else {
                 $url = $this->router->generate('admin_two_factor_auth_set', [], UrlGeneratorInterface::ABSOLUTE_PATH);
             }
-            $event->setController(function () use ($url) {
-                return new RedirectResponse($url, $status = 302);
-            });
+            $event->setController(fn () => new RedirectResponse($url, $status = 302));
         }
     }
 
     /**
-     * @return array
+     * @return array<string, array<int|string>>
      */
-    public static function getSubscribedEvents()
+    #[\Override]
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::CONTROLLER_ARGUMENTS => ['onKernelController', 7],

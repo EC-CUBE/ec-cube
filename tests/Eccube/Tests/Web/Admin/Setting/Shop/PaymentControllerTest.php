@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,30 +18,25 @@ namespace Eccube\Tests\Web\Admin\Setting\Shop;
 use Eccube\Entity\Payment;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class PaymentControllerTest extends AbstractAdminWebTestCase
+final class PaymentControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
+    protected ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var string
-     */
-    protected $imageDir;
+    protected ?string $imageDir = null;
 
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-
-        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->imageDir = sys_get_temp_dir().'/'.sha1(mt_rand());
+        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
+        $this->imageDir = sys_get_temp_dir().'/'.sha1((string) mt_rand());
         $fs = new Filesystem();
         $fs->mkdir($this->imageDir);
     }
@@ -47,7 +44,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         $fs = new Filesystem();
         $fs->remove($this->imageDir);
@@ -56,21 +53,21 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
     public function testRouting()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     public function testRoutingNew()
     {
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_new'));
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment_new'));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * @param $isSuccess
      * @param $expected
-     * @dataProvider dataSubmitProvider
      */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testNew($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -78,7 +75,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $formData['method'] = '';
         }
 
-        $crawler = $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_new'),
             [
                 'payment_register' => $formData,
@@ -93,15 +90,16 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
     public function testRoutingEdit()
     {
         $Payment = $this->paymentRepository->find(1);
-        $this->client->request('GET', $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]));
+        $this->assertInstanceOf(Payment::class, $Payment);
+        $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]));
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
     /**
      * @param $isSuccess
      * @param $expected
-     * @dataProvider dataSubmitProvider
      */
+    #[DataProvider(methodName: 'dataSubmitProvider')]
     public function testEdit($isSuccess, $expected)
     {
         $formData = $this->createFormData();
@@ -111,7 +109,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $Payment = $this->paymentRepository->find(1);
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
@@ -127,9 +125,9 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Member = $this->createMember();
         $Payment = new Payment();
         $Payment->setMethod('testDeleteSuccess')
-            ->setCharge(0)
-            ->setRuleMin(0)
-            ->setRuleMax(9999)
+            ->setCharge('0')
+            ->setRuleMin('0')
+            ->setRuleMax('9999')
             ->setCreator($Member)
             ->setVisible(true);
 
@@ -137,125 +135,100 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         $pid = $Payment->getId();
-        $this->client->request('DELETE',
+        $this->client->request(Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_payment_delete', ['id' => $pid])
         );
 
         $this->assertTrue($this->client->getResponse()->isRedirection());
 
         $Payment = $this->paymentRepository->find($pid);
-        $this->assertNull($Payment);
+        $this->assertNotInstanceOf(Payment::class, $Payment);
     }
 
     public function testDeleteFailNotFound()
     {
         $pid = 9999;
         $this->client->request(
-            'DELETE',
+            Request::METHOD_DELETE,
             $this->generateUrl('admin_setting_shop_payment_delete', ['id' => $pid])
         );
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
-    public function testAddImage()
+    /**
+     * アップロード画像が save_image にコピーされているか確認する.
+     */
+    public function testEditWithImage()
     {
-        $formData = $this->createFormData();
+        $path = __DIR__.'/../../../../../../../html/upload';
 
-        copy(
-            __DIR__.'/../../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.png'
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
         );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.png',
-            'sand-1.png',
-            'image/png',
-            null, null, true
-        );
-        $this->client->request('POST',
-            $this->generateUrl('admin_payment_image_add'),
+
+        $formData = $this->createFormData();
+        $formData['payment_image'] = 'new_image.png';
+        $Payment = $this->paymentRepository->find(1);
+        $this->assertInstanceOf(Payment::class, $Payment);
+
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
-            ],
-            [
-                'payment_register' => ['payment_image_file' => $image],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        $this->expected = true;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
+
+        $this->assertFileExists($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされている');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
     }
 
-    public function testAddImageWithUppercaseSuffix()
+    /**
+     * アップロード画像に相対パスが指定された場合は save_image にコピーされない.
+     */
+    public function testEditWithImageFailure()
     {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../../html/upload/save_image/sand-1.png',
-            $this->imageDir.'/sand-1.PNG'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/sand-1.PNG',
-            'sand-1.PNG',
-            'image/png',
-            null, null, true
+        $path = __DIR__.'/../../../../../../../html/upload';
+
+        $fs = new Filesystem();
+        // アップロード画像が存在する場合は削除しておく
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+
+        $fs->copy(
+            $path.'/save_image/sand-1.png',
+            $path.'/temp_image/new_image.png'
         );
 
-        $this->client->request('POST',
-            $this->generateUrl('admin_payment_image_add'),
+        $formData = $this->createFormData();
+        $formData['payment_image'] = '../temp_image/new_image.png';
+        $Payment = $this->paymentRepository->find(1);
+        $this->assertInstanceOf(Payment::class, $Payment);
+
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
             [
                 'payment_register' => $formData,
-            ],
-            [
-                'payment_register' => ['payment_image_file' => $image],
-            ],
-            [
-                'HTTP_X-Requested-With' => 'XMLHttpRequest',
             ]
         );
-        $this->assertTrue($this->client->getResponse()->isSuccessful());
-    }
 
-    public function testAddImageNotAjax()
-    {
-        $formData = $this->createFormData();
+        $this->expected = true;
+        $this->actual = $this->client->getResponse()->isRedirection();
+        $this->verify();
 
-        $this->client->request('POST',
-            $this->generateUrl('admin_payment_image_add'),
-            [
-                'payment_register' => $formData,
-            ],
-            []
-        );
-        $this->assertSame(400, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testAddImageMineNotSupported()
-    {
-        $formData = $this->createFormData();
-        copy(
-            __DIR__.'/../../../../../../Fixtures/categories.csv',
-            $this->imageDir.'/categories.png'
-        );
-        $image = new UploadedFile(
-            $this->imageDir.'/categories.png',
-            'categories.png',
-            'image/png',
-            null, null, true
-        );
-
-        $crawler = $this->client->request('POST',
-           $this->generateUrl('admin_payment_image_add'),
-           [
-               'payment_register' => $formData,
-           ],
-           [
-               'payment_register' => ['payment_image_file' => $image],
-           ],
-           [
-               'HTTP_X-Requested-With' => 'XMLHttpRequest',
-           ]
-        );
-        $this->assertFalse($this->client->getResponse()->isSuccessful());
+        $this->assertFileDoesNotExist($path.'/save_image/new_image.png', 'temp_image の画像が save_imageにコピーされない');
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
     }
 
     public function testMoveSortNo()
@@ -267,18 +240,14 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         foreach ($Payments as $Payment) {
             $this->expected[$Payment->getId()] = $Payment->getSortNo();
         }
-
-        // swap sort_no
-        reset($this->expected);
-        $firstKey = key($this->expected);
-        end($this->expected);
-        $lastKey = key($this->expected);
+        $firstKey = array_key_first($this->expected);
+        $lastKey = array_key_last($this->expected);
 
         $tmp = $this->expected[$firstKey];
         $this->expected[$firstKey] = $this->expected[$lastKey];
         $this->expected[$lastKey] = $tmp;
 
-        $this->client->request('POST',
+        $this->client->request(Request::METHOD_POST,
             $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
             $this->expected,
             [],
@@ -288,6 +257,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
         $Payments = $this->paymentRepository->findBy([], ['sort_no' => 'DESC']);
         $this->actual = [];
         foreach ($Payments as $Payment) {
+            $this->entityManager->refresh($Payment); // Refresh しないとリクエストの値(string)が入ってしまう
             $this->actual[$Payment->getId()] = $Payment->getSortNo();
         }
         sort($this->expected);
@@ -308,7 +278,7 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             $rule_max = number_format($rule_max);
         }
 
-        $form = [
+        return [
             '_token' => 'dummy',
             'method' => 'Test',
             'charge' => $charge,
@@ -319,17 +289,12 @@ class PaymentControllerTest extends AbstractAdminWebTestCase
             'visible' => true,
             'fixed' => true,
         ];
-
-        return $form;
     }
 
-    public function dataSubmitProvider()
+    public static function dataSubmitProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true],
-            // To do implement
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 
     //    TO DO : implement

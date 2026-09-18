@@ -25,34 +25,26 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CustomerLoginType extends AbstractType
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var AuthenticationUtils
-     */
-    protected $authenticationUtils;
-
-    public function __construct(AuthenticationUtils $authenticationUtils, EccubeConfig $eccubeConfig)
+    public function __construct(protected AuthenticationUtils $authenticationUtils, protected EccubeConfig $eccubeConfig)
     {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('login_email', EmailType::class, [
             'attr' => [
                 'maxlength' => $this->eccubeConfig['eccube_stext_len'],
+                'autocomplete' => 'username',
             ],
             'constraints' => [
                 new Assert\NotBlank(),
-                new Email(['strict' => $this->eccubeConfig['eccube_rfc_email_check']]),
+                new Email(null, null, $this->eccubeConfig['eccube_rfc_email_check'] ? 'strict' : null),
             ],
             'data' => $this->authenticationUtils->getLastUsername(),
         ]);
@@ -62,18 +54,11 @@ class CustomerLoginType extends AbstractType
         $builder->add('login_pass', PasswordType::class, [
             'attr' => [
                 'maxlength' => $this->eccubeConfig['eccube_stext_len'],
+                'autocomplete' => 'current-password',
             ],
             'constraints' => [
                 new Assert\NotBlank(),
             ],
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'customer_login';
     }
 }

@@ -14,8 +14,10 @@
 namespace Eccube\Form\Type\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\ClassCategory;
-use Eccube\Form\DataTransformer;
+use Eccube\Entity\ProductClass;
+use Eccube\Form\DataTransformer\EntityToIdTransformer;
 use Eccube\Form\Type\Master\DeliveryDurationType;
 use Eccube\Form\Type\Master\SaleTypeType;
 use Eccube\Form\Type\PriceType;
@@ -33,42 +35,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProductClassType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * ProductClassType constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(
-        EntityManagerInterface $entityManager
-    ) {
-        $this->entityManager = $entityManager;
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
+    {
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('code', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => 255,
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('stock', NumberType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('stock_unlimited', CheckboxType::class, [
@@ -79,16 +70,9 @@ class ProductClassType extends AbstractType
             ->add('sale_limit', NumberType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => 10,
-                    ]),
-                    new Assert\GreaterThanOrEqual([
-                        'value' => 1,
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+$/u",
-                        'message' => 'form_error.numeric_only',
-                    ]),
+                    new Assert\Length(max: 10),
+                    new Assert\GreaterThanOrEqual(value: 1),
+                    new Assert\Regex(pattern: "/^\d+$/u", message: 'form_error.numeric_only'),
                 ],
             ])
             ->add('price01', PriceType::class, [
@@ -99,11 +83,8 @@ class ProductClassType extends AbstractType
             ->add('tax_rate', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Range(['min' => 0, 'max' => 100]),
-                    new Assert\Regex([
-                        'pattern' => "/^\d+(\.\d+)?$/",
-                        'message' => 'form_error.float_only',
-                    ]),
+                    new Assert\Range(min: 0, max: 100),
+                    new Assert\Regex(pattern: "/^\d+(\.\d+)?$/", message: 'form_error.float_only'),
                 ],
             ])
             ->add('delivery_fee', PriceType::class, [
@@ -120,7 +101,7 @@ class ProductClassType extends AbstractType
                 'required' => false,
                 'placeholder' => 'common.select__unspecified',
             ])
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $data = $form->getData();
 
@@ -129,7 +110,7 @@ class ProductClassType extends AbstractType
                 }
             });
 
-        $transformer = new DataTransformer\EntityToIdTransformer($this->entityManager, ClassCategory::class);
+        $transformer = new EntityToIdTransformer($this->entityManager, ClassCategory::class);
         $builder
             ->add($builder->create('ClassCategory1', HiddenType::class)
                 ->addModelTransformer($transformer)
@@ -142,17 +123,19 @@ class ProductClassType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\ProductClass',
+            'data_class' => ProductClass::class,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    #[\Override]
+    public function getBlockPrefix(): string
     {
         return 'admin_product_class';
     }

@@ -1,5 +1,4 @@
 @import "../mixins/media";
-@import "../mixins/variables";
 /*
 見出し
 
@@ -124,6 +123,8 @@ Styleguide 1.1.5
   h4, h5, h6{
     background: $clrGray;
     padding: 8px 12px;
+    margin-top: 20px;
+    margin-bottom: 10px;
     font-size: 20px;
     font-weight: bold;
   }

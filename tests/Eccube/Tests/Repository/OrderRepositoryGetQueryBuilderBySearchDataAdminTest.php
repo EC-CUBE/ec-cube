@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,7 +18,9 @@ namespace Eccube\Tests\Repository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\OrderStatusRepository;
 use Eccube\Repository\Master\SexRepository;
@@ -24,59 +28,56 @@ use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * OrderRepository::getQueryBuilderBySearchDataForAdminTest test cases.
  *
  * @author Kentaro Ohkouchi
  */
-class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
+final class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 {
-    /** @var Customer */
-    protected $Customer;
-    /** @var Order */
-    protected $Order;
-    /** @var Order */
-    protected $Order1;
-    /** @var Order */
-    protected $Order2;
-    /** @var ArrayCollection */
-    protected $Results;
-    /** @var ArrayCollection */
-    protected $searchData;
-    /** @var OrderStatusRepository */
-    protected $orderStatusRepo;
-    /** @var OrderRepository */
-    protected $orderRepo;
-    /** @var SexRepository */
-    protected $sexRepo;
-    /** @var PaymentRepository */
-    protected $paymentRepo;
+    protected ?Customer $Customer = null;
+    protected ?Order $Order = null;
+    protected ?Order $Order1 = null;
+    protected ?Order $Order2 = null;
+    protected ?array $Results = null;
+    protected ?array $searchData = null;
+    protected ?OrderStatusRepository $orderStatusRepo = null;
+    protected ?OrderRepository $orderRepo = null;
+    protected ?SexRepository $sexRepo = null;
+    protected ?PaymentRepository $paymentRepo = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
-        $this->createProduct();
-
-        $this->orderStatusRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\OrderStatus::class);
-        $this->paymentRepo = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->orderRepo = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->sexRepo = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
-        $this->Customer = $this->createCustomer();
-        $this->entityManager->persist($this->Customer);
-        $this->entityManager->flush();
-
-        $this->Order = $this->createOrder($this->Customer);
-        $this->Order1 = $this->createOrder($this->Customer);
-        $this->Order2 = $this->createOrder($this->createCustomer('test@example.com'));
-        // 新規受付にしておく
-        $NewStatus = $this->orderStatusRepo->find(OrderStatus::NEW);
-        $this->Order1
-            ->setOrderStatus($NewStatus)
-            ->setOrderDate(new \DateTime());
-        $this->Order2
-            ->setOrderStatus($NewStatus)
-            ->setOrderDate(new \DateTime());
+        $this->orderStatusRepo = $this->entityManager->getRepository(OrderStatus::class);
+        $this->paymentRepo = $this->entityManager->getRepository(Payment::class);
+        $this->orderRepo = $this->entityManager->getRepository(Order::class);
+        $this->sexRepo = $this->entityManager->getRepository(Sex::class);
+        // Phase (b): order-search-multi-status シナリオの CSV から Customer × 2 + Order × 3 を一括投入.
+        // 各 Order は CSV 内で異なる OrderStatus / order_date を持つため、setUp 内の setter 呼び出しが不要になる.
+        // ※ シナリオ間の UNIQUE 制約衝突を避けるため、CSV ロード前に対象テーブルを空にする.
+        $this->deleteAllRows(['dtb_order_item']);
+        $this->deleteAllRows(['dtb_shipping']);
+        $this->deleteAllRows(['dtb_order']);
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
+        // 詳細は tests/Eccube/Tests/Fixture/csv/order-search-multi-status/README.md を参照.
+        $this->loadCsvFixtures('order-search-multi-status');
+        $this->Customer = $this->entityManager->getRepository(Customer::class)
+            ->findOneBy(['email' => 'customer-multi-status@example.com']);
+        $this->Order = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-1']);
+        $this->Order1 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-2']);
+        $this->Order2 = $this->orderRepo->findOneBy(['order_no' => 'order-multi-status-3']);
+        // CSV の create_date / update_date / order_date は固定値のため、日時範囲検索 (testDateTime) で
+        // 期待件数にヒットしない. テスト実行時の現在時刻に上書きする (Order は order_date=NULL のまま).
+        $now = new \DateTime();
+        foreach ([$this->Order, $this->Order1, $this->Order2] as $Order) {
+            $Order->setCreateDate($now)->setUpdateDate($now);
+        }
+        $this->Order1->setOrderDate($now);
+        $this->Order2->setOrderDate($now);
         $this->entityManager->flush();
     }
 
@@ -120,6 +121,23 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         $this->Order2
             ->setKana01('リッポウ')
+            ->setKana02('タイチョウ');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'multi' => 'タイチョウ',
+        ];
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testMultiWithKanaNull()
+    {
+        $this->Order2
+            ->setKana01(null)
             ->setKana02('タイチョウ');
         $this->entityManager->flush();
 
@@ -264,11 +282,28 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     {
         $this->Order1
             ->setKana01('セイ')
-            ->setKana02('メイ'); // XXX いずれかが NULL だと無視されてしまう
+            ->setKana02('メイ');
         $this->entityManager->flush();
 
         $this->searchData = [
             'kana' => 'メ',
+        ];
+        $this->scenario();
+
+        $this->expected = 1;
+        $this->actual = count($this->Results);
+        $this->verify();
+    }
+
+    public function testKanaWithNull()
+    {
+        $this->Order1
+            ->setKana01(null)
+            ->setKana02('メイ');
+        $this->entityManager->flush();
+
+        $this->searchData = [
+            'kana' => 'メイ',
         ];
         $this->scenario();
 
@@ -362,14 +397,10 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
     }
 
     /**
-     * @dataProvider dataFormDateProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
      * @param int $OrderStatusId
      */
-    public function testDate(string $formName, string $time, int $expected, int $OrderStatusId = null)
+    #[DataProvider(methodName: 'dataFormDateProvider')]
+    public function testDate(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
         if (!is_null($OrderStatusId)) {
             $Status = $this->orderStatusRepo->find($OrderStatusId);
@@ -394,36 +425,25 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
      * - today: 今日の00:00:00
      * - tomorrow: 明日の00:00:00
      * - yesterday: 昨日の00:00:00
-     *
-     * @return array
      */
-    public function dataFormDateProvider()
+    public static function dataFormDateProvider(): \Iterator
     {
-        return [
-            ['order_date_start', 'today', 2],
-            ['order_date_start', 'tomorrow', 0],
-            ['payment_date_start', 'today', 1, OrderStatus::PAID],
-            ['payment_date_start', 'tomorrow', 0, OrderStatus::PAID],
-            ['update_date_start', 'today', 2],
-            ['update_date_start', 'tomorrow', 0],
-            ['order_date_end', 'today', 2],
-            ['order_date_end', 'yesterday', 0],
-            ['payment_date_end', 'today', 1, OrderStatus::PAID],
-            ['payment_date_end', 'yesterday', 0, OrderStatus::PAID],
-            ['update_date_end', 'today', 2],
-            ['update_date_end', 'yesterday', 0],
-        ];
+        yield ['order_date_start', 'today', 2];
+        yield ['order_date_start', 'tomorrow', 0];
+        yield ['payment_date_start', 'today', 1, OrderStatus::PAID];
+        yield ['payment_date_start', 'tomorrow', 0, OrderStatus::PAID];
+        yield ['update_date_start', 'today', 2];
+        yield ['update_date_start', 'tomorrow', 0];
+        yield ['order_date_end', 'today', 2];
+        yield ['order_date_end', 'yesterday', 0];
+        yield ['payment_date_end', 'today', 1, OrderStatus::PAID];
+        yield ['payment_date_end', 'yesterday', 0, OrderStatus::PAID];
+        yield ['update_date_end', 'today', 2];
+        yield ['update_date_end', 'yesterday', 0];
     }
 
-    /**
-     * @dataProvider dataFormDateTimeProvider
-     *
-     * @param string $formName
-     * @param string $time
-     * @param int $expected
-     * @param int|null $OrderStatusId
-     */
-    public function testDateTime(string $formName, string $time, int $expected, int $OrderStatusId = null)
+    #[DataProvider(methodName: 'dataFormDateTimeProvider')]
+    public function testDateTime(string $formName, string $time, int $expected, ?int $OrderStatusId = null)
     {
         if (!is_null($OrderStatusId)) {
             $Status = $this->orderStatusRepo->find($OrderStatusId);
@@ -443,32 +463,28 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     /**
      * Data provider datetime form test.
-     *
-     * @return array
      */
-    public function dataFormDateTimeProvider()
+    public static function dataFormDateTimeProvider(): \Iterator
     {
-        return [
-            ['order_datetime_start', '- 1 hour', 2],
-            ['order_datetime_start', '+ 1 hour', 0],
-            ['payment_datetime_start', '- 1 hour', 1, OrderStatus::PAID],
-            ['payment_datetime_start', '+ 1 hour', 0, OrderStatus::PAID],
-            ['update_datetime_start', '- 1 hour', 2],
-            ['update_datetime_start', '+ 1 hour', 0],
-            ['order_datetime_end', '+ 1 hour', 2],
-            ['order_datetime_end', '- 1 hour', 0],
-            ['payment_datetime_end', '+ 1 hour', 1, OrderStatus::PAID],
-            ['payment_datetime_end', '- 1 hour', 0, OrderStatus::PAID],
-            ['update_datetime_end', '+ 1 hour', 2],
-            ['update_datetime_end', '- 1 hour', 0],
-        ];
+        yield ['order_datetime_start', '- 1 hour', 2];
+        yield ['order_datetime_start', '+ 1 hour', 0];
+        yield ['payment_datetime_start', '- 1 hour', 1, OrderStatus::PAID];
+        yield ['payment_datetime_start', '+ 1 hour', 0, OrderStatus::PAID];
+        yield ['update_datetime_start', '- 1 hour', 2];
+        yield ['update_datetime_start', '+ 1 hour', 0];
+        yield ['order_datetime_end', '+ 1 hour', 2];
+        yield ['order_datetime_end', '- 1 hour', 0];
+        yield ['payment_datetime_end', '+ 1 hour', 1, OrderStatus::PAID];
+        yield ['payment_datetime_end', '- 1 hour', 0, OrderStatus::PAID];
+        yield ['update_datetime_end', '+ 1 hour', 2];
+        yield ['update_datetime_end', '- 1 hour', 0];
     }
 
     public function testPaymentTotalStart()
     {
-        $this->Order->setPaymentTotal(99);
-        $this->Order1->setPaymentTotal(100);
-        $this->Order2->setPaymentTotal(101);
+        $this->Order->setPaymentTotal('99');
+        $this->Order1->setPaymentTotal('100');
+        $this->Order2->setPaymentTotal('101');
         $this->entityManager->flush();
 
         // XXX 0 が無視されてしまう
@@ -485,9 +501,9 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     public function testPaymentTotalEnd()
     {
-        $this->Order->setPaymentTotal(99);
-        $this->Order1->setPaymentTotal(100);
-        $this->Order2->setPaymentTotal(101);
+        $this->Order->setPaymentTotal('99');
+        $this->Order1->setPaymentTotal('100');
+        $this->Order2->setPaymentTotal('101');
         $this->entityManager->flush();
 
         $this->searchData = [
@@ -522,12 +538,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
-    /**
-     * @param array $searchPaymentNos
-     * @param int $expected
-     *
-     * @dataProvider dataPaymentProvider
-     */
+    #[DataProvider(methodName: 'dataPaymentProvider')]
     public function testPayment(array $searchPaymentNos, int $expected)
     {
         // データの準備
@@ -543,9 +554,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->entityManager->flush();
 
         // Paymentの検索リストを作成
-        $Payments = array_filter($Payments, function ($Payment) use ($searchPaymentNos) {
-            return in_array($Payment->getId(), $searchPaymentNos);
-        });
+        $Payments = array_filter($Payments, fn ($Payment) => in_array($Payment->getId(), $searchPaymentNos));
 
         // 検索
         $this->searchData = [
@@ -561,17 +570,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     /**
      * Data for case check Payment.
-     *
-     * @return array
      */
-    public function dataPaymentProvider()
+    public static function dataPaymentProvider(): \Iterator
     {
-        return [
-            [[1], 1],
-            [[1, 2], 2],
-            [[2, 3], 1],
-            [[3], 0],
-        ];
+        yield [[1], 1];
+        yield [[1, 2], 2];
+        yield [[2, 3], 1];
+        yield [[3], 0];
     }
 
     public function testCompanyName()
@@ -619,12 +624,7 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
         $this->verify();
     }
 
-    /**
-     * @param array $checks
-     * @param int $expected
-     *
-     * @dataProvider dataShippingMailProvider
-     */
+    #[DataProvider(methodName: 'dataShippingMailProvider')]
     public function testShippingMail(array $checks, int $expected)
     {
         $this->Order2->getShippings()[0]->setMailSendDate(new \DateTime());
@@ -642,17 +642,13 @@ class OrderRepositoryGetQueryBuilderBySearchDataAdminTest extends EccubeTestCase
 
     /**
      * Data for case check shipping mail.
-     *
-     * @return array
      */
-    public function dataShippingMailProvider()
+    public static function dataShippingMailProvider(): \Iterator
     {
-        return [
-            [[], 2],
-            [[Shipping::SHIPPING_MAIL_SENT], 1],
-            [[Shipping::SHIPPING_MAIL_UNSENT], 1],
-            [[Shipping::SHIPPING_MAIL_SENT, Shipping::SHIPPING_MAIL_UNSENT], 2],
-        ];
+        yield [[], 2];
+        yield [[Shipping::SHIPPING_MAIL_SENT], 1];
+        yield [[Shipping::SHIPPING_MAIL_UNSENT], 1];
+        yield [[Shipping::SHIPPING_MAIL_SENT, Shipping::SHIPPING_MAIL_UNSENT], 2];
     }
 
     /**

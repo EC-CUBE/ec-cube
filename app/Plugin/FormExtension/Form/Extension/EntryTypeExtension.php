@@ -24,7 +24,7 @@ class EntryTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // 職業を必須項目に変更するサンプル
         $builder->remove('job');

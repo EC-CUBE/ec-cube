@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,77 +15,164 @@
 
 namespace Eccube\Tests\Util;
 
+use Eccube\Common\EccubeConfig;
+use Eccube\Tests\EffectiveUserTrait;
 use Eccube\Util\CacheUtil;
-use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Finder\Finder;
+use Psr\Container\ContainerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
- * CacheUtil test cases.
- *
- * @author Kentaro Ohkouchi
+ * ビルドディレクトリへ書き込めるかどうかによる分岐を検証する.
  */
-class CacheUtilTest extends TestCase
+final class CacheUtilTest extends TestCase
 {
-    private $app;
-    private $root;
-    private $dirs;
+    use EffectiveUserTrait;
 
-    public function setUp()
+    private string $workDir;
+
+    protected function setUp(): void
     {
-        // 仮想ファイルを生成
-        $this->root = vfsStream::setup('rootDir');
-        $this->dirs = ['doctrine', 'profiler', 'twig'];
-        $this->app = [
-            'config' => [
-                'root_dir' => vfsStream::url('rootDir'),
-            ],
-        ];
-        mkdir($this->app['config']['root_dir'].'/app/cache', 0777, true);
-        file_put_contents($this->app['config']['root_dir'].'/app/cache/.gitkeep', 'test');
-        // ランダムなファイルを生成しておく
-        foreach ($this->dirs as $dir) {
-            mkdir($this->app['config']['root_dir'].'/app/cache/'.$dir, 0777, true);
-            $n = mt_rand(5, 10);
-            for ($i = 0; $i < $n; $i++) {
-                file_put_contents($this->app['config']['root_dir'].'/app/cache/'.$dir.'/'.$i, 'test');
+        parent::setUp();
+        $this->workDir = sys_get_temp_dir().'/eccube-cache-util-'.bin2hex(random_bytes(6));
+        foreach (['build', 'cache', 'runtime'] as $name) {
+            mkdir($this->workDir.'/'.$name, 0755, true);
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        foreach (['build', 'cache', 'runtime'] as $name) {
+            if (is_dir($this->workDir.'/'.$name)) {
+                chmod($this->workDir.'/'.$name, 0755);
             }
         }
+        (new Filesystem())->remove($this->workDir);
+        parent::tearDown();
     }
 
-    public function testClearAll()
+    public function testCanClearBuildCacheWhenBothDirectoriesAreWritable(): void
     {
-        // .gitkeep を残してすべてを削除
-        CacheUtil::clear($this->app, true);
-
-        $finder = new Finder();
-        $iterator = $finder
-            ->ignoreDotFiles(false)
-            ->in($this->app['config']['root_dir'].'/app/cache')
-            ->files();
-
-        foreach ($iterator as $fileinfo) {
-            $this->assertStringEndsWith('.gitkeep', $fileinfo->getPathname(), '.gitkeep しか存在しないはず');
-        }
-        $this->assertTrue($this->root->hasChild('app/cache/.gitkeep'), '.gitkeep は存在するはず');
+        $this->assertTrue($this->cacheUtil()->canClearBuildCache());
     }
 
-    public function testClear()
+    public function testCannotClearBuildCacheWhenBuildDirIsReadOnly(): void
     {
-        file_put_contents($this->app['config']['root_dir'].'/app/cache/.dummykeep', 'test');
-        // 'doctrine', 'profiler', 'twig' ディレクトリを削除
-        CacheUtil::clear($this->app, false);
+        $this->skipWhenRunningAsRoot();
+        chmod($this->workDir.'/build', 0555);
 
-        $finder = new Finder();
-        $iterator = $finder
-            ->ignoreDotFiles(false)
-            ->in($this->app['config']['root_dir'].'/app/cache')
-            ->files();
+        $this->assertFalse($this->cacheUtil()->canClearBuildCache());
+    }
 
-        foreach ($iterator as $fileinfo) {
-            $this->assertStringEndsWith('keep', $fileinfo->getPathname(), 'keep しか存在しないはず');
+    /**
+     * cache:clear は build と cache の双方へ書き込むため, どちらか一方でも書けなければ実行できない.
+     */
+    public function testCannotClearBuildCacheWhenCacheDirIsReadOnly(): void
+    {
+        $this->skipWhenRunningAsRoot();
+        chmod($this->workDir.'/cache', 0555);
+
+        $this->assertFalse($this->cacheUtil()->canClearBuildCache());
+    }
+
+    /**
+     * 実行時キャッシュの削除はランタイムディレクトリだけを対象とし, ビルド生成物は残す.
+     */
+    public function testClearRuntimeCacheRemovesOnlyRuntimeArtifacts(): void
+    {
+        $runtimeDir = $this->workDir.'/runtime';
+        foreach (['twig', 'mcp-sessions'] as $name) {
+            mkdir($runtimeDir.'/'.$name, 0755, true);
         }
-        $this->assertTrue($this->root->hasChild('app/cache/.gitkeep'), '.gitkeep は存在するはず');
-        $this->assertTrue($this->root->hasChild('app/cache/.dummykeep'), '.dummykeep は存在するはず');
+        mkdir($this->workDir.'/build/twig', 0755, true);
+        mkdir($this->workDir.'/cache/htmlpurifier', 0755, true);
+
+        $message = $this->cacheUtil()->clearRuntimeCache();
+
+        $this->assertDirectoryDoesNotExist($runtimeDir.'/twig');
+        // キャッシュではないものは削除しない
+        $this->assertDirectoryExists($runtimeDir.'/mcp-sessions');
+        // ビルド生成物には触れない
+        $this->assertDirectoryExists($this->workDir.'/build/twig');
+        $this->assertDirectoryExists($this->workDir.'/cache/htmlpurifier');
+        $this->assertStringContainsString('eccube:cache:build', $message);
+    }
+
+    /**
+     * prod では build 側の読み取り専用キャッシュが優先されるため, 双方を削除しないと
+     * 管理画面で更新したテンプレートが反映されない.
+     */
+    public function testClearTwigCacheRemovesBothRuntimeAndBuildCaches(): void
+    {
+        mkdir($this->workDir.'/runtime/twig', 0755, true);
+        mkdir($this->workDir.'/build/twig', 0755, true);
+
+        $this->cacheUtil()->clearTwigCache();
+
+        $this->assertDirectoryDoesNotExist($this->workDir.'/runtime/twig');
+        $this->assertDirectoryDoesNotExist($this->workDir.'/build/twig');
+    }
+
+    /**
+     * ビルドディレクトリへ書き込めない構成では build 側は残る (eccube:cache:build に委ねる).
+     */
+    public function testClearTwigCacheKeepsBuildCacheWhenBuildDirIsReadOnly(): void
+    {
+        $this->skipWhenRunningAsRoot();
+        mkdir($this->workDir.'/runtime/twig', 0755, true);
+        mkdir($this->workDir.'/build/twig', 0755, true);
+        chmod($this->workDir.'/build', 0555);
+
+        $this->cacheUtil()->clearTwigCache();
+
+        $this->assertDirectoryDoesNotExist($this->workDir.'/runtime/twig');
+        $this->assertDirectoryExists($this->workDir.'/build/twig');
+    }
+
+    /**
+     * 実行時キャッシュは Web サーバー所有 (レーン W) になり得るため, CLI から削除できないことがある.
+     * その場合に例外を投げると, キャッシュ削除の失敗が本処理の失敗として現れてしまう.
+     */
+    public function testClearTwigCacheKeepsRuntimeCacheWhenRuntimeDirIsReadOnly(): void
+    {
+        $this->skipWhenRunningAsRoot();
+        mkdir($this->workDir.'/runtime/twig', 0755, true);
+        mkdir($this->workDir.'/build/twig', 0755, true);
+        chmod($this->workDir.'/runtime', 0555);
+
+        $this->cacheUtil()->clearTwigCache();
+
+        $this->assertDirectoryExists($this->workDir.'/runtime/twig');
+        // 削除できる側 (build) は削除する
+        $this->assertDirectoryDoesNotExist($this->workDir.'/build/twig');
+    }
+
+    private function skipWhenRunningAsRoot(): void
+    {
+        $this->skipIfRoot();
+    }
+
+    private function cacheUtil(): CacheUtil
+    {
+        $eccubeConfig = $this->createMock(EccubeConfig::class);
+        $eccubeConfig->method('get')->willReturnCallback(fn (string $key): mixed => match ($key) {
+            'kernel.build_dir' => $this->workDir.'/build',
+            'kernel.cache_dir' => $this->workDir.'/cache',
+            'eccube_runtime_dir' => $this->workDir.'/runtime',
+            default => null,
+        });
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->method('get')->with('cache.global_clearer')->willReturn(new Psr6CacheClearer());
+
+        return new CacheUtil(
+            $this->createStub(KernelInterface::class),
+            $container,
+            $eccubeConfig,
+            $this->createStub(LoggerInterface::class),
+        );
     }
 }

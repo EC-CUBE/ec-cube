@@ -14,6 +14,7 @@
 namespace Eccube\Service\PurchaseFlow\Processor;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Eccube\Entity\Cart;
 use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Order;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
@@ -23,27 +24,20 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class EmptyItemsValidator extends ItemHolderValidator
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
      * EmptyItemsProcessor constructor.
-     *
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(protected EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     /**
-     * @param ItemHolderInterface $itemHolder
-     * @param PurchaseContext $context
+     * @param ItemHolderInterface $itemHolder カート or 注文
+     * @param PurchaseContext $context 購入フローのコンテキスト
      *
-     * @throws InvalidItemException
+     * @throws InvalidItemException 商品明細がない場合
      */
-    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context)
+    #[\Override]
+    protected function validate(ItemHolderInterface $itemHolder, PurchaseContext $context): void
     {
         foreach ($itemHolder->getItems() as $item) {
             if ($item->isProduct() && $item->getQuantity() <= 0) {
@@ -53,7 +47,9 @@ class EmptyItemsValidator extends ItemHolderValidator
                     }
                     $itemHolder->removeOrderItem($item);
                 } else {
-                    $itemHolder->removeItem($item);
+                    if ($itemHolder instanceof Cart) {
+                        $itemHolder->removeItem($item);
+                    }
                 }
                 $this->entityManager->remove($item);
             }

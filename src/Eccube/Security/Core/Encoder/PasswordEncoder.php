@@ -14,24 +14,14 @@
 namespace Eccube\Security\Core\Encoder;
 
 use Eccube\Common\EccubeConfig;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
-class PasswordEncoder implements PasswordEncoderInterface
+class PasswordEncoder
 {
-    /**
-     * @var string
-     */
-    public $auth_magic;
+    public string $auth_magic;
 
-    /**
-     * @var string
-     */
-    public $auth_type;
+    public string $auth_type;
 
-    /**
-     * @var string
-     */
-    public $password_hash_algos;
+    public string $password_hash_algos;
 
     public function __construct(EccubeConfig $eccubeConfig)
     {
@@ -42,10 +32,8 @@ class PasswordEncoder implements PasswordEncoderInterface
 
     /**
      * Set Auth Magic.
-     *
-     * @param $authMagic
      */
-    public function setAuthMagic($authMagic)
+    public function setAuthMagic(string $authMagic): void
     {
         $this->auth_magic = $authMagic;
     }
@@ -59,7 +47,7 @@ class PasswordEncoder implements PasswordEncoderInterface
      *
      * @return bool true if the password is valid, false otherwise
      */
-    public function isPasswordValid($encoded, $raw, $salt)
+    public function isPasswordValid(string $encoded, string $raw, string $salt): bool
     {
         if ($encoded == '') {
             return false;
@@ -93,7 +81,7 @@ class PasswordEncoder implements PasswordEncoderInterface
      *
      * @return string The encoded password
      */
-    public function encodePassword($raw, $salt)
+    public function encodePassword(string $raw, string $salt): string
     {
         if ($salt == '') {
             $salt = $this->auth_magic;
@@ -108,13 +96,17 @@ class PasswordEncoder implements PasswordEncoderInterface
     }
 
     /**
-     * saltを生成する.
-     *
-     * @param int $length
-     *
-     * @return string
+     * Checks if an encoded password would benefit from rehashing.
      */
-    public function createSalt($length = 5)
+    public function needsRehash(string $encoded): bool
+    {
+        return false;
+    }
+
+    /**
+     * saltを生成する.
+     */
+    public function createSalt(int $length = 5): string
     {
         return bin2hex(openssl_random_pseudo_bytes($length));
     }

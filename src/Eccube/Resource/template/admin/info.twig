@@ -1,0 +1,8 @@
+{% if isMaintenance %}
+    <div class="alert alert-info alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-info-circle fa-fw" aria-hidden="true"></i>
+        <span class="fw-bold">{{ 'admin.common.notice_maintenance_mode'|trans }}</span>
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+        </button>
+    </div>
+{% endif %}

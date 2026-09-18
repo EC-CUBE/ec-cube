@@ -14,9 +14,9 @@
 namespace Eccube\DataCollector;
 
 use Eccube\Common\Constant;
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Plugin;
 use Eccube\Repository\PluginRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -28,20 +28,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  */
 class EccubeDataCollector extends DataCollector
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @var PluginRepository
-     */
-    protected $pluginRepository;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container, PluginRepository $pluginRepository)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected PluginRepository $pluginRepository)
     {
         $this->data = [
             'version' => Constant::VERSION,
@@ -51,54 +38,37 @@ class EccubeDataCollector extends DataCollector
             'locale_code' => null,
             'plugins' => [],
         ];
-        $this->container = $container;
-        $this->pluginRepository = $pluginRepository;
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->data['version'];
     }
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
-    public function getPlugins()
+    public function getPlugins(): array
     {
         return $this->data['plugins'];
     }
 
-    /**
-     * @return string
-     */
-    public function getCurrencyCode()
+    public function getCurrencyCode(): string
     {
         return $this->data['currency_code'];
     }
 
-    /**
-     * @return string
-     */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         return $this->data['locale_code'];
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultCurrencyCode()
+    public function getDefaultCurrencyCode(): string
     {
         return $this->data['base_currency_code'];
     }
 
-    /**
-     * @return string
-     */
-    public function getDefaultLocaleCode()
+    public function getDefaultLocaleCode(): string
     {
         return $this->data['default_locale_code'];
     }
@@ -106,19 +76,21 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    #[\Override]
+    public function collect(Request $request, Response $response, ?\Throwable $exception = null): void
     {
-        $this->data['base_currency_code'] = $this->container->getParameter('currency');
-        $this->data['currency_code'] = $this->container->getParameter('currency');
+        $this->data['base_currency_code'] = $this->eccubeConfig->get('currency');
+        $this->data['currency_code'] = $this->eccubeConfig->get('currency');
 
         try {
-            $this->data['locale_code'] = $this->container->getParameter('locale');
-        } catch (\Exception $exception) {
+            $this->data['locale_code'] = $this->eccubeConfig->get('locale');
+            $this->data['default_locale_code'] = $this->eccubeConfig->get('locale');
+        } catch (\Exception) {
         }
 
         try {
-            $enabled = $this->container->getParameter('eccube.plugins.enabled');
-            $disabled = $this->container->getParameter('eccube.plugins.disabled');
+            $enabled = $this->eccubeConfig->get('eccube.plugins.enabled');
+            $disabled = $this->eccubeConfig->get('eccube.plugins.disabled');
 
             $Plugins = $this->pluginRepository->findAll();
             foreach (array_merge($enabled, $disabled) as $code) {
@@ -140,11 +112,12 @@ class EccubeDataCollector extends DataCollector
                 }
                 $this->data['plugins'][$code] = $Plugin->toArray();
             }
-        } catch (\Exception $exception) {
+        } catch (\Exception) {
         }
     }
 
-    public function reset()
+    #[\Override]
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -152,7 +125,8 @@ class EccubeDataCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    #[\Override]
+    public function getName(): string
     {
         return 'eccube_core';
     }

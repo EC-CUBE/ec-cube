@@ -6,20 +6,26 @@ framework:
     csrf_protection: { enabled: true }
     http_method_override: true
     trusted_hosts: ~
+    handle_all_throwables: true
     # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
     session:
-        handler_id: 'Eccube\Session\Storage\Handler\SameSiteNoneCompatSessionHandler'
+        handler_id: 'session.handler.native_file'
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
         name: '%env(ECCUBE_COOKIE_NAME)%'
         cookie_lifetime: '%env(ECCUBE_COOKIE_LIFETIME)%'
         gc_maxlifetime: '%env(ECCUBE_GC_MAXLIFETIME)%'
         cookie_httponly: true
+        cookie_secure: auto
+        cookie_samesite: none
 
-    # When using the HTTP Cache, ESI allows to render page fragments separately
-    # and with different cache configurations for each fragment
-    # https://symfony.com/doc/current/book/http_cache.html#edge-side-includes
-    esi: { enabled: true }
-    fragments: { enabled: true }
+    # ESI / fragments are disabled by default.
+    # The core renders blocks via the inline fragment renderer ({{ render(path(...)) }}),
+    # which does not require the fragments listener nor the public /_fragment endpoint.
+    # Keeping them disabled avoids exposing /_fragment. Enable them only if a project
+    # actually uses render_esi() / render_hinclude() with an HTTP cache (ESI) gateway.
+    # https://symfony.com/doc/current/http_cache/esi.html
+    esi: { enabled: false }
+    fragments: { enabled: false }
     php_errors:
         log: true
     assets:
@@ -37,16 +43,31 @@ framework:
           base_path: '/html/upload/temp_image'
         user_data:
           base_path: '/html/user_data'
+          version_strategy: 'eccube.asset.user_data_version_strategy'
+        bundle:
+          base_path: '/html/bundle'
         # json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
     cache:
         # this value is used as part of the "namespace" generated for the cache item keys
         # to avoid collisions when multiple apps share the same cache backend (e.g. a Redis server)
         # See https://symfony.com/doc/current/reference/configuration/framework.html#prefix-seed
         prefix_seed: ec-cube
+        # cache pool はリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
+        # cache.system 側は設定できないため RuntimeCacheDirPass で差し替える.
+        directory: '%eccube_runtime_dir%/pools/app'
+    # Lock factory. flock store works on shared hosting without external infra.
+    # Used by Agent Commerce (UCP Catalog) cache stampede prevention.
+    lock: flock
     # The 'ide' option turns all of the file paths in an exception page
     # into clickable links that open the given file using your favorite IDE.
     # When 'ide' is set to null the file is opened in your web browser.
     # See https://symfony.com/doc/current/reference/configuration/framework.html#ide
     ide: ~
-    validation: { enable_annotations: true }
-    templating: { engines: ['twig'] }
+    validation:
+        enable_attributes: true
+        email_validation_mode: html5
+    # templating: { engines: ['twig'] }
+    
+    # Symfony 7.3 deprecation fixes
+    property_info:
+        with_constructor_extractor: true

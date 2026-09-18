@@ -2,39 +2,45 @@ name: Deploy for EC-CUBE
 on:
   release:
     types: [ published ]
+permissions: {}
 jobs:
   deploy:
+    permissions:
+      contents: write
     name: Deploy
-    runs-on: ubuntu-18.04
-    services:
-      postgres:
-        image: postgres:11
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: password
-        ports:
-          - 5432:5432
-        # needed because the postgres container does not provide a healthcheck
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: nanasess/setup-php@master
+        uses: nanasess/setup-php@6e78a56349ee2b751525bdbc0905e07293007bb4  # master
         with:
-          php-version: '7.3'
+          php-version: '8.5'
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
+      - name: Install ext-redis 6.1+
         run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+          sudo apt-get update
+          sudo apt-get install -y php8.4-redis
+          sudo phpenmod -s cli redis
+          php -m | grep -i redis
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
@@ -46,7 +52,7 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 18
         run: |
           rm -rf $GITHUB_WORKSPACE/app/Plugin/*
           echo "APP_ENV=${APP_ENV}" > .env
@@ -58,18 +64,19 @@ jobs:
         env:
           APP_ENV: 'prod'
           DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
-          DATABASE_SERVER_VERSION: 11
+          DATABASE_SERVER_VERSION: 18
         run: |
-          bin/console eccube:composer:require "ec-cube/recommend4"
-          bin/console eccube:composer:require "ec-cube/coupon4"
-          bin/console eccube:composer:require "ec-cube/mailmagazine4"
-          bin/console eccube:composer:require "ec-cube/salesreport4"
-          bin/console eccube:composer:require "ec-cube/relatedproduct4"
-          bin/console eccube:composer:require "ec-cube/securitychecker4"
-          bin/console eccube:composer:require "ec-cube/productreview4"
-          bin/console eccube:composer:require "ec-cube/api"
-          bin/console eccube:composer:require "ec-cube/sitekit"
-          bin/console eccube:composer:require "ec-cube/gmc"
+           bin/console eccube:composer:require "ec-cube/recommend42"
+           bin/console eccube:composer:require "ec-cube/coupon42"
+           bin/console eccube:composer:require "ec-cube/mailmagazine42"
+           bin/console eccube:composer:require "ec-cube/salesreport42"
+           bin/console eccube:composer:require "ec-cube/relatedproduct42"
+           bin/console eccube:composer:require "ec-cube/securitychecker42"
+           bin/console eccube:composer:require "ec-cube/productreview42"
+           bin/console eccube:composer:require "ec-cube/api42"
+
+      - name: revert to config platform.php
+        run: composer config platform.php 8.4.0
 
       - name: Pre Install Plugins
         env:
@@ -83,7 +90,7 @@ jobs:
         run: ${{ github.event.repository.name }}/package.sh
 
       - name: Upload binaries to release of TGZ
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz
@@ -91,7 +98,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip
@@ -99,7 +106,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of TGZ md5 checksum
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.md5
@@ -107,7 +114,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of TGZ sha1 checksum
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha1
@@ -115,7 +122,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of TGZ sha256 checksum
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.tar.gz.checksum.sha256
@@ -123,7 +130,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP md5 checksum
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.md5
@@ -131,7 +138,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP sha1 checksum
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha1
@@ -139,7 +146,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       - name: Upload binaries to release of ZIP sha256 checksum
-        uses: svenstaro/upload-release-action@v1-release
+        uses: svenstaro/upload-release-action@29e53e917877a24fad85510ded594ab3c9ca12de  # 2.11.5
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ runner.workspace }}/eccube-${{ github.event.release.tag_name }}.zip.checksum.sha256

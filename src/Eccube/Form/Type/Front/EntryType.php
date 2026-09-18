@@ -38,24 +38,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class EntryType extends AbstractType
 {
     /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * EntryType constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EccubeConfig $eccubeConfig)
+    public function __construct(protected EccubeConfig $eccubeConfig)
     {
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', NameType::class, [
@@ -64,10 +59,11 @@ class EntryType extends AbstractType
             ->add('kana', KanaType::class, [])
             ->add('company_name', TextType::class, [
                 'required' => false,
+                'attr' => [
+                    'autocomplete' => 'organization',
+                ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class)
@@ -76,19 +72,15 @@ class EntryType extends AbstractType
                 'required' => true,
             ])
             ->add('email', RepeatedEmailType::class)
-            ->add('password', RepeatedPasswordType::class)
+            ->add('plain_password', RepeatedPasswordType::class)
             ->add('birth', BirthdayType::class, [
                 'required' => false,
                 'input' => 'datetime',
                 'years' => range(date('Y'), date('Y') - $this->eccubeConfig['eccube_birth_max']),
                 'widget' => 'choice',
-                'format' => 'yyyy/MM/dd',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
-                    new Assert\LessThanOrEqual([
-                        'value' => date('Y-m-d', strtotime('-1 day')),
-                        'message' => 'form_error.select_is_future_or_now_date',
-                    ]),
+                    new Assert\LessThanOrEqual(value: date('Y-m-d', strtotime('-1 day')), message: 'form_error.select_is_future_or_now_date'),
                 ],
             ])
             ->add('sex', SexType::class, [
@@ -98,29 +90,29 @@ class EntryType extends AbstractType
                 'required' => false,
             ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $Customer = $event->getData();
             if ($Customer instanceof Customer && !$Customer->getId()) {
                 $form = $event->getForm();
 
                 $form->add('user_policy_check', CheckboxType::class, [
-                        'required' => true,
-                        'label' => null,
-                        'mapped' => false,
-                        'constraints' => [
-                            new Assert\NotBlank(),
-                        ],
-                    ]);
+                    'required' => true,
+                    'label' => null,
+                    'mapped' => false,
+                    'constraints' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]);
             }
         }
         );
 
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
             $form = $event->getForm();
             /** @var Customer $Customer */
             $Customer = $event->getData();
-            if ($Customer->getPassword() != '' && $Customer->getPassword() == $Customer->getEmail()) {
-                $form['password']['first']->addError(new FormError(trans('common.password_eq_email')));
+            if ($Customer->getPlainPassword() != '' && $Customer->getPlainPassword() == $Customer->getEmail()) {
+                $form['plain_password']['first']->addError(new FormError(trans('common.password_eq_email')));
             }
         });
     }
@@ -128,19 +120,11 @@ class EntryType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => 'Eccube\Entity\Customer',
+            'data_class' => Customer::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        // todo entry,mypageで共有されているので名前を変更する
-        return 'entry';
     }
 }

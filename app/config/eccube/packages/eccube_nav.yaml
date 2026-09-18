@@ -22,6 +22,12 @@ parameters:
                 product_csv_import:
                     name: admin.product.product_csv_upload
                     url: admin_product_csv_import
+                class_name_csv_import:
+                    name: admin.product.class_name_csv_upload
+                    url: admin_product_class_name_csv_import
+                class_category_csv_import:
+                    name: admin.product.class_category_csv_upload
+                    url: admin_product_class_category_csv_import
                 category_csv_import:
                     name: admin.product.category_csv_upload
                     url: admin_product_category_csv_import
@@ -38,6 +44,9 @@ parameters:
                 shipping_csv_import:
                     name: admin.order.shipping_csv_upload
                     url: admin_shipping_csv_import
+                refund_request:
+                    name: admin.order.refund_request.list_title
+                    url: admin_refund_request
         customer:
             name: admin.customer.customer_management
             icon: fa-users
@@ -55,6 +64,9 @@ parameters:
                 news:
                     name: admin.content.news_management
                     url : admin_content_news
+                faq:
+                    name: admin.content.faq_management
+                    url: admin_content_faq
                 file:
                     name: admin.content.file_management
                     url: admin_content_file
@@ -79,6 +91,9 @@ parameters:
                 maintenance:
                     name: admin.content.maintenance_management
                     url: admin_content_maintenance
+                agent_commerce:
+                    name: admin.content.agent_commerce
+                    url: admin_content_agent_commerce
         setting:
             name: admin.setting
             icon: fa-cog
@@ -91,8 +106,7 @@ parameters:
                             url: admin_setting_shop
                         shop_tradelaw:
                             name: admin.setting.shop.tradelaw_setting
-                            url: admin_content_page_edit
-                            param: { id: !php/const Eccube\Entity\Page::TRADELAW_PAGE_ID, return: tradelaw }
+                            url: admin_setting_shop_tradelaw
                         shop_agreement:
                             name: admin.setting.shop.agreement_setting
                             url: admin_content_page_edit
@@ -115,6 +129,9 @@ parameters:
                         shop_order_status:
                             name: admin.setting.shop.order_status_setting
                             url: admin_setting_shop_order_status
+                        shop_calendar:
+                            name: admin.setting.shop.calendar_setting
+                            url: admin_setting_shop_calendar
                 system:
                     name: admin.setting.system
                     children:

@@ -20,46 +20,15 @@ use Doctrine\ORM\QueryBuilder;
  */
 class JoinClause
 {
-    private $join;
+    private readonly JoinClauseWhereCustomizer $whereCustomizer;
 
-    private $alias;
-
-    private $conditionType;
-
-    private $condition;
-
-    private $indexBy;
-
-    private $leftJoin = false;
-
-    /**
-     * @var JoinClauseWhereCustomizer
-     */
-    private $whereCustomizer;
-
-    /**
-     * @var JoinClauseOrderByCustomizer
-     */
-    private $orderByCustomizer;
+    private readonly JoinClauseOrderByCustomizer $orderByCustomizer;
 
     /**
      * JoinClause constructor.
-     *
-     * @param boolean $leftJoin
-     * @param $join
-     * @param $alias
-     * @param $conditionType
-     * @param $condition
-     * @param $indexBy
      */
-    private function __construct($leftJoin, $join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    private function __construct(private readonly bool $leftJoin, private readonly string $join, private readonly string $alias, private readonly ?string $conditionType = null, private readonly ?string $condition = null, private readonly ?string $indexBy = null)
     {
-        $this->leftJoin = $leftJoin;
-        $this->join = $join;
-        $this->alias = $alias;
-        $this->conditionType = $conditionType;
-        $this->condition = $condition;
-        $this->indexBy = $indexBy;
         $this->whereCustomizer = new JoinClauseWhereCustomizer();
         $this->orderByCustomizer = new JoinClauseOrderByCustomizer();
     }
@@ -68,16 +37,8 @@ class JoinClause
      * INNER JOIN用のファクトリメソッド。
      *
      * @see QueryBuilder::innerJoin()
-     *
-     * @param $join
-     * @param $alias
-     * @param $conditionType
-     * @param $condition
-     * @param $indexBy
-     *
-     * @return JoinClause
      */
-    public static function innerJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    public static function innerJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
         return new JoinClause(false, $join, $alias, $conditionType, $condition, $indexBy);
     }
@@ -86,28 +47,16 @@ class JoinClause
      * LEFT JOIN用のファクトリメソッド。
      *
      * @see QueryBuilder::leftJoin()
-     *
-     * @param $join
-     * @param $alias
-     * @param $conditionType
-     * @param $condition
-     * @param $indexBy
-     *
-     * @return JoinClause
      */
-    public static function leftJoin($join, $alias, $conditionType = null, $condition = null, $indexBy = null)
+    public static function leftJoin(string $join, string $alias, ?string $conditionType = null, ?string $condition = null, ?string $indexBy = null): JoinClause
     {
         return new JoinClause(true, $join, $alias, $conditionType, $condition, $indexBy);
     }
 
     /**
      * WHERE句を追加します。
-     *
-     * @param WhereClause $whereClause
-     *
-     * @return $this
      */
-    public function addWhere(WhereClause $whereClause)
+    public function addWhere(WhereClause $whereClause): static
     {
         $this->whereCustomizer->add($whereClause);
 
@@ -116,27 +65,23 @@ class JoinClause
 
     /**
      * ORDER BY句を追加します。
-     *
-     * @param OrderByClause $orderByClause
-     *
-     * @return $this
      */
-    public function addOrderBy(OrderByClause $orderByClause)
+    public function addOrderBy(OrderByClause $orderByClause): static
     {
         $this->orderByCustomizer->add($orderByClause);
 
         return $this;
     }
 
-    public function build(QueryBuilder $builder)
+    public function build(QueryBuilder $builder): void
     {
         if ($this->leftJoin) {
             $builder->leftJoin($this->join, $this->alias, $this->conditionType, $this->condition, $this->indexBy);
         } else {
             $builder->innerJoin($this->join, $this->alias, $this->conditionType, $this->condition, $this->indexBy);
         }
-        $this->whereCustomizer->customize($builder, null, '');
-        $this->orderByCustomizer->customize($builder, null, '');
+        $this->whereCustomizer->customize($builder, [], '');
+        $this->orderByCustomizer->customize($builder, [], '');
     }
 }
 
@@ -145,30 +90,30 @@ class JoinClauseWhereCustomizer extends WhereCustomizer
     /**
      * @var WhereClause[]
      */
-    private $whereClauses = [];
+    private array $whereClauses = [];
 
-    public function add(WhereClause $whereClause)
+    public function add(WhereClause $whereClause): void
     {
         $this->whereClauses[] = $whereClause;
     }
 
     /**
-     * @param array $params
-     * @param $queryKey
+     * @param array<mixed> $params
+     * @param string $queryKey
      *
      * @return WhereClause[]
      */
-    protected function createStatements($params, $queryKey)
+    #[\Override]
+    protected function createStatements($params, $queryKey): array
     {
         return $this->whereClauses;
     }
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
-    public function getQueryKey()
+    #[\Override]
+    public function getQueryKey(): string
     {
         return '';
     }
@@ -179,30 +124,30 @@ class JoinClauseOrderByCustomizer extends OrderByCustomizer
     /**
      * @var OrderByClause[]
      */
-    private $orderByClauses = [];
+    private array $orderByClauses = [];
 
-    public function add(OrderByClause $orderByClause)
+    public function add(OrderByClause $orderByClause): void
     {
         $this->orderByClauses[] = $orderByClause;
     }
 
     /**
-     * @param array $params
-     * @param $queryKey
+     * @param array<mixed> $params
+     * @param string $queryKey
      *
      * @return OrderByClause[]
      */
-    protected function createStatements($params, $queryKey)
+    #[\Override]
+    protected function createStatements($params, $queryKey): array
     {
         return $this->orderByClauses;
     }
 
     /**
      * カスタマイズ対象のキーを返します。
-     *
-     * @return string
      */
-    public function getQueryKey()
+    #[\Override]
+    public function getQueryKey(): string
     {
         return '';
     }

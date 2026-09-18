@@ -13,6 +13,7 @@
 
 namespace Eccube\Form\Type\Master;
 
+use Eccube\Entity\Master\ProductListOrderBy;
 use Eccube\Form\Type\MasterType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,22 +25,16 @@ class ProductListOrderByType extends AbstractType
 {
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event): void {
             $options = $event->getForm()->getConfig()->getOptions();
-            if (!$event->getData()) {
-                $data = current(array_keys($options['choice_loader']->loadChoiceList()->getValues()));
-                $event->setData($data);
-            }
-        });
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $options = $event->getForm()->getConfig()->getOptions();
-            $values = $options['choice_loader']->loadChoiceList()->getValues();
-            if (!in_array($event->getData(), $values)) {
-                $data = current($values);
-                $event->setData($data);
+            if ($event->getData() === null) {
+                $event->setData((string) $options['choices'][0]->getId());
             }
         });
     }
@@ -47,25 +42,19 @@ class ProductListOrderByType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'class' => 'Eccube\Entity\Master\ProductListOrderBy',
+            'class' => ProductListOrderBy::class,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
-    {
-        return 'product_list_order_by';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    #[\Override]
+    public function getParent(): string
     {
         return MasterType::class;
     }

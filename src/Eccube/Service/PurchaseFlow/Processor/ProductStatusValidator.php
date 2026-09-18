@@ -25,15 +25,20 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 class ProductStatusValidator extends ItemValidator
 {
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
+     * @param ItemInterface $item 明細アイテム
      *
-     * @throws InvalidItemException
+     * @throws InvalidItemException 商品が公開されていない場合
      */
-    protected function validate(ItemInterface $item, PurchaseContext $context)
+    #[\Override]
+    protected function validate(ItemInterface $item, PurchaseContext $context): void
     {
         if ($item->isProduct()) {
-            $Product = $item->getProductClass()->getProduct();
+            $ProductClass = $item->getProductClass();
+            if (!$item->getProductClass()->isVisible()) {
+                $this->throwInvalidItemException('front.shopping.not_purchase_product_class', $ProductClass);
+            }
+
+            $Product = $ProductClass->getProduct();
             if ($Product->getStatus()->getId() != ProductStatus::DISPLAY_SHOW) {
                 $this->throwInvalidItemException('front.shopping.not_purchase');
             }
@@ -41,11 +46,12 @@ class ProductStatusValidator extends ItemValidator
     }
 
     /**
-     * @param ItemInterface $item
-     * @param PurchaseContext $context
+     * @param ItemInterface $item 明細アイテム
+     * @param PurchaseContext $context 購入フローのコンテキスト
      */
-    protected function handle(ItemInterface $item, PurchaseContext $context)
+    #[\Override]
+    protected function handle(ItemInterface $item, PurchaseContext $context): void
     {
-        $item->setQuantity(0);
+        $item->setQuantity('0');
     }
 }

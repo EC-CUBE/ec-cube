@@ -14,22 +14,28 @@
 namespace Eccube\Entity;
 
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\Inflector;
+use Doctrine\Inflector\NoopWordInflector;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
-use Doctrine\ORM\Proxy\Proxy;
-use Eccube\DependencyInjection\Facade\AnnotationReaderFacade;
+use Doctrine\Persistence\Proxy;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @MappedSuperclass */
+/**
+ * @implements \ArrayAccess<string, mixed>
+ */
+#[MappedSuperclass]
 abstract class AbstractEntity implements \ArrayAccess
 {
-    public function offsetExists($offset)
+    #[\ReturnTypeWillChange]
+    #[\Override]
+    public function offsetExists($offset): bool
     {
-        $method = Inflector::classify($offset);
+        $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        $method = $inflector->classify($offset);
 
         return method_exists($this, $method)
             || method_exists($this, "get$method")
@@ -37,13 +43,18 @@ abstract class AbstractEntity implements \ArrayAccess
             || method_exists($this, "has$method");
     }
 
-    public function offsetSet($offset, $value)
+    #[\ReturnTypeWillChange]
+    #[\Override]
+    public function offsetSet($offset, $value): void
     {
     }
 
-    public function offsetGet($offset)
+    #[\ReturnTypeWillChange]
+    #[\Override]
+    public function offsetGet($offset): mixed
     {
-        $method = Inflector::classify($offset);
+        $inflector = new Inflector(new NoopWordInflector(), new NoopWordInflector());
+        $method = $inflector->classify($offset);
 
         if (method_exists($this, $method)) {
             return $this->$method();
@@ -54,9 +65,13 @@ abstract class AbstractEntity implements \ArrayAccess
         } elseif (method_exists($this, "has$method")) {
             return $this->{"has$method"}();
         }
+
+        return null;
     }
 
-    public function offsetUnset($offset)
+    #[\ReturnTypeWillChange]
+    #[\Override]
+    public function offsetUnset($offset): void
     {
     }
 
@@ -64,13 +79,12 @@ abstract class AbstractEntity implements \ArrayAccess
      * 引数の連想配列を元にプロパティを設定します.
      * DBから取り出した連想配列を, プロパティへ設定する際に使用します.
      *
-     * @param array $arrProps プロパティの情報を格納した連想配列
-     * @param \ReflectionClass $parentClass 親のクラス. 本メソッドの内部的に使用します.
+     * @param array<string, mixed> $arrProps プロパティの情報を格納した連想配列
      * @param string[] $excludeAttribute 除外したいフィールド名の配列
+     * @param \ReflectionClass<self>|null $parentClass 親のクラス. 本メソッドの内部的に使用します.
      */
-    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], \ReflectionClass $parentClass = null)
+    public function setPropertiesFromArray(array $arrProps, array $excludeAttribute = [], ?\ReflectionClass $parentClass = null): void
     {
-        $objReflect = null;
         if (is_object($parentClass)) {
             $objReflect = $parentClass;
         } else {
@@ -78,7 +92,6 @@ abstract class AbstractEntity implements \ArrayAccess
         }
         $arrProperties = $objReflect->getProperties();
         foreach ($arrProperties as $objProperty) {
-            $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             if (in_array($name, $excludeAttribute) || !array_key_exists($name, $arrProps)) {
                 continue;
@@ -99,14 +112,13 @@ abstract class AbstractEntity implements \ArrayAccess
      * Symfony Serializer Component is expensive, and hard to implementation.
      * Use for encoder only.
      *
-     * @param \ReflectionClass $parentClass parent class. Use internally of this method..
-     * @param array $excludeAttribute Array of field names to exclusion.
+     * @param array|string[] $excludeAttribute Array of field names to exclusion.
+     * @param \ReflectionClass<self>|null $parentClass parent class. Use internally of this method..
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], \ReflectionClass $parentClass = null)
+    public function toArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'], ?\ReflectionClass $parentClass = null): array
     {
-        $objReflect = null;
         if (is_object($parentClass)) {
             $objReflect = $parentClass;
         } else {
@@ -115,23 +127,24 @@ abstract class AbstractEntity implements \ArrayAccess
         $arrProperties = $objReflect->getProperties();
         $arrResults = [];
         foreach ($arrProperties as $objProperty) {
-            $objProperty->setAccessible(true);
             $name = $objProperty->getName();
             if (in_array($name, $excludeAttribute)) {
                 continue;
             }
-            $arrResults[$name] = $objProperty->getValue($this);
+            try {
+                $arrResults[$name] = $objProperty->getValue($this);
+            } catch (\Error $e) {
+                // 型付きプロパティが初期化されていない場合はスキップ
+                if (str_contains($e->getMessage(), 'must not be accessed before initialization')) {
+                    continue;
+                }
+                throw $e;
+            }
         }
 
         $parentClass = $objReflect->getParentClass();
         if (is_object($parentClass)) {
             $arrParents = self::toArray($excludeAttribute, $parentClass);
-            if (!is_array($arrParents)) {
-                $arrParents = [];
-            }
-            if (!is_array($arrResults)) {
-                $arrResults = [];
-            }
             $arrResults = array_merge($arrParents, $arrResults);
         }
 
@@ -146,11 +159,11 @@ abstract class AbstractEntity implements \ArrayAccess
      * - AbstractEntity :: associative array such as [id => value]
      * - PersistentCollection :: associative array of [[id => value], [id => value], ...]
      *
-     * @param array $excludeAttribute Array of field names to exclusion.
+     * @param string[] $excludeAttribute Array of field names to exclusion.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
+    public function toNormalizedArray(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): array
     {
         $arrResult = $this->toArray($excludeAttribute);
         foreach ($arrResult as &$value) {
@@ -177,11 +190,9 @@ abstract class AbstractEntity implements \ArrayAccess
     /**
      * Convert to JSON.
      *
-     * @param array $excludeAttribute Array of field names to exclusion.
-     *
-     * @return string
+     * @param array|string[] $excludeAttribute Array of field names to exclusion.
      */
-    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
+    public function toJSON(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): string
     {
         return json_encode($this->toNormalizedArray($excludeAttribute));
     }
@@ -189,14 +200,12 @@ abstract class AbstractEntity implements \ArrayAccess
     /**
      * Convert to XML.
      *
-     * @param array $excludeAttribute Array of field names to exclusion.
-     *
-     * @return string
+     * @param string[] $excludeAttribute Array of field names to exclusion.
      */
-    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__'])
+    public function toXML(array $excludeAttribute = ['__initializer__', '__cloner__', '__isInitialized__']): string
     {
         $ReflectionClass = new \ReflectionClass($this);
-        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder($ReflectionClass->getShortName())]);
+        $serializer = new Serializer([new PropertyNormalizer()], [new XmlEncoder([XmlEncoder::ROOT_NODE_NAME => $ReflectionClass->getShortName()])]);
 
         $xml = $serializer->serialize($this->toNormalizedArray($excludeAttribute), 'xml');
         if ('\\' === DIRECTORY_SEPARATOR) {
@@ -212,10 +221,8 @@ abstract class AbstractEntity implements \ArrayAccess
      *
      * @param object $srcObject コピー元のオブジェクト
      * @param string[] $excludeAttribute 除外したいフィールド名の配列
-     *
-     * @return AbstractEntity
      */
-    public function copyProperties($srcObject, array $excludeAttribute = [])
+    public function copyProperties(object $srcObject, array $excludeAttribute = []): AbstractEntity
     {
         $this->setPropertiesFromArray($srcObject->toArray($excludeAttribute), $excludeAttribute);
 
@@ -225,11 +232,9 @@ abstract class AbstractEntity implements \ArrayAccess
     /**
      * Convert to Entity of Identity value to associative array.
      *
-     * @param AbstractEntity $Entity
-     *
-     * @return array associative array of [[id => value], [id => value], ...]
+     * @return array<mixed> associative array of [[id => value], [id => value], ...]
      */
-    public function getEntityIdentifierAsArray(AbstractEntity $Entity)
+    public function getEntityIdentifierAsArray(AbstractEntity $Entity): array
     {
         $Result = [];
         $PropReflect = new \ReflectionClass($Entity);
@@ -240,10 +245,8 @@ abstract class AbstractEntity implements \ArrayAccess
         $Properties = $PropReflect->getProperties();
 
         foreach ($Properties as $Property) {
-            $AnnotationReader = AnnotationReaderFacade::create();
-            $anno = $AnnotationReader->getPropertyAnnotation($Property, Id::class);
-            if ($anno) {
-                $Property->setAccessible(true);
+            $attribute = $Property->getAttributes(Id::class);
+            if ($attribute) {
                 $Result[$Property->getName()] = $Property->getValue($Entity);
             }
         }

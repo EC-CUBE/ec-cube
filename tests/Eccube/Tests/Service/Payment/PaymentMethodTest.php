@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,23 +15,23 @@
 
 namespace Eccube\Tests\Service\Payment;
 
+use Eccube\Service\Payment\Method\Cash;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Component\Form\Test\FormInterface;
 
-class PaymentMethodTest extends EccubeTestCase
+final class PaymentMethodTest extends EccubeTestCase
 {
     public function testConstructorInjection()
     {
-        $this->markTestIncomplete();
-
         $Customer = $this->createCustomer();
         $Order = $this->createOrder($Customer);
 
-        $form = $this->getMockBuilder('Symfony\Component\Form\Test\FormInterface')->getMock();
-        $paymentMethod = self::$container->get($Order->getPayment()->getMethodClass());
+        $form = $this->createStub(FormInterface::class);
+        $paymentMethod = static::getContainer()->get($Order->getPayment()->getMethodClass());
         $paymentMethod->setFormType($form);
         $paymentMethod->setOrder($Order);
 
-        $this->assertInstanceOf(\Eccube\Service\Payment\Method\Cash::class, $paymentMethod);
+        $this->assertInstanceOf(Cash::class, $paymentMethod);
 
         $dispatcher = $paymentMethod->apply(); // 決済処理中.
         $this->assertFalse($dispatcher);

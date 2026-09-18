@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -15,13 +17,13 @@ namespace Eccube\Tests\Service;
 
 use Eccube\Service\SystemService;
 
-class SystemServiceTest extends AbstractServiceTestCase
+final class SystemServiceTest extends AbstractServiceTestCase
 {
     public function testgetDbversion()
     {
-        $version = self::$container->get(SystemService::class)->getDbversion();
+        $version = static::getContainer()->get(SystemService::class)->getDbversion();
 
         $this->assertNotNull($version);
-        $this->assertRegExp('/mysql|postgresql|sqlite/', strtolower($version));
+        $this->assertMatchesRegularExpression('/mysql|postgresql|sqlite/', strtolower($version));
     }
 }

@@ -16,6 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Block;
+use Eccube\Entity\Master\DeviceType;
 use Eccube\Form\Validator\TwigLint;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -31,52 +32,37 @@ use Symfony\Component\Validator\Constraints as Assert;
 class BlockType extends AbstractType
 {
     /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
-
-    /**
      * BlockType constructor.
      *
      * @param $entityManager
-     * @param EccubeConfig $eccubeConfig
      */
-    public function __construct(EntityManagerInterface $entityManager, EccubeConfig $eccubeConfig)
+    public function __construct(protected EntityManagerInterface $entityManager, protected EccubeConfig $eccubeConfig)
     {
-        $this->entityManager = $entityManager;
-        $this->eccubeConfig = $eccubeConfig;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    #[\Override]
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('file_name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^[0-9a-zA-Z\/_]+$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^[0-9a-zA-Z\/_]+$/'),
+                    new Assert\Regex(pattern: '/^(?!.*\/\/).+$/'),
                 ],
             ])
             ->add('block_html', TextareaType::class, [
@@ -88,11 +74,11 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('DeviceType', EntityType::class, [
-                'class' => 'Eccube\Entity\Master\DeviceType',
+                'class' => DeviceType::class,
                 'choice_label' => 'id',
             ])
             ->add('id', HiddenType::class)
-            ->addEventListener(FormEvents::POST_SUBMIT, function ($event) {
+            ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
@@ -100,7 +86,7 @@ class BlockType extends AbstractType
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('b')
-                    ->from('Eccube\\Entity\\Block', 'b')
+                    ->from(Block::class, 'b')
                     ->where('b.file_name = :file_name')
                     ->setParameter('file_name', $file_name)
                     ->andWhere('b.DeviceType = :DeviceType')
@@ -123,18 +109,11 @@ class BlockType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    #[\Override]
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Block::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'block';
     }
 }

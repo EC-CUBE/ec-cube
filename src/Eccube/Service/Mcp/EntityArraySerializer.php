@@ -1,0 +1,351 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Service\Mcp;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Persistence\Proxy;
+
+/**
+ * Doctrine Entity を `AllowListResolver` の公開プロパティリストに従って配列化する。
+ *
+ * - 出力フィールドは allow_list に列挙された項目のみ (未列挙は構造上含まれない)
+ * - スカラはそのまま、`\DateTimeInterface` は ISO 8601、Collection / Entity は再帰
+ * - 深さ上限 (既定 1) を超えた関連は `id` のみの要約に縮退
+ * - 循環参照は `spl_object_id` のセットで検知し要約に切り替える
+ * - **Doctrine Lazy Proxy** が渡された場合は `Doctrine\Persistence\Proxy` を unwrap して
+ *   実 entity クラス名で allow_list を引く (proxy class 名で引くと未登録扱いで空になる罠の回避)
+ *
+ * 「allow_list 未登録の Entity」が現れた場合の出力は空配列 (= 全プロパティ非公開)。
+ * 設計の最小権限の既定 (Api44 未配線時は何も公開しない) と一致する挙動。
+ *
+ * デフォルト深さを 1 にしている理由: `get_product_stock` 等で root が ProductClass の場合、
+ * 深さ 2 まで full だと `Product.ProductClasses[]` 経由で兄弟 ProductClass がすべて展開され、
+ * 同じ Product の中身が大量に重複出力されてしまう。 Tool 側で必要に応じて 2 以上を指定する。
+ */
+final readonly class EntityArraySerializer
+{
+    public const DEFAULT_MAX_DEPTH = 1;
+
+    public function __construct(
+        private AllowListResolver $allowListResolver,
+    ) {
+    }
+
+    /**
+     * Entity を allow_list に従って `array<string, mixed>` に変換する。
+     *
+     * $summarizeRelations に挙げた root 直下の関連は、 深さに関係なく要約 (Collection は各要素の
+     * `{id}` リスト、 単一 Entity は `{id}`) へ縮退する。 詳細系ツールで巨大・不要な関連
+     * (例: Customer.Orders) を落としつつ本体フィールドは残す用途。 縮退は root (depth 0) の
+     * 直下関連にのみ効く。
+     *
+     * @param list<string> $summarizeRelations id 要約へ縮退する root 直下の関連プロパティ名
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $entity, int $maxDepth = self::DEFAULT_MAX_DEPTH, array $summarizeRelations = []): array
+    {
+        $visited = [];
+
+        return $this->convertEntity($entity, 0, $maxDepth, $visited, $summarizeRelations);
+    }
+
+    /**
+     * 複数 Entity をまとめて変換する。
+     *
+     * @param iterable<object> $entities
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function toArrayList(iterable $entities, int $maxDepth = self::DEFAULT_MAX_DEPTH): array
+    {
+        $result = [];
+        foreach ($entities as $entity) {
+            $result[] = $this->toArray($entity, $maxDepth);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Entity を「サマリ射影」で配列化する (一覧系ツール向けの軽量出力)。
+     *
+     * $fields は「スカラ名 (例 `order_no`)」または 1 段のドット path (例 `OrderStatus.name`) のリスト。
+     * full 経路 (toArray) と同じく allow_list を通過した項目だけを出力する。 allow_list で許可されない
+     * 項目だけをキーごと出さない (security)。 一方、 許可済みだが値が無いだけのもの (スカラ null /
+     * ドット path で関連が存在しない) はキーを null で残す。 関連 (Collection / Entity) は展開せず
+     * 値は null になる (キーは出るが中身は持ち込まない)。 よって出力は常にフラットで小さい。
+     *
+     * @param list<string> $fields
+     *
+     * @return array<string, mixed>
+     */
+    public function toSummary(object $entity, array $fields): array
+    {
+        $class = $this->resolveEntityClass($entity);
+        $result = [];
+        foreach ($fields as $field) {
+            if (str_contains($field, '.')) {
+                [$relation, $sub] = explode('.', $field, 2);
+                if (!$this->allowListResolver->isAllowed($class, $relation)) {
+                    continue; // relation が allow_list 外 (security) — キーごと出さない
+                }
+                $related = $this->readProperty($entity, $relation);
+                if (!\is_object($related)) {
+                    // 関連が存在しない (データ状態)。 security 由来のスキップと区別し、
+                    // スカラ経路と対称にキーは null で残す。
+                    $result[$relation] = null;
+                    continue;
+                }
+                if (!$this->allowListResolver->isAllowed($this->resolveEntityClass($related), $sub)) {
+                    continue; // sub が allow_list 外 (security)
+                }
+                $result[$relation][$sub] = $this->toScalar($this->readProperty($related, $sub));
+                continue;
+            }
+            if (!$this->allowListResolver->isAllowed($class, $field)) {
+                continue;
+            }
+            $result[$field] = $this->toScalar($this->readProperty($entity, $field));
+        }
+
+        return $result;
+    }
+
+    /**
+     * 複数 Entity をサマリ射影でまとめて変換する。
+     *
+     * @param iterable<object> $entities
+     * @param list<string>     $fields
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function toSummaryList(iterable $entities, array $fields): array
+    {
+        $result = [];
+        foreach ($entities as $entity) {
+            $result[] = $this->toSummary($entity, $fields);
+        }
+
+        return $result;
+    }
+
+    /**
+     * サマリ出力用のスカラ化。 スカラはそのまま、 `\DateTimeInterface` は ISO 8601。
+     * それ以外 (オブジェクト / 配列 / Collection) はすべて null (サマリでは関連を持ち込まない)。
+     */
+    private function toScalar(mixed $value): mixed
+    {
+        if (null === $value || \is_scalar($value)) {
+            return $value;
+        }
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format(\DateTimeInterface::ATOM);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<int, bool> $visited            spl_object_id をキーにした訪問済みセット
+     * @param list<string>     $summarizeRelations root 直下で id 要約へ縮退する関連プロパティ名
+     *
+     * @return array<string, mixed>
+     */
+    private function convertEntity(object $entity, int $depth, int $maxDepth, array &$visited, array $summarizeRelations = []): array
+    {
+        $oid = spl_object_id($entity);
+        if (isset($visited[$oid])) {
+            // 循環: 要約のみ返す。 深さ判定より優先する。
+            return $this->summarize($entity);
+        }
+        $visited[$oid] = true;
+
+        $allowedProps = $this->allowListResolver->getAllowedProperties($this->resolveEntityClass($entity));
+        $result = [];
+        foreach ($allowedProps as $prop) {
+            $value = $this->readProperty($entity, $prop);
+            if (0 === $depth && \in_array($prop, $summarizeRelations, true)) {
+                // root 直下の指定関連は深さに関係なく id 要約へ縮退する
+                $result[$prop] = $this->summarizeRelation($value);
+                continue;
+            }
+            $result[$prop] = $this->convertValue($value, $depth + 1, $maxDepth, $visited);
+        }
+
+        unset($visited[$oid]);
+
+        return $result;
+    }
+
+    /**
+     * root 直下の指定関連を要約へ縮退する。 Collection は各要素の `{id}` リスト、 単一 Entity は
+     * `{id}`、 関連が無ければ null。 id 露出可否は `summarize()` が allow_list で再判定する。
+     */
+    private function summarizeRelation(mixed $value): mixed
+    {
+        if ($value instanceof Collection || (\is_iterable($value) && !\is_array($value))) {
+            return $this->summarizeMany($value);
+        }
+        if (\is_object($value)) {
+            return $this->summarize($value);
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array<int, bool> $visited
+     */
+    private function convertValue(mixed $value, int $depth, int $maxDepth, array &$visited): mixed
+    {
+        if (null === $value || \is_scalar($value)) {
+            return $value;
+        }
+        if ($value instanceof \DateTimeInterface) {
+            return $value->format(\DateTimeInterface::ATOM);
+        }
+        if ($value instanceof Collection || (\is_iterable($value) && !\is_array($value))) {
+            if ($depth > $maxDepth) {
+                return $this->summarizeMany($value);
+            }
+            $items = [];
+            foreach ($value as $element) {
+                $items[] = $this->convertValue($element, $depth, $maxDepth, $visited);
+            }
+
+            return $items;
+        }
+        if (\is_array($value)) {
+            $items = [];
+            foreach ($value as $k => $v) {
+                $items[$k] = $this->convertValue($v, $depth, $maxDepth, $visited);
+            }
+
+            return $items;
+        }
+        if (\is_object($value)) {
+            if ($depth > $maxDepth) {
+                return $this->summarize($value);
+            }
+
+            return $this->convertEntity($value, $depth, $maxDepth, $visited);
+        }
+
+        return null;
+    }
+
+    /**
+     * 深さ超過 / 循環時の要約: `id` を出せれば出す、それだけ。
+     *
+     * @return array<string, mixed>
+     */
+    private function summarize(object $entity): array
+    {
+        // 要約経路でも「allow_list のみ公開」を崩さない。 id が許可されていない関連 Entity の
+        // 内部 ID を、 深さ超過 / 循環の縮退をすり抜けて露出させないようにする。
+        if (
+            $this->allowListResolver->isAllowed($this->resolveEntityClass($entity), 'id')
+            && method_exists($entity, 'getId')
+        ) {
+            try {
+                $id = $entity->getId();
+                if (null !== $id) {
+                    return ['id' => $id];
+                }
+            } catch (\Throwable) {
+                // 何らかの理由で id を取れない場合は空要約。
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * @param iterable<mixed> $collection
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function summarizeMany(iterable $collection): array
+    {
+        $items = [];
+        foreach ($collection as $element) {
+            if (\is_object($element)) {
+                $items[] = $this->summarize($element);
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * `name01` → `getName01()`、 `order_no` → `getOrderNo()`、 `OrderItems` → `getOrderItems()` の規則で値を取得する。
+     *
+     * getter が見つからない場合は `is*` を試し、 最後に Reflection でプロパティを直接読む。
+     */
+    private function readProperty(object $entity, string $propertyName): mixed
+    {
+        foreach ([$this->buildAccessor('get', $propertyName), $this->buildAccessor('is', $propertyName)] as $method) {
+            if (method_exists($entity, $method) && \is_callable([$entity, $method])) {
+                try {
+                    return $entity->{$method}();
+                } catch (\Throwable) {
+                    return null;
+                }
+            }
+        }
+
+        try {
+            $reflection = new \ReflectionObject($entity);
+            if ($reflection->hasProperty($propertyName)) {
+                $prop = $reflection->getProperty($propertyName);
+                if ($prop->isInitialized($entity)) {
+                    return $prop->getValue($entity);
+                }
+            }
+        } catch (\Throwable) {
+            // ignore
+        }
+
+        return null;
+    }
+
+    private function buildAccessor(string $prefix, string $propertyName): string
+    {
+        $parts = explode('_', $propertyName);
+
+        return $prefix.implode('', array_map(ucfirst(...), $parts));
+    }
+
+    /**
+     * Doctrine Lazy Proxy が渡された場合に実 entity の class 名を返す。
+     *
+     * Proxy インスタンスの `::class` は `Proxies\__CG__\Eccube\Entity\...` 等の自動生成 class 名で、
+     * allow_list (実 entity FQCN で登録) と一致せず lookup が外れる。 `Doctrine\Persistence\Proxy`
+     * インタフェース実装オブジェクトは親クラスが実 entity なので、 そちらを採用する。
+     */
+    private function resolveEntityClass(object $entity): string
+    {
+        if ($entity instanceof Proxy) {
+            $parent = get_parent_class($entity);
+            if (false !== $parent) {
+                return $parent;
+            }
+        }
+
+        return $entity::class;
+    }
+}

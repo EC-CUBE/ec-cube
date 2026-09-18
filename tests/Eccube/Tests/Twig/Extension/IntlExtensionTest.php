@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,27 +18,30 @@ namespace Eccube\Tests\Twig\Extension;
 use Eccube\Twig\Extension\IntlExtension;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
+use Twig\Extension\AttributeExtension;
+use Twig\Extension\CoreExtension;
 use Twig\Loader\ArrayLoader;
+use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
-class IntlExtensionTest extends TestCase
+final class IntlExtensionTest extends TestCase
 {
-    /**
-     * @var Environment
-     */
-    protected $twig;
+    protected ?Environment $twig = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $loader = new ArrayLoader();
         $loader->setTemplate('date_day_template', '{{ date|date_day }}');
         $loader->setTemplate('date_min_template', '{{ date|date_min }}');
 
         $this->twig = new Environment($loader);
-        $this->twig->getExtension('Twig_Extension_Core')->setTimezone('Asia/Tokyo');
-        $this->twig->addExtension(new IntlExtension());
-
-        // twig_localized_date_filter関数を使うため, Twig_Extensions_Extension_Intlをautoloadする.
-        class_exists('Twig_Extensions_Extension_Intl');
+        $this->twig->getExtension(CoreExtension::class)->setTimezone('Asia/Tokyo');
+        // IntlExtension は #[AsTwigFilter] で定義するため, 素の Environment では
+        // AttributeExtension とランタイムローダの組で登録する（コンテナ経由の登録は
+        // TwigBundle が twig.attribute_extension として自動で行う）。
+        $this->twig->addExtension(new AttributeExtension(IntlExtension::class));
+        $this->twig->addRuntimeLoader(new FactoryRuntimeLoader([
+            IntlExtension::class => static fn (): IntlExtension => new IntlExtension(),
+        ]));
     }
 
     public function testDateDay()

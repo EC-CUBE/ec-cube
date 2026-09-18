@@ -18,17 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class WebServerDocumentRootPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    protected $docroot;
-
-    public function __construct($docroot = '%kernel.project_dir%/')
+    public function __construct(protected string $docroot = '%kernel.project_dir%/')
     {
-        $this->docroot = $docroot;
     }
 
-    public function process(ContainerBuilder $container)
+    #[\Override]
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition('web_server.command.server_run')) {
             return;

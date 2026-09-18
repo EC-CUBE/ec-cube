@@ -1,0 +1,44 @@
+<?php
+
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * http://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Eccube\Controller\Block;
+
+use Eccube\Controller\AbstractController;
+use Eccube\Repository\Master\ProductListOrderByRepository;
+use Eccube\Repository\ProductRepository;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Routing\Attribute\Route;
+
+class AutoNewItemController extends AbstractController
+{
+    public function __construct(private readonly ProductRepository $productRepository, private readonly ProductListOrderByRepository $productListOrderByRepository)
+    {
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    #[Route(path: '/block/auto_new_item', name: 'block_auto_new_item', methods: ['GET'])]
+    #[Template(template: 'Block/auto_new_item.twig')]
+    public function index(): array
+    {
+        $qb = $this->productRepository->getQueryBuilderBySearchData([
+            'orderby' => $this->productListOrderByRepository->find($this->eccubeConfig['eccube_product_order_newer']),
+        ])
+            ->setMaxResults($this->eccubeConfig['eccube_max_number_new_items_get']);
+
+        return [
+            'Products' => $qb->getQuery()->getResult(),
+        ];
+    }
+}

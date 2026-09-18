@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -16,24 +18,24 @@ namespace Eccube\Common;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
 
-class EccubeConfigTest extends TestCase
+final class EccubeConfigTest extends TestCase
 {
-    /**
-     * @var EccubeConfig
-     */
-    protected $eccubeConfig;
+    private $container;
 
-    public function setup()
+    protected ?EccubeConfig $eccubeConfig = null;
+
+    protected function setup(): void
     {
-        $container = new Container();
-        $this->eccubeConfig = new EccubeConfig($container);
+        $this->container = new Container();
+        $this->eccubeConfig = new EccubeConfig(new ContainerBag($this->container));
     }
 
     public function testGet()
     {
-        $this->eccubeConfig->set('hoge.fuga', true);
-        self::assertSame(true, $this->eccubeConfig->get('hoge.fuga'));
+        $this->container->setParameter('hoge.fuga', true);
+        $this->assertTrue($this->eccubeConfig->get('hoge.fuga'));
     }
 
     public function testGetNotFound()
@@ -44,21 +46,15 @@ class EccubeConfigTest extends TestCase
 
     public function testHas()
     {
-        self::assertFalse($this->eccubeConfig->has('hoge.fuga'));
-        $this->eccubeConfig->set('hoge.fuga', true);
-        self::assertTrue($this->eccubeConfig->has('hoge.fuga'));
-    }
-
-    public function testSet()
-    {
-        $this->eccubeConfig->set('hoge.fuga', true);
-        self::assertSame(true, $this->eccubeConfig->get('hoge.fuga'));
+        $this->assertFalse($this->eccubeConfig->has('hoge.fuga'));
+        $this->container->setParameter('hoge.fuga', true);
+        $this->assertTrue($this->eccubeConfig->has('hoge.fuga'));
     }
 
     public function testOffsetGet()
     {
-        $this->eccubeConfig->set('hoge.fuga', true);
-        self::assertSame(true, $this->eccubeConfig->offsetGet('hoge.fuga'));
+        $this->container->setParameter('hoge.fuga', true);
+        $this->assertTrue($this->eccubeConfig->offsetGet('hoge.fuga'));
     }
 
     public function testOffsetGetNotFound()
@@ -69,15 +65,15 @@ class EccubeConfigTest extends TestCase
 
     public function testOffsetExist()
     {
-        self::assertFalse($this->eccubeConfig->offsetExists('hoge.fuga'));
-        $this->eccubeConfig->set('hoge.fuga', true);
-        self::assertTrue($this->eccubeConfig->offsetExists('hoge.fuga'));
+        $this->assertFalse($this->eccubeConfig->offsetExists('hoge.fuga'));
+        $this->container->setParameter('hoge.fuga', true);
+        $this->assertTrue($this->eccubeConfig->offsetExists('hoge.fuga'));
     }
 
     public function testOffsetSet()
     {
+        $this->expectException(\Exception::class);
         $this->eccubeConfig->offsetSet('hoge.fuga', true);
-        self::assertSame(true, $this->eccubeConfig->offsetGet('hoge.fuga'));
     }
 
     public function testOffsetUnset()

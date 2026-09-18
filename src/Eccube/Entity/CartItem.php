@@ -13,252 +13,205 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Eccube\Entity\Master\OrderItemType;
+use Eccube\Repository\CartItemRepository;
 
-if (!class_exists('\Eccube\Entity\CartItem')) {
+/**
+ * CartItem
+ */
+#[ORM\Table(name: 'dtb_cart_item')]
+#[ORM\InheritanceType('SINGLE_TABLE')]
+#[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: CartItemRepository::class)]
+class CartItem extends AbstractEntity implements ItemInterface
+{
+    use PointRateTrait;
+
+    #[ORM\Column(name: 'id', type: Types::INTEGER, options: ['unsigned' => true])]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    private ?int $id = null;
+
+    #[ORM\Column(name: 'price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['default' => 0])]
+    private ?string $price = '0';
+
+    #[ORM\Column(name: 'quantity', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
+    private string $quantity = '0';
+
+    #[ORM\ManyToOne(targetEntity: ProductClass::class)]
+    #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
+    private ?ProductClass $ProductClass = null;
+
+    #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'CartItems', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'cart_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
+    private ?Cart $Cart = null;
+
     /**
-     * CartItem
-     *
-     * @ORM\Table(name="dtb_cart_item")
-     * @ORM\InheritanceType("SINGLE_TABLE")
-     * @ORM\DiscriminatorColumn(name="discriminator_type", type="string", length=255)
-     * @ORM\HasLifecycleCallbacks()
-     * @ORM\Entity(repositoryClass="Eccube\Repository\CartItemRepository")
+     * sessionのシリアライズのために使われる
      */
-    class CartItem extends \Eccube\Entity\AbstractEntity implements ItemInterface
+    private int $product_class_id;
+
+    public function __sleep(): array
     {
-        use PointRateTrait;
+        return ['product_class_id', 'price', 'quantity'];
+    }
 
-        /**
-         * @var integer
-         *
-         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-         * @ORM\Id
-         * @ORM\GeneratedValue(strategy="IDENTITY")
-         */
-        private $id;
+    /**
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="price", type="decimal", precision=12, scale=2, options={"default":0})
-         */
-        private $price = 0;
+    public function setPrice(?string $price): static
+    {
+        $this->price = $price;
 
-        /**
-         * @var string
-         *
-         * @ORM\Column(name="quantity", type="decimal", precision=10, scale=0, options={"default":0})
-         */
-        private $quantity = 0;
+        return $this;
+    }
 
-        /**
-         * @var \Eccube\Entity\ProductClass
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\ProductClass")
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="product_class_id", referencedColumnName="id")
-         * })
-         */
-        private $ProductClass;
+    #[\Override]
+    public function getPrice(): ?string
+    {
+        return $this->price;
+    }
 
-        /**
-         * @var \Eccube\Entity\Cart
-         *
-         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Cart", inversedBy="CartItems", cascade={"persist"})
-         * @ORM\JoinColumns({
-         *   @ORM\JoinColumn(name="cart_id", referencedColumnName="id", onDelete="CASCADE")
-         * })
-         */
-        private $Cart;
+    /**
+     * @param  string  $quantity
+     */
+    #[\Override]
+    public function setQuantity($quantity): static
+    {
+        $this->quantity = $quantity;
 
-        /**
-         * sessionのシリアライズのために使われる
-         *
-         * @var int
-         */
-        private $product_class_id;
+        return $this;
+    }
 
-        public function __sleep()
-        {
-            return ['product_class_id', 'price', 'quantity'];
-        }
+    #[\Override]
+    public function getQuantity(): string
+    {
+        return $this->quantity;
+    }
 
-        /**
-         * @return int
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
+    public function getTotalPrice(): string
+    {
+        return bcmul((string) $this->getPrice(), $this->getQuantity(), 2);
+    }
 
-        /**
-         * @param  integer  $price
-         *
-         * @return CartItem
-         */
-        public function setPrice($price)
-        {
-            $this->price = $price;
+    /**
+     * 商品明細かどうか.
+     *
+     * @return bool 商品明細の場合 true
+     */
+    #[\Override]
+    public function isProduct(): bool
+    {
+        return true;
+    }
 
-            return $this;
-        }
+    /**
+     * 送料明細かどうか.
+     *
+     * @return bool 送料明細の場合 true
+     */
+    #[\Override]
+    public function isDeliveryFee(): bool
+    {
+        return false;
+    }
 
-        /**
-         * @return string
-         */
-        public function getPrice()
-        {
-            return $this->price;
-        }
+    /**
+     * 手数料明細かどうか.
+     *
+     * @return bool 手数料明細の場合 true
+     */
+    #[\Override]
+    public function isCharge(): bool
+    {
+        return false;
+    }
 
-        /**
-         * @param  integer  $quantity
-         *
-         * @return CartItem
-         */
-        public function setQuantity($quantity)
-        {
-            $this->quantity = $quantity;
+    /**
+     * 値引き明細かどうか.
+     *
+     * @return bool 値引き明細の場合 true
+     */
+    #[\Override]
+    public function isDiscount(): bool
+    {
+        return false;
+    }
 
-            return $this;
-        }
+    /**
+     * 税額明細かどうか.
+     *
+     * @return bool 税額明細の場合 true
+     */
+    #[\Override]
+    public function isTax(): bool
+    {
+        return false;
+    }
 
-        /**
-         * @return string
-         */
-        public function getQuantity()
-        {
-            return $this->quantity;
-        }
+    /**
+     * ポイント明細かどうか.
+     *
+     * @return bool ポイント明細の場合 true
+     */
+    #[\Override]
+    public function isPoint(): bool
+    {
+        return false;
+    }
 
-        /**
-         * @return integer
-         */
-        public function getTotalPrice()
-        {
-            return $this->getPrice() * $this->getQuantity();
-        }
+    #[\Override]
+    public function getOrderItemType(): OrderItemType
+    {
+        // TODO OrderItemType::PRODUCT
+        $ItemType = new OrderItemType();
 
-        /**
-         * 商品明細かどうか.
-         *
-         * @return boolean 商品明細の場合 true
-         */
-        public function isProduct()
-        {
-            return true;
-        }
+        return $ItemType;
+    }
 
-        /**
-         * 送料明細かどうか.
-         *
-         * @return boolean 送料明細の場合 true
-         */
-        public function isDeliveryFee()
-        {
-            return false;
-        }
+    public function setProductClass(ProductClass $ProductClass): static
+    {
+        $this->ProductClass = $ProductClass;
 
-        /**
-         * 手数料明細かどうか.
-         *
-         * @return boolean 手数料明細の場合 true
-         */
-        public function isCharge()
-        {
-            return false;
-        }
+        $this->product_class_id = $ProductClass->getId();
 
-        /**
-         * 値引き明細かどうか.
-         *
-         * @return boolean 値引き明細の場合 true
-         */
-        public function isDiscount()
-        {
-            return false;
-        }
+        return $this;
+    }
 
-        /**
-         * 税額明細かどうか.
-         *
-         * @return boolean 税額明細の場合 true
-         */
-        public function isTax()
-        {
-            return false;
-        }
+    #[\Override]
+    public function getProductClass(): ?ProductClass
+    {
+        return $this->ProductClass;
+    }
 
-        /**
-         * ポイント明細かどうか.
-         *
-         * @return boolean ポイント明細の場合 true
-         */
-        public function isPoint()
-        {
-            return false;
-        }
+    public function getProductClassId(): ?int
+    {
+        return $this->product_class_id;
+    }
 
-        public function getOrderItemType()
-        {
-            // TODO OrderItemType::PRODUCT
-            $ItemType = new \Eccube\Entity\Master\OrderItemType();
+    public function getPriceIncTax(): string
+    {
+        // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
+        return $this->price;
+    }
 
-            return $ItemType;
-        }
+    public function getCart(): ?Cart
+    {
+        return $this->Cart;
+    }
 
-        /**
-         * @param ProductClass $ProductClass
-         *
-         * @return $this
-         */
-        public function setProductClass(ProductClass $ProductClass)
-        {
-            $this->ProductClass = $ProductClass;
+    public function setCart(Cart $Cart): static
+    {
+        $this->Cart = $Cart;
 
-            $this->product_class_id = is_object($ProductClass) ?
-            $ProductClass->getId() : null;
-
-            return $this;
-        }
-
-        /**
-         * @return ProductClass
-         */
-        public function getProductClass()
-        {
-            return $this->ProductClass;
-        }
-
-        /**
-         * @return int|null
-         */
-        public function getProductClassId()
-        {
-            return $this->product_class_id;
-        }
-
-        public function getPriceIncTax()
-        {
-            // TODO ItemInterfaceに追加, Cart::priceは税込み金額が入っているので,フィールドを分ける必要がある
-            return $this->price;
-        }
-
-        /**
-         * @return Cart
-         */
-        public function getCart()
-        {
-            return $this->Cart;
-        }
-
-        /**
-         * @param Cart $Cart
-         */
-        public function setCart(Cart $Cart)
-        {
-            $this->Cart = $Cart;
-        }
+        return $this;
     }
 }

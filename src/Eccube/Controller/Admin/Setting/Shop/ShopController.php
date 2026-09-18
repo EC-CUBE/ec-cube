@@ -19,10 +19,11 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Util\CacheUtil;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
-use Twig_Environment;
+use Symfony\Component\Routing\Attribute\Route;
+use Twig\Environment;
 
 /**
  * Class ShopController
@@ -30,36 +31,20 @@ use Twig_Environment;
 class ShopController extends AbstractController
 {
     /**
-     * @var Twig_Environment
-     */
-    protected $twig;
-
-    /**
-     * @var BaseInfoRepository
-     */
-    protected $baseInfoRepository;
-
-    /**
      * ShopController constructor.
-     *
-     * @param Twig_Environment $twig
-     * @param BaseInfoRepository $baseInfoRepository
      */
-    public function __construct(Twig_Environment $twig, BaseInfoRepository $baseInfoRepository)
+    public function __construct(protected Environment $twig, protected BaseInfoRepository $baseInfoRepository, private readonly CacheUtil $cacheUtil)
     {
-        $this->baseInfoRepository = $baseInfoRepository;
-        $this->twig = $twig;
     }
 
     /**
-     * @Route("/%eccube_admin_route%/setting/shop", name="admin_setting_shop", methods={"GET", "POST"})
-     * @Template("@admin/Setting/Shop/shop_master.twig")
+     * @return array<string, mixed>|RedirectResponse
      *
-     * @param Request $request
-     *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Exception
      */
-    public function index(Request $request, CacheUtil $cacheUtil)
+    #[Route(path: '/%eccube_admin_route%/setting/shop', name: 'admin_setting_shop', methods: ['GET', 'POST'])]
+    #[Template(template: '@admin/Setting/Shop/shop_master.twig')]
+    public function index(Request $request): array|RedirectResponse
     {
         $BaseInfo = $this->baseInfoRepository->get();
         $builder = $this->formFactory
@@ -75,7 +60,7 @@ class ShopController extends AbstractController
             ],
             $request
         );
-        $this->eventDispatcher->dispatch(EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE, $event);
+        $this->eventDispatcher->dispatch($event, EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_INITIALIZE);
 
         $form = $builder->getForm();
         $form->handleRequest($request);
@@ -92,12 +77,12 @@ class ShopController extends AbstractController
                 $request
             );
             $this->eventDispatcher->dispatch(
-                EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE,
-                $event
+                $event,
+                EccubeEvents::ADMIN_SETTING_SHOP_SHOP_INDEX_COMPLETE
             );
 
             // キャッシュの削除
-            $cacheUtil->clearDoctrineCache();
+            $this->cacheUtil->clearDoctrineCache();
 
             $this->addSuccess('admin.common.save_complete', 'admin');
 

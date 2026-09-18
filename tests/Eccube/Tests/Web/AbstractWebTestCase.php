@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -13,29 +15,22 @@
 
 namespace Eccube\Tests\Web;
 
+use Eccube\Entity\Customer;
 use Eccube\Tests\EccubeTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Component\BrowserKit\AbstractBrowser;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class AbstractWebTestCase extends EccubeTestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->createSession();
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
     /**
      * @deprecated AbstractWebTestCase::loginTo() を使用してください.
+     *
+     * @param mixed|null $user
      */
-    public function logIn($user = null)
+    public function logIn(mixed $user = null)
     {
         if (!is_object($user)) {
             $user = $this->createCustomer();
@@ -52,35 +47,50 @@ abstract class AbstractWebTestCase extends EccubeTestCase
      *
      * @param UserInterface $User ログインさせる User
      *
-     * @return Symfony\Component\HttpKernel\Client
-     *
      * @see EccubeTestCase::getCsrfToken()
      */
-    public function loginTo(UserInterface $User)
+    public function loginTo(UserInterface $User): KernelBrowser|AbstractBrowser
     {
-        $firewall = 'admin';
-        $role = ['ROLE_ADMIN'];
-        if ($User instanceof \Eccube\Entity\Customer) {
-            $firewall = 'customer';
-            $role = ['ROLE_USER'];
-        }
-        $token = new UsernamePasswordToken($User, null, $firewall, $role);
-
-        $session = $this->client->getContainer()->get('session');
-        $session->set('_security_'.$firewall, serialize($token));
-        $session->save();
+        $firewallContext = $User instanceof Customer ? 'customer' : 'admin';
+        $this->client->loginUser($User, $firewallContext);
 
         return $this->client;
     }
 
-    public function createSession()
+    /**
+     * https://github.com/symfony/symfony/discussions/46961
+     */
+    public function createSession(KernelBrowser $client): Session
     {
-        // セッションが途中できれてしまうような事象が発生するため
-        // https://github.com/symfony/symfony/issues/13450#issuecomment-353745790
-        $session = $this->client->getContainer()->get('session');
-        $session->set('dummy', 'dummy');
-        $session->save();
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->client->getCookieJar()->set($cookie);
+        $cookie = $client->getCookieJar()->get('MOCKSESSID');
+
+        // create a new session object
+        $container = static::getContainer();
+        // SymfonyのFrameworkBundleが内部で登録するサービスだが、
+        // クラス名のエイリアスが標準では存在しないため、文字列サービスIDのまま使用
+        $serviceId = 'session.factory';
+        $session = $container->get($serviceId)->createSession();
+
+        if ($cookie) {
+            // get the session id from the session cookie if it exists
+            $session->setId($cookie->getValue());
+            $session->start();
+            $session->save();
+        } else {
+            // or create a new session id and a session cookie
+            $session->start();
+            $session->save();
+
+            $sessionCookie = new Cookie(
+                $session->getName(),
+                $session->getId(),
+                null,
+                null,
+                'localhost',
+            );
+            $client->getCookieJar()->set($sessionCookie);
+        }
+
+        return $session;
     }
 }

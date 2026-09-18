@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,6 +16,8 @@
 namespace Eccube\Tests\Service;
 
 use Eccube\Service\CsvImportService;
+use Eccube\Stream\Filter\ConvertLineFeedFilter;
+use Eccube\Stream\Filter\SjisToUtf8EncodingFilter;
 
 /**
  * Copyright (C) 2012-2014 David de Boer <david@ddeboer.nl>
@@ -40,7 +44,7 @@ use Eccube\Service\CsvImportService;
  *
  * @see https://github.com/ddeboer/data-import/blob/master/tests/Reader/CsvReaderTest.php
  */
-class CsvImportServiceTest extends AbstractServiceTestCase
+final class CsvImportServiceTest extends AbstractServiceTestCase
 {
     public function testReadCsvFileWithColumnHeaders()
     {
@@ -48,7 +52,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
 
-        $this->assertEquals(['id', 'number', 'description'], $CsvImportService->getFields());
+        $this->assertSame(['id', 'number', 'description'], $CsvImportService->getFields());
 
         foreach ($CsvImportService as $row) {
             $this->assertNotNull($row['id']);
@@ -56,9 +60,9 @@ class CsvImportServiceTest extends AbstractServiceTestCase
             $this->assertNotNull($row['description']);
         }
 
-        $this->assertEquals(
+        $this->assertSame(
             [
-                'id' => 6,
+                'id' => '6',
                 'number' => '456',
                 'description' => 'Another description',
             ],
@@ -108,7 +112,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_no_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
-        $this->assertEquals(3, $CsvImportService->count());
+        $this->assertCount(3, $CsvImportService);
     }
 
     public function testCountWithHeaders()
@@ -116,7 +120,7 @@ class CsvImportServiceTest extends AbstractServiceTestCase
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/data_column_headers.csv');
         $CsvImportService = new CsvImportService($file);
         $CsvImportService->setHeaderRowNumber(0);
-        $this->assertEquals(3, $CsvImportService->count(), 'Row count should not include header');
+        $this->assertCount(3, $CsvImportService, 'Row count should not include header');
     }
 
     public function testCountDoesNotMoveFilePointer()
@@ -153,13 +157,117 @@ class CsvImportServiceTest extends AbstractServiceTestCase
             'details' => ['Details1', 'Details2'],
             'last' => 'Last one',
         ];
-        $this->assertEquals($expected, $current);
+        $this->assertSame($expected, $current);
     }
 
-    protected function getReader($filename)
+    /**
+     * @see https://github.com/EC-CUBE/ec-cube/issues/5252
+     */
+    public function testImportWithSJIS()
+    {
+        $csv = new CsvImportService(new \SplFileObject(__DIR__.'/../../../Fixtures/sjis.csv'));
+        $this->assertCount(4, $csv);
+
+        $expected = [
+            '商品名',
+            '10テスト機構',
+            '11テスト機構',
+            '12テスト機構',
+        ];
+        $n = 0;
+        foreach ($csv as $row) {
+            $this->assertCount(7, $row, var_export($row, true));
+            $this->assertSame($expected[$n], $row[3]);
+            $n++;
+        }
+    }
+
+    public function testApplyStreamFilter()
+    {
+        $file = new \SplFileObject(__DIR__.'/../../../Fixtures/sjis.csv');
+        $appliedFile = CsvImportService::applyStreamFilter(
+            $file,
+            SjisToUtf8EncodingFilter::class,
+            ConvertLineFeedFilter::class
+        );
+
+        $actual = '';
+        while (!$appliedFile->eof()) {
+            $actual .= $appliedFile->fgets();
+        }
+
+        $expected = "商品ID,公開ステータス(ID),販売種別(ID),商品名,販売価格,在庫数,在庫数無制限フラグ\n"
+            .",1,1,\"10テスト機構\",2800,100,\n"
+            .",1,1,\"11テスト機構\",2800,100,\n"
+            .',1,1,"12テスト機構",2800,100,';
+
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * 出力時に付与された先頭 ' を, ヘッダ・データ行とも対称に剥がして復元する.
+     * 空行(null セル)を含んでも例外なく取り込めること(数式無害化導入時の回帰防止)もあわせて確認する.
+     */
+    public function testFormulaCellsAreUnescapedIncludingBlankLine(): void
+    {
+        // ヘッダ・データとも先頭 ' 付き(=出力済みCSV)、途中に空行を含む
+        $reader = $this->getStringReader("'=col1,col2\n'=1+1,a\n\n'@SUM(1),b\n");
+        $reader->setHeaderRowNumber(0);
+
+        // ヘッダの先頭 ' が剥がれ、列キーが復元される
+        $this->assertSame(['=col1', 'col2'], $reader->getColumnHeaders());
+
+        $rows = [];
+        foreach ($reader as $row) {
+            $rows[] = $row;
+        }
+
+        $this->assertSame(['=col1' => '=1+1', 'col2' => 'a'], $rows[0]);
+        $this->assertSame([0 => null], $rows[1]);
+        $this->assertSame(['=col1' => '@SUM(1)', 'col2' => 'b'], $rows[2]);
+    }
+
+    /**
+     * EC-CUBE 以外が作成した CSV の正規の先頭 ' (直後が数式トリガでない) は取込時に保持する.
+     */
+    public function testExternalLeadingQuoteIsPreserved(): void
+    {
+        $reader = $this->getStringReader("col1,col2\n'Hello,'07012345678\n");
+        $reader->setHeaderRowNumber(0);
+
+        $this->assertSame(['col1' => "'Hello", 'col2' => "'07012345678"], $reader->getRow(1));
+    }
+
+    /**
+     * 無効化時(unescapeFormulas=false)は先頭 ' を剥がさず素通しする.
+     */
+    public function testLeadingQuoteIsKeptWhenUnescapeDisabled(): void
+    {
+        $file = $this->createStringFile("'=col1,col2\n'=1+1,a\n");
+        $reader = new CsvImportService($file, ',', '"', '\\', false);
+        $reader->setHeaderRowNumber(0);
+
+        $this->assertSame(["'=col1", 'col2'], $reader->getColumnHeaders());
+        $this->assertSame(["'=col1" => "'=1+1", 'col2' => 'a'], $reader->getRow(1));
+    }
+
+    protected function getReader(string $filename): CsvImportService
     {
         $file = new \SplFileObject(__DIR__.'/../../../Fixtures/'.$filename);
 
         return new CsvImportService($file);
+    }
+
+    private function createStringFile(string $contents): \SplFileObject
+    {
+        $path = tempnam(sys_get_temp_dir(), 'csv_import_test_');
+        file_put_contents($path, $contents);
+
+        return new \SplFileObject($path);
+    }
+
+    private function getStringReader(string $contents): CsvImportService
+    {
+        return new CsvImportService($this->createStringFile($contents));
     }
 }

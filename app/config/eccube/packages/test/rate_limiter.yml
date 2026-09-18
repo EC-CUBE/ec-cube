@@ -1,0 +1,6 @@
+# config/packages/rate_limiter.yaml
+framework:
+    cache:
+        pools:
+            rate_limiter.cache:
+                adapter: cache.adapter.filesystem

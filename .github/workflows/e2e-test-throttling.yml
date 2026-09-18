@@ -1,0 +1,275 @@
+name: E2E test(Throttoling) for EC-CUBE
+
+on:
+  workflow_call:
+    inputs:
+      php-versions:
+        description: 'テスト対象 PHP バージョンの JSON 配列'
+        type: string
+        default: "['8.2', '8.3', '8.4', '8.5']"
+  workflow_dispatch:
+    inputs:
+      php-versions:
+        description: 'テスト対象 PHP バージョンの JSON 配列'
+        type: string
+        default: "['8.2', '8.3', '8.4', '8.5']"
+
+permissions:
+  contents: read
+
+jobs:
+  playwright:
+    name: Playwright (${{ matrix.method }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ${{ fromJSON(inputs.php-versions) }}
+        db: [ pgsql ]
+        method:
+          - フロント画面ログイン_IP
+          - フロント画面ログイン_会員
+          - 管理画面ログイン_IP
+          - 管理画面ログイン_会員
+          - 会員登録
+          - 問い合わせ
+          - パスワード再発行
+          - 新規会員登録_入力
+          - 会員情報編集
+          - 配送先情報_追加
+          - 配送先情報_編集
+          - 配送先情報_削除
+        include:
+          - db: pgsql
+            database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
+            database_server_version: 18
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      ## Docker Hub からの pull はタイムアウトで CI が不安定になるため、
+      ## DB はコンテナではなく setup アクション (apt) でインストールする
+      - name: Setup PostgreSQL
+        uses: ankane/setup-postgres@6d3ffa1aa7498a42b79e9f9f5838b99971839300  # v1
+        with:
+          postgres-version: '18'
+          user: postgres
+      - name: Configure PostgreSQL
+        run: |
+          for _ in $(seq 1 30); do pg_isready -h 127.0.0.1 && break; sleep 1; done
+          pg_isready -h 127.0.0.1 || { echo 'PostgreSQL did not become ready within 30s'; exit 1; }
+          psql -h 127.0.0.1 -U postgres -c "ALTER USER postgres PASSWORD 'password'"
+          ## DATABASE_URL と同一経路 (TCP/postgres/password) で接続できることを検証
+          PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
+
+      # e2e環境ではprodの設定が読み込まれないため、ベース設定を作成
+      - name: Prepare rate limiter config
+        run: |
+          cp app/config/eccube/packages/prod/eccube_rate_limiter.yaml app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
+
+      # ShoppingController::checkoutをテストするため、confirmの上限値を変更する
+      - name: Fix limiter limit
+        if: startsWith(matrix.method, '注文完了')
+        run: |
+          echo "eccube:
+              rate_limiter:
+                  shopping_confirm_ip:
+                      route: ~
+                      limit: 1024
+                      interval: '30 minutes'
+                  shopping_confirm_customer:
+                      route: ~
+                      limit: 1024
+                      interval: '30 minutes'
+                  shopping_checkout_ip:
+                      route: ~
+                      limit: 25
+                      interval: '30 minutes'
+                  shopping_checkout_customer:
+                      route: ~
+                      limit: 10
+                      interval: '30 minutes'" > app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
+
+      # 配送先情報_削除のテストするため、delivery addの上限値を変更する
+      - name: Fix limiter limit for delivery delete
+        if: matrix.method == '配送先情報_削除'
+        run: |
+          echo "eccube:
+              rate_limiter:
+                  mypage_delivery_new:
+                      route: mypage_delivery_new
+                      method: [ 'POST' ]
+                      type: customer
+                      limit: 1024
+                      interval: '30 minutes'
+                  mypage_delivery_delete:
+                      route: mypage_delivery_delete
+                      method: [ 'DELETE' ]
+                      type: customer
+                      limit: 10
+                      interval: '30 minutes'" > app/config/eccube/packages/e2e/eccube_rate_limiter.yaml
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: redis
+
+      - name: Setup Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        with:
+          node-version: 20
+
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Generate ECCUBE_AUTH_MAGIC
+        run: echo "ECCUBE_AUTH_MAGIC=$(openssl rand -hex 32)" >> $GITHUB_ENV
+
+      - name: Cache npm dependencies
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Cache build artifacts
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        id: build-cache
+        with:
+          path: |
+            html/template/**/css
+            html/bundle
+          key: ${{ runner.os }}-build-${{ hashFiles('html/template/**/scss/**/*.scss', 'html/template/**/js/**/*.js', 'package-lock.json', 'esbuild.config.mjs') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+      - name: Build Sass and JavaScript
+        if: steps.build-cache.outputs.cache-hit != 'true'
+        run: |
+          npm ci
+          npm run build
+
+      - name: Setup to EC-CUBE
+        env:
+          APP_ENV: 'e2e'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: |
+          echo "APP_ENV=${APP_ENV}" > .env
+          echo "TRUSTED_HOSTS=127.0.0.1,localhost" >> .env
+          echo "ECCUBE_AUTH_MAGIC=${ECCUBE_AUTH_MAGIC}" >> .env
+          bin/console doctrine:database:create
+          bin/console doctrine:schema:create
+          bin/console eccube:fixtures:load
+
+      - name: Create test customer
+        env:
+          PGPASSWORD: 'password'
+        run: |
+          HASH=$(php -r "echo password_hash('password', PASSWORD_BCRYPT);")
+          SECRET=$(php -r "echo bin2hex(random_bytes(16));")
+          EXISTS=$(psql eccube_db -h 127.0.0.1 -U postgres -t -c "SELECT count(*) FROM dtb_customer WHERE email='playwright@test.test';" | tr -d ' ')
+          if [ "$EXISTS" = "0" ]; then
+            psql eccube_db -h 127.0.0.1 -U postgres -c "
+              INSERT INTO dtb_customer (
+                id, customer_status_id, pref_id, name01, name02, kana01, kana02,
+                postal_code, addr01, addr02, email, phone_number, password, salt,
+                secret_key, create_date, update_date, discriminator_type
+              ) VALUES (
+                nextval('dtb_customer_id_seq'), 2, 13, 'テスト', '太郎', 'テスト', 'タロウ',
+                '1000001', '千代田区千代田', '1-1', 'playwright@test.test', '0312345678',
+                '${HASH}', '', '${SECRET}', NOW(), NOW(), 'customer'
+              );
+            "
+            echo "Created test customer"
+          else
+            echo "Test customer already exists"
+          fi
+
+      - name: Install Playwright dependencies
+        working-directory: e2e
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        working-directory: e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Playwright system deps
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        working-directory: e2e
+        run: npx playwright install-deps chromium
+
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-pkgs-action@553a35bb8ebd9fcabcb1c9451aa4c98e1b4ca8a9  # latest
+        with:
+          packages: fonts-ipafont fonts-ipaexfont
+          version: 1.0
+
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
+      - name: Start PHP Development Server
+        env:
+          APP_ENV: 'e2e'
+          DATABASE_URL: ${{ matrix.database_url }}
+          DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
+          ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
+          ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
+        run: php -S 127.0.0.1:8000 e2e/router.php &
+
+      - name: Run Playwright tests
+        uses: nick-invision/retry@ad984534de44a9489a53aefd81eb77f87c70dc60  # v4.0.0
+        with:
+          timeout_minutes: 40
+          max_attempts: 2
+          retry_on: error
+          command: |
+            cd e2e
+            npx playwright test --project=setup --project=front-tests front-throttling.spec.ts -g "${METHOD}"
+        env:
+          BASE_URL: 'http://127.0.0.1:8000'
+          DATABASE_URL: ${{ matrix.database_url }}
+          ECCUBE_ADMIN_ROUTE: 'admin'
+          ADMIN_USER: 'admin'
+          ADMIN_PASSWORD: 'password'
+          CUSTOMER_EMAIL: 'playwright@test.test'
+          CUSTOMER_PASSWORD: 'password'
+          APP_ENV: 'prod'
+          CI: 'true'
+          METHOD: ${{ matrix.method }}
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-throttling-${{ matrix.method }}-report
+          path: e2e/playwright-report/
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-throttling-${{ matrix.method }}-results
+          path: e2e/test-results/
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        with:
+          name: playwright-throttling-${{ matrix.method }}-logs
+          path: var/log/

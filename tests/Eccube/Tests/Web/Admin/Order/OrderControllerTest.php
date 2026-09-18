@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of EC-CUBE
  *
@@ -14,9 +16,12 @@
 namespace Eccube\Tests\Web\Admin\Order;
 
 use Eccube\Common\Constant;
+use Eccube\Entity\Customer;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Master\OrderStatus;
+use Eccube\Entity\Master\Sex;
 use Eccube\Entity\Order;
+use Eccube\Entity\Payment;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
 use Eccube\Repository\Master\OrderStatusRepository;
@@ -24,69 +29,53 @@ use Eccube\Repository\Master\SexRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
-use Symfony\Component\DomCrawler\Crawler;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mime\Email;
 
-class OrderControllerTest extends AbstractAdminWebTestCase
+final class OrderControllerTest extends AbstractAdminWebTestCase
 {
-    /**
-     * @var OrderStatusRepository
-     */
-    protected $orderStatusRepository;
+    use MailerAssertionsTrait;
 
-    /**
-     * @var PaymentRepository
-     */
-    protected $paymentRepository;
+    protected ?OrderStatusRepository $orderStatusRepository = null;
 
-    /**
-     * @var SexRepository
-     */
-    protected $sexRepository;
+    protected ?PaymentRepository $paymentRepository = null;
 
-    /**
-     * @var CsvTypeRepository
-     */
-    protected $csvTypeRepository;
+    protected ?SexRepository $sexRepository = null;
 
-    /**
-     * @var OrderRepository
-     */
-    protected $orderRepository;
+    protected ?CsvTypeRepository $csvTypeRepository = null;
 
-    /**
-     * @var CustomerRepository
-     */
-    protected $customerRepository;
+    protected ?OrderRepository $orderRepository = null;
 
-    public function setUp()
+    protected ?CustomerRepository $customerRepository = null;
+
+    protected function setUp(): void
     {
         parent::setUp();
-
         $this->orderStatusRepository = $this->entityManager->getRepository(OrderStatus::class);
-        $this->paymentRepository = $this->entityManager->getRepository(\Eccube\Entity\Payment::class);
-        $this->sexRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\Sex::class);
-        $this->csvTypeRepository = $this->entityManager->getRepository(\Eccube\Entity\Master\CsvType::class);
-        $this->orderRepository = $this->entityManager->getRepository(\Eccube\Entity\Order::class);
-        $this->customerRepository = $this->entityManager->getRepository(\Eccube\Entity\Customer::class);
-
+        $this->paymentRepository = $this->entityManager->getRepository(Payment::class);
+        $this->sexRepository = $this->entityManager->getRepository(Sex::class);
+        $this->csvTypeRepository = $this->entityManager->getRepository(CsvType::class);
+        $this->orderRepository = $this->entityManager->getRepository(Order::class);
+        $this->customerRepository = $this->entityManager->getRepository(Customer::class);
         // FIXME: Should remove exist data before generate data for test
         $this->deleteAllRows(['dtb_order_item']);
         $this->deleteAllRows(['dtb_shipping']);
         $this->deleteAllRows(['dtb_order']);
-
-        $Sex = $this->sexRepository->find(1);
-        $Payment = $this->paymentRepository->find(1);
-        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
-        for ($i = 0; $i < 10; $i++) {
-            $Customer = $this->createCustomer('user-'.$i.'@example.com');
-            $Customer->setSex($Sex);
-            $Order = $this->createOrder($Customer);
-            $Order->setOrderNo('order_no_'.$i);
-            $Order->setOrderStatus($OrderStatus);
-            $Order->setPayment($Payment);
-            $this->entityManager->flush();
-        }
-
+        // dtb_customer も CSV と重複する可能性があるため事前に削除する.
+        // ※ CsvFixture::load() は内部で beginTransaction/commit を呼び DAMA の
+        //   savepoint と完全には整合しないため、シナリオ間で email や secret_key の
+        //   UNIQUE 制約が衝突する場合がある. setUp で先に消すことで毎テスト独立した
+        //   状態から CSV を投入する.
+        $this->deleteAllRows(['dtb_customer_address']);
+        $this->deleteAllRows(['dtb_customer']);
+        // Phase (b): order-search シナリオの CSV から Customer / Order / Shipping / OrderItem を一括投入.
+        // 詳細は tests/Eccube/Tests/Fixture/csv/order-search/README.md を参照.
+        // ※ OrderItem の product_id / product_class_id は NULL で、Shipping の delivery_id も NULL.
+        //   これは本テストが商品参照や配送方法を要求しないための簡略化であり、実運用データとは乖離する.
+        $this->loadCsvFixtures('order-search');
         // sqlite では CsvType が生成されないので、ここで作る
         $OrderCsvType = $this->csvTypeRepository->find(3);
         if (!is_object($OrderCsvType)) {
@@ -111,7 +100,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testIndex()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -121,7 +110,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     {
         // 初期表示時検索条件テスト
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order')
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -134,13 +123,14 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testSearchOrderByOrderNo()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
-            'admin_search_order' => [
-                '_token' => 'dummy',
-                'multi' => $Order->getOrderNo(),
-            ],
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'multi' => $Order->getOrderNo(),
+                ],
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -150,7 +140,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
                     'order_no' => $Order->getOrderNo(),
@@ -167,16 +157,17 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testSearchOrderByName()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $companyName = $Order->getCompanyName();
         $OrderList = $this->orderRepository->findBy(['company_name' => $companyName]);
         $cnt = count($OrderList);
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
-            'admin_search_order' => [
-                '_token' => 'dummy',
-                'multi' => $companyName,
-            ],
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
+                'admin_search_order' => [
+                    '_token' => 'dummy',
+                    'multi' => $companyName,
+                ],
             ]
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -186,7 +177,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
 
         $crawler = $this->client->request(
-            'POST', $this->generateUrl('admin_order'), [
+            Request::METHOD_POST, $this->generateUrl('admin_order'), [
                 'admin_search_order' => [
                     '_token' => 'dummy',
                     'company_name' => $companyName,
@@ -203,7 +194,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithPost()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order'),
             [
                 'admin_search_order' => [
@@ -221,7 +212,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testIndexWithNext()
     {
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order').'?page_count=3',
             [
                 'admin_search_order' => [
@@ -235,7 +226,7 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
         // 次のページへ遷移
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_page', ['page_no' => 2])
         );
         $this->assertTrue($this->client->getResponse()->isSuccessful());
@@ -247,22 +238,17 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
     public function testBulkDelete()
     {
-        $orderIds = [];
         $Customer = $this->createCustomer();
-        for ($i = 0; $i < 5; $i++) {
-            $Order = $this->createOrder($Customer);
-            $orderIds[] = $Order->getId();
-        }
-
-        $this->entityManager->flush();
+        $NewOrders = $this->createOrders(array_fill(0, 5, $Customer));
+        $orderIds = array_map(static fn ($o) => $o->getId(), $NewOrders);
 
         $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order_bulk_delete'),
             ['ids' => $orderIds]
         );
 
-        $Orders = $this->entityManager->getRepository(\Eccube\Entity\Order::class)->findBy(['id' => $orderIds]);
+        $Orders = $this->entityManager->getRepository(Order::class)->findBy(['id' => $orderIds]);
         $this->assertCount(0, $Orders);
     }
 
@@ -271,12 +257,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         // 受注件数を11件にしておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
         // 10件ヒットするはずの検索条件
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order'),
             [
                 'admin_search_order' => [
@@ -290,12 +277,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
-        $this->expectOutputRegex('/user-[0-9]@example.com/', 'user-[0-9]@example.com が含まれる CSV が出力されるか');
-
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order_export_order')
         );
+
+        $content = $this->client->getInternalResponse()->getContent();
+        $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
     }
 
     /**
@@ -309,9 +297,8 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             '_token' => 'dummy',
             'email' => 'user-1',
         ];
-        /* @var $crawler Crawler */
         $crawler = $this->client->request(
-            'POST',
+            Request::METHOD_POST,
             $this->generateUrl('admin_order'),
             [
                 'admin_search_order' => $form,
@@ -323,32 +310,42 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
 
-        /* @var $customer \Eccube\Entity\Customer */
+        /** @var Customer $customer */
         $customer = $this->customerRepository->findOneBy(['email' => 'user-1@example.com']);
 
-        $this->assertContains($customer->getName01(), $crawler->filter('table#search_result')->html());
+        $this->assertStringContainsString($customer->getName01(), $crawler->filter('table#search_result')->html());
     }
 
     /**
      * @param int $orderStatusId
-     *
-     * @dataProvider dataBulkOrderStatusProvider
      */
+    #[DataProvider(methodName: 'dataBulkOrderStatusProvider')]
     public function testBulkOrderStatus($orderStatusId)
     {
-        $this->markTestIncomplete('使用していないルーティングのためスキップ.');
+        // Generator が生成する Order の OrderStatus は既定で PROCESSING のため,
+        // 受注一覧からの一括ステータス更新の起点となる NEW の受注をここで用意する.
+        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
+        for ($i = 0; $i < 2; $i++) {
+            $Order = $this->createOrder($this->createCustomer('bulk-order-status-'.$i.'@example.com'));
+            $Order->setOrderStatus($OrderStatus);
+        }
+        $this->entityManager->flush();
+
+        $TargetOrderStatus = $this->orderStatusRepository->find($orderStatusId);
+        $this->assertInstanceOf(OrderStatus::class, $TargetOrderStatus);
+
         // case true
         $orderIds = [];
-        /** @var Order[] $Orders */
-        $OrderStatus = $this->orderStatusRepository->find(OrderStatus::NEW);
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatus], [], 2);
+        $this->assertCount(2, $Orders);
         foreach ($Orders as $Order) {
             $this->assertEquals(null, $Order->getPaymentDate());
             $orderIds[] = $Order->getId();
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
                 $this->client->request(
-                    'PUT',
+                    Request::METHOD_PUT,
                     $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
                     [
                         'order_status' => $orderStatusId,
@@ -365,31 +362,28 @@ class OrderControllerTest extends AbstractAdminWebTestCase
             }
         }
 
-        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $OrderStatus]);
+        // 更新後は対象の OrderStatus へ遷移している (NEW -> PAID は pay, NEW -> DELIVERED は ship).
+        $result = $this->orderRepository->findBy(['id' => $orderIds, 'OrderStatus' => $TargetOrderStatus]);
         if ($orderStatusId == OrderStatus::PAID) {
+            // 入金日は pay 遷移 (workflow.order.transition.pay) でのみ設定される.
             foreach ($result as $Order) {
-                $this->assertNotNull($Order->getPaymentDate());
+                $this->assertInstanceOf(\DateTime::class, $Order->getPaymentDate());
             }
         }
 
-        $this->assertEquals(count($orderIds), count($result));
+        $this->assertCount(count($orderIds), $result);
     }
 
-    /**
-     * @return array
-     */
-    public function dataBulkOrderStatusProvider()
+    public static function dataBulkOrderStatusProvider(): \Iterator
     {
-        return [
-            [OrderStatus::PAID],
-            [OrderStatus::DELIVERED],
-        ];
+        yield [OrderStatus::PAID];
+        yield [OrderStatus::DELIVERED];
     }
 
     public function testBulkOrderStatusInvalidMethod()
     {
         $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_shipping_update_order_status', ['id' => 1]),
             [
                 Constant::TOKEN_NAME => 'dummy',
@@ -400,15 +394,16 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertEquals(405, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testBulkOrderStatusInvalidStatus()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings()->first();
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
             [
                 'order_status' => 0,
@@ -420,13 +415,13 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertEquals(400, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testBulkOrderStatusShippingNotFound()
     {
         $this->client->request(
-            'PUT',
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_order_status', ['id' => 0]),
             [
                 'order_status' => OrderStatus::IN_PROGRESS,
@@ -438,28 +433,36 @@ class OrderControllerTest extends AbstractAdminWebTestCase
                 'CONTENT_TYPE' => 'application/json',
             ]
         );
-        $this->assertEquals(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     public function testSimpleUpdateOrderStatusWithSendMail()
     {
         $orderIds = [];
-        /** @var Order[] $Orders */
         $OrderStatusNew = $this->orderStatusRepository->find(OrderStatus::NEW);
         $OrderStatusDelivered = $this->orderStatusRepository->find(OrderStatus::DELIVERED);
+
+        // Generator が生成する Order の OrderStatus は既定で PROCESSING のため,
+        // NEW の受注をここで用意する. 用意しないと findBy が 0 件を返し,
+        // 以降の foreach が回らずアサーションが 1 つも実行されない (空振りで green になる).
+        for ($i = 0; $i < 2; $i++) {
+            $Order = $this->createOrder($this->createCustomer('simple-update-status-'.$i.'@example.com'));
+            $Order->setOrderStatus($OrderStatusNew);
+        }
+        $this->entityManager->flush();
+
         $Orders = $this->orderRepository->findBy(['OrderStatus' => $OrderStatusNew], [], 2);
+        $this->assertCount(2, $Orders, 'NEW の受注が用意されていること');
         foreach ($Orders as $Order) {
             $this->assertEquals(null, $Order->getPaymentDate());
             $orderIds[] = $Order->getId();
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
-                $this->client->enableProfiler();
-
-                $this->client->request(
-                    'PUT',
+                $crawler = $this->client->request(
+                    Request::METHOD_PUT,
                     $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
                     [
-                        'order_status' => $OrderStatusDelivered,
+                        'order_status' => $OrderStatusDelivered->getId(),
                         'notificationMail' => 'on',
                         Constant::TOKEN_NAME => 'dummy',
                     ],
@@ -472,14 +475,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
 
                 $this->assertTrue($this->client->getResponse()->isSuccessful());
 
-                $Messages = $this->getMailCollector(false)->getMessages();
-                $this->assertEquals(1, count($Messages));
+                $this->assertEmailCount(1);
+                /** @var Email $Message */
+                $Message = $this->getMailerMessage(0);
 
-                /** @var \Swift_Message $Message */
-                $Message = $Messages[0];
-
-                $this->assertRegExp('/\[.*?\] 商品出荷のお知らせ/', $Message->getSubject());
-                $this->assertEquals([$Order->getEmail() => null], $Message->getTo());
+                $this->assertStringContainsString('商品出荷のお知らせ', (string) $Message->getSubject());
+                $this->assertEquals($Order->getEmail(), $Message->getTo()[0]->getAddress());
             }
         }
 
@@ -487,20 +488,21 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         foreach ($result as $Order) {
             $Shippings = $Order->getShippings();
             foreach ($Shippings as $Shipping) {
-                $this->assertNotNull($Shipping->getShippingDate());
-                $this->assertNotNull($Shipping->getMailSendDate());
+                $this->assertInstanceOf(\DateTime::class, $Shipping->getShippingDate());
+                $this->assertInstanceOf(\DateTime::class, $Shipping->getMailSendDate());
             }
         }
 
-        $this->assertEquals(count($orderIds), count($result));
+        $this->assertCount(count($orderIds), $result);
     }
 
     public function testUpdateTrackingNumber()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings()->first();
-        $crawler = $this->client->request(
-            'PUT',
+        $this->client->request(
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
             [
                 'tracking_number' => '0000-0000-0000',
@@ -524,9 +526,10 @@ class OrderControllerTest extends AbstractAdminWebTestCase
     public function testUpdateTrackingNumberFailure()
     {
         $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
         $Shipping = $Order->getShippings()->first();
-        $crawler = $this->client->request(
-            'PUT',
+        $this->client->request(
+            Request::METHOD_PUT,
             $this->generateUrl('admin_shipping_update_tracking_number', ['id' => $Shipping->getId()]),
             [
                 'tracking_number' => '0000_0000_0000',
@@ -557,11 +560,12 @@ class OrderControllerTest extends AbstractAdminWebTestCase
         // 対応中の受注を追加しておく
         $Order = $this->createOrder($this->createCustomer('dummy-user@example.com'));
         $OrderStatus = $this->orderStatusRepository->find(OrderStatus::IN_PROGRESS);
+        $this->assertInstanceOf(OrderStatus::class, $OrderStatus);
         $Order->setOrderStatus($OrderStatus);
         $this->entityManager->flush();
 
         $crawler = $this->client->request(
-            'GET',
+            Request::METHOD_GET,
             $this->generateUrl('admin_order').'?order_status_id=4'
         );
 

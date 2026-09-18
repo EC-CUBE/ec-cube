@@ -14,10 +14,13 @@
 namespace Eccube\Service\Composer;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\BaseInfoRepository;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class ComposerProcessService
@@ -27,42 +30,21 @@ use Eccube\Repository\BaseInfoRepository;
 class ComposerProcessService implements ComposerServiceInterface
 {
     /**
-     * @var EccubeConfig config parameter
-     */
-    protected $eccubeConfig;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    protected $entityManager;
-
-    private $workingDir;
-
-    /**
-     * @var ComposerApiService
-     */
-    private $composerApiService;
-    /**
-     * @var BaseInfoRepository
-     */
-    private $baseInfoRepository;
-
-    /**
      * ComposerProcessService constructor.
-     *
-     * @param EccubeConfig $eccubeConfig
-     * @param EntityManagerInterface $entityManager
-     * @param ComposerApiService $composerApiService
      */
-    public function __construct(EccubeConfig $eccubeConfig, EntityManagerInterface $entityManager, ComposerApiService $composerApiService, BaseInfoRepository $baseInfoRepository)
-    {
-        $this->eccubeConfig = $eccubeConfig;
-        $this->entityManager = $entityManager;
-        $this->composerApiService = $composerApiService;
-        $this->baseInfoRepository = $baseInfoRepository;
+    public function __construct(
+        /**
+         * @var EccubeConfig config parameter
+         */
+        protected EccubeConfig $eccubeConfig,
+        protected EntityManagerInterface $entityManager,
+        private readonly ComposerApiService $composerApiService,
+        private readonly BaseInfoRepository $baseInfoRepository,
+    ) {
     }
 
-    public function execRequire($packageName, $output = null)
+    #[\Override]
+    public function execRequire($packageName, ?OutputInterface $output = null, ?string $from = null): string
     {
         return $this->runCommand([
             'eccube:composer:require',
@@ -70,7 +52,8 @@ class ComposerProcessService implements ComposerServiceInterface
         ], $output);
     }
 
-    public function execRemove($packageName, $output = null)
+    #[\Override]
+    public function execRemove($packageName, ?OutputInterface $output = null): string
     {
         return $this->runCommand([
             'eccube:composer:remove',
@@ -79,13 +62,11 @@ class ComposerProcessService implements ComposerServiceInterface
     }
 
     /**
-     * Run command
+     * @param string[] $commands
      *
      * @throws PluginException
-     *
-     * @param string $command
      */
-    public function runCommand($commands, $output = null, $init = true)
+    public function runCommand(array $commands, ?OutputInterface $output = null, bool $init = true): string
     {
         if ($init) {
             $this->init();
@@ -95,10 +76,10 @@ class ComposerProcessService implements ComposerServiceInterface
         try {
             // Execute command
             $returnValue = -1;
-            $output = [];
-            exec($command, $output, $returnValue);
+            $commandOutput = [];
+            exec($command, $commandOutput, $returnValue);
 
-            $outputString = implode(PHP_EOL, $output);
+            $outputString = implode(PHP_EOL, $commandOutput);
             if ($returnValue) {
                 throw new PluginException($outputString);
             }
@@ -114,38 +95,60 @@ class ComposerProcessService implements ComposerServiceInterface
      * Set init
      *
      * @throws PluginException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    private function init($BaseInfo = null)
+    private function init(?BaseInfo $BaseInfo = null): void
     {
-//        /**
-//         * Mysql lock in transaction
-//         *
-//         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
-//         *
-//         * @var EntityManagerInterface
-//         */
-//        $em = $this->entityManager;
-//        if ($em->getConnection()->isTransactionActive()) {
-//            $em->getConnection()->commit();
-//            $em->getConnection()->beginTransaction();
-//        }
+        //        /**
+        //         * Mysql lock in transaction
+        //         *
+        //         * @see https://dev.mysql.com/doc/refman/5.7/en/lock-tables.html
+        //         *
+        //         * @var EntityManagerInterface
+        //         */
+        //        $em = $this->entityManager;
+        //        if ($em->getConnection()->isTransactionActive()) {
+        //            $em->getConnection()->commit();
+        //            $em->getConnection()->beginTransaction();
+        //        }
 
         $BaseInfo = $BaseInfo ?: $this->baseInfoRepository->get();
         $this->composerApiService->configureRepository($BaseInfo);
     }
 
-    public function execConfig($key, $value = null)
+    /**
+     * @param string $key
+     * @param string[]|null $value
+     *
+     * @return array<int|string, array<int, string>>|null
+     */
+    #[\Override]
+    public function execConfig($key, $value = null): ?array
     {
         return $this->composerApiService->execConfig($key, $value);
     }
 
-    public function configureRepository(BaseInfo $BaseInfo)
+    #[\Override]
+    public function configureRepository(BaseInfo $BaseInfo): void
     {
-        return $this->composerApiService->configureRepository($BaseInfo);
+        $this->composerApiService->configureRepository($BaseInfo);
     }
 
-    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0)
+    /**
+     * @param string $packageName
+     * @param string|null $version
+     * @param callable $callback
+     * @param string|null $typeFilter
+     * @param int $level
+     *
+     * @throws PluginException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    #[\Override]
+    public function foreachRequires($packageName, $version, $callback, $typeFilter = null, $level = 0): void
     {
-        return $this->composerApiService->foreachRequires($packageName, $version, $callback, $typeFilter, $level);
+        $this->composerApiService->foreachRequires($packageName, $version, $callback, $typeFilter, $level);
     }
 }
