@@ -16,6 +16,7 @@ namespace Eccube\DependencyInjection;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Tools\DsnParser;
+use Eccube\DependencyInjection\Resource\PluginStateResource;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -179,6 +180,11 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         $stmt = $conn->executeQuery('select * from dtb_plugin');
         $plugins = $stmt->fetchAllAssociative();
+
+        // dtb_plugin の内容をコンテナの鮮度判定に含める.
+        // これが無いと、プラグインを有効化・無効化してもコンテナが作り直されず、
+        // 下で決める eccube.plugins.enabled が DB と食い違ったまま使われる.
+        $container->addResource(new PluginStateResource(PluginStateResource::toState($plugins)));
 
         $enabled = [];
         foreach ($plugins as $plugin) {
