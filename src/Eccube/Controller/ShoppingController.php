@@ -257,8 +257,8 @@ class ShoppingController extends AbstractShoppingController
                 // リダイレクト先のチェック.
                 $pattern = '/^'.preg_quote($request->getBasePath(), '/').'/';
                 $redirectTo = preg_replace($pattern, '', (string) $redirectTo);
-                //リダイレクト先にアンカーが設定されてたらflagmentに設定
-                $redirectTo = explode("#",$redirectTo);
+                // リダイレクト先にアンカーが設定されてたらflagmentに設定
+                $redirectTo = explode('#', $redirectTo);
                 $fragment = $redirectTo[1];
                 $redirectTo = $redirectTo[0];
 
