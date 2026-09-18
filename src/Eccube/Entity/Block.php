@@ -80,7 +80,7 @@ class Block extends AbstractEntity
     /**
      * Set id
      */
-    public function setId(int $id): Block
+    public function setId(?int $id): Block
     {
         $this->id = $id;
 

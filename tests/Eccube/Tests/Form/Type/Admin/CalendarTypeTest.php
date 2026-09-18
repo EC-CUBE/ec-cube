@@ -23,11 +23,9 @@ final class CalendarTypeTest extends AbstractTypeTestCase
     /** @var array デフォルト値（正常系）を設定 */
     protected ?array $formData = [
         'title' => 'タイトル',
-        'holiday' => [
-            'year' => '2021',
-            'month' => '03',
-            'day' => '18',
-        ],
+        // holiday は widget => single_text のため, 配列で送ると日付の変換に失敗して
+        // title の検証結果に関わらずフォーム全体が invalid になる
+        'holiday' => '2021-03-18',
     ];
 
     protected ?FormInterface $form = null;
@@ -51,7 +49,7 @@ final class CalendarTypeTest extends AbstractTypeTestCase
     public function testValidFormData()
     {
         $this->form->submit($this->formData);
-        $this->assertFalse($this->form->isValid());
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInValidTitleBlank()
@@ -64,7 +62,7 @@ final class CalendarTypeTest extends AbstractTypeTestCase
 
     public function testInValidHolidayBlank()
     {
-        $this->formData['holiday'] = [];
+        $this->formData['holiday'] = '';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
