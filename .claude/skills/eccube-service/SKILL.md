@@ -1,11 +1,11 @@
 ---
 name: eccube-service
-description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、または src/Eccube/Service・app/Customize/Service 配下を作成・編集するときに使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
+description: EC-CUBE 4.4 の Service を実装・改修するときの責務分離規約。「サービスを作って」「ロジックをサービスに切り出して」「このサービスを直して」「コントローラから業務処理を抽出して」などと言われたとき、またはサービスを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。業務ロジックの受け皿を単一責任・HTTP非依存に保つための規約。
 ---
 
 # Service 規約 — 業務ロジックの置き場所（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Service/**/*.php`, `app/Customize/Service/**/*.php`
+**対象**: `src/Eccube/Service/**/*.php`, `app/Customize/Service/**/*.php`, `app/Plugin/*/Service/**/*.php`
 **前提**: Symfony 7.4 / PHP 8.2+
 
 > 目的: コントローラから抽出した業務ロジックの受け皿。Service は「単一責任」を保ち、
@@ -76,6 +76,43 @@ class ExampleService
 - メソッドが**複数の関心事**（取得・整形・永続化・通知）を一気に処理している → private メソッド／別 Service へ。
 - トランザクション境界が曖昧。`flush()` をループ内で乱発している → まとめて `flush()`。
 
+## 既存サービスの上書き / デコレーション
+
+**EC-CUBE は `#[AsDecorator]` 属性を使っていない**（コアに用例なし）。
+`app/config/eccube/services.yaml` に明示的な定義を足し、Symfony のデコレーション（`decorates`）で包む。
+
+```yaml
+# app/config/eccube/services.yaml に追記
+services:
+    Customize\Service\MyCartServiceDecorator:
+        decorates: Eccube\Service\CartService
+        # 元サービスは .inner で受け取る（コンストラクタ DI）
+        arguments:
+            $inner: '@.inner'
+```
+
+```php
+// app/Customize/Service/MyCartServiceDecorator.php
+namespace Customize\Service;
+
+use Eccube\Service\CartService;
+
+class MyCartServiceDecorator
+{
+    public function __construct(private CartService $inner)
+    {
+    }
+
+    // 必要なメソッドだけ振る舞いを変え、それ以外は $this->inner に委譲する
+}
+```
+
+- `decorates` / `decoration_priority` / `decoration_inner_name` 等のサービスキーが使える
+  （`app/config/eccube/reference.php` の DefaultsType/InstanceofType に定義あり）。
+- **同名サービス ID を `class:` で置き換える**手もあるが、元の振る舞いを残したい拡張はデコレーションが安全。
+  元クラスへ依存している箇所を壊さないよう、**型は元サービスを満たすこと**。
+- プラグインから包む場合も同じ作法。プラグイン側の `services.yaml` に定義する。
+
 ## ツールに委ねる（整形・変換）
 
 整形・型・変換は散文で重複説明せず、ローカルでツールを実行して担保する:
@@ -90,11 +127,5 @@ vendor/bin/php-cs-fixer fix                     # PSR-12 整形・ライセン�
 
 ## よくある間違い
 
-- ❌ Service が Controller を `use` する → ✅ 依存は一方向（Controller → Service）
-- ❌ 1 つの Service に無関係な処理を寄せ集める → ✅ 単一責任で分割
-- ❌ `Request` を Service に渡す → ✅ 必要な値だけを引数で渡す
-- ❌ ループ内で毎回 `flush()` → ✅ まとめて `flush()`（トランザクション境界を意識）
-
----
-
-実装・改修後は、Skill `eccube-review-responsibility` で責務分離を点検すること。
+このレイヤの「よくある間違い」は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「サービス」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。
