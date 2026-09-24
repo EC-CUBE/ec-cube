@@ -212,6 +212,13 @@ class ProductClass extends AbstractEntity
     public function __clone()
     {
         $this->id = null;
+
+        // 在庫数は ProductStock に委譲するため, 複製した規格の在庫の変更が複製元へ及ばないよう ProductStock も複製する
+        if ($this->ProductStock !== null) {
+            $ProductStock = clone $this->ProductStock;
+            $ProductStock->setProductClass($this);
+            $this->ProductStock = $ProductStock;
+        }
     }
 
     /**

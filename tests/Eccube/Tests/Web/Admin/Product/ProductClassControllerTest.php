@@ -662,7 +662,7 @@ final class ProductClassControllerTest extends AbstractProductCommonTestCase
      * - チェックを外した規格は, 入力した在庫数を破棄する
      * - 無効化した規格を再度有効にすると, 入力した在庫数を過去の規格へ引き継ぎ, 在庫の行を増やさない
      */
-    public function testProductClassDisableAndReEnableWithStock()
+    public function testProductClassDisableAndReEnableWithStock(): void
     {
         $Product = $this->createProduct(null, 3);
         $conn = $this->entityManager->getConnection();

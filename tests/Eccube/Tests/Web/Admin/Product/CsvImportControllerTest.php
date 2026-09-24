@@ -522,7 +522,7 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
      *
      * 在庫数は ProductStock に委譲されるため, 規格の作成時に ProductStock を差し替えると入力値が失われる.
      */
-    public function testCsvImportNewProductClassKeepsStock()
+    public function testCsvImportNewProductClassKeepsStock(): void
     {
         $productName = 'csv-new-stock-'.StringUtil::random(8);
         $csv = [[
@@ -563,6 +563,60 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
             'SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?',
             [$ProductClass->getId()]
         ));
+    }
+
+    /**
+     * CSV で規格ありの商品を新規登録したとき, 各規格の在庫の行が 1 行ずつ作成されることを確認する.
+     *
+     * 規格ありの行は規格なしの規格を clone して作るため, ProductClass::__clone() で複製した
+     * ProductStock が重複して保存されないことを検証する.
+     */
+    public function testCsvImportNewProductWithClassCategoriesKeepsSingleStock(): void
+    {
+        $productName = 'csv-new-class-stock-'.StringUtil::random(8);
+        $header = [
+            '商品ID',
+            '公開ステータス(ID)',
+            '商品名',
+            '販売種別(ID)',
+            '規格分類1(ID)',
+            '規格分類2(ID)',
+            '発送日目安(ID)',
+            '商品コード',
+            '在庫数',
+            '在庫数無制限フラグ',
+            '販売制限数',
+            '通常価格',
+            '販売価格',
+            '送料',
+        ];
+        $csv = [
+            $header,
+            [null, 1, $productName, 1, 1, 4, null, 'csv-new-class-stock-1', 10, 0, null, 1000, 900, null],
+        ];
+
+        $this->filepath = $this->createCsvFromArray($csv);
+        $crawler = $this->scenario();
+
+        $this->assertMatchesRegularExpression(
+            '/CSVファイルをアップロードしました/u',
+            $crawler->filter('div.alert-success')->text()
+        );
+
+        $this->entityManager->clear();
+        $Product = $this->productRepo->findOneBy(['name' => $productName]);
+        $this->assertInstanceOf(Product::class, $Product);
+
+        $conn = $this->entityManager->getConnection();
+        $ProductClasses = $Product->getProductClasses();
+        $this->assertGreaterThanOrEqual(2, count($ProductClasses));
+        foreach ($ProductClasses as $ProductClass) {
+            $this->assertSame(1, (int) $conn->fetchOne(
+                'SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?',
+                [$ProductClass->getId()]
+            ), sprintf('規格 %d の在庫の行は 1 行', $ProductClass->getId()));
+        }
+        $this->assertSame(0, (int) $conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id IS NULL'));
     }
 
     // ======================================================================

@@ -660,7 +660,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
      * 在庫数は ProductStock に委譲されるため, 複製元の ProductStock を参照したままだと,
      * 複製完了イベント以降に複製した規格の在庫を変更すると複製元の在庫が書き換わる.
      */
-    public function testCopyReplacesProductStockOfCopiedClasses()
+    public function testCopyReplacesProductStockOfCopiedClasses(): void
     {
         $Product = $this->createProduct();
         $sourceStocks = [];
@@ -698,6 +698,11 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $conn = $this->entityManager->getConnection();
         foreach ($sourceStocks as $productStockId => $stock) {
             $this->assertEquals($stock, $conn->fetchOne('SELECT stock FROM dtb_product_stock WHERE id = ?', [$productStockId]));
+        }
+
+        // 複製した規格の在庫の行は 1 行ずつ (ProductClass::__clone() で複製した ProductStock が重複して保存されない)
+        foreach ($copiedClasses as $ProductClass) {
+            $this->assertSame(1, (int) $conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?', [$ProductClass->getId()]));
         }
     }
 

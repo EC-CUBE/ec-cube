@@ -82,6 +82,34 @@ final class ProductClassStockTest extends TestCase
         $this->assertTrue($ProductClass->getStockFind());
     }
 
+    /**
+     * 複製した規格の在庫数を変更しても, 複製元の在庫数は変わらない.
+     */
+    public function testCloneSeparatesProductStock(): void
+    {
+        $ProductClass = new ProductClass();
+        $ProductClass->setStock('10');
+        $ProductClass->getProductStock()->setProductClassId(1);
+
+        $CopyClass = clone $ProductClass;
+        $CopyClass->setStock('3');
+
+        $this->assertSame('10', $ProductClass->getStock());
+        $this->assertSame('3', $CopyClass->getStock());
+        $this->assertNotSame($ProductClass->getProductStock(), $CopyClass->getProductStock());
+        $this->assertSame($CopyClass, $CopyClass->getProductStock()->getProductClass());
+        $this->assertSame($ProductClass, $ProductClass->getProductStock()->getProductClass());
+        $this->assertNull($CopyClass->getProductStock()->getId());
+        $this->assertNull($CopyClass->getProductStock()->getProductClassId());
+    }
+
+    public function testCloneWithoutProductStock(): void
+    {
+        $CopyClass = clone new ProductClass();
+
+        $this->assertNotInstanceOf(ProductStock::class, $CopyClass->getProductStock());
+    }
+
     public function testGetStockFind(): void
     {
         $ProductClass = new ProductClass();
