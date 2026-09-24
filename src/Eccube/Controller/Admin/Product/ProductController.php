@@ -865,6 +865,8 @@ class ProductController extends AbstractController
                     $Stock = $Class->getProductStock();
                     $CopyStock = clone $Stock;
                     $CopyStock->setProductClass($Class);
+                    // Product::copy() は複製元の ProductStock を参照したままのため, 複製した在庫に付け替える
+                    $Class->setProductStock($CopyStock);
                     $this->entityManager->persist($CopyStock);
 
                     $TaxRule = $Class->getTaxRule();
