@@ -23,7 +23,7 @@ class NoStockHiddenFilter extends SQLFilter
     public function addFilterConstraint(ClassMetadata $targetEntity, string $targetTableAlias): string
     {
         if ($targetEntity->reflClass->getName() === ProductClass::class) {
-            return $targetTableAlias.'.stock >= 1 OR '.$targetTableAlias.'.stock_unlimited = true';
+            return $targetTableAlias.'.in_stock = true';
         }
 
         return '';

@@ -25,7 +25,6 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
-use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
@@ -413,13 +412,9 @@ class ProductController extends AbstractController
                 ->setVisible(true)
                 ->setStockUnlimited(true)
                 ->setProduct($Product);
-            $ProductStock = new ProductStock();
-            $ProductClass->setProductStock($ProductStock);
-            $ProductStock->setProductClass($ProductClass);
         } else {
             $Product = $this->productRepository->findWithSortedClassCategories($id);
             $ProductClass = null;
-            $ProductStock = null;
             if (!$Product) {
                 throw new NotFoundHttpException();
             }
@@ -439,7 +434,6 @@ class ProductController extends AbstractController
                 if ($this->BaseInfo->isOptionProductTaxRule() && $ProductClass->getTaxRule()) {
                     $ProductClass->setTaxRate($ProductClass->getTaxRule()->getTaxRate());
                 }
-                $ProductStock = $ProductClass->getProductStock();
             }
         }
 
@@ -519,14 +513,10 @@ class ProductController extends AbstractController
                     }
                     $this->entityManager->persist($ProductClass);
 
-                    // 在庫情報を作成
-                    if (!$ProductClass->isStockUnlimited()) {
-                        $ProductStock->setStock($ProductClass->getStock());
-                    } else {
-                        // 在庫無制限時はnullを設定
-                        $ProductStock->setStock(null);
-                    }
-                    $this->entityManager->persist($ProductStock);
+                    // 在庫情報を作成 (在庫数は ProductStock に保持され, 無ければ作成される)
+                    // 在庫無制限時はnullを設定
+                    $ProductClass->setStock($ProductClass->isStockUnlimited() ? null : $ProductClass->getStock());
+                    $this->entityManager->persist($ProductClass->getProductStock());
                 }
 
                 // カテゴリの登録

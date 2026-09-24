@@ -785,6 +785,69 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 商品の新規登録・編集で, 入力した在庫数が ProductStock に保存されることを確認する.
+     */
+    public function testNewAndEditKeepStock(): void
+    {
+        $conn = $this->entityManager->getConnection();
+        $productStocks = fn (int $productClassId) => $conn->fetchFirstColumn(
+            'SELECT stock FROM dtb_product_stock WHERE product_class_id = ?',
+            [$productClassId]
+        );
+
+        // 新規登録
+        $formData = $this->createFormData();
+        $formData['class']['stock'] = 123;
+        // チェックボックスは値を送信すると ON になるため, 在庫数を制限する場合は送信しない
+        unset($formData['class']['stock_unlimited']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
+        $productId = (int) $arrTmp[count($arrTmp) - 2];
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertSame('123', $ProductClass->getStock());
+        $this->assertTrue($ProductClass->isInStock());
+        $this->assertEquals([123], $productStocks($ProductClass->getId()));
+
+        // 編集で在庫数を 0 にする
+        $formData['class']['stock'] = 0;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertSame('0', $ProductClass->getStock());
+        $this->assertFalse($ProductClass->isInStock());
+        $this->assertEquals([0], $productStocks($ProductClass->getId()));
+
+        // 編集で在庫無制限にする
+        $formData['class']['stock'] = null;
+        $formData['class']['stock_unlimited'] = 1;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertNull($ProductClass->getStock());
+        $this->assertTrue($ProductClass->isInStock());
+        $this->assertEquals([null], $productStocks($ProductClass->getId()));
+    }
+
+    /**
      * 在庫なしで絞り込んで CSV 出力するテスト.
      */
     public function testExportWithFilterNoStock(): void
