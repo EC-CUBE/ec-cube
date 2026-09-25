@@ -15,9 +15,11 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\Web\AbstractWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Layer 3': UCP discovery profile (/.well-known/ucp) の Web テスト.
@@ -26,7 +28,11 @@ use Symfony\Component\HttpFoundation\Response;
  *   - ラッパー = { "ucp": {...} (必須), "signing_keys": [JWK] (任意) }.
  *   - ucp.version は "YYYY-MM-DD" (= 2026-04-08), services / payment_handlers は object 必須.
  *   - services / capabilities / payment_handlers は reverse-domain 名をキーとし、エントリの配列を値とするレジストリ (ucp.json の $defs.base).
+ *   - services は dev.ucp.shopping の REST バインディング 1 本. endpoint を基底に /catalog/search と
+ *     /checkout-sessions が相対解決できる (catalog/rest.md L34 / checkout-rest.md L24「Base URL」).
  *   - discovery は常時公開 (フラグ無効化なし)・catalog capability / service を常時宣言する.
+ *   - checkout capability (dev.ucp.shopping.checkout) は ucp_checkout_enabled のときだけ宣言する
+ *     (UcpCheckoutController の 404 ゲートと一致).
  *   - signing_keys[] は EC 公開鍵 JWK のみ (秘密鍵パラメータ d/p/q/dp/dq/qi/oth/k 非混入).
  *   - 配信: Cache-Control public, max-age >= 60 (no-store/no-cache/private 禁止), HTTPS 想定・3xx 禁止.
  *
@@ -106,9 +112,9 @@ final class UcpDiscoveryControllerTest extends AbstractWebTestCase
         $this->assertStringNotContainsString('"payment_handlers":[]', $raw, 'ucp.payment_handlers MUST serialize as a JSON object {} (not an array []) even when empty');
     }
 
-    // --- Catalog capability 宣言 -------------------------------------------
+    // --- Catalog capability / Shopping service 宣言 ---------------------------
 
-    public function testCatalogCapabilityAndServiceAlwaysDeclared(): void
+    public function testCatalogCapabilityAndShoppingServiceAlwaysDeclared(): void
     {
         $profile = $this->requestProfile();
 
@@ -116,12 +122,55 @@ final class UcpDiscoveryControllerTest extends AbstractWebTestCase
         $this->assertArrayHasKey('dev.ucp.shopping.catalog.search', $profile['ucp']['capabilities'], 'When Catalog API is enabled the search capability MUST be declared');
         $this->assertArrayHasKey('dev.ucp.shopping.catalog.lookup', $profile['ucp']['capabilities'], 'When Catalog API is enabled the lookup capability MUST be declared');
 
-        $this->assertArrayHasKey('dev.ucp.shopping.catalog', $profile['ucp']['services'], 'When Catalog API is enabled the catalog REST service MUST be declared');
-        $service = $profile['ucp']['services']['dev.ucp.shopping.catalog'][0] ?? null;
-        $this->assertIsArray($service, 'The catalog service registry value MUST hold at least one entry');
+        $this->assertArrayHasKey('dev.ucp.shopping', $profile['ucp']['services'], 'The shopping REST service (dev.ucp.shopping) MUST be declared; catalog and checkout paths are relative to its endpoint');
+        $service = $profile['ucp']['services']['dev.ucp.shopping'][0] ?? null;
+        $this->assertIsArray($service, 'The shopping service registry value MUST hold at least one entry');
         $this->assertSame('rest', $service['transport'], 'A REST service MUST declare transport "rest"');
         $this->assertArrayHasKey('endpoint', $service, 'A non-embedded service MUST declare an endpoint');
         $this->assertMatchesRegularExpression('#^https?://#', (string) $service['endpoint'], 'The service endpoint MUST be an absolute URL (RequestContext-derived, not a hardcoded path)');
+    }
+
+    /**
+     * platform は services["dev.ucp.shopping"][].endpoint を基底に、仕様が定める相対パス
+     * (/catalog/search, /checkout-sessions) を連結して各操作へ到達する. 実際のルートと一致しなければならない.
+     */
+    public function testShoppingServiceEndpointResolvesCatalogAndCheckoutPaths(): void
+    {
+        $profile = $this->requestProfile();
+        $endpoint = (string) ($profile['ucp']['services']['dev.ucp.shopping'][0]['endpoint'] ?? '');
+
+        $this->assertStringEndsNotWith('/', $endpoint, 'The endpoint is a base URL joined with spec-relative paths; it MUST NOT carry a trailing slash');
+        $this->assertSame($this->generateUrl('agent_ucp_catalog_search', [], UrlGeneratorInterface::ABSOLUTE_URL), $endpoint.'/catalog/search', 'endpoint + "/catalog/search" MUST resolve to the catalog search route (catalog/rest.md)');
+        $this->assertSame($this->generateUrl('ucp_checkout_create', [], UrlGeneratorInterface::ABSOLUTE_URL), $endpoint.'/checkout-sessions', 'endpoint + "/checkout-sessions" MUST resolve to the checkout create route (checkout-rest.md "Base URL")');
+    }
+
+    // --- Checkout capability 宣言 (ucp_checkout_enabled ゲート) ----------------
+
+    public function testCheckoutCapabilityIsNotAdvertisedWhenDisabled(): void
+    {
+        $this->setUcpCheckoutEnabled(false);
+        $profile = $this->requestProfile();
+
+        $this->assertArrayNotHasKey('dev.ucp.shopping.checkout', $profile['ucp']['capabilities'], 'While ucp_checkout_enabled=false the checkout endpoints answer 404, so the capability MUST NOT be advertised');
+    }
+
+    public function testCheckoutCapabilityIsAdvertisedWhenEnabled(): void
+    {
+        $this->setUcpCheckoutEnabled(true);
+        $profile = $this->requestProfile();
+
+        $this->assertArrayHasKey('dev.ucp.shopping.checkout', $profile['ucp']['capabilities'], 'When ucp_checkout_enabled=true the checkout capability MUST be advertised so platforms can negotiate it');
+        $entries = $profile['ucp']['capabilities']['dev.ucp.shopping.checkout'];
+        $this->assertTrue(array_is_list($entries) && $entries !== [], 'The capability registry value MUST be a non-empty array of entries');
+        $this->assertSame(self::UCP_VERSION, $entries[0]['version'] ?? null, 'A capability entry MUST carry the entity version (YYYY-MM-DD)');
+        $this->assertSame('https://ucp.dev/schemas/shopping/checkout.json', $entries[0]['schema'] ?? null);
+    }
+
+    private function setUcpCheckoutEnabled(bool $enabled): void
+    {
+        $baseInfo = self::getContainer()->get(BaseInfoRepository::class)->get();
+        $baseInfo->setUcpCheckoutEnabled($enabled);
+        $this->entityManager->flush();
     }
 
     // --- reverse-domain キー -----------------------------------------------

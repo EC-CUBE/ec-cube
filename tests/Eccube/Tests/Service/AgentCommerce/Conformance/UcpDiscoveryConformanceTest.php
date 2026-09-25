@@ -49,9 +49,10 @@ final class UcpDiscoveryConformanceTest extends TestCase
      * profile に載せる前段で必ず reverse-domain 形式でなければならない。
      */
     private const ADVERTISED_REVERSE_DOMAIN_KEYS = [
-        'dev.ucp.shopping.catalog',
+        'dev.ucp.shopping',
         'dev.ucp.shopping.catalog.search',
         'dev.ucp.shopping.catalog.lookup',
+        'dev.ucp.shopping.checkout',
     ];
 
     /**
