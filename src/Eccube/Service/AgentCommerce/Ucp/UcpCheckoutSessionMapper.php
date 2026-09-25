@@ -22,6 +22,7 @@ use Eccube\Service\AgentCommerce\AddressMappingService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\Discovery\PaymentHandlerRegistryInterface;
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
 use Eccube\Service\AgentCommerce\StorefrontUrlResolver;
 
@@ -33,13 +34,22 @@ use Eccube\Service\AgentCommerce\StorefrontUrlResolver;
  * - レスポンス: 再計算後の `Order` (または住所未確定時の暫定見積) から UCP checkout レスポンスを組み立てる。
  *   金額は {@link MinorUnitConverter} で minor unit 整数化し、`totals` は spec の符号制約
  *   (discount は負、subtotal/fulfillment/tax/fee は非負) に従う。代引手数料は `type:"fee"` 行に出す。
+ * - `ucp` エンベロープ: `version` / `status` に加え、checkout 応答で必須の `payment_handlers`
+ *   (ucp.json#/$defs/response_checkout_schema) と、この操作に関係する root capability
+ *   (`dev.ucp.shopping.checkout`) を `capabilities` に載せる。payment_handlers は discovery
+ *   profile と同じ {@link PaymentHandlerRegistryInterface} から取る (プラグインが寄与)。
  *
- * @see https://github.com/Universal-Commerce-Protocol/ucp UCP checkout.json / checkout-rest.md (v2026-04-08)
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/shopping/checkout.json
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/ucp.json#L213 ($defs/response_checkout_schema: payment_handlers 必須)
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/docs/specification/overview.md#L950 (応答の ucp.capabilities は操作に関係する capability に限る)
  */
 class UcpCheckoutSessionMapper
 {
     /** UCP プロトコルバージョン (YYYY-MM-DD). */
     public const UCP_VERSION = '2026-04-08';
+
+    /** checkout 操作 (create / update / complete) に関係する root capability. */
+    public const CHECKOUT_CAPABILITY = 'dev.ucp.shopping.checkout';
 
     public function __construct(
         private readonly MinorUnitConverter $minorUnitConverter,
@@ -47,6 +57,7 @@ class UcpCheckoutSessionMapper
         private readonly UcpStatusMapper $statusMapper,
         private readonly AddressMappingService $addressMappingService,
         private readonly ProductClassRepository $productClassRepository,
+        private readonly PaymentHandlerRegistryInterface $paymentHandlerRegistry,
     ) {
     }
 
@@ -179,10 +190,18 @@ class UcpCheckoutSessionMapper
             }
         }
 
+        // payment_handlers は checkout 応答で必須。空のときの {} 化は HTTP 境界
+        // (UcpCheckoutController / JsonObjectFieldNormalizer) で行い、ここでは純粋な配列を返す。
         $response = [
             'ucp' => [
                 'version' => self::UCP_VERSION,
                 'status' => $hasError ? 'error' : 'success',
+                'capabilities' => [
+                    self::CHECKOUT_CAPABILITY => [
+                        ['version' => self::UCP_VERSION],
+                    ],
+                ],
+                'payment_handlers' => $this->paymentHandlerRegistry->collect(),
             ],
             'id' => $session->getSessionId(),
             'status' => $this->statusMapper->toUcpStatus($session->getStatus()),

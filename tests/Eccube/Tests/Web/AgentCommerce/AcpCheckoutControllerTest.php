@@ -234,6 +234,10 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
 
         $this->assertSame($first['id'], $second['id'], 'MUST NOT re-execute: 同一キー+同一内容は同じセッションをリプレイ');
         $this->assertSame('true', $this->client->getResponse()->headers->get('Idempotent-Replayed'), 'リプレイは Idempotent-Replayed: true を付す (SHOULD)');
+
+        // リプレイ本文は DB の json 列 (assoc decode) から戻るため、空の capabilities が [] に退行しやすい。
+        // CheckoutSessionBase.capabilities は object 必須なので、生 JSON で {} を保証する。
+        $this->assertStringContainsString('"capabilities":{}', (string) $this->client->getResponse()->getContent(), 'capabilities MUST serialize as {} (object) on replayed responses too');
     }
 
     public function testIdempotencyConflictReturns422(): void
