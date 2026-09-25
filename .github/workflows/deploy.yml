@@ -34,13 +34,7 @@ jobs:
         uses: nanasess/setup-php@6e78a56349ee2b751525bdbc0905e07293007bb4  # master
         with:
           php-version: '8.5'
-
-      - name: Install ext-redis 6.1+
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y php8.4-redis
-          sudo phpenmod -s cli redis
-          php -m | grep -i redis
+          extensions: redis
 
       - name: Install to Composer
         run: composer install --no-scripts --no-dev --no-interaction --optimize-autoloader
