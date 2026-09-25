@@ -74,6 +74,7 @@ class OrderItemType extends AbstractType
     {
         $builder
             ->add('product_name', TextType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_mtext_len']),

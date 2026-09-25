@@ -49,8 +49,10 @@ class CalendarType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
+                'empty_data' => '',
                 'required' => true,
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
@@ -61,6 +63,7 @@ class CalendarType extends AbstractType
                 'widget' => 'single_text',
                 'placeholder' => ['year' => '----', 'month' => '--', 'day' => '--'],
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
                 'attr' => [
