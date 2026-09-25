@@ -23,7 +23,7 @@ use Eccube\Repository\ProductClassRepository;
  */
 #[ORM\Table(name: 'dtb_product_class')]
 #[ORM\Index(name: 'dtb_product_class_price02_idx', columns: ['price02'])]
-#[ORM\Index(columns: ['stock', 'stock_unlimited'], name: 'dtb_product_class_stock_stock_unlimited_idx')]
+#[ORM\Index(columns: ['in_stock'], name: 'dtb_product_class_in_stock_idx')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
 #[ORM\DiscriminatorColumn(name: 'discriminator_type', type: 'string', length: 255)]
 #[ORM\HasLifecycleCallbacks]
@@ -140,11 +140,17 @@ class ProductClass extends AbstractEntity
     #[ORM\Column(name: 'product_code', type: Types::STRING, length: 255, nullable: true)]
     private ?string $code = null;
 
-    #[ORM\Column(name: 'stock', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true)]
-    private ?string $stock = null;
-
     #[ORM\Column(name: 'stock_unlimited', type: Types::BOOLEAN, options: ['default' => false])]
     private bool $stock_unlimited = false;
+
+    /**
+     * 在庫の有無. 在庫無制限, または在庫数が 1 以上なら true.
+     *
+     * 在庫数の正典は ProductStock::stock で, この値は表示・検索用に
+     * Eccube\Doctrine\EventSubscriber\ProductClassInStockSubscriber が flush 時に再計算する.
+     */
+    #[ORM\Column(name: 'in_stock', type: Types::BOOLEAN, options: ['default' => false])]
+    private bool $in_stock = false;
 
     #[ORM\Column(name: 'sale_limit', type: Types::DECIMAL, precision: 10, scale: 0, nullable: true, options: ['unsigned' => true])]
     private ?string $sale_limit = null;
@@ -206,6 +212,13 @@ class ProductClass extends AbstractEntity
     public function __clone()
     {
         $this->id = null;
+
+        // 在庫数は ProductStock に委譲するため, 複製した規格の在庫の変更が複製元へ及ばないよう ProductStock も複製する
+        if ($this->ProductStock !== null) {
+            $ProductStock = clone $this->ProductStock;
+            $ProductStock->setProductClass($this);
+            $this->ProductStock = $ProductStock;
+        }
     }
 
     /**
@@ -236,20 +249,52 @@ class ProductClass extends AbstractEntity
 
     /**
      * Set stock.
+     *
+     * 在庫数は ProductStock::stock に保持する. ProductStock が無い場合は作成して関連付ける.
+     *
+     * 規格の在庫数を読み書きする窓口として恒久的に残す (deprecated にしない).
+     * 管理画面のフォームも PropertyAccessor 経由でこのメソッドを呼ぶ. 経緯は #7177 を参照.
      */
     public function setStock(?string $stock = null): ProductClass
     {
-        $this->stock = $stock;
+        if ($this->ProductStock === null) {
+            $ProductStock = new ProductStock();
+            $ProductStock->setProductClass($this);
+            $this->ProductStock = $ProductStock;
+        }
+        $this->ProductStock->setStock($stock);
 
         return $this;
     }
 
     /**
      * Get stock.
+     *
+     * 在庫数は ProductStock::stock から取得する.
      */
     public function getStock(): ?string
     {
-        return $this->stock;
+        return $this->ProductStock?->getStock();
+    }
+
+    /**
+     * Set inStock.
+     *
+     * 通常は flush 時に自動で再計算されるため, 直接設定する必要はない.
+     */
+    public function setInStock(bool $inStock): ProductClass
+    {
+        $this->in_stock = $inStock;
+
+        return $this;
+    }
+
+    /**
+     * Get inStock.
+     */
+    public function isInStock(): bool
+    {
+        return $this->in_stock;
     }
 
     /**

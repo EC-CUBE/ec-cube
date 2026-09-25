@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Product;
 
+use Doctrine\DBAL\ParameterType;
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
 use Eccube\Entity\ClassCategory;
@@ -652,6 +653,59 @@ final class ProductClassControllerTest extends AbstractProductCommonTestCase
         $this->expected = 'バニラ';
         $this->actual = $classCategories[7];
         $this->assertStringContainsString($this->expected, $this->actual);
+    }
+
+    /**
+     * 規格の無効化・再有効化で, 入力した在庫数が正しく扱われることを検証する.
+     *
+     * 在庫数は ProductStock に委譲されるため, フォームの入力値は ProductStock に書き込まれる.
+     * - チェックを外した規格は, 入力した在庫数を破棄する
+     * - 無効化した規格を再度有効にすると, 入力した在庫数を過去の規格へ引き継ぎ, 在庫の行を増やさない
+     */
+    public function testProductClassDisableAndReEnableWithStock(): void
+    {
+        $Product = $this->createProduct(null, 3);
+        $conn = $this->entityManager->getConnection();
+        $productStocks = fn () => $conn->fetchAllKeyValue(
+            'SELECT pc.id, ps.stock FROM dtb_product_class pc JOIN dtb_product_stock ps ON ps.product_class_id = pc.id WHERE pc.product_id = ? AND pc.class_category_id1 IS NOT NULL ORDER BY pc.id',
+            [$Product->getId()]
+        );
+        $before = $productStocks();
+        $this->assertCount(3, $before);
+
+        // チェックを外して在庫数を入力する
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()]));
+        $form = $crawler->selectButton('登録')->form();
+        $form['product_class_matrix[product_classes][0][checked]']->untick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 999;
+        $this->client->submit($form);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $afterDisable = $productStocks();
+        $this->assertEquals($before, $afterDisable, 'チェックを外した規格の在庫数は変わらない');
+        $disabledId = $conn->fetchOne(
+            'SELECT id FROM dtb_product_class WHERE product_id = ? AND class_category_id1 IS NOT NULL AND visible = ?',
+            [$Product->getId(), false],
+            [ParameterType::INTEGER, ParameterType::BOOLEAN]
+        );
+        $this->assertNotFalse($disabledId);
+
+        // 再度有効にして在庫数を入力する
+        $this->entityManager->clear();
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_product_product_class', ['id' => $Product->getId()]));
+        $form = $crawler->selectButton('登録')->form();
+        $form['product_class_matrix[product_classes][0][checked]']->tick();
+        $form['product_class_matrix[product_classes][0][stock_unlimited]']->untick();
+        $form['product_class_matrix[product_classes][0][stock]'] = 777;
+        $form['product_class_matrix[product_classes][0][price02]'] = 1000;
+        $this->client->submit($form);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->assertSame(
+            ['count' => 1, 'stock' => 777],
+            array_map(intval(...), $conn->fetchAssociative('SELECT COUNT(*) AS count, MAX(stock) AS stock FROM dtb_product_stock WHERE product_class_id = ?', [$disabledId]))
+        );
+        $this->assertCount(3, $productStocks(), '規格の行は増えない');
     }
 
     /**
