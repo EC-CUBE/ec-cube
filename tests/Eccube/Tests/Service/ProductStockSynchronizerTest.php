@@ -15,8 +15,6 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DriverManager;
 use Eccube\Entity\ProductClass;
 use Eccube\Service\ProductStockSynchronizer;
 use Eccube\Tests\EccubeTestCase;
@@ -29,6 +27,8 @@ use Eccube\Tests\EccubeTestCase;
  */
 final class ProductStockSynchronizerTest extends EccubeTestCase
 {
+    use ProductStockConnectionTrait;
+
     public function testSyncCreatesMissingProductStock(): void
     {
         $conn = $this->createLegacyConnection();
@@ -37,7 +37,7 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
 
         $result = (new ProductStockSynchronizer($conn))->syncFromLegacyStockColumn();
 
-        $this->assertSame(['created' => 2, 'deduplicated' => 0, 'mismatched' => 0], $result);
+        $this->assertSame(['created' => 2, 'deduplicated' => 0, 'mismatched' => 0, 'overwritten' => 0], $result);
         $this->assertSame([['product_class_id' => 1, 'stock' => '5'], ['product_class_id' => 2, 'stock' => null]], $this->fetchProductStocks($conn));
     }
 
@@ -53,7 +53,7 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
 
         $result = (new ProductStockSynchronizer($conn))->syncFromLegacyStockColumn();
 
-        $this->assertSame(['created' => 0, 'deduplicated' => 1, 'mismatched' => 0], $result);
+        $this->assertSame(['created' => 0, 'deduplicated' => 1, 'mismatched' => 0, 'overwritten' => 0], $result);
         $this->assertSame([['product_class_id' => 1, 'stock' => '7']], $this->fetchProductStocks($conn));
     }
 
@@ -70,7 +70,7 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
 
         $result = (new ProductStockSynchronizer($conn))->syncFromLegacyStockColumn();
 
-        $this->assertSame(['created' => 0, 'deduplicated' => 0, 'mismatched' => 1], $result);
+        $this->assertSame(['created' => 0, 'deduplicated' => 0, 'mismatched' => 1, 'overwritten' => 0], $result);
         $this->assertSame([['product_class_id' => 1, 'stock' => '6'], ['product_class_id' => 2, 'stock' => '4']], $this->fetchProductStocks($conn));
     }
 
@@ -78,7 +78,7 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
     {
         $result = (new ProductStockSynchronizer($this->entityManager->getConnection()))->syncFromLegacyStockColumn();
 
-        $this->assertSame(['created' => 0, 'deduplicated' => 0, 'mismatched' => 0], $result);
+        $this->assertSame(['created' => 0, 'deduplicated' => 0, 'mismatched' => 0, 'overwritten' => 0], $result);
     }
 
     public function testHasLegacyStockColumn(): void
@@ -102,6 +102,92 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
         $this->assertSame([1 => 1, 2 => 0, 3 => 1], $this->fetchInStocks($conn));
     }
 
+    public function testSyncOverwritesWithLegacyValueWhenPreferred(): void
+    {
+        $conn = $this->createLegacyConnection();
+        $conn->insert('dtb_product_class', ['id' => 1, 'stock' => 10, 'stock_unlimited' => 0]);
+        $this->insertProductStock($conn, 1, '6');
+
+        $result = (new ProductStockSynchronizer($conn))->syncFromLegacyStockColumn(preferLegacy: true);
+
+        $this->assertSame(['created' => 0, 'deduplicated' => 0, 'mismatched' => 0, 'overwritten' => 1], $result);
+        $this->assertSame([['product_class_id' => 1, 'stock' => '10']], $this->fetchProductStocks($conn));
+    }
+
+    public function testDiagnoseWithLegacyColumn(): void
+    {
+        $conn = $this->createLegacyConnection();
+        $conn->insert('dtb_product_class', ['id' => 1, 'stock' => 5, 'stock_unlimited' => 0, 'in_stock' => 1]);
+        $conn->insert('dtb_product_class', ['id' => 2, 'stock' => 7, 'stock_unlimited' => 0, 'in_stock' => 1]);
+        $conn->insert('dtb_product_class', ['id' => 3, 'stock' => 0, 'stock_unlimited' => 0, 'in_stock' => 0]);
+        $conn->insert('dtb_product_class', ['id' => 4, 'stock' => 2, 'stock_unlimited' => 0, 'in_stock' => 0]);
+        $this->insertProductStock($conn, 2, '3');
+        $this->insertProductStock($conn, 2, '9');
+        $this->insertProductStock($conn, 3, '4');
+        $this->insertProductStock($conn, 4, '2');
+
+        $diagnosis = (new ProductStockSynchronizer($conn))->diagnose();
+
+        $this->assertSame([1], $diagnosis['missing']);
+        $this->assertSame([2], $diagnosis['duplicated']);
+        // 1: 行が無く在庫なし扱い, 3: 在庫 4 なのに 0, 4: 在庫 2 なのに 0
+        $this->assertSame([1, 3, 4], $diagnosis['in_stock_mismatched']);
+        $this->assertSame([['product_class_id' => 3, 'product_class_stock' => '0', 'product_stock_stock' => '4']], $diagnosis['legacy_mismatched']);
+    }
+
+    public function testDiagnoseWithoutLegacyColumn(): void
+    {
+        $conn = $this->createLegacyConnection(withLegacy: false);
+        $conn->insert('dtb_product_class', ['id' => 1, 'stock_unlimited' => 0, 'in_stock' => 0]);
+        $this->insertProductStock($conn, 1, '0');
+
+        $diagnosis = (new ProductStockSynchronizer($conn))->diagnose();
+
+        $this->assertSame(['missing' => [], 'duplicated' => [], 'in_stock_mismatched' => [], 'legacy_mismatched' => null], $diagnosis);
+    }
+
+    /**
+     * 旧列が無い場合, 行の無い規格は在庫 0 (在庫無制限なら NULL), 重複行は最も少ない在庫数でまとめる.
+     */
+    public function testRepairWithoutLegacyColumn(): void
+    {
+        $conn = $this->createLegacyConnection(withLegacy: false);
+        $conn->insert('dtb_product_class', ['id' => 1, 'stock_unlimited' => 0, 'in_stock' => 1]);
+        $conn->insert('dtb_product_class', ['id' => 2, 'stock_unlimited' => 1, 'in_stock' => 0]);
+        $conn->insert('dtb_product_class', ['id' => 3, 'stock_unlimited' => 0, 'in_stock' => 0]);
+        $this->insertProductStock($conn, 3, '8');
+        $this->insertProductStock($conn, 3, '5');
+
+        $result = (new ProductStockSynchronizer($conn))->repair();
+
+        $this->assertSame(['created' => 2, 'deduplicated' => 1, 'mismatched' => 0, 'overwritten' => 0, 'in_stock_updated' => 3], $result);
+        $this->assertSame([
+            ['product_class_id' => 1, 'stock' => '0'],
+            ['product_class_id' => 2, 'stock' => null],
+            ['product_class_id' => 3, 'stock' => '5'],
+        ], $this->fetchProductStocks($conn));
+        $this->assertSame([1 => 0, 2 => 1, 3 => 1], $this->fetchInStocks($conn));
+
+        $diagnosis = (new ProductStockSynchronizer($conn))->diagnose();
+        $this->assertSame([], $diagnosis['missing']);
+        $this->assertSame([], $diagnosis['duplicated']);
+        $this->assertSame([], $diagnosis['in_stock_mismatched']);
+    }
+
+    public function testRepairWithLegacyColumn(): void
+    {
+        $conn = $this->createLegacyConnection();
+        $conn->insert('dtb_product_class', ['id' => 1, 'stock' => 5, 'stock_unlimited' => 0, 'in_stock' => 0]);
+        $conn->insert('dtb_product_class', ['id' => 2, 'stock' => 10, 'stock_unlimited' => 0, 'in_stock' => 1]);
+        $this->insertProductStock($conn, 2, '0');
+
+        $result = (new ProductStockSynchronizer($conn))->repair(preferLegacy: true);
+
+        $this->assertSame(['created' => 1, 'deduplicated' => 0, 'mismatched' => 0, 'overwritten' => 1, 'in_stock_updated' => 1], $result);
+        $this->assertSame([['product_class_id' => 1, 'stock' => '5'], ['product_class_id' => 2, 'stock' => '10']], $this->fetchProductStocks($conn));
+        $this->assertSame([1 => 1, 2 => 1], $this->fetchInStocks($conn));
+    }
+
     public function testRecalculateInStock(): void
     {
         $Product = $this->createProduct('recalculate-in-stock', 0);
@@ -122,59 +208,5 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
         $this->assertContains($value, [true, 1, '1', 't', 'true']);
         // 正しい行は更新しない
         $this->assertSame(0, (new ProductStockSynchronizer($conn))->recalculateInStock());
-    }
-
-    private function createLegacyConnection(bool $withLegacy = true, bool $withInStock = true): Connection
-    {
-        $conn = DriverManager::getConnection(['driver' => 'pdo_sqlite', 'memory' => true]);
-        $columns = ['id INTEGER PRIMARY KEY NOT NULL', 'stock_unlimited BOOLEAN DEFAULT 0 NOT NULL'];
-        if ($withLegacy) {
-            $columns[] = 'stock NUMERIC(10, 0) DEFAULT NULL';
-        }
-        if ($withInStock) {
-            $columns[] = 'in_stock BOOLEAN DEFAULT 0 NOT NULL';
-        }
-        $conn->executeStatement('CREATE TABLE dtb_product_class ('.implode(', ', $columns).')');
-        $conn->executeStatement('CREATE TABLE dtb_product_stock (
-            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            stock NUMERIC(10, 0) DEFAULT NULL,
-            create_date DATETIME NOT NULL,
-            update_date DATETIME NOT NULL,
-            product_class_id INTEGER DEFAULT NULL,
-            creator_id INTEGER DEFAULT NULL,
-            discriminator_type VARCHAR(255) NOT NULL
-        )');
-
-        return $conn;
-    }
-
-    private function insertProductStock(Connection $conn, int $productClassId, ?string $stock): void
-    {
-        $conn->insert('dtb_product_stock', [
-            'product_class_id' => $productClassId,
-            'stock' => $stock,
-            'create_date' => '2026-01-01 00:00:00',
-            'update_date' => '2026-01-01 00:00:00',
-            'discriminator_type' => 'productstock',
-        ]);
-    }
-
-    /**
-     * @return list<array{product_class_id: int, stock: string|null}>
-     */
-    private function fetchProductStocks(Connection $conn): array
-    {
-        return array_map(
-            fn (array $row) => ['product_class_id' => (int) $row['product_class_id'], 'stock' => $row['stock'] === null ? null : (string) $row['stock']],
-            $conn->fetchAllAssociative('SELECT product_class_id, stock FROM dtb_product_stock ORDER BY product_class_id, id')
-        );
-    }
-
-    /**
-     * @return array<int, int>
-     */
-    private function fetchInStocks(Connection $conn): array
-    {
-        return array_map(intval(...), $conn->fetchAllKeyValue('SELECT id, in_stock FROM dtb_product_class ORDER BY id'));
     }
 }
