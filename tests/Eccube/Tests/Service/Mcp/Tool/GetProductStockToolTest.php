@@ -82,15 +82,35 @@ final class GetProductStockToolTest extends EccubeTestCase
         $this->assertNull($result['summary']['total_stock'], '無制限規格があるとき total_stock は null');
     }
 
+    /**
+     * 規格の在庫数は ProductStock.stock で返す (在庫数の正典は ProductStock::stock).
+     */
+    public function testItemsExposeStockViaProductStock(): void
+    {
+        $product = $this->createProduct('mcp-stock-product-stock', 1);
+        $first = $product->getProductClasses()->first();
+        $this->assertNotFalse($first);
+        $first->setStockUnlimited(false);
+        $first->setStock('7');
+        $this->entityManager->flush();
+
+        $result = $this->tool->get(productId: $product->getId());
+
+        $this->assertCount(1, $result['items']);
+        $this->assertSame(7, (int) $result['items'][0]['ProductStock']['stock']);
+    }
+
     public function testItemFieldsAreSubsetOfAllowList(): void
     {
         $product = $this->createProduct('mcp-stock-allow', 1);
 
         $result = $this->tool->get(productId: $product->getId());
 
-        // ProductClass の allow_list (api44 services.yaml より)
+        // ProductClass の allow_list (api44 services.yaml より)。
+        // 在庫数は ProductStock.stock が正典で, 4.4 の Api44 は stock に代えて in_stock を許可する
+        // (stock は ProductClass::getStock() の委譲で読めるため, 旧 allow_list の出力も許容する)
         $allowed = [
-            'id', 'code', 'stock', 'stock_unlimited', 'sale_limit',
+            'id', 'code', 'stock', 'in_stock', 'stock_unlimited', 'sale_limit',
             'price01', 'price02', 'delivery_fee', 'visible', 'create_date',
             'update_date', 'currency_code', 'point_rate',
             'ProductStock', 'TaxRule', 'Product', 'SaleType',
