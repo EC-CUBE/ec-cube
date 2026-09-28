@@ -74,6 +74,27 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
         $this->assertSame([['product_class_id' => 1, 'stock' => '6'], ['product_class_id' => 2, 'stock' => '4']], $this->fetchProductStocks($conn));
     }
 
+    /**
+     * 重複行のある規格は旧列の値にそろえるため, ずれとして数えない. 規格に紐づかない行は変更しない.
+     */
+    public function testSyncCountsMismatchOnlyForSingleRowsAndKeepsOrphanRows(): void
+    {
+        $conn = $this->createLegacyConnection();
+        $conn->insert('dtb_product_class', ['id' => 1, 'stock' => 7, 'stock_unlimited' => 0]);
+        $this->insertProductStock($conn, 1, '3');
+        $this->insertProductStock($conn, 1, '9');
+        $this->insertProductStock($conn, null, '1');
+        $this->insertProductStock($conn, null, '2');
+
+        $result = (new ProductStockSynchronizer($conn))->syncFromLegacyStockColumn();
+
+        $this->assertSame(['created' => 0, 'deduplicated' => 1, 'mismatched' => 0], $result);
+        $this->assertSame(
+            [['product_class_id' => null, 'stock' => '1'], ['product_class_id' => null, 'stock' => '2'], ['product_class_id' => 1, 'stock' => '7']],
+            $this->fetchProductStocks($conn)
+        );
+    }
+
     public function testSyncDoesNothingWithoutLegacyColumn(): void
     {
         $result = (new ProductStockSynchronizer($this->entityManager->getConnection()))->syncFromLegacyStockColumn();
@@ -148,7 +169,7 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
         return $conn;
     }
 
-    private function insertProductStock(Connection $conn, int $productClassId, ?string $stock): void
+    private function insertProductStock(Connection $conn, ?int $productClassId, ?string $stock): void
     {
         $conn->insert('dtb_product_stock', [
             'product_class_id' => $productClassId,
@@ -160,12 +181,12 @@ final class ProductStockSynchronizerTest extends EccubeTestCase
     }
 
     /**
-     * @return list<array{product_class_id: int, stock: string|null}>
+     * @return list<array{product_class_id: int|null, stock: string|null}>
      */
     private function fetchProductStocks(Connection $conn): array
     {
         return array_map(
-            fn (array $row) => ['product_class_id' => (int) $row['product_class_id'], 'stock' => $row['stock'] === null ? null : (string) $row['stock']],
+            fn (array $row) => ['product_class_id' => $row['product_class_id'] === null ? null : (int) $row['product_class_id'], 'stock' => $row['stock'] === null ? null : (string) $row['stock']],
             $conn->fetchAllAssociative('SELECT product_class_id, stock FROM dtb_product_stock ORDER BY product_class_id, id')
         );
     }
