@@ -48,7 +48,7 @@ final readonly class GetProductStockTool
      */
     #[McpTool(
         name: 'get_product_stock',
-        description: 'EC-CUBE の商品 (および商品規格) 単位の在庫数を取得する。 規格の在庫数は ProductStock.stock、 在庫の有無は in_stock。 stock_unlimited フラグの規格は ProductStock.stock が null。 読み取り専用。 必要 scope: mcp:product:read。',
+        description: 'EC-CUBE の商品 (および商品規格) 単位の在庫数を取得する。 規格の在庫数は ProductStock.stock、 在庫の有無は in_stock。 stock_unlimited フラグの規格は ProductStock.stock が null になる場合がある。 読み取り専用。 必要 scope: mcp:product:read。',
     )]
     public function get(int $productId): array
     {
