@@ -140,7 +140,7 @@ final class ProductPriceStockSummarizerTest extends TestCase
      * 在庫数の正典は ProductStock::stock のため, ProductClass.stock の許可では在庫を出さない.
      * ProductClass.ProductStock と ProductStock.stock の両方が許可されている時だけ出す (fail-closed).
      */
-    #[DataProvider('stockAllowMapProvider')]
+    #[DataProvider(methodName: 'stockAllowMapProvider')]
     public function testStockRequiresProductStockAllowed(array $allowMap, bool $expectStock): void
     {
         $product = $this->productWith([['price02' => '1000', 'stock' => '5']]);
@@ -155,16 +155,14 @@ final class ProductPriceStockSummarizerTest extends TestCase
     }
 
     /**
-     * @return array<string, array{array<string, list<string>>, bool}>
+     * @return \Iterator<string, array{array<string, list<string>>, bool}>
      */
-    public static function stockAllowMapProvider(): array
+    public static function stockAllowMapProvider(): \Iterator
     {
-        return [
-            '関連と在庫数を許可' => [[ProductClass::class => ['ProductStock'], ProductStock::class => ['stock']], true],
-            'ProductClass.stock のみ許可' => [[ProductClass::class => ['stock']], false],
-            '関連が未許可' => [[ProductClass::class => ['in_stock'], ProductStock::class => ['stock']], false],
-            '在庫数が未許可' => [[ProductClass::class => ['ProductStock'], ProductStock::class => ['id']], false],
-        ];
+        yield '関連と在庫数を許可' => [[ProductClass::class => ['ProductStock'], ProductStock::class => ['stock']], true];
+        yield 'ProductClass.stock のみ許可' => [[ProductClass::class => ['stock']], false];
+        yield '関連が未許可' => [[ProductClass::class => ['in_stock'], ProductStock::class => ['stock']], false];
+        yield '在庫数が未許可' => [[ProductClass::class => ['ProductStock'], ProductStock::class => ['id']], false];
     }
 
     /**
