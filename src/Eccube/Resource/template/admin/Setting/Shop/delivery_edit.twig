@@ -23,7 +23,7 @@ file that was distributed with this source code.
         $(function() {
             $('#set_fee_all').on('click', function() {
                 var fee = $('#{{ form.free_all.vars.id }}').val();
-                if ($.isNumeric(fee)) {
+                if (fee.trim() !== '' && Number.isFinite(Number(fee))) {
                     $('input[name$="[fee]"]').val(fee);
                     return;
                 }
@@ -32,16 +32,13 @@ file that was distributed with this source code.
         });
     </script>
     <script>
-        // 降順にソートする
+        // 表示順の昇順に並べ替える
         $(function() {
             var $items_wrapper = $('.sortable-container');
-            var $items = $('.sortable-item');
-            $items.sort(function(a, b) {
-                return parseInt($(a).find('.sort-no').val()) > parseInt($(b).find('.sort-no').val());
+            var items = $('.sortable-item').get().sort(function(a, b) {
+                return parseInt($(a).find('.sort-no').val(), 10) - parseInt($(b).find('.sort-no').val(), 10);
             });
-            $items.each(function() {
-                $items_wrapper.append($(this).remove());
-            })
+            $items_wrapper.append(items);
         });
 
         // 並び替え後にsort noを更新

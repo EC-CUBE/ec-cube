@@ -38,12 +38,10 @@ file that was distributed with this source code.
             };
 
             // 初期表示は表示順の昇順に並べ替える
-            var $sorted = $items.find('.sortable-item').sort(function (a, b) {
+            var sorted = $items.find('.sortable-item').get().sort(function (a, b) {
                 return parseInt($(a).find('.sort-no').val(), 10) - parseInt($(b).find('.sort-no').val(), 10);
             });
-            $sorted.each(function () {
-                $items.append($(this));
-            });
+            $items.append(sorted);
             moveSortNo();
 
             $collection.find('.faq-collection__add').on('click', function () {
