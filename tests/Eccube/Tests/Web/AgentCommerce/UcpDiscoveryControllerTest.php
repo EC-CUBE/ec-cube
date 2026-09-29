@@ -25,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  * 一次仕様 (v2026-04-08, schemas/profile.json) の規範要件を検証する:
  *   - ラッパー = { "ucp": {...} (必須), "signing_keys": [JWK] (任意) }.
  *   - ucp.version は "YYYY-MM-DD" (= 2026-04-08), services / payment_handlers は object 必須.
- *   - services / capabilities / payment_handlers のキーは reverse-domain.
+ *   - services / capabilities / payment_handlers は reverse-domain 名をキーとし、エントリの配列を値とするレジストリ (ucp.json の $defs.base).
  *   - discovery は常時公開 (フラグ無効化なし)・catalog capability / service を常時宣言する.
  *   - signing_keys[] は EC 公開鍵 JWK のみ (秘密鍵パラメータ d/p/q/dp/dq/qi/oth/k 非混入).
  *   - 配信: Cache-Control public, max-age >= 60 (no-store/no-cache/private 禁止), HTTPS 想定・3xx 禁止.
@@ -117,7 +117,8 @@ final class UcpDiscoveryControllerTest extends AbstractWebTestCase
         $this->assertArrayHasKey('dev.ucp.shopping.catalog.lookup', $profile['ucp']['capabilities'], 'When Catalog API is enabled the lookup capability MUST be declared');
 
         $this->assertArrayHasKey('dev.ucp.shopping.catalog', $profile['ucp']['services'], 'When Catalog API is enabled the catalog REST service MUST be declared');
-        $service = $profile['ucp']['services']['dev.ucp.shopping.catalog'];
+        $service = $profile['ucp']['services']['dev.ucp.shopping.catalog'][0] ?? null;
+        $this->assertIsArray($service, 'The catalog service registry value MUST hold at least one entry');
         $this->assertSame('rest', $service['transport'], 'A REST service MUST declare transport "rest"');
         $this->assertArrayHasKey('endpoint', $service, 'A non-embedded service MUST declare an endpoint');
         $this->assertMatchesRegularExpression('#^https?://#', (string) $service['endpoint'], 'The service endpoint MUST be an absolute URL (RequestContext-derived, not a hardcoded path)');
@@ -136,6 +137,26 @@ final class UcpDiscoveryControllerTest extends AbstractWebTestCase
             }
             foreach (array_keys($entries) as $key) {
                 $this->assertMatchesRegularExpression(self::REVERSE_DOMAIN_PATTERN, (string) $key, sprintf('Key "%s" in ucp.%s MUST be a reverse-domain identifier', $key, $registry));
+            }
+        }
+    }
+
+    // --- レジストリの値の形 ------------------------------------------------
+
+    public function testRegistryValuesAreListsOfEntries(): void
+    {
+        // ucp.json の $defs.base は、services / capabilities / payment_handlers の値を
+        // エントリの配列 (JSON array) と定めている. 単一オブジェクトはスキーマ違反になる.
+        $profile = $this->requestProfile();
+
+        foreach (['services', 'capabilities', 'payment_handlers'] as $registry) {
+            $this->assertArrayHasKey($registry, $profile['ucp']);
+            foreach ($profile['ucp'][$registry] as $key => $entries) {
+                $this->assertIsArray($entries, sprintf('ucp.%s.%s MUST be an array of entries', $registry, $key));
+                $this->assertTrue(array_is_list($entries), sprintf('ucp.%s.%s MUST be a JSON array of entries, not a single object', $registry, $key));
+                foreach ($entries as $entry) {
+                    $this->assertIsArray($entry, sprintf('Each entry of ucp.%s.%s MUST be an object', $registry, $key));
+                }
             }
         }
     }

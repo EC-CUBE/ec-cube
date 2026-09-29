@@ -58,6 +58,25 @@ final class MailControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 本文を空のまま新規登録しても, 登録後の編集画面が表示できる.
+     *
+     * MailType の tpl_data には NotBlank が無いため本文を空で登録でき, テンプレートを
+     * 書き出さないと dtb_mail_template だけが残って編集画面が
+     * 「Unable to find template」で落ちる.
+     */
+    public function testCreateWithEmptyBody(): void
+    {
+        $this->senarioCreate(['tpl_data' => '', 'html_tpl_data' => '']);
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($this->client->getResponse()->isOk(), '登録後の編集画面を表示できる');
+        $this->actual = $crawler->filter('div.alert')->text();
+        $this->expected = '保存しました';
+        $this->verify();
+    }
+
+    /**
      * バリデーションエラー
      */
     public function testValidationError(): void

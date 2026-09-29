@@ -1,0 +1,34 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{# 読み取り専用の画面と, 制限の対象にできる画面の案内. 判定は RestrictFileUploadListener が行う #}
+{% if isReadOnlyScreen|default(false) %}
+    <div class="alert alert-warning alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-lock fa-lg me-2"></i>
+        <span class="fw-bold">{{ 'admin.common.restrict_file_upload_read_only'|trans }}</span>
+        {% if readOnlyCommand %}
+            <div class="mt-2">
+                {{ 'admin.common.restrict_file_upload_read_only_command'|trans }}
+                <code>{{ readOnlyCommand }}</code>
+            </div>
+        {% endif %}
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+
+        </button>
+    </div>
+{% elseif isRestrictableScreen|default(false) %}
+    <div class="alert alert-primary alert-dismissible fade show m-3" role="alert">
+        <i class="fa fa-comment fa-lg me-2"></i>
+        <span class="fw-bold">{{ 'admin.common.restrict_file_upload_info'|trans }}</span>
+        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
+
+        </button>
+    </div>
+{% endif %}

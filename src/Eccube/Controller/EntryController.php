@@ -188,9 +188,7 @@ class EntryController extends AbstractController
             [
                 new Assert\NotBlank(),
                 new Assert\Regex(
-                    [
-                        'pattern' => '/^[a-zA-Z0-9]+$/',
-                    ]
+                    pattern: '/^[a-zA-Z0-9]+$/'
                 ),
             ]
         );

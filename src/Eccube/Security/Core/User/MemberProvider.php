@@ -55,11 +55,9 @@ class MemberProvider implements UserProviderInterface, PasswordUpgraderInterface
 
     /**
      * Whether this provider supports the given user class.
-     *
-     * @param string $class
      */
     #[\Override]
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return Member::class === $class || is_subclass_of($class, Member::class);
     }

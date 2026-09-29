@@ -104,13 +104,15 @@ final readonly class SearchProductsTool
                 // レンジ交差になる。 visible = true は、 出力レンジ側 (ProductPriceStockSummarizer が非表示規格を
                 // 除外して集計) と絞り込みの母集団を揃えるため (非表示規格だけが条件を満たす商品を除外する)。
                 if (null !== $stockMin || null !== $stockMax) {
+                    // 在庫数の正典は ProductStock::stock
                     $dql = 'SELECT pcStock.id FROM '.ProductClass::class.' pcStock'
+                        .' JOIN pcStock.ProductStock psStock'
                         .' WHERE pcStock.Product = p AND pcStock.visible = true AND pcStock.stock_unlimited = false';
                     if (null !== $stockMin) {
-                        $dql .= ' AND pcStock.stock >= :mcpStockMin';
+                        $dql .= ' AND psStock.stock >= :mcpStockMin';
                     }
                     if (null !== $stockMax) {
-                        $dql .= ' AND pcStock.stock <= :mcpStockMax';
+                        $dql .= ' AND psStock.stock <= :mcpStockMax';
                     }
                     $qb->andWhere($qb->expr()->exists($dql));
                     if (null !== $stockMin) {

@@ -55,11 +55,9 @@ class CustomerProvider implements UserProviderInterface, PasswordUpgraderInterfa
 
     /**
      * Whether this provider supports the given user class.
-     *
-     * @param string $class
      */
     #[\Override]
-    public function supportsClass($class): bool
+    public function supportsClass(string $class): bool
     {
         return Customer::class === $class || is_subclass_of($class, Customer::class);
     }

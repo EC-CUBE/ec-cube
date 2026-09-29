@@ -132,6 +132,8 @@ front.block.news.title__en: WHAT'S NEW
 front.block.news.title__ja: What's New
 front.block.news.read_more: More
 front.block.news.see_details: Read details
+front.block.faq.title__en: FAQ
+front.block.faq.title__ja: Frequently Asked Questions
 front.block.login.customer_registration: Sign up
 front.block.login.mypage: My Account
 front.block.login.favorite: Favorites
@@ -550,7 +552,9 @@ admin.common.move_to_confirm_message: "Will move to %name% Setting page. Do you 
 admin.common.move_to_confirm_move_only: Move
 admin.common.move_to_confirm_save_and_move: Save & Move
 admin.common.admin_url_warning: 'Please set the Admin Console URL that is hard to guess for security. You can set it at "<a href="%url%">Security</a>".'
-admin.common.restrict_file_upload_info: "If this feature is used infrequently, disabling it while not in use provides additional security. You can disable this feature by setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1."
+admin.common.restrict_file_upload_info: "If this feature is used infrequently, disabling its save operations while not in use provides additional security. Setting the environment variable ECCUBE_RESTRICT_FILE_UPLOAD to 1 keeps the contents visible and disables only the save operations."
+admin.common.restrict_file_upload_read_only: "This screen is read-only. Save operations are disabled because the environment variable ECCUBE_RESTRICT_FILE_UPLOAD is set to 1."
+admin.common.restrict_file_upload_read_only_command: "Run the following command to make changes."
 admin.common.notice_maintenance_mode: "Currently in maintenance mode."
 admin.common.notice_debug_mode: The site is currently under debug mode.
 
@@ -1177,6 +1181,7 @@ admin.content.block_source_code: Codes
 admin.content.cache__card_title: Caches
 admin.content.cache_message: If you replaced the Twig file on the production server with FTP etc, the UI will not be updated unless you delete the Twig cache.
 admin.content.cache_delete: Delete Cache
+admin.content.cache_build_dir_not_writable: Only the runtime cache was deleted. Run "bin/console eccube:cache:build" from the CLI to rebuild the compiled container and templates.
 admin.content.news.publish_date: Published on
 admin.content.news.display_status: Display Status
 admin.content.news.display_status__show: Displayed
@@ -1186,6 +1191,24 @@ admin.content.news.url: URL
 admin.content.news.body: Body
 admin.content.news.news_registration: Create News
 admin.content.news.new_window: Open in a New Window
+admin.content.faq_management: FAQ
+admin.content.faq.question: Question
+admin.content.faq.answer: Answer
+admin.content.faq.sort_no: Display Order
+admin.content.faq.display_status: Display Status
+admin.content.faq.faq_registration: Create FAQ
+admin.content.faq.product_faq: Product FAQ
+admin.content.faq.category_faq: Category FAQ
+admin.content.faq.add: Add FAQ
+admin.content.faq.display_limit_notice: 'Only the first %count% displayed FAQs, in display order, are shown on the storefront.'
+admin.content.faq.faq_type: Type
+admin.content.faq.faq_type__common: Site-wide
+admin.content.faq.faq_type__product: Product
+admin.content.faq.faq_type__category: Category
+admin.content.faq.faq_type__all: All
+admin.content.faq.linked_to: Linked to
+admin.content.faq.sort_no_notice: 'FAQs can be reordered when the list is filtered by "Site-wide". Reorder product and category FAQs on their own edit screens.'
+admin.content.faq.category_faq_count: '%count% FAQs'
 admin.content.maintenance__card_title: Maintenance mode
 admin.content.maintenance_message: |
   When the maintenance mode is enabled, the shop is temporarily stopped and only the Admin Console can be accessed.
@@ -1417,6 +1440,7 @@ admin.setting.system.member.work: Status
 admin.setting.system.member.two_factor_auth_enabled: Two-factor auth
 admin.setting.system.member.two_factor_auth_completed: Two-factor authentication settings are complete.
 admin.setting.system.member.two_factor_auth_incompleted: Two-factor authentication settings are incomplete. Please log in as this user to complete the settings.
+admin.setting.system.member.two_factor_auth_reset: Reset Two-factor auth
 admin.setting.system.member.delete__confirm_title: Delete a user
 admin.setting.system.member.delete__confirm_message: Are you sure to delete this user?
 admin.setting.system.member.work_can_not_change: You are not allowed to change to ''Inactive''.
@@ -1897,6 +1921,7 @@ tooltip.setting.shop.calendar_setting: "You can set regular holidays for display
 tooltip.setting.system.member.authority: You can select the authorization you have set under Authorization.
 tooltip.setting.system.member.work: You can set customers to inactive temporarily. If they are no longer necessary, please delete from All Customers.
 tooltip.setting.system.member.two_factor_auth_enabled: If enabled, you must log in using two-factor authentication. You will be able to login after setting up two-factor authentication.
+tooltip.setting.system.member.two_factor_auth_reset: Checking this box will reset the two-factor authentication for this member. If you reset it, the code currently stored in the authentication app will no longer be usable and will no longer be registered. If you are unable to use your authentication app for some reason, reset it and re-register on a new device.
 tooltip.setting.system.two_factor_auth.qr_code: Please read the QR code with the two-factor authentication app.
 tooltip.setting.system.security.admin_url: Set the URL to sign in to the Admin Console. Please specify a URL which is hardly guessed.
 tooltip.setting.system.security.front_ip_limit: Restricting IP addresses which are allowed to sign in to the Front Screen.

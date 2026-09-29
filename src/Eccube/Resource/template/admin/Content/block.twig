@@ -108,7 +108,9 @@ file that was distributed with this source code.
                                                                     <div class="modal-footer">
                                                                         <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                                                         <a href="{{ url('admin_content_block_delete', {id: Block.Id} ) }}"
-                                                                           class="btn btn-ec-delete" data-confirm="false" {{ csrf_token_for_anchor() }} data-method="delete">
+                                                                           class="btn btn-ec-delete{% if isReadOnlyScreen|default(false) %} disabled{% endif %}"
+                                                                           {% if isReadOnlyScreen|default(false) %}aria-disabled="true" tabindex="-1"{% endif %}
+                                                                           data-confirm="false" {{ csrf_token_for_anchor() }} data-method="delete">
                                                                             {{ 'admin.common.delete'|trans }}
                                                                         </a>
                                                                     </div>

@@ -25,6 +25,7 @@ use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
 use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpStatusMapper;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * Layer 0: UCP Checkout 仕様適合性 (規範要件 1:1 トレース).
@@ -116,6 +117,7 @@ final class UcpCheckoutConformanceTest extends EccubeTestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/checkout.md (continue_url MUST be absolute HTTPS when requires_escalation)
      */
+    #[DoesNotPerformAssertions]
     public function testContinueUrlMustBeAbsoluteHttpsOnEscalation(): void
     {
         $this->markTestIncomplete('requires_escalation の永続化と continue_url 生成は MVP では未実装 (escalation は recoverable で代替)。');
@@ -126,6 +128,7 @@ final class UcpCheckoutConformanceTest extends EccubeTestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/checkout.md (confirmation email after completion)
      */
+    #[DoesNotPerformAssertions]
     public function testCompleteSendsConfirmationEmail(): void
     {
         $this->markTestIncomplete('確認メール送信は shopping flow / MailService 連携で別途検証する (本 Layer では未トレース)。');
@@ -136,6 +139,7 @@ final class UcpCheckoutConformanceTest extends EccubeTestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/checkout-rest.md (all endpoints over TLS 1.3+)
      */
+    #[DoesNotPerformAssertions]
     public function testAllEndpointsRequireHttps(): void
     {
         $this->markTestIncomplete('HTTPS 強制はトランスポート層 (デプロイ構成) の責務であり、アプリ層ではトレースしない。');

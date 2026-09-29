@@ -60,9 +60,7 @@ class PhoneNumberType extends AbstractType
                 $constraints[] = new Assert\NotBlank();
             }
 
-            $constraints[] = new Assert\Length([
-                'max' => $this->eccubeConfig['eccube_tel_len_max'],
-            ]);
+            $constraints[] = new Assert\Length(max: $this->eccubeConfig['eccube_tel_len_max']);
 
             $constraints[] = new Assert\Type(
                 type: 'digit',
@@ -87,14 +85,5 @@ class PhoneNumberType extends AbstractType
     public function getParent(): ?string
     {
         return TelType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'phone_number';
     }
 }

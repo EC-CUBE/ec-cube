@@ -22,6 +22,7 @@ use Eccube\Repository\CheckoutSessionRepository;
 use Eccube\Repository\Master\CheckoutSessionStatusRepository;
 use Eccube\Service\AgentCommerce\Acp\AcpMessageMapper;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -230,6 +231,7 @@ final class AcpCheckoutConformanceTest extends EccubeTestCase
      *
      * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol ACP openapi.agentic_checkout_webhook.yaml
      */
+    #[DoesNotPerformAssertions]
     public function testWebhookDispatchDeferred(): void
     {
         $this->markTestIncomplete('Webhook の outbound 送出 (order_create/order_update) は後続 PR で実装する (署名基盤 AcpMessageSigner は本 PR に存在)。');

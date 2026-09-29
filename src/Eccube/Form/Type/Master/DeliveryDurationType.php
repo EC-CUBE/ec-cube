@@ -45,15 +45,6 @@ class DeliveryDurationType extends AbstractType
      * {@inheritdoc}
      */
     #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'delivery_duration';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
     public function getParent(): ?string
     {
         return EntityType::class;

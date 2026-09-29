@@ -22,29 +22,22 @@ use Eccube\Doctrine\Common\CsvDataFixtures\Executor\DbalExecutor;
 use Eccube\Doctrine\Common\CsvDataFixtures\Loader;
 use Eccube\Entity\Member;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures to your database.')]
+#[AsCommand(name: 'eccube:fixtures:load', description: 'Load data fixtures to your database.', help: <<<'TXT'
+The <info>%command.name%</info> command loads data fixtures from EC-CUBE.
+
+  <info>php %command.full_name%</info>
+TXT)]
 class LoadDataFixturesEccubeCommand extends DoctrineCommand
 {
     public function __construct(ManagerRegistry $registry, protected EccubeConfig $eccubeConfig, protected UserPasswordHasherInterface $passwordHasher)
     {
         parent::__construct($registry);
-    }
-
-    #[\Override]
-    protected function configure(): void
-    {
-        $this
-            ->setHelp(<<<EOF
-The <info>%command.name%</info> command loads data fixtures from EC-CUBE.
-
-  <info>php %command.full_name%</info>
-EOF
-            );
     }
 
     #[\Override]
@@ -134,6 +127,6 @@ EOF
 
         $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', 'Finished Successful!'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

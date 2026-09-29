@@ -68,13 +68,4 @@ class ShoppingMultipleType extends AbstractType
             'deliveryDurations' => [],
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'shopping_multiple';
-    }
 }

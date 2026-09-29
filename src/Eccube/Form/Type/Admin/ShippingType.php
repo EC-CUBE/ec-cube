@@ -153,10 +153,7 @@ class ShippingType extends AbstractType
                 'input' => 'datetime',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
             ])
             ->add('shipping_date', DateTimeType::class, [
@@ -165,10 +162,7 @@ class ShippingType extends AbstractType
                 'widget' => 'single_text',
                 'with_seconds' => true,
                 'constraints' => [
-                    new Assert\Range([
-                        'min' => '0003-01-01',
-                        'minMessage' => 'form_error.out_of_range',
-                    ]),
+                    new Assert\Range(min: '0003-01-01', minMessage: 'form_error.out_of_range'),
                 ],
             ])
             ->add('tracking_number', TextType::class, [
@@ -325,14 +319,5 @@ class ShippingType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Shipping::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'shipping';
     }
 }

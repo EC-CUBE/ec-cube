@@ -46,10 +46,7 @@ class AuthorityRoleType extends AbstractType
             ->add('deny_url', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Regex([
-                        'pattern' => '/^\\/.*/',
-                        'message' => trans('admin.setting.system.authority.deny_url_is_invalid'),
-                    ]),
+                    new Regex(pattern: '/^\\/.*/', message: trans('admin.setting.system.authority.deny_url_is_invalid')),
                 ],
             ])
             ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {

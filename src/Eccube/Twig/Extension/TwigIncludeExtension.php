@@ -13,24 +13,14 @@
 
 namespace Eccube\Twig\Extension;
 
+use Twig\Attribute\AsTwigFunction;
 use Twig\Environment;
-use Twig\Extension\AbstractExtension;
 use Twig\TemplateWrapper;
-use Twig\TwigFunction;
 
-class TwigIncludeExtension extends AbstractExtension
+class TwigIncludeExtension
 {
     public function __construct(protected Environment $twig)
     {
-    }
-
-    #[\Override]
-    public function getFunctions(): array
-    {
-        return [
-            new TwigFunction('include_dispatch', $this->include_dispatch(...),
-                ['needs_context' => true, 'is_safe' => ['all']]),
-        ];
     }
 
     /**
@@ -42,6 +32,7 @@ class TwigIncludeExtension extends AbstractExtension
      *
      * @return string レンダリング結果
      */
+    #[AsTwigFunction(name: 'include_dispatch', needsContext: true, isSafe: ['all'])]
     public function include_dispatch(array $context, string|TemplateWrapper $template, array $variables = []): string
     {
         if (!empty($variables)) {

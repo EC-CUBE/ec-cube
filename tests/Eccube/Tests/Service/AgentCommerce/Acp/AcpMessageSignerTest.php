@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service\AgentCommerce\Acp;
 
 use Eccube\Service\AgentCommerce\Acp\AcpMessageSigner;
+use Eccube\Service\AgentCommerce\Security\AcpWebhookKeyPurpose;
 use Eccube\Service\AgentCommerce\Security\KeyStoreInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +45,7 @@ final class AcpMessageSignerTest extends TestCase
             }
         };
 
-        $this->signer = new AcpMessageSigner($keyStore);
+        $this->signer = new AcpMessageSigner($keyStore, new AcpWebhookKeyPurpose());
     }
 
     public function testSignProducesTimestampAndHexSignature(): void

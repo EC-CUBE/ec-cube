@@ -85,14 +85,6 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: redis
 
-      - name: Enable register_argc_argv for Codeception
-        if: matrix.php == '8.5'
-        run: |
-          INI_FILE=$(php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||" | tr -d '"')
-          echo "Using php.ini: $INI_FILE"
-          echo "register_argc_argv = On" | sudo tee -a "$INI_FILE"
-          php -i | grep register_argc_argv
-
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         with:
@@ -181,7 +173,7 @@ jobs:
           MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Determine Playwright project
         id: project
@@ -335,7 +327,7 @@ jobs:
           DATABASE_SERVER_VERSION: 16
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run Playwright tests
         working-directory: e2e
@@ -424,7 +416,7 @@ jobs:
         uses: ./.github/actions/composer
 
       - name: Cache npm dependencies
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
@@ -432,7 +424,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Cache build artifacts
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         id: build-cache
         with:
           path: |
@@ -455,7 +447,7 @@ jobs:
 
       - name: Cache Playwright browsers
         id: playwright-cache
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae  # v5
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v5
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('e2e/package-lock.json') }}

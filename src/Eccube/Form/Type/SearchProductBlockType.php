@@ -65,13 +65,4 @@ class SearchProductBlockType extends AbstractType
             'allow_extra_fields' => true,
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'search_product_block';
-    }
 }

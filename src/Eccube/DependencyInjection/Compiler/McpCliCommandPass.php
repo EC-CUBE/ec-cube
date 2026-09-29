@@ -18,6 +18,7 @@ namespace Eccube\DependencyInjection\Compiler;
 use Eccube\Command\EccubeCliToolCommand;
 use Eccube\Service\Mcp\McpCliToolInvoker;
 use Eccube\Service\Mcp\McpMarkdownFormatter;
+use Eccube\Service\Mcp\McpServerDefinition;
 use Mcp\Capability\Attribute\McpTool;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -42,7 +43,7 @@ final class McpCliCommandPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         // MCP 未配線 (builder 不在) なら守る対象も呼ぶ対象も無いのでスキップ。
-        if (!$container->hasDefinition('mcp.server.builder')) {
+        if (!$container->hasDefinition(McpServerDefinition::BUILDER_SERVICE_ID)) {
             return;
         }
 

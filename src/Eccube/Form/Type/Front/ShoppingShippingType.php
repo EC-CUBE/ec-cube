@@ -49,13 +49,4 @@ class ShoppingShippingType extends AbstractType
     {
         return CustomerAddressType::class;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'shopping_shipping';
-    }
 }

@@ -14,6 +14,7 @@
 namespace Eccube\Command;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Eccube\Common\Constant;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerApiService;
@@ -50,9 +51,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
         $packageNames = [];
         $unSupportedPlugins = [];
 
-        $criteria = Criteria::create()
-            ->where(Criteria::expr()->notIn('source', ['', '0']))
-            ->orderBy(['code' => 'ASC']);
+        $criteria = Criteria::create()->where(Criteria::expr()->notIn('source', ['', '0']))->orderBy(['code' => Order::Ascending]);
         $Plugins = $this->pluginRepository->matching($criteria);
 
         foreach ($Plugins as $Plugin) {
@@ -71,7 +70,7 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             ]);
             $question = new ConfirmationQuestion($message);
             if (!$this->io->askQuestion($question)) {
-                return 0;
+                return Command::SUCCESS;
             }
         }
 
@@ -79,6 +78,6 @@ class ComposerRequireAlreadyInstalledPluginsCommand extends Command
             $this->composerService->execRequire(implode(' ', $packageNames), $this->io);
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

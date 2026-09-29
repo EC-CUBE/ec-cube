@@ -27,7 +27,6 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
-use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\BaseInfoRepository;
@@ -322,7 +321,7 @@ class CsvImportController extends AbstractCsvImportController
                             if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                 if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                     $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                                    $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
+                                    $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(value: 0));
                                     if ($errors->count() === 0) {
                                         $ProductClassOrg->setDeliveryFee($deliveryFee);
                                     } else {
@@ -336,7 +335,7 @@ class CsvImportController extends AbstractCsvImportController
                             if ($this->BaseInfo->isOptionProductTaxRule()) {
                                 if (isset($row[$headerByKey['tax_rate']]) && StringUtil::isNotBlank($row[$headerByKey['tax_rate']])) {
                                     $taxRate = $row[$headerByKey['tax_rate']];
-                                    $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(['value' => 0]));
+                                    $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(value: 0));
                                     if ($errors->count() === 0) {
                                         if ($ProductClassOrg->getTaxRule()) {
                                             // 商品別税率の設定があれば税率を更新
@@ -447,7 +446,7 @@ class CsvImportController extends AbstractCsvImportController
                                     if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                             $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                                            $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
+                                            $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(value: 0));
                                             if ($errors->count() === 0) {
                                                 $pc->setDeliveryFee($deliveryFee);
                                             } else {
@@ -461,7 +460,7 @@ class CsvImportController extends AbstractCsvImportController
                                     if ($this->BaseInfo->isOptionProductTaxRule()) {
                                         if (isset($row[$headerByKey['tax_rate']]) && StringUtil::isNotBlank($row[$headerByKey['tax_rate']])) {
                                             $taxRate = $row[$headerByKey['tax_rate']];
-                                            $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(['value' => 0]));
+                                            $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(value: 0));
                                             if ($errors->count() === 0) {
                                                 if ($pc->getTaxRule()) {
                                                     // 商品別税率の設定があれば税率を更新
@@ -565,7 +564,7 @@ class CsvImportController extends AbstractCsvImportController
                                     if ($this->BaseInfo->isOptionProductDeliveryFee()) {
                                         if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                                             $deliveryFee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                                            $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(['value' => 0]));
+                                            $errors = $this->validator->validate($deliveryFee, new GreaterThanOrEqual(value: 0));
                                             if ($errors->count() === 0) {
                                                 $ProductClass->setDeliveryFee($deliveryFee);
                                             } else {
@@ -579,7 +578,7 @@ class CsvImportController extends AbstractCsvImportController
                                     if ($this->BaseInfo->isOptionProductTaxRule()) {
                                         if (isset($row[$headerByKey['tax_rate']]) && StringUtil::isNotBlank($row[$headerByKey['tax_rate']])) {
                                             $taxRate = $row[$headerByKey['tax_rate']];
-                                            $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(['value' => 0]));
+                                            $errors = $this->validator->validate($taxRate, new GreaterThanOrEqual(value: 0));
                                             if ($errors->count() === 0) {
                                                 $TaxRule = $this->taxRuleRepository->newTaxRule();
                                                 $TaxRule->setTaxRate($taxRate);
@@ -1372,7 +1371,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['price01']]) && StringUtil::isNotBlank($row[$headerByKey['price01']])) {
             $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-            $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+            $errors = $this->validator->validate($price01, new GreaterThanOrEqual(value: 0));
             if ($errors->count() === 0) {
                 $ProductClass->setPrice01($price01);
             } else {
@@ -1383,7 +1382,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if (isset($row[$headerByKey['price02']]) && StringUtil::isNotBlank($row[$headerByKey['price02']])) {
             $price02 = str_replace(',', '', $row[$headerByKey['price02']]);
-            $errors = $this->validator->validate($price02, new GreaterThanOrEqual(['value' => 0]));
+            $errors = $this->validator->validate($price02, new GreaterThanOrEqual(value: 0));
             if ($errors->count() === 0) {
                 $ProductClass->setPrice02($price02);
             } else {
@@ -1398,7 +1397,7 @@ class CsvImportController extends AbstractCsvImportController
         if ($this->BaseInfo->isOptionProductDeliveryFee()) {
             if (isset($row[$headerByKey['delivery_fee']]) && StringUtil::isNotBlank($row[$headerByKey['delivery_fee']])) {
                 $delivery_fee = str_replace(',', '', $row[$headerByKey['delivery_fee']]);
-                $errors = $this->validator->validate($delivery_fee, new GreaterThanOrEqual(['value' => 0]));
+                $errors = $this->validator->validate($delivery_fee, new GreaterThanOrEqual(value: 0));
                 if ($errors->count() === 0) {
                     $ProductClass->setDeliveryFee($delivery_fee);
                 } else {
@@ -1410,19 +1409,13 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         $Product->addProductClass($ProductClass);
-        $ProductStock = new ProductStock();
-        $ProductClass->setProductStock($ProductStock);
-        $ProductStock->setProductClass($ProductClass);
 
-        if (!$ProductClass->isStockUnlimited()) {
-            $ProductStock->setStock($ProductClass->getStock());
-        } else {
-            // 在庫無制限時はnullを設定
-            $ProductStock->setStock();
-        }
+        // 在庫数は ProductStock に保持され, 無ければ作成される
+        // 在庫無制限時はnullを設定
+        $ProductClass->setStock($ProductClass->isStockUnlimited() ? null : $ProductClass->getStock());
 
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->persist($ProductStock);
+        $this->entityManager->persist($ProductClass->getProductStock());
 
         return $ProductClass;
     }
@@ -1554,7 +1547,7 @@ class CsvImportController extends AbstractCsvImportController
         if (isset($row[$headerByKey['price01']])) {
             if ($row[$headerByKey['price01']] != '') {
                 $price01 = str_replace(',', '', $row[$headerByKey['price01']]);
-                $errors = $this->validator->validate($price01, new GreaterThanOrEqual(['value' => 0]));
+                $errors = $this->validator->validate($price01, new GreaterThanOrEqual(value: 0));
                 if ($errors->count() === 0) {
                     $ProductClass->setPrice01($price01);
                 } else {
@@ -1571,7 +1564,7 @@ class CsvImportController extends AbstractCsvImportController
             $this->addErrors($message);
         } else {
             $price02 = str_replace(',', '', $row[$headerByKey['price02']]);
-            $errors = $this->validator->validate($price02, new GreaterThanOrEqual(['value' => 0]));
+            $errors = $this->validator->validate($price02, new GreaterThanOrEqual(value: 0));
             if ($errors->count() === 0) {
                 $ProductClass->setPrice02($price02);
             } else {
@@ -1580,21 +1573,9 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        $ProductStock = $ProductClass->getProductStock();
-
-        // 在庫テーブルに存在しない場合、新規作成
-        if (!$ProductStock instanceof ProductStock) {
-            $ProductStock = new ProductStock();
-            $ProductClass->setProductStock($ProductStock);
-            $ProductStock->setProductClass($ProductClass);
-        }
-
-        if (!$ProductClass->isStockUnlimited()) {
-            $ProductStock->setStock($ProductClass->getStock());
-        } else {
-            // 在庫無制限時はnullを設定
-            $ProductStock->setStock();
-        }
+        // 在庫数は ProductStock に保持され, 在庫テーブルに存在しない場合は新規作成される
+        // 在庫無制限時はnullを設定
+        $ProductClass->setStock($ProductClass->isStockUnlimited() ? null : $ProductClass->getStock());
 
         if (isset($row[$headerByKey['product_class_visible_flg']])
             && StringUtil::isNotBlank($row[$headerByKey['product_class_visible_flg']])) {

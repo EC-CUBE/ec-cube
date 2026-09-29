@@ -313,9 +313,7 @@ class Generator
         $ProductCodesGenerated = [];
 
         $Product = new Product();
-        if (is_null($product_name)) {
-            $product_name = $faker->realText($faker->numberBetween(10, 50));
-        }
+        $product_name ??= $faker->realText($faker->numberBetween(10, 50));
         $Product
             ->setName($product_name)
             ->setCreator($Member)
@@ -536,9 +534,7 @@ class Generator
         $quantity = $faker->numberBetween(1, 10);
         $Pref = $this->entityManager->find(Pref::class, $faker->numberBetween(1, 47));
         $Payments = $this->paymentRepository->findAll();
-        if ($statusTypeId === null) {
-            $statusTypeId = OrderStatus::PROCESSING;
-        }
+        $statusTypeId ??= OrderStatus::PROCESSING;
         $OrderStatus = $this->entityManager->find(OrderStatus::class, $statusTypeId);
         $Order = new Order($OrderStatus);
         $Order->setCustomer($Customer);
@@ -1239,6 +1235,7 @@ class Generator
         // 3. ProductClass を bulk INSERT
         // 各 Product あたり (productClassNum + 1) 行: visible × productClassNum + デフォルト 1 (productClassNum>0 なら invisible)
         $classRows = [];
+        $classStocks = [];
         $productCodesUsed = [];
         foreach ($productIds as $productId) {
             $ClassName1 = $ClassNames[$faker->numberBetween(0, count($ClassNames) - 1)];
@@ -1250,8 +1247,9 @@ class Generator
                 } while (in_array($code, $productCodesUsed, true));
                 $productCodesUsed[] = $code;
                 $cc1Id = array_key_exists($j, $ClassCategories1) ? $ClassCategories1[$j]->getId() : null;
+                $classStocks[] = $stock = (string) $faker->numberBetween(100, 999);
                 $classRows[] = $this->buildProductClassRow(
-                    $code, (string) $faker->numberBetween(100, 999), 1,
+                    $code, $stock, 1,
                     (string) $faker->numberBetween(100, 10000), $productId,
                     $SaleType?->getId(), $cc1Id, null,
                     $DeliveryDurations[$faker->numberBetween(0, max(0, count($DeliveryDurations) - 1))]?->getId(),
@@ -1263,8 +1261,9 @@ class Generator
                 $code = $faker->word();
             } while (in_array($code, $productCodesUsed, true));
             $productCodesUsed[] = $code;
+            $classStocks[] = $stock = (string) $faker->randomNumber(3);
             $classRows[] = $this->buildProductClassRow(
-                $code, (string) $faker->randomNumber(3), $productClassNum > 0 ? 0 : 1,
+                $code, $stock, $productClassNum > 0 ? 0 : 1,
                 (string) $faker->numberBetween(100, 10000), $productId,
                 $SaleType?->getId(), null, null,
                 $DeliveryDurations[$faker->numberBetween(0, max(0, count($DeliveryDurations) - 1))]?->getId(),
@@ -1274,10 +1273,11 @@ class Generator
         $classIds = $this->bulkInsert('dtb_product_class', $classRows);
 
         // 4. ProductStock を bulk INSERT (各 ProductClass に対して 1 件)
+        // 在庫数の正典は dtb_product_stock.stock. dtb_product_class.in_stock と揃える
         $stockRows = [];
-        foreach ($classIds as $classId) {
+        foreach ($classIds as $i => $classId) {
             $stockRows[] = [
-                'stock' => (string) $faker->numberBetween(100, 999),
+                'stock' => $classStocks[$i],
                 'create_date' => $nowStr,
                 'update_date' => $nowStr,
                 'product_class_id' => $classId,
@@ -1348,7 +1348,7 @@ class Generator
     ): array {
         return [
             'product_code' => $productCode,
-            'stock' => $stock,
+            'in_stock' => bccomp($stock, '1') >= 0 ? 1 : 0,
             'stock_unlimited' => 0,
             'sale_limit' => null,
             'price01' => null,

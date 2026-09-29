@@ -20,6 +20,7 @@ use Eccube\Service\AgentCommerce\Catalog\AgentCatalogVariantDto;
 use Eccube\Service\AgentCommerce\Catalog\AvailabilityStatus;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogProductSerializer;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogResponseBuilder;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -175,6 +176,7 @@ final class UcpCatalogConformanceTest extends TestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/catalog/rest.md#L591
      */
+    #[DoesNotPerformAssertions]
     public function testCursorPaginationDefaultLimitIsVerifiedAtControllerLayer(): void
     {
         self::markTestIncomplete('MUST: REST transport supports cursor-based pagination with a default limit of 10. pagination cursor の生成・default limit はコントローラ (UcpCatalogController) の Web テスト (Layer 3) で検証する。');
@@ -186,6 +188,7 @@ final class UcpCatalogConformanceTest extends TestCase
      *
      * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/docs/specification/catalog/rest.md#L592
      */
+    #[DoesNotPerformAssertions]
     public function testLookupHttpStatusSemanticsAreVerifiedAtControllerLayer(): void
     {
         self::markTestIncomplete('MUST: lookup は HTTP 200 を返し未知 ID は返却件数減で表現、batch 超過は HTTP 400 + request_too_large。HTTP ステータスを伴うためコントローラ (Layer 3) で検証する。');

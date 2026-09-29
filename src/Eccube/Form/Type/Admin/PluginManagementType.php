@@ -44,22 +44,10 @@ class PluginManagementType extends AbstractType
                 'mapped' => false,
                 'required' => false,
                 'constraints' => [
-                    new Assert\NotBlank(['message' => 'ファイルを選択してください。']),
-                    new Assert\File([
-                        'mimeTypes' => ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'],
-                        'mimeTypesMessage' => 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。',
-                    ]),
+                    new Assert\NotBlank(message: 'ファイルを選択してください。'),
+                    new Assert\File(mimeTypes: ['application/zip', 'application/x-tar', 'application/x-gzip', 'application/gzip'], mimeTypesMessage: 'zipファイル、tarファイル、tar.gzファイルのいずれかをアップロードしてください。'),
                 ],
             ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'plugin_management';
     }
 
     /**

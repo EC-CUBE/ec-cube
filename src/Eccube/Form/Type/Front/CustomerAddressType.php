@@ -53,9 +53,7 @@ class CustomerAddressType extends AbstractType
                     'autocomplete' => 'organization',
                 ],
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('postal_code', PostalType::class)
@@ -74,14 +72,5 @@ class CustomerAddressType extends AbstractType
         $resolver->setDefaults([
             'data_class' => CustomerAddress::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'customer_address';
     }
 }

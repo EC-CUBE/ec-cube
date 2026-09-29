@@ -19,6 +19,7 @@ use Eccube\Service\CookieConsentLogService;
 use Eccube\Service\CookieConsentService;
 use Eccube\Tests\EccubeTestCase;
 use Monolog\Handler\TestHandler;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * CookieConsentLogServiceのテスト
@@ -115,6 +116,7 @@ final class CookieConsentLogServiceTest extends EccubeTestCase
     /**
      * ログ出力が失敗しても例外を投げず処理を継続する（ベストエフォート）ことを確認する。
      */
+    #[DoesNotPerformAssertions]
     public function testSaveLogIsBestEffortAndDoesNotThrow()
     {
         // 必須キーを欠いた不完全なデータでも例外を投げないこと
@@ -122,7 +124,5 @@ final class CookieConsentLogServiceTest extends EccubeTestCase
         $invalid = ['consent_status' => 'accepted'];
 
         $this->service->saveLog($invalid);
-
-        $this->addToAssertionCount(1);
     }
 }

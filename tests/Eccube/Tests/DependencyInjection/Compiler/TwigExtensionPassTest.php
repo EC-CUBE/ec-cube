@@ -53,7 +53,7 @@ final class TwigExtensionPassTest extends TestCase
     {
         $this->containerBuilder->setParameter('kernel.debug', false);
         $this->containerBuilder->addCompilerPass(new TwigExtensionPass());
-        $this->containerBuilder->compile();
+        $this->containerBuilder->compile(false);
 
         /** @var Environment $twig */
         $twig = $this->containerBuilder->get(Environment::class);

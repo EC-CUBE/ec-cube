@@ -69,9 +69,7 @@ class UTCDateTimeTzType extends DateTimeTzType
 
     protected static function getUtcTimeZone(): \DateTimeZone
     {
-        if (is_null(self::$utc)) {
-            self::$utc = new \DateTimeZone('UTC');
-        }
+        self::$utc ??= new \DateTimeZone('UTC');
 
         return self::$utc;
     }

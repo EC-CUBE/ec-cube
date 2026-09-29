@@ -213,6 +213,13 @@ class TwigInitializeListener implements EventSubscriberInterface
         $this->twig->addGlobal('eccubeNav', $eccubeNav);
         $this->twig->addGlobal('isMaintenance', $this->systemService->isMaintenanceMode());
         $this->twig->addGlobal('isDebugMode', env('APP_DEBUG'));
+
+        // 読み取り専用の判定は RestrictFileUploadListener が行い, ここでは結果を渡すだけにする.
+        // 対象ルートの一覧を二重に持たないため
+        $attributes = $event->getRequest()->attributes;
+        $this->twig->addGlobal('isReadOnlyScreen', $attributes->getBoolean(RestrictFileUploadListener::READ_ONLY_ATTRIBUTE));
+        $this->twig->addGlobal('isRestrictableScreen', $attributes->getBoolean(RestrictFileUploadListener::RESTRICTABLE_ATTRIBUTE));
+        $this->twig->addGlobal('readOnlyCommand', $attributes->get(RestrictFileUploadListener::READ_ONLY_COMMAND_ATTRIBUTE));
     }
 
     /**
@@ -225,8 +232,6 @@ class TwigInitializeListener implements EventSubscriberInterface
      */
     private function getDisplayEccubeNav(array $parentNav, array $AuthorityRoles, string $baseUrl): array
     {
-        $restrictUrls = $this->eccubeConfig['eccube_restrict_file_upload_urls'];
-
         foreach ($parentNav as $key => $childNav) {
             if (array_key_exists('children', $childNav) && count($childNav['children']) > 0) {
                 // 子のメニューがある場合は子の権限チェック
@@ -247,10 +252,6 @@ class TwigInitializeListener implements EventSubscriberInterface
                         unset($parentNav[$key]);
                         break;
                     }
-                }
-
-                if ($this->eccubeConfig['eccube_restrict_file_upload'] === '1' && in_array($childNav['url'], $restrictUrls)) {
-                    unset($parentNav[$key]);
                 }
             }
         }

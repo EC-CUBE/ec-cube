@@ -203,6 +203,71 @@ final class MemberControllerTest extends AbstractAdminWebTestCase
         $this->assertSame($Member->getLoginId(), $loginId);
     }
 
+    public function testMemberEditSubmitWithTwoFactorAuthReset(): void
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['plain_password'] = [
+            'first' => $this->eccubeConfig['eccube_default_password'],
+            'second' => $this->eccubeConfig['eccube_default_password'],
+        ];
+        // 2段階認証を有効のまま維持し, リセットのみを指示する
+        $formData['two_factor_auth_enabled'] = '1';
+        $formData['two_factor_auth_reset'] = '1';
+
+        $Member = $this->createMember();
+        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
+        $Member->setTwoFactorAuthEnabled(true);
+        $Member->setTwoFactorAuthKey('JBSWY3DPEHPK3PXP');
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
+
+        // main
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]),
+            ['admin_member' => $formData]
+        );
+
+        $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // キーがリセットされ, 次回ログイン時に再登録が必要な状態になる
+        $this->assertNull($Member->getTwoFactorAuthKey());
+        $this->assertTrue($Member->isTwoFactorAuthEnabled());
+    }
+
+    public function testMemberEditSubmitKeepsTwoFactorAuthKeyWithoutReset(): void
+    {
+        // before
+        $formData = $this->createFormData();
+        $formData['plain_password'] = [
+            'first' => $this->eccubeConfig['eccube_default_password'],
+            'second' => $this->eccubeConfig['eccube_default_password'],
+        ];
+        // two_factor_auth_reset は送信しない
+        $formData['two_factor_auth_enabled'] = '1';
+
+        $authKey = 'JBSWY3DPEHPK3PXP';
+        $Member = $this->createMember();
+        $Member->setPassword($this->eccubeConfig['eccube_default_password']);
+        $Member->setTwoFactorAuthEnabled(true);
+        $Member->setTwoFactorAuthKey($authKey);
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
+
+        // main
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]),
+            ['admin_member' => $formData]
+        );
+
+        $redirectUrl = $this->generateUrl('admin_setting_system_member_edit', ['id' => $Member->getId()]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($redirectUrl));
+
+        // チェックしなければキーは維持される
+        $this->assertSame($authKey, $Member->getTwoFactorAuthKey());
+    }
+
     public function testMemberEditSubmitFail()
     {
         // before

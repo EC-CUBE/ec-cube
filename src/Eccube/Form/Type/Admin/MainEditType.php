@@ -54,33 +54,23 @@ class MainEditType extends AbstractType
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('url', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^([0-9a-zA-Z_\-]+\/?)+(?<!\/)$/'),
                 ],
             ])
             ->add('file_name', TextType::class, [
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
-                    new Assert\Regex([
-                        'pattern' => '/^([0-9a-zA-Z_\-]+\/?)+$/',
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Regex(pattern: '/^([0-9a-zA-Z_\-]+\/?)+$/'),
                 ],
             ])
             ->add('tpl_data', TextareaType::class, [
@@ -95,40 +85,30 @@ class MainEditType extends AbstractType
             ->add('author', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('description', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('keyword', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])
             ->add('meta_robots', TextType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_stext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                 ],
             ])->add('meta_tags', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_ltext_len'],
-                    ]),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
             ])
             ->add('PcLayout', EntityType::class, [
@@ -267,14 +247,5 @@ class MainEditType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Page::class,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'main_edit';
     }
 }

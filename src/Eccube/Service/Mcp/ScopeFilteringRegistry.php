@@ -33,7 +33,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * `tools/list` を、 現在の OAuth2 トークンが呼べる Tool だけに絞る {@see RegistryInterface} デコレータ。
  * 呼べない Tool を一覧に出さない (最小権限)。
  *
- * mcp-bundle の `mcp.registry` を装飾し、 `ListToolsHandler` が読む {@see getTools()} だけを上書きする。
+ * mcp-bundle のサーバ registry (`mcp.server.eccube.registry`) を装飾し、 `ListToolsHandler` が読む {@see getTools()} だけを上書きする。
  * 各 Tool の必要 scope ({@see McpToolScopeMap}) を {@see AuthorizationCheckerInterface} で検査する。
  *
  * これは可視性の制御であって、 呼び出しの拒否ではない。 実際の拒否は {@see ScopeEnforcingReferenceHandler}

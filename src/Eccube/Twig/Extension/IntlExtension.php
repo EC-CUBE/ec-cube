@@ -13,32 +13,18 @@
 
 namespace Eccube\Twig\Extension;
 
+use Twig\Attribute\AsTwigFilter;
 use Twig\Environment;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
 
-class IntlExtension extends AbstractExtension
+class IntlExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('date_day', $this->date_day(...), ['needs_environment' => true]),
-            new TwigFilter('date_min', $this->date_min(...), ['needs_environment' => true]),
-            new TwigFilter('date_sec', $this->date_sec(...), ['needs_environment' => true]),
-            new TwigFilter('date_day_with_weekday', $this->date_day_with_weekday(...), ['needs_environment' => true]),
-        ];
-    }
-
     /**
      * format_datetime('medium', 'none')のショートカット.
      *
      * 2015/08/28のように、日までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      */
+    #[AsTwigFilter(name: 'date_day', needsEnvironment: true)]
     public function date_day(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
@@ -54,6 +40,7 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13のように、分までのフォーマットで表示します(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      */
+    #[AsTwigFilter(name: 'date_min', needsEnvironment: true)]
     public function date_min(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
@@ -69,6 +56,7 @@ class IntlExtension extends AbstractExtension
      * 2015/08/28 16:13:05(localeがjaの場合).
      * null,空文字に対して利用した場合は、空文字を返却します.
      */
+    #[AsTwigFilter(name: 'date_sec', needsEnvironment: true)]
     public function date_sec(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {
@@ -78,6 +66,7 @@ class IntlExtension extends AbstractExtension
         return (new \Twig\Extra\Intl\IntlExtension())->formatDateTime($env, $date, 'medium', 'medium');
     }
 
+    #[AsTwigFilter(name: 'date_day_with_weekday', needsEnvironment: true)]
     public function date_day_with_weekday(Environment $env, \DateTimeInterface|string|null $date): bool|string
     {
         if (!$date) {

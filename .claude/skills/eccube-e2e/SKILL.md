@@ -8,9 +8,6 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 **対象**: `e2e/tests/*.spec.ts`, `e2e/{pages,models,helpers,fixtures}/*.ts`
 **前提**: Playwright（TypeScript）。`cd e2e && npm ci` 済み。baseURL は環境変数 `BASE_URL`（既定 `http://127.0.0.1:8000`）。
 
-> EC-CUBE の E2E は `e2e/` 配下の Playwright が正。`codeception/` はレガシー残置で CI 無効（`AGENTS.md` 参照）。
-> 混同しないこと。
-
 ## 基本ルール
 
 - **spec ファイル名の接頭辞 = プロジェクト = 認証状態**（`e2e/playwright.config.ts` の `testMatch`）。新規 spec はこの規則で命名する:
@@ -34,14 +31,15 @@ description: EC-CUBE 4.4 の E2E テスト（Playwright・`e2e/` 配下）を実
 
 ## よくある間違い
 
-- ❌ `waitForTimeout(固定ms)` で同期を取る → ✅ web-first assertion（`expect().toBeVisible()` / `waitForFunction()`）で「状態」を待つ。**例外**: yubinbango 郵便番号の自動入力など外部 JS 由来の待機のみ許容（理由をコメントで明記）。
+- ❌ `waitForTimeout(固定ms)` で同期を取る → ✅ web-first assertion で「状態」を待つ。外部 JS 由来の待機だけ例外とし、理由をコメントに書く。
 - ❌ `front-*` spec で管理者ログイン済みを前提にする → ✅ front は未認証 state。spec 内でログインするか admin 経由で会員作成する。
 - ❌ 固定件数で assert（`検索結果：1件が該当`）→ ✅ 正規表現（`/検索結果：\d+件が該当/`）。retry 時の重複データに強くする（`admin-product.spec.ts` 修正例）。
-- ❌ セレクタが複数要素にマッチ（strict mode violation）→ ✅ `.first()` か `data-*` 属性（例 `button[data-bs-target="#initializationConfirm"]`）で一意化する。
+- ❌ セレクタが複数要素にマッチ（strict mode violation）→ ✅ `.first()` か `data-*` 属性で一意化する。
 - ❌ テスト境界で管理者セッションが切れて 401 → ✅ `ensureAdminLoggedIn()` 等で再ログインしてから操作（`admin-basicinfo.spec.ts` 修正例）。
-- ❌ retry でプラグイン/データが残留し「既にインストール済み」で再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化→削除→ディレクトリ削除。`plugin-misc.spec.ts` 修正例）。
+- ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）。
 - ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
-- ❌ 新規 `admin-*`/`front-*` spec を作ったのに CI で実行されない → ✅ `.github/workflows/e2e-test.yml` の `suite:` 配列にファイル名（接尾辞 `.spec.ts` 抜き）を追加する。
+- ❌ 一覧の先頭行（`tr:first-child`）を操作する → ✅ 並び順は先行テストの複製・初期化で変わるので ID で行を特定する（`mode: 'serial'` は 1 件の失敗で後続が全部 did not run）
+- ❌ 新規 spec を作ったのに CI で実行されない → ✅ `e2e-test.yml` の `suite:` 配列にファイル名（`.spec.ts` 抜き）を追加する。
 
 ## 実行・確認方法
 

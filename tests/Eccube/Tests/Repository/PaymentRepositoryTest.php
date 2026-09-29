@@ -235,7 +235,7 @@ final class PaymentRepositoryTest extends EccubeTestCase
     {
         $Results = $this->paymentRepository->findAllArray();
 
-        $this->assertTrue(is_array($Results));
+        $this->assertIsArray($Results);
 
         $this->expected = '銀行振込';
         $this->actual = $Results[3]['method'];
@@ -257,7 +257,7 @@ final class PaymentRepositoryTest extends EccubeTestCase
         $this->actual = count($payments);
         $this->verify();
 
-        $this->assertTrue(is_array($payments[0]));
+        $this->assertIsArray($payments[0]);
     }
 
     public function testFindPaymentsAsObjects()
@@ -275,6 +275,6 @@ final class PaymentRepositoryTest extends EccubeTestCase
         $this->actual = count($payments);
         $this->verify();
 
-        $this->assertTrue(is_object($payments[0]));
+        $this->assertIsObject($payments[0]);
     }
 }

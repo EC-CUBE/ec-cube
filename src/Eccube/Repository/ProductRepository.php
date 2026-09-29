@@ -38,7 +38,7 @@ use Eccube\Util\StringUtil;
 class ProductRepository extends AbstractRepository
 {
     public const COLUMNS = [
-        'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'pc.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',
+        'product_id' => 'p.id', 'name' => 'p.name', 'product_code' => 'pc.code', 'stock' => 'ps.stock', 'status' => 'p.Status', 'create_date' => 'p.create_date', 'update_date' => 'p.update_date',
     ];
 
     /**
@@ -303,7 +303,7 @@ class ProductRepository extends AbstractRepository
         // stock status
         if (isset($searchData['stock_status'])) {
             $qb
-                ->andWhere('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
+                ->andWhere('pc.stock_unlimited = :StockUnlimited AND pc.in_stock = false')
                 ->setParameter('StockUnlimited', $searchData['stock_status']);
         }
 
@@ -311,10 +311,10 @@ class ProductRepository extends AbstractRepository
         if (isset($searchData['stock'])) {
             switch ($searchData['stock']) {
                 case [ProductStock::IN_STOCK]:
-                    $qb->andWhere('pc.stock_unlimited = true OR pc.stock > 0');
+                    $qb->andWhere('pc.in_stock = true');
                     break;
                 case [ProductStock::OUT_OF_STOCK]:
-                    $qb->andWhere('pc.stock_unlimited = false AND pc.stock <= 0');
+                    $qb->andWhere('pc.in_stock = false');
                     break;
                 default:
                     // 共に選択された場合は全権該当するので検索条件に含めない

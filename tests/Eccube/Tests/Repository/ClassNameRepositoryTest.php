@@ -23,6 +23,7 @@ use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ClassNameRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 
 /**
  * ClassNameRepository test cases.
@@ -142,6 +143,7 @@ final class ClassNameRepositoryTest extends EccubeTestCase
         $this->assertNotInstanceOf(ClassName::class, $this->entityManager->find(ClassName::class, $ClassNameId));
     }
 
+    #[DoesNotPerformAssertions]
     public function testDeleteWithException()
     {
         $ClassName = new ClassName();
@@ -162,7 +164,6 @@ final class ClassNameRepositoryTest extends EccubeTestCase
             $this->classNameRepository->delete($ClassName);
             $this->fail();
         } catch (\Exception) {
-            $this->addToAssertionCount(1);
         }
     }
 }

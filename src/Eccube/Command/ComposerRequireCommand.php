@@ -51,6 +51,6 @@ class ComposerRequireCommand extends Command
 
         $this->composerService->execRequire($packageName, $output, $input->getOption('from'));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

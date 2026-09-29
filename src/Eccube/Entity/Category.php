@@ -16,6 +16,7 @@ namespace Eccube\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
@@ -135,8 +136,7 @@ class Category extends AbstractEntity implements \Stringable
      */
     public function hasProductCategories(): bool
     {
-        $criteria = Criteria::create()
-        ->orderBy(['category_id' => Criteria::ASC])
+        $criteria = Criteria::create()->orderBy(['category_id' => Order::Ascending])
         ->setFirstResult(0)
         ->setMaxResults(1);
 
@@ -188,12 +188,20 @@ class Category extends AbstractEntity implements \Stringable
     private ?Member $Creator = null;
 
     /**
+     * @var Collection<int, Faq>
+     */
+    #[ORM\OneToMany(targetEntity: Faq::class, mappedBy: 'Category', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['sort_no' => 'ASC'])]
+    private Collection $Faqs;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->ProductCategories = new ArrayCollection();
         $this->Children = new ArrayCollection();
+        $this->Faqs = new ArrayCollection();
     }
 
     /**
@@ -322,6 +330,39 @@ class Category extends AbstractEntity implements \Stringable
     public function getProductCategories(): Collection
     {
         return $this->ProductCategories;
+    }
+
+    /**
+     * Add faq.
+     */
+    public function addFaq(Faq $faq): Category
+    {
+        if (!$this->Faqs->contains($faq)) {
+            $this->Faqs[] = $faq;
+            $faq->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove faq.
+     *
+     * @return bool TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeFaq(Faq $faq): bool
+    {
+        return $this->Faqs->removeElement($faq);
+    }
+
+    /**
+     * Get faqs.
+     *
+     * @return Collection<int, Faq>
+     */
+    public function getFaqs(): Collection
+    {
+        return $this->Faqs;
     }
 
     /**

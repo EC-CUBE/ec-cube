@@ -9,11 +9,15 @@
  * file that was distributed with this source code.
 */
 ;(function($, window, document, undefined) {
+    /**
+     * セクション (#position_*) 内のブロックの hidden input (配置先・並び順) を DOM の順序に合わせる.
+     * layout.twig のコンテキストメニューからも window.updateUpDown として呼ばれる.
+     */
     var updateUpDown = function(sortable) {
         if (sortable instanceof $) {
             sortable = sortable.get(0);
         }
-        $('div:not(.ui-sortable-helper)', sortable)
+        $('div', sortable)
             .removeClass('first')
             .filter(':first').addClass('first').end()
             .children('input.target-id').val(sortable.id.replace('position_', ''));
@@ -22,13 +26,17 @@
             $(this).val(i);
         });
     };
-
-    var sortableUpdate = function(e, ui) {
-        updateUpDown(this);
-        if (ui.sender)
-            updateUpDown(ui.sender[0]);
-    };
     window.updateUpDown = updateUpDown;
+
+    // ブロックが無いセクションには「ドラッグ&ドロップしてください」の案内を表示する
+    var togglePlaceholder = function(sortable) {
+        var $sortable = $(sortable);
+        if ($sortable.children('.block').length > 0) {
+            $sortable.children('.target-placeholder').remove();
+        } else if ($sortable.children('.target-placeholder').length === 0) {
+            $sortable.append($('#target-placeholder').html());
+        }
+    };
 
     $(document).ready(function() {
         // `window.els` is defined in layout.twig
@@ -38,27 +46,21 @@
             updateUpDown(this);
         });
 
-        $els.sortable({
-            items: '> div.block',
-            cursor: 'move',
-            appendTo: 'body',
-            placeholder: 'placeholder',
-            connectWith: window.els,
-            start: function(e, ui) {
-                ui.helper.css("width", ui.item.width());
-            },
-            stop: function(e, ui) {
-                // sortable が子要素を強制的に表示するため show(), hide() が使えない
-                if ($(this).children('.block').length <= 0) {
-                    // show placeholder
-                    $(this).append($('#target-placeholder').html());
+        $els.each(function() {
+            Sortable.create(this, {
+                // 同じ group のセクション間でブロックを移動できる
+                group: 'layout-blocks',
+                draggable: '.block',
+                animation: 150,
+                onEnd: function(evt) {
+                    togglePlaceholder(evt.from);
+                    togglePlaceholder(evt.to);
+                    updateUpDown(evt.to);
+                    if (evt.from !== evt.to) {
+                        updateUpDown(evt.from);
+                    }
                 }
-                if (ui.item.parent().children('.block').length > 0) {
-                    // hide placeholder
-                    ui.item.parent().children('.target-placeholder').remove();
-                }
-            },
-            update: sortableUpdate
+            });
         });
     });
 })(jQuery, window, document);

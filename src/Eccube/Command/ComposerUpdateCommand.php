@@ -38,6 +38,6 @@ class ComposerUpdateCommand extends Command
     {
         $this->composerService->execUpdate($input->getOption('dry-run'), $output);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

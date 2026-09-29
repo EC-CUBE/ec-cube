@@ -86,9 +86,7 @@ final class TaxRuleRepositoryTest extends EccubeTestCase
         $TaxRule = new TaxRule();
         $RoundingType = $this->entityManager->find(RoundingType::class, 1);
         $Member = $this->memberRepository->find(2);
-        if (is_null($apply_date)) {
-            $apply_date = $this->DateTimeNow;
-        }
+        $apply_date ??= $this->DateTimeNow;
         $TaxRule->setTaxRate((string) $tax_rate)
             ->setApplyDate($apply_date)
             ->setRoundingType($RoundingType)

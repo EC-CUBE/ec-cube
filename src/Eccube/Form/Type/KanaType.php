@@ -54,13 +54,8 @@ class KanaType extends AbstractType
                     'placeholder' => 'common.last_name_kana',
                 ],
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        'message' => 'form_error.kana_only',
-                    ]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_kana_len'],
-                    ]),
+                    new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u', message: 'form_error.kana_only'),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
                 ],
             ],
             'firstname_options' => [
@@ -68,13 +63,8 @@ class KanaType extends AbstractType
                     'placeholder' => 'common.first_name_kana',
                 ],
                 'constraints' => [
-                    new Assert\Regex([
-                        'pattern' => '/^[ァ-ヶｦ-ﾟー]+$/u',
-                        'message' => 'form_error.kana_only',
-                    ]),
-                    new Assert\Length([
-                        'max' => $this->eccubeConfig['eccube_kana_len'],
-                    ]),
+                    new Assert\Regex(pattern: '/^[ァ-ヶｦ-ﾟー]+$/u', message: 'form_error.kana_only'),
+                    new Assert\Length(max: $this->eccubeConfig['eccube_kana_len']),
                 ],
             ],
         ]);
@@ -87,14 +77,5 @@ class KanaType extends AbstractType
     public function getParent(): ?string
     {
         return NameType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    #[\Override]
-    public function getBlockPrefix(): string
-    {
-        return 'kana';
     }
 }

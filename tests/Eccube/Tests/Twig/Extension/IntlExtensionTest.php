@@ -18,8 +18,10 @@ namespace Eccube\Tests\Twig\Extension;
 use Eccube\Twig\Extension\IntlExtension;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
+use Twig\Extension\AttributeExtension;
 use Twig\Extension\CoreExtension;
 use Twig\Loader\ArrayLoader;
+use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 final class IntlExtensionTest extends TestCase
 {
@@ -33,7 +35,13 @@ final class IntlExtensionTest extends TestCase
 
         $this->twig = new Environment($loader);
         $this->twig->getExtension(CoreExtension::class)->setTimezone('Asia/Tokyo');
-        $this->twig->addExtension(new IntlExtension());
+        // IntlExtension は #[AsTwigFilter] で定義するため, 素の Environment では
+        // AttributeExtension とランタイムローダの組で登録する（コンテナ経由の登録は
+        // TwigBundle が twig.attribute_extension として自動で行う）。
+        $this->twig->addExtension(new AttributeExtension(IntlExtension::class));
+        $this->twig->addRuntimeLoader(new FactoryRuntimeLoader([
+            IntlExtension::class => static fn (): IntlExtension => new IntlExtension(),
+        ]));
     }
 
     public function testDateDay()

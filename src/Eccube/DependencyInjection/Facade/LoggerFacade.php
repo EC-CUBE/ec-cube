@@ -33,9 +33,7 @@ class LoggerFacade
 
     public static function init(ContainerInterface $container, Logger $Logger): ?LoggerFacade
     {
-        if (null === self::$instance) {
-            self::$instance = new self($container, $Logger);
-        }
+        self::$instance ??= new self($container, $Logger);
 
         return self::$instance;
     }

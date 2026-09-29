@@ -59,7 +59,7 @@ final class LoaderTest extends EccubeTestCase
             ->files();
         $fixtures = $this->loader->loadFromIterator($finder->getIterator());
 
-        $this->assertTrue(is_array($fixtures));
+        $this->assertIsArray($fixtures);
         $this->assertInstanceOf(CsvFixture::class, $fixtures[0]);
 
         $this->expected = iterator_count($finder->getIterator());
@@ -76,7 +76,7 @@ final class LoaderTest extends EccubeTestCase
 
         $fixtures = $this->loader->loadFromDirectory($this->dir);
 
-        $this->assertTrue(is_array($fixtures));
+        $this->assertIsArray($fixtures);
         $this->assertInstanceOf(CsvFixture::class, $fixtures[0]);
 
         $this->expected = iterator_count($finder->getIterator());

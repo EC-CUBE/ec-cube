@@ -217,9 +217,7 @@ class OwnerStoreController extends AbstractController
             [
                 new Assert\NotBlank(),
                 new Assert\Regex(
-                    [
-                        'pattern' => '/^[a-zA-Z0-9_]+$/',
-                    ]
+                    pattern: '/^[a-zA-Z0-9_]+$/'
                 ),
             ]
         );
@@ -308,9 +306,7 @@ class OwnerStoreController extends AbstractController
             [
                 new Assert\NotBlank(),
                 new Assert\Regex(
-                    [
-                        'pattern' => '/^[a-zA-Z0-9_]+$/',
-                    ]
+                    pattern: '/^[a-zA-Z0-9_]+$/'
                 ),
             ]
         );
@@ -326,9 +322,7 @@ class OwnerStoreController extends AbstractController
             [
                 new Assert\NotBlank(),
                 new Assert\Regex(
-                    [
-                        'pattern' => '/^[0-9.]+$/',
-                    ]
+                    pattern: '/^[0-9.]+$/'
                 ),
             ]
         );
