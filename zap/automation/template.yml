@@ -26,6 +26,32 @@ env:
           username: admin
           password: password
 
+    - name: front_login
+      urls:
+        - 'https://ec-cube'
+      includePaths:
+        - '\Qhttps://ec-cube\E.*'
+      excludePaths:
+        - '\Qhttps://ec-cube/admin\E.*'
+      authentication:
+        method: 'form'
+        parameters:
+          loginPageUrl: https://ec-cube/mypage/login
+          loginRequestUrl: https://ec-cube/mypage/login
+          loginRequestBody: _csrf_token=&login_email={%username%}&login_pass={%password%}
+        verification:
+          method: 'poll'
+          pollUrl: 'https://ec-cube/mypage/'
+          pollFrequency: 1000
+          pollUnits: 'requests'
+          loggedOutRegex: 'name="login_email"'
+      users:
+      # admin_create_customer.zst が作成する会員
+      - name: customer
+        credentials:
+          username: user@example.com
+          password: EccubeE2ePassword1
+
     - name: default
       urls:
         - https://ec-cube
@@ -66,6 +92,7 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       sequence: target
       user: ${ZA_USER}
       context: ${ZA_CONTEXT}
+${ZA_POLICY_CONFIG}
 
   - type: passiveScan-wait
 
