@@ -28,6 +28,12 @@ services:
       context: .
       args:
         TAG: ${TAG:-8.2-apache}
+        ## PHP 8.5 以降は opcache がコア組み込みのため docker-php-ext-install の対象から外す必要がある
+        ## (残したままだとイメージのビルドが `cp: cannot stat 'modules/*'` で失敗する)。
+        ## TAG を 8.5-apache 以降にする場合は EXT_INSTALL_ARGS も併せて指定する。
+        ## 既定値は Dockerfile と同じ (8.2〜8.4 向け)。 バージョンごとの値は
+        ## .github/workflows/dockerbuild.yml の matrix が正。
+        EXT_INSTALL_ARGS: "${EXT_INSTALL_ARGS:-zip gd mysqli pdo_mysql opcache intl}"
       pull: true
     pull_policy: missing
     ports:

@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace Eccube\Service\AgentCommerce\Security;
 
-use phpseclib3\Crypt\EC;
-use phpseclib3\Crypt\EC\PrivateKey;
-use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\EC;
+use phpseclib4\Crypt\EC\PrivateKey;
+use phpseclib4\Crypt\PublicKeyLoader;
 
 /**
  * UCP の HTTP Message Signatures (RFC 9421) に使う EC P-256 秘密鍵.
@@ -44,10 +44,12 @@ final class UcpSigningKeyPurpose implements KeyPurposeInterface
     #[\Override]
     public function generate(): string
     {
-        /** @var PrivateKey $key */
         $key = EC::createKey('secp256r1');
 
-        return $key->toString('PKCS8');
+        // phpseclib 4 の createKey() は OpenSSL 経由で loadPrivateKey() (password 既定 '') を通るため
+        // 鍵の password が '' になり、toString() が isset('') で空パスワードの暗号化 PKCS8
+        // (ENCRYPTED PRIVATE KEY) を書き出す。keystore は平文 PEM を前提としているので明示的に外す。
+        return $key->withoutPassword()->toString('PKCS8');
     }
 
     /**

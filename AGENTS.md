@@ -47,7 +47,6 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 4.x
 - **テスト**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ Playwright（E2E、`e2e/`）
   - ※ `symfony/phpunit-bridge` は依存にあるが、その `DeprecationErrorHandler`（`SYMFONY_DEPRECATIONS_HELPER`）は **PHPUnit 10 以上では無効**（bridge の `bootstrap.php` が早期 return する）。非推奨の検出は PHPUnit 11 ネイティブの `failOnDeprecation` で行う（`phpunit.xml.dist`）。
-  - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
 
@@ -120,6 +119,14 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose
 curl -s -o /dev/null http://127.0.0.1:8080/   # セッションを生成し Web サーバーの uid を判定可能にする
 docker compose exec -u eccube ec-cube bin/console eccube:doctor:permissions
 ```
+
+この構成は CI でも起動して検証する（`.github/workflows/permission-lanes-test.yml`）。レーンの境界、
+`eccube:doctor:permissions` の判定、読み取り専用モードの応答、CLI からのプラグイン導入までを固定する。
+Web サーバーと CLI が別 uid で、かつ Apache（mod_php）経由で動く構成でしか再現しない挙動
+（例: `PassEnv` に載っていない環境変数が Web 側にだけ届かない）は単体テストでは検出できないため。
+Playwright は `permission-lanes-tests` project で `e2e/tests/permission-lanes.spec.ts` だけを実行する。
+分離モードは `APP_ENV=prod` 固定で、prod のセッション cookie は `SameSite=None` のため
+**HTTP では管理画面にログインできない**。CI は `4430` の HTTPS（自己署名）を使う。
 
 レーン W（`var/runtime`、`var/sessions`、`var/log`、`html/upload/**`）は `www-data` 所有とし、
 共有グループは作らない。CLI からレーン W を触る操作は Web サーバーのユーザーで実行する。
