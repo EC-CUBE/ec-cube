@@ -439,7 +439,7 @@ class AdminController extends AbstractController
         $qb = $this->productRepository->createQueryBuilder('p')
             ->select('count(DISTINCT p.id)')
             ->innerJoin('p.ProductClasses', 'pc')
-            ->where('pc.stock_unlimited = :StockUnlimited AND pc.stock = 0')
+            ->where('pc.stock_unlimited = :StockUnlimited AND pc.in_stock = false')
             ->andWhere('pc.visible = :visible')
             ->setParameter('StockUnlimited', false)
             ->setParameter('visible', true);

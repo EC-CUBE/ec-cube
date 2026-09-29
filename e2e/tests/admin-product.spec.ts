@@ -898,14 +898,14 @@ test.describe('Admin Product (EA03)', () => {
     );
     expect(Number(duplicated)).toBe(0);
 
-    // 非正規化されている dtb_product_class.stock と dtb_product_stock.stock がズレていないこと
+    // 在庫の有無 (dtb_product_class.in_stock) が在庫数 (dtb_product_stock.stock) とズレていないこと
     const mismatched = await db.fetchOne(
       `SELECT COUNT(*) AS count
          FROM dtb_product_class pc
          JOIN dtb_product_stock ps ON ps.product_class_id = pc.id
         WHERE pc.product_id = ?
           AND pc.stock_unlimited = false
-          AND pc.stock <> ps.stock`,
+          AND pc.in_stock <> (ps.stock >= 1)`,
       [productId]
     );
     expect(Number(mismatched)).toBe(0);
