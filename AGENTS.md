@@ -372,8 +372,9 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 
 ## コーディング規約（レイヤ別・オンデマンド）
 
-レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が本文を直接持ちます。
-本文は純 Markdown なので GitHub でもそのまま読めます。
+レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が実装パターンとして直接持ちます。
+各レイヤの「よくある間違い」は [`eccube-pre-impl`](./.claude/skills/eccube-pre-impl/SKILL.md) の該当レイヤ節に集約しています（レイヤ Skill 側は誘導のみ）。
+各 `SKILL.md` は純 Markdown なので GitHub でもそのまま読めます。
 
 ### 作業の進め方（規約の読み込み）
 
@@ -417,7 +418,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 | コントリビューション（PR 作成・CI ゲートの再現） | [`.claude/skills/eccube-contributing/SKILL.md`](./.claude/skills/eccube-contributing/SKILL.md) | `eccube-contributing` |
 
 > 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
-> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
+> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。「よくある間違い」は `eccube-pre-impl` に書き、レイヤ Skill には誘導だけを置く。
 
 **Skill 命名規則**: **`eccube-` 接頭辞を必ず付ける**（`eccube-controller` / `eccube-service` / `eccube-phpunit`）。
 接頭辞の後ろは、自動発火するレイヤ規約系はトピック名、
@@ -430,8 +431,8 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 1 件ずつ例外対応せず全 Skill を `eccube-` 名前空間に入れる。接頭辞だけで衝突回避と
 ピッカーでの一括絞り込みは足りるので、`-dev` のような接尾辞は付けない。
 
-**「よくある間違い」を書き足すときの歯止め**: 検証やレビューで得た知見を追記していくと、
-このセクションは放置すると際限なく伸び、個別事例が一般則の顔で並ぶ。次の 3 点を守る。
+**「よくある間違い」を書き足すときの歯止め**: 追記先は `eccube-pre-impl` の該当レイヤ節。検証やレビューで得た知見を追記していくと、
+放置すれば際限なく伸び、個別事例が一般則の顔で並ぶ。次の 3 点を守る。
 
 - **一般化テスト**: 固有のメソッド名・列名・テーブル名を消しても項目が成立するか確認する。
   成立しないものは Skill に書かない（そのレイヤ全体に効く規約ではなく、特定の調査結果である）。
@@ -439,8 +440,7 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - **上限**: 1 レイヤ節あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
 - **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
 
-この歯止めは**追記するときに適用する**。本規則の導入時点で超過していた Skill
-（項数 2 件・字数 8 件）は統合・短縮済みで、現在はすべて 10 項以内に収まっている。
+この歯止めは**追記するときに適用する**。現在は `eccube-pre-impl` の全レイヤ節が 10 項以内に収まっている。
 超過の有無は次で確認できる。
 
 ```bash

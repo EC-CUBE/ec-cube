@@ -40,7 +40,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 自前でパスワードをハッシュ/平文比較 → ✅ `PasswordHasher` 経由に統一
 - ❌ ユーザー入力を Twig で `|raw` 出力 → ✅ エスケープを効かせる（Skill `eccube-twig-template`）
 - ❌ ファイル操作を伴う管理ルートを新設して `eccube_restrict_file_upload` を考慮しない → ✅ 遮断対象（`eccube_restrict_file_upload_urls`）に含めるべきか検討する
-- ❌ ユーザー指定のパスをそのまま読み書き（**ディレクトリトラバーサル**）→ ✅ `..` を拒否し `realpath()` で解決、許可ベース配下かを検証する（`FileController::checkDir()` が手本）
+- ❌ ユーザー指定のパスをそのまま読み書き（**ディレクトリトラバーサル**）→ ✅ `..` を拒否し `realpath()` で解決、許可ベース配下かを検証（手本: `UserDataFileService::tryResolve()`）
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-security/SKILL.md`
 
@@ -110,7 +110,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 **触るとき**: 入力フォーム・バリデーション
 
 - ❌ `getBlockPrefix()` の戻り値型を省略 → ✅ `: string` を付ける
-- ❌ 既存フォームをコアで直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張
+- ❌ 店舗側で既存フォームを拡張するのにコアを直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張（本体の修正ならコアを直す）
 - ❌ 管理画面検索フォームで CSRF 無効化 → ✅ CSRF 保護を保つ
 - ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入
 - ❌ 既存フォームに二重送信防止/楽観ロック用の unmapped hidden を足し、サーバー側で値未送信を即エラー扱い → ✅ 値が空/未送信なら判定をスキップ（プログラム的 POST・既存テスト・外部連携を壊さない後方互換を保つ）
@@ -172,12 +172,11 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 **触るとき**: カラム追加の要否判断・型変更・マスタ投入
 
-- ❌ カラムを足したので `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
-- ❌ `doctrine:migrations:diff` で Entity 差分から ALTER を自動生成する
-- ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
-- ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
-- ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
-- ❌ カラムを足したので反射的に `ALTER TABLE ... ADD COLUMN` のマイグレーションを書く
+- ❌ カラム追加で反射的に `ALTER TABLE ... ADD COLUMN` を書く → ✅ Entity 属性を足すだけ。`schema:update --force` が反映する
+- ❌ `migrations:diff` で ALTER を自動生成する → ✅ `migrations:generate` の空雛形に、INSERT・型変更など `schema:update` で扱えない分だけ手書きする
+- ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性
+- ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする
+- ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-migration/SKILL.md`
 
@@ -224,7 +223,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ HTML メール用に送信メソッドへ分岐を足す → ✅ 同名 `*.html.twig` を置けば `getHtmlTemplate()` が自動で multipart 化する
 - ❌ 送信失敗で例外を投げて受注処理を止める → ✅ `TransportExceptionInterface` を catch して `log_critical` で記録（既存の方針に合わせる）
 - ❌ `MailService` 内で `flush()`／会員系メールを `MailHistory` に残す → ✅ persist まで。履歴の関連は `Order` と `Creator` のみ
-- ❌ コアの `Resource/template/default/Mail/*.twig` を直接書き換える → ✅ `app/template/<コード>/Mail/` で上書きする
+- ❌ 店舗側でコアの `Mail/*.twig` を直接書き換える → ✅ `app/template/<コード>/Mail/` で上書きする（本体の修正ならコア側を直す）
 - ❌ 送信前のイベント dispatch を省く → ✅ プラグインの差し替え口として `EccubeEvents::MAIL_*` を必ず発火する
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-mail/SKILL.md`
@@ -264,15 +263,15 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 **触るとき**: PHPUnit テスト
 
 - ❌ HTTP クライアント・URL・Entity を自前で用意する → ✅ 親クラスの `$this->client`、`$this->generateUrl()`、`createXxx()` ヘルパを使う
-- ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する。
-- ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う。
-- ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する。
+- ❌ 支払方法のテストで `find(1)` 等の ID 前提 → ✅ `Generator::createPayment()` で sort_no・利用条件を明示し `assertSame()` で固定する
+- ❌ ステータス値のハードコーディング（`if ($status == 1)`）→ ✅ 定数（例: `OrderStatus::NEW`）を使う
+- ❌ 回帰テストがゲートになるか確かめない → ✅ 修正を外して落ちるか実測する。`failOnWarning` が無いので Warning では落ちず、戻り値を assert する
 - ❌ テストのプロパティを未宣言で代入／非 nullable で宣言 → ✅ nullable で宣言（`cleanUpProperties()` の null 代入で `TypeError` になる）
-- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる。
+- ❌ HTML パートを持たないメールに `assertEmailHtmlBodyNotContains()` → ✅ `assertNull($Message->getHtmlBody())`。前者は必ず通る空振りになる
 - ❌ ローカルだけ 500 のテストを自分の変更のせいに帰属 → ✅ `createFormData()` が送らない列で非 nullable setter に `null` が入る
-- ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる。
+- ❌ 依存ライブラリの例外メッセージを全文アサート → ✅ 版差で変わらない部分だけ含有判定する。上流はマイナー更新で書式を足すので、lock 更新だけで全マトリクスが落ちる
 - ❌ `strpos()` の結果を順序比較にそのまま使う → ✅ 見つからないと `false` が `0` 扱いで空振りする。比較前に双方の存在を assert する
-- ❌ 悲観ロックを使う処理を PHPUnit のテストで書く → ✅ test は `TransactionListener` 無効で `TransactionRequiredException` になる。E2E で書く（#7016）。
+- ❌ 悲観ロックを使う処理を PHPUnit のテストで書く → ✅ test は `TransactionListener` 無効で `TransactionRequiredException` になる。E2E で書く（#7016）
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-phpunit/SKILL.md`
 
@@ -280,16 +279,16 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 
 **触るとき**: E2E（Playwright）
 
-- ❌ `waitForTimeout(固定ms)` で同期を取る → ✅ web-first assertion で「状態」を待つ。外部 JS 由来の待機だけ例外とし、理由をコメントに書く。
-- ❌ `front-*` spec で管理者ログイン済みを前提にする → ✅ front は未認証 state。spec 内でログインするか admin 経由で会員作成する。
-- ❌ 一覧の件数や先頭行（`tr:first-child`）に依存する → ✅ 先行テストや retry で件数も並び順も変わる。件数は正規表現、行は ID で特定（`mode: 'serial'` での固定化は 1 件の失敗で後続が全滅）。
-- ❌ セレクタが複数要素にマッチ（strict mode violation）→ ✅ `.first()` か `data-*` 属性で一意化する。
-- ❌ テスト境界で管理者セッションが切れて 401 → ✅ `ensureAdminLoggedIn()` 等で再ログインしてから操作（`admin-basicinfo.spec.ts` 修正例）。
-- ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）。
-- ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）。
-- ❌ 新規 spec を作ったのに CI で実行されない → ✅ `e2e-test.yml` の `suite:` 配列にファイル名（`.spec.ts` 抜き）を追加する。
+- ❌ `waitForTimeout(固定ms)` で同期を取る → ✅ web-first assertion で「状態」を待つ。外部 JS 由来の待機だけ例外とし、理由をコメントに書く
+- ❌ `front-*` spec で管理者ログイン済みを前提にする → ✅ front は未認証 state。spec 内でログインするか admin 経由で会員作成する
+- ❌ 一覧の件数や先頭行（`tr:first-child`）に依存する → ✅ 先行テストや retry で件数も並び順も変わる。件数は正規表現、行は ID で特定（`mode: 'serial'` での固定化は 1 件の失敗で後続が全滅）
+- ❌ セレクタが複数要素にマッチ（strict mode violation）→ ✅ `.first()` か `data-*` 属性で一意化する
+- ❌ テスト境界で管理者セッションが切れて 401 → ✅ `ensureAdminLoggedIn()` 等で再ログインしてから操作（`admin-basicinfo.spec.ts` 修正例）
+- ❌ retry でプラグイン/データが残留し再失敗 → ✅ `beforeEach`/`afterEach` で cleanup（無効化 → 削除 → ディレクトリ削除）
+- ❌ パスワードを見た目の文字数で作る → ✅ NFKC 正規化後で 15 文字以上か数える（min15。`[...str.normalize('NFKC')].length` で確認。#6488）
+- ❌ 新規 spec を作ったのに CI で実行されない → ✅ `e2e-test.yml` の `suite:` 配列にファイル名（`.spec.ts` 抜き）を追加する
 - ❌ 複数スイートが一斉に落ちたのを spec の不具合として追う → ✅ `setup-fixtures.php` は try-catch 無しの直列実行で、Fatal 以降のフィクスチャが未生成になる。ログ末尾の完了行を先に見る
-- ❌ 更新直後の値を任意の画面から読む → ✅ `APP_ENV=e2e` は結果キャッシュ有効（dev/test は無効）で最大 10 秒古い。`enableResultCache` しない画面から読む（#7016）。
+- ❌ 更新直後の値を任意の画面から読む → ✅ `APP_ENV=e2e` は結果キャッシュ有効（dev/test は無効）で最大 10 秒古い。`enableResultCache` しない画面から読む（#7016）
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-e2e/SKILL.md`
 
