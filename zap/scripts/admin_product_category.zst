@@ -135,7 +135,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "name=\"category_\\d+\\[_token\\]\" value=\"",
+      "prefix": "name=\"category_\\d+\\[_token\\]\"[^>]*value=\"",
       "postfix": "\" />",
       "location": "BODY",
       "variableName": "category-token",

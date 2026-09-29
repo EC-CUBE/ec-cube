@@ -93,37 +93,6 @@
       "elementType": "ZestActionPrint"
     },
     {
-      "url": "https://ec-cube/admin/product/product/image/add",
-      "data": "------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[_token]\"\r\n\r\n{{csrf1}}\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[return_link]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[name]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][sale_type]\"\r\n\r\n1\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[description_detail]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[description_list]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][price02]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][price01]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][stock_unlimited]\"\r\n\r\n1\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[search_word]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][code]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][sale_limit]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[class][delivery_duration]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[free_area]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[note]\"\r\n\r\n\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[Status]\"\r\n\r\n2\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nContent-Disposition: form-data; name=\"admin_product[product_image][]\"; filename=\"1.png\"\r\nContent-Type: image/png\r\n\r\nPNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0001\u0000\u0000\u0000\u00007nù$\u0000\u0000\u0000\u0004gAMA\u0000\u0000±\u000büa\u0005\u0000\u0000\u0000 cHRM\u0000\u0000z&\u0000\u0000\u0000\u0000ú\u0000\u0000\u0000è\u0000\u0000u0\u0000\u0000ê`\u0000\u0000:\u0000\u0000\u0017pºQ<\u0000\u0000\u0000\u0002bKGD\u0000\u0001Ý\u0013¤\u0000\u0000\u0000\u0007tIME\u0007æ\u0007\u0001\u0007#(\u0006 T\u0000\u0000\u0000\nIDAT\b×ch\u0000\u0000\u0000\u0000ÝCjô\u0000\u0000\u0000%tEXtdate:create\u00002022-07-01T07:34:58+00:00Pï5\u0000\u0000\u0000%tEXtdate:modify\u00002022-07-01T07:34:58+00:00!²4\u0000\u0000\u0000\u0019tEXtSoftware\u0000gnome-screenshotï\u0003¿>\u0000\u0000\u0000\u0000IEND®B`\r\n------WebKitFormBoundaryk0Y1rAnuyjWfA6Jr--\r\n",
-      "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2380\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundaryk0Y1rAnuyjWfA6Jr\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1657019433518,
-      "cookies": [],
-      "index": 7,
-      "enabled": false,
-      "elementType": "ZestRequest"
-    },
-    {
-      "prefix": "[\"",
-      "postfix": "\"]",
-      "location": "BODY",
-      "variableName": "uploaded-file",
-      "index": 8,
-      "enabled": false,
-      "elementType": "ZestAssignStringDelimiters"
-    },
-    {
       "url": "https://ec-cube/admin/product/product/new",
       "data": "------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[_token]\"\r\n\r\n{{csrf1}}\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[return_link]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[name]\"\r\n\r\nãã¹ã\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][sale_type]\"\r\n\r\n1\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[add_images][0]\"\r\n\r\n{{uploaded-file}}\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"sort_no_images[]\"\r\n\r\n{{uploaded-file}}//1\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[product_image][]\"; filename=\"\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[description_detail]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[description_list]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][price02]\"\r\n\r\n1000\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][price01]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][stock_unlimited]\"\r\n\r\n1\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[search_word]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][code]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][sale_limit]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[class][delivery_duration]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[free_area]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[Category][]\"\r\n\r\n2\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[Tag][]\"\r\n\r\n3\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[note]\"\r\n\r\n\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA\r\nContent-Disposition: form-data; name=\"admin_product[Status]\"\r\n\r\n2\r\n------WebKitFormBoundaryabtBCEay7NhXaLrA--\r\n",
       "method": "POST",
@@ -141,7 +110,7 @@
       "followRedirects": false,
       "timestamp": 1655356308783,
       "cookies": [],
-      "index": 9,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -150,7 +119,7 @@
       "postfix": "/edit",
       "location": "HEAD",
       "variableName": "new-product-id",
-      "index": 10,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -172,7 +141,7 @@
       "followRedirects": false,
       "timestamp": 1655356308861,
       "cookies": [],
-      "index": 11,
+      "index": 9,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -183,7 +152,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 12,
+      "index": 10,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -205,7 +174,7 @@
       "followRedirects": false,
       "timestamp": 1657269772328,
       "cookies": [],
-      "index": 13,
+      "index": 11,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -227,7 +196,7 @@
       "followRedirects": false,
       "timestamp": 1657269772374,
       "cookies": [],
-      "index": 14,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -249,7 +218,7 @@
       "followRedirects": false,
       "timestamp": 1655356461692,
       "cookies": [],
-      "index": 15,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -271,7 +240,7 @@
       "followRedirects": false,
       "timestamp": 1655356470756,
       "cookies": [],
-      "index": 16,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestRequest"
     }

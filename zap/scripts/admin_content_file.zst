@@ -98,7 +98,7 @@
       "elementType": "ZestComment"
     },
     {
-      "urlToken": "https://ec-cube/admin/content/file_view?file=%2Ffile-{{file-id}}.txt",
+      "urlToken": "https://ec-cube/admin/content/file_view?file=/file-{{file-id}}.txt",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -126,7 +126,7 @@
       "elementType": "ZestComment"
     },
     {
-      "urlToken": "https://ec-cube/admin/content/file_download?select_file=%2Ffile-{{file-id}}.txt",
+      "urlToken": "https://ec-cube/admin/content/file_download?select_file=/file-{{file-id}}.txt",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",

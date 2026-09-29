@@ -111,7 +111,7 @@
     },
     {
       "url": "https://ec-cube/admin/setting/system/member/new",
-      "data": "admin_member%5B_token%5D={{csrf2}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Blogin_id%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=password1234&admin_member%5Bplain_password%5D%5Bsecond%5D=password1234&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1",
+      "data": "admin_member%5B_token%5D={{csrf2}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Blogin_id%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=EccubeE2ePassword1&admin_member%5Bplain_password%5D%5Bsecond%5D=EccubeE2ePassword1&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 333\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
@@ -197,7 +197,7 @@
     },
     {
       "url": "https://ec-cube/admin/login",
-      "data": "_csrf_token={{csrf4}}&login_id=member-{{member-suffix}}&password=password1234",
+      "data": "_csrf_token={{csrf4}}&login_id=member-{{member-suffix}}&password=EccubeE2ePassword1",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 90\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
@@ -252,7 +252,7 @@
     },
     {
       "url": "https://ec-cube/admin/change_password",
-      "data": "admin_change_password%5B_token%5D={{csrf5}}&admin_change_password%5Bcurrent_password%5D=password1234&admin_change_password%5Bchange_password%5D%5Bfirst%5D=password1234&admin_change_password%5Bchange_password%5D%5Bsecond%5D=password1234",
+      "data": "admin_change_password%5B_token%5D={{csrf5}}&admin_change_password%5Bcurrent_password%5D=EccubeE2ePassword1&admin_change_password%5Bchange_password%5D%5Bfirst%5D=EccubeE2ePassword1&admin_change_password%5Bchange_password%5D%5Bsecond%5D=EccubeE2ePassword1",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 257\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
@@ -329,7 +329,7 @@
     },
     {
       "urlToken": "https://ec-cube/admin/setting/system/member/{{member-id}}/edit",
-      "data": "admin_member%5B_token%5D={{csrf7}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=abc**********123&admin_member%5Bplain_password%5D%5Bsecond%5D=abc**********123&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1&admin_member%5Btwo_factor_auth_enabled%5D=1",
+      "data": "admin_member%5B_token%5D={{csrf7}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=abc*********123&admin_member%5Bplain_password%5D%5Bsecond%5D=abc*********123&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1&admin_member%5Btwo_factor_auth_enabled%5D=1",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 346\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
