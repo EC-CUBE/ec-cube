@@ -6,23 +6,54 @@ name: OWASP ZAP
 # 2. 「OWASP ZAP」ワークフローを選択します。
 # 3. 「Run workflow」ボタンをクリックします。
 # 4. 必要に応じて、表示される入力フォームでパラメータを指定し、「Run workflow」を再度クリックして実行します。
+#
+# ターゲットの一覧と個別の設定 (before_script / context / thread_per_host) は zap/targets.json で管理します。
 on:
   workflow_dispatch:
+    inputs:
+      policy:
+        description: 'スキャンポリシー (Smoke は全ルールを OFF にして zst の再生だけを確認する)'
+        type: choice
+        options:
+          - Sequence
+          - Smoke
+        default: Sequence
+      targets:
+        description: '実行するターゲットの正規表現 (zap/targets.json の target 全体に一致させる)'
+        type: string
+        default: '.*'
 
 permissions:
   contents: read
 
 jobs:
-  prune:
-    name: Prune Docker images
+  prepare:
+    name: Prepare matrix
     runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
-      - name: Prune Docker images
-        run: docker image prune --force
-        
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      - name: Build matrix
+        id: matrix
+        env:
+          TARGETS: ${{ inputs.targets || '.*' }}
+        run: |
+          set -euo pipefail
+          matrix=$(jq -c --arg re "^(${TARGETS})$" '[.[] | select(.target | test($re))]' zap/targets.json)
+          if [[ $(jq length <<< "${matrix}") == 0 ]]; then
+            echo "::error::'${TARGETS}' に一致するターゲットがありません"
+            exit 1
+          fi
+          jq -r '.[].target' <<< "${matrix}"
+          echo "matrix=${matrix}" >> "${GITHUB_OUTPUT}"
+
   build:
     name: Build
-    needs: prune
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
@@ -48,115 +79,18 @@ jobs:
           path: /tmp/ec-cube.tar
 
   scan:
-    name: Scan
-    needs: build
+    name: Scan (${{ matrix.target }})
+    needs: [prepare, build]
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      COMPOSE_FILE: docker-compose.yml:docker-compose.pgsql.yml:docker-compose.owaspzap.ci.yml
+      POLICY: ${{ inputs.policy || 'Sequence' }}
+      TARGET: ${{ matrix.target }}
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - admin_authority
-          - admin_class_category_csv
-          - admin_class_name_csv
-          - admin_content_block
-          - admin_content_cache
-          - admin_content_file
-          - admin_content_layout
-          - admin_customer_delivery
-          - admin_customer_edit
-          - admin_customer_list
-          - admin_delivery
-          - admin_js_css
-          - admin_log
-          - admin_login_history
-          - admin_mail
-          - admin_mail_edit
-          - admin_masterdata
-          - admin_member_edit
-          - admin_member_setting
-          - admin_news
-          - admin_order_edit
-          - admin_order_edit_search
-          - admin_order_list
-          - admin_order_mail
-          - admin_page
-          - admin_payment
-          - admin_product_category
-          - admin_product_class_name
-          - admin_product_csv
-          - admin_product_copy
-          - admin_product_edit
-          - admin_product_edit_class
-          - admin_product_tag
-          - admin_product_view
-          - admin_shipping_csv
-          - admin_shop_setting
-          - admin_system
-          - admin_tax
-          - admin_template
-          - entry
-          - front_block
-          - front_contact
-          - front_help
-          - front_mypage
-          - front_new_item
-          - front_product
-          - front_sitemap
-          - guest_cart
-          - guest_front
-          - guest_shopping
-          - guest_shopping_customer_edit
-          - guest_shopping_shipping_edit
-          - guest_shopping_shipping_multiple
-          - mypage_change
-          - mypage_delivery
-          - mypage_favorite
-          - mypage_order
-          - plugin_coupon_admin_coupon
-          - plugin_coupon_guest_shopping
-          - plugin_mailmagazine_send
-          - plugin_mailmagazine_template
-          - plugin_product_review
-          - plugin_recommend
-          - plugin_related_product
-          - plugin_sales_report
-        include:
-          - target: admin_authority
-            thread_per_host: 1
-          - target: admin_customer_delivery
-            before_script: admin_create_customer.zst
-          - target: admin_content_cache
-            thread_per_host: 1
-          - target: admin_js_css
-            thread_per_host: 1
-          - target: admin_mail
-            thread_per_host: 1
-          - target: admin_masterdata
-            thread_per_host: 1
-          - target: admin_member_setting
-            context: default
-          - target: admin_order_edit_search
-            before_script: admin_create_customers.zst
-          - target: admin_shop_setting
-            thread_per_host: 1
-          - target: admin_system
-            thread_per_host: 1
-          - target: admin_template
-            thread_per_host: 1
-          - target: entry
-            thread_per_host: 1
-          - target: mypage_delivery
-            before_script: admin_create_customer.zst
-          - target: mypage_order
-            before_script: admin_create_customer.zst
-          - target: plugin_coupon_admin_coupon
-            thread_per_host: 1
-          - target: plugin_coupon_guest_shopping
-            before_script: plugin_coupon_admin_create_coupon.zst
-          - target: plugin_mailmagazine_send
-            before_script: plugin_mailmagazine_create_customers.zst
-          - target: plugin_related_product
-            thread_per_host: 1
+        include: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
 
@@ -185,12 +119,10 @@ jobs:
           docker load --input /tmp/ec-cube.tar
           docker tag ec-cube ghcr.io/ec-cube/ec-cube-php:8.2-apache
 
+      # APP_ENV / APP_DEBUG は docker-compose.owaspzap.ci.yml で prod に上書きする
       - name: Run containers
-        env:
-          APP_ENV: prod
-          APP_DEBUG: 0
         run: |
-          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml up -d --wait
+          docker compose up -d --wait
           docker compose cp zap/delete_data.sh postgres:/
           docker compose exec -d -e PGUSER=dbuser -e PGDATABASE=eccubedb postgres /delete_data.sh
           docker compose cp zap/delete_files.sh ec-cube:/
@@ -198,114 +130,52 @@ jobs:
 
       - name: Show ec-cube logs on failure
         if: failure()
-        run: |
-            docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs ec-cube --tail=200
-  
+        run: docker compose logs ec-cube --tail=200
+
+      # バンドル版プラグインは 4.4 対応版のリリースが無いため、各リポジトリの 4.4 ブランチを導入する
       - name: Set up plugins
-        env:
-            APP_ENV: prod
-            APP_DEBUG: 0
         run: |
-          for code in Api42 Coupon42 MailMagazine42 ProductReview42 Recommend42 RelatedProduct42 SalesReport42 Securitychecker42
-          do
-              docker compose exec -u www-data:www-data ec-cube bin/console eccube:composer:require "ec-cube/${code,,}"
-              docker compose exec -u www-data:www-data ec-cube bin/console eccube:plugin:enable --code ${code}
+          set -euo pipefail
+          plugins=(
+            eccube-api4:api44:Api44
+            coupon-plugin:coupon44:Coupon44
+            mail-magazine-plugin:mailmagazine44:MailMagazine44
+            ProductReview-plugin:productreview44:ProductReview44
+            recommend-plugin:recommend44:Recommend44
+            related-product-plugin:relatedproduct44:RelatedProduct44
+            sales-report-plugin:salesreport44:SalesReport44
+            securitychecker-plugin:securitychecker44:Securitychecker44
+          )
+          mkdir -p /tmp/repos
+          for p in "${plugins[@]}"; do
+            IFS=: read -r repo pkg code <<< "${p}"
+            git clone --quiet --depth 1 --branch 4.4 "https://github.com/EC-CUBE/${repo}.git" "/tmp/repos/${repo}"
+            # extra.id が無いと eccube:composer:require が失敗する
+            jq '.extra.id = 0' "/tmp/repos/${repo}/composer.json" > /tmp/composer.json
+            mv /tmp/composer.json "/tmp/repos/${repo}/composer.json"
+          done
+          docker compose cp /tmp/repos ec-cube:/var/www/repos
+          docker compose exec -T -u 0:0 ec-cube chown -R www-data:www-data /var/www/repos
+          for p in "${plugins[@]}"; do
+            IFS=: read -r repo pkg code <<< "${p}"
+            echo "::group::${code}"
+            docker compose exec -T -u www-data:www-data ec-cube composer config "repositories.${pkg}" \
+              "{\"type\":\"path\",\"url\":\"/var/www/repos/${repo}\",\"options\":{\"symlink\":false}}"
+            docker compose exec -T -u www-data:www-data ec-cube bin/console eccube:composer:require "ec-cube/${pkg}"
+            docker compose exec -T -u www-data:www-data ec-cube bin/console eccube:plugin:enable --code "${code}"
+            # 前のプラグインを有効化した時点のコンテナキャッシュが残ると、次の有効化が失敗することがある
+            docker compose exec -T -u www-data:www-data ec-cube bin/console cache:clear
+            echo "::endgroup::"
           done
 
       - name: Disable rate limiter
         run: |
-          docker compose exec -u www-data:www-data ec-cube sed -i -e "s/eccube_login_throttling_max_attempts: 5/eccube_login_throttling_max_attempts: 1024/" -e "s/eccube_login_throttling_interval: '30 minutes'/eccube_login_throttling_interval: '1 minutes'/" app/config/eccube/packages/eccube.yaml
-          docker compose exec -u www-data:www-data ec-cube rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
-          docker compose exec -u www-data:www-data ec-cube sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
-          docker compose exec -u www-data:www-data ec-cube bin/console cache:clear
-          docker compose exec -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_max_attempts
-          docker compose exec -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_interval
-          docker compose exec -u www-data:www-data ec-cube bin/console debug:config eccube
-
-      - name: Generate automation config
-        env:
-          ZAP_CONTEXT: "${{ matrix.context }}"
-          ZAP_THREAD_PER_HOST: "${{ matrix.thread_per_host }}"
-          ZAP_BEFORE_SCRIPT: "${{ matrix.before_script }}"
-        run: |
-          set -eu
-
-          BEFORE=""
-          if [[ "${{ matrix.target }}" == admin_* ]]; then
-            BEFORE="admin_login.zst"
-          fi
-
-          # 既存の include で before_script が指定されている場合はそれを優先したいなら下の行を有効化
-          if [[ -n "${ZAP_BEFORE_SCRIPT:-}" ]]; then BEFORE="${ZAP_BEFORE_SCRIPT}"; fi
-
-          zap/generate_automation_config.sh \
-            -t ${{ matrix.target }} \
-            ${BEFORE:+-b "${BEFORE}"} \
-            ${ZAP_CONTEXT:+-c "${ZAP_CONTEXT}"} \
-            ${ZAP_THREAD_PER_HOST:+-n "${ZAP_THREAD_PER_HOST}"}
-
-          cat zap/automation/${{ matrix.target }}.yml
-
-      - name: Patch automation config (run before_script)
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import os, re, pathlib
-
-          target = os.environ.get("TARGET")
-          if not target:
-            raise SystemExit("TARGET env is required")
-
-          p = pathlib.Path(f"zap/automation/{target}.yml")
-          y = p.read_text(encoding="utf-8")
-
-          # before_script の add ブロックが無いターゲットは何もしない
-          if "name: before_script" not in y:
-            print("No before_script in this target. Skip patch.")
-            raise SystemExit(0)
-
-          # すでに run が入っている場合も何もしない
-          if re.search(r"name:\s*before_script[\s\S]*?action:\s*run", y):
-            print("before_script run already exists. Skip patch.")
-            raise SystemExit(0)
-
-          # before_script の add ブロック直後に run を差し込む
-          # （template.ymlのインデントに合わせて jobs 配下は "  - type:" 形式）
-          m = re.search(
-            r"(\n  - type: script\n    parameters:\n"
-            r"(?:      .+\n)*"
-            r"      action: add\n"
-            r"      type: sequence\n"
-            r"      name: before_script\n"
-            r"(?:      .+\n)*"
-            r"      file: .+\n)",
-            y
-          )
-          if not m:
-            raise SystemExit("Could not find before_script add block to patch")
-
-          insert = (
-            "\n  - type: script\n"
-            "    parameters:\n"
-            "      action: run\n"
-            "      type: sequence\n"
-            "      name: before_script\n"
-          )
-
-          y2 = y[:m.end(1)] + insert + y[m.end(1):]
-          p.write_text(y2, encoding="utf-8")
-          print("Patched:", p)
-          PY
-        env:
-          TARGET: ${{ matrix.target }}
-
-      - name: Debug inspect zap container
-        run: |
-          docker compose exec -T zap whoami
-          docker compose exec -T zap pwd
-          docker compose exec -T zap ls -l /zap/wrk
-          docker compose exec -T zap ls -l /home/zap/.ZAP || true
+          docker compose exec -T -u www-data:www-data ec-cube sed -i -e "s/eccube_login_throttling_max_attempts: 5/eccube_login_throttling_max_attempts: 1024/" -e "s/eccube_login_throttling_interval: '30 minutes'/eccube_login_throttling_interval: '1 minutes'/" app/config/eccube/packages/eccube.yaml
+          docker compose exec -T -u www-data:www-data ec-cube rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
+          docker compose exec -T -u www-data:www-data ec-cube sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+          docker compose exec -T -u www-data:www-data ec-cube bin/console cache:clear
+          docker compose exec -T -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_max_attempts
+          docker compose exec -T -u www-data:www-data ec-cube bin/console debug:container --parameter eccube_login_throttling_interval
 
       - name: Update and Install Add-ons
         run: |
@@ -315,43 +185,80 @@ jobs:
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall automation
           docker compose exec -T zap /zap/zap.sh -cmd -addoninstall groovy
 
-      - name: Preprocess Zest scripts (replace customer-id token)
+      # Smoke は同梱の Sequence ポリシーの全ルールを OFF にしたもの。能動スキャンをせず zst の再生だけを確認する
+      - name: Create Smoke policy
+        if: env.POLICY == 'Smoke'
         run: |
-          docker compose exec -T -u 0:0 zap sh -lc '
-            set -eu
-            echo "=== before replace (sample) ==="
-            grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
+          docker compose exec -T zap sh -c "sed -e 's#<policy>Sequence</policy>#<policy>Smoke</policy>#' -e 's#<level>[A-Z]*</level>#<level>OFF</level>#g' -e 's#<enabled>true</enabled>#<enabled>false</enabled>#g' -e '/<statsId>/d' -e '/<readonly>/d' -e '/<locked>/d' /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/Smoke.policy"
 
-            # 置換（rootで実行して権限問題を回避）
-            find /zap/wrk/scripts -name "*.zst" -print0 \
-              | xargs -0 sed -i "s/{{customer-id}}/1/g"
+      # コンテキスト・ユーザー・before_script の既定値は generate_automation_config.sh が決める
+      - name: Generate automation config
+        env:
+          ZAP_CONTEXT: ${{ matrix.context }}
+          ZAP_BEFORE_SCRIPT: ${{ matrix.before_script }}
+        run: |
+          set -eu
+          ZAP_POLICY=""
+          if [[ ${POLICY} != Sequence ]]; then ZAP_POLICY=${POLICY}; fi
+          zap/generate_automation_config.sh \
+            -t "${TARGET}" \
+            ${ZAP_BEFORE_SCRIPT:+-b "${ZAP_BEFORE_SCRIPT}"} \
+            ${ZAP_CONTEXT:+-c "${ZAP_CONTEXT}"} \
+            ${ZAP_POLICY:+-p "${ZAP_POLICY}"}
+          cat "zap/automation/${TARGET}.yml"
 
-            echo "=== after replace (sample) ==="
-            grep -R --line-number "{{customer-id}}" /zap/wrk/scripts 2>/dev/null | head -n 20 || true
-
-            echo "=== perms (dir) ==="
-            ls -ld /zap/wrk/scripts
-          '
-
+      # connection.httpStateEnabled: before_script (standalone) でログインしたセッションをシナリオの再生へ引き継ぐ
       - name: Autorun
+        env:
+          THREAD_PER_HOST: ${{ matrix.thread_per_host }}
         run: |
-          set -x
-          docker compose exec -T zap ls -la /zap/wrk/automation/${{ matrix.target }}.yml
-          docker compose exec -T zap ls -la /zap/wrk/options.properties
-
-          # ZAP実行
+          set -o pipefail
           docker compose exec -T zap /zap/zap.sh \
             -cmd \
             -config anticsrf.tokens.token.name=_csrf_token \
             -config anticsrf.tokens.token.enabled=true \
+            -config connection.httpStateEnabled=true \
+            ${THREAD_PER_HOST:+-config scanner.threadPerHost=${THREAD_PER_HOST}} \
             -configfile /zap/wrk/options.properties \
-            -autorun /zap/wrk/automation/${{ matrix.target }}.yml
+            -autorun "/zap/wrk/automation/${TARGET}.yml" | tee /tmp/zap.log
+
+      # 自動化プランは Zest のアサーション失敗 (passed = false) や変数の抽出失敗 (Assign: failed) があっても
+      # 成功扱いになるため、ログから判定する。
+      # Sequence では能動スキャンの攻撃が前のステップの状態を変えて再生が失敗することがあるため、警告に留める。
+      # ログは options.properties の view.locale=ja_JP により日本語で出力される。
+      - name: Check results
+        if: ${{ !cancelled() }}
+        run: |
+          set -u
+          status=0
+          plan=成功
+          if ! grep -q '自動化プランが成功' /tmp/zap.log; then
+            plan=失敗
+            echo "::error::自動化プランが失敗しました (High のアラート、またはジョブのエラー)"
+            sed -n '/自動化プランの失敗/,$p' /tmp/zap.log
+            status=1
+          fi
+          total=$(grep -c '^Response:' /tmp/zap.log || true)
+          failures=$(grep -E 'passed = false|Assign: failed' /tmp/zap.log || true)
+          count=0
+          if [[ -n ${failures} ]]; then
+            count=$(wc -l <<< "${failures}")
+            level=warning
+            if [[ ${POLICY} == Smoke ]]; then level=error; status=1; fi
+            while IFS= read -r line; do echo "::${level}::${line}"; done <<< "${failures}"
+          fi
+          {
+            echo "### ${TARGET} (${POLICY})"
+            echo "- 自動化プラン: ${plan}"
+            echo "- 再生の失敗: ${count} / ${total}"
+          } >> "${GITHUB_STEP_SUMMARY}"
+          exit ${status}
 
       - name: Debug app logs after autorun
         if: ${{ always() }}
         run: |
           echo "=== Docker Compose Logs (ec-cube) ==="
-          docker compose -f docker-compose.yml -f docker-compose.pgsql.yml -f docker-compose.owaspzap.ci.yml logs ec-cube --tail=300 || true
+          docker compose logs ec-cube --tail=300 || true
 
           echo "=== Symfony prod log (directory and files) ==="
           docker compose exec -T ec-cube sh -lc 'ls -la var/log var/log/prod 2>/dev/null || true'
@@ -362,17 +269,13 @@ jobs:
           echo "=== EC-CUBE admin.log (last 300 lines) ==="
           docker compose exec -T ec-cube sh -lc 'tail -n 300 var/log/prod/admin.log 2>/dev/null || true'
 
-          echo "=== Apache error log (if exists) ==="
-          docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/apache2/error.log 2>/dev/null || true'
-
-          echo "=== PHP error log (if exists) ==="
-          docker compose exec -T ec-cube sh -lc 'tail -n 200 /var/log/php*/error.log 2>/dev/null || true'
-          
       - name: Copy report
         if: ${{ always() }}
         run: |
-          docker compose cp zap:/tmp/report /tmp
-          docker compose cp zap:/tmp/alerts.json /tmp
+          mkdir -p /tmp/report
+          docker compose cp zap:/tmp/report /tmp || true
+          docker compose cp zap:/tmp/alerts.json /tmp || true
+          cp /tmp/zap.log /tmp/report/ || true
 
       - name: Upload report
         if: ${{ always() }}

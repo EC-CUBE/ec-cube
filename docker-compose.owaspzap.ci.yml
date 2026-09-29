@@ -1,4 +1,11 @@
 services:
+  # docker-compose.yml が APP_ENV: dev を直書きしているため、ここで prod に上書きする
+  # (シェルの環境変数では上書きされない)
+  ec-cube:
+    environment:
+      APP_ENV: "prod"
+      APP_DEBUG: 0
+
   zap:
     image: ghcr.io/ec-cube/zaproxy:0.1.2
     
