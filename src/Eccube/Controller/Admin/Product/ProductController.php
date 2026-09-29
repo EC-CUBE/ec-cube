@@ -927,9 +927,9 @@ class ProductController extends AbstractController
         $sortKey = $this->extractSortKey($this->session->get('eccube.admin.product.search', []));
         $paginate_options = $this->createPaginateOptions($sortKey);
 
-        // ProductClass の列でソートしている場合は, その列を select 句に載せる必要がある.
+        // ProductClass 側 (ProductStock を含む) の列でソートしている場合は, その列を select 句に載せる必要がある.
         $sortColumn = $this->productRepository::COLUMNS[$sortKey] ?? '';
-        $hiddenSortColumn = str_starts_with($sortColumn, 'pc.') ? $sortColumn : null;
+        $hiddenSortColumn = $sortColumn !== '' && !str_starts_with($sortColumn, 'p.') ? $sortColumn : null;
 
         $response = new StreamedResponse();
         $response->setCallback(function () use ($request, $paginate_options, $hiddenSortColumn): void {
@@ -969,7 +969,7 @@ class ProductController extends AbstractController
                 $qb->select('p')
                     ->distinct();
 
-                // ProductClass の列でソートしている場合は, その列を HIDDEN で select 句に載せる.
+                // ProductClass 側 (ProductStock を含む) の列でソートしている場合は, その列を HIDDEN で select 句に載せる.
                 // DISTINCT と併用するため, ORDER BY の対象が select 句に無いと
                 // PostgreSQL が「ORDER BY expressions must appear in select list」で拒否する.
                 // pc を fetch join すると ProductClasses が pc.visible の条件で部分初期化され,
@@ -1049,8 +1049,8 @@ class ProductController extends AbstractController
     /**
      * 商品一覧・商品CSVで共通の paginate オプションを組み立てる.
      *
-     * 商品検索のクエリは ProductClass を to-many で join しているため, ProductClass 側の列
-     * (pc.code, pc.stock) でソートすると LimitSubqueryWalker が例外を投げる.
+     * 商品検索のクエリは ProductClass を to-many で fetch join しているため, ProductClass 側の列
+     * (pc.code, ps.stock) でソートすると LimitSubqueryWalker が例外を投げる.
      * wrap-queries を有効にするとサブクエリで包まれ, ソートを保ったまま解消できる.
      * status は association (p.Status) をソート対象にするため, 従来どおり対象外とする.
      *
