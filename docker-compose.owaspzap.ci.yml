@@ -12,7 +12,6 @@ services:
 
     volumes:
       - ./zap:/zap/wrk/
-      - ./zap/policies:/zap/policies:ro
     depends_on:
       - ec-cube
     networks:
