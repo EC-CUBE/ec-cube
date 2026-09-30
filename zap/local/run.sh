@@ -5,7 +5,7 @@
 # usage: LANE=<n> run.sh [-p <policy>] <target>
 #   -p  Sequence (既定) または Smoke
 #
-# 結果は zap/local/out/<policy>/<target>/ に出力する。
+# 結果は zap/local/out/<policy>/<target>/ に出力する (出力先は ZAP_OUT で変更できる)。
 
 set -uo pipefail
 
@@ -27,5 +27,5 @@ IFS='|' read -r BEFORE CONTEXT THREADS <<< "${settings}"
 
 "${ZAP_LOCAL}/restore.sh" || { echo "lane ${LANE}: DB を戻せませんでした" >&2; exit 1; }
 
-exec zap/bin/autorun.sh -t "${TARGET}" -o "${ZAP_LOCAL}/out/${POLICY}/${TARGET}" -p "${POLICY}" \
+exec zap/bin/autorun.sh -t "${TARGET}" -o "${ZAP_OUT}/${POLICY}/${TARGET}" -p "${POLICY}" \
     ${BEFORE:+-b "${BEFORE}"} ${CONTEXT:+-c "${CONTEXT}"} ${THREADS:+-n "${THREADS}"}

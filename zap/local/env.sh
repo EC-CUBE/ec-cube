@@ -7,6 +7,8 @@
 
 ZAP_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 ZAP_LOCAL=${ZAP_ROOT}/zap/local
+# 結果の出力先。条件を変えて同じターゲットを実行するときは、別の出力先を指定して上書きを避ける
+ZAP_OUT=${ZAP_OUT:-${ZAP_LOCAL}/out}
 LANE=${LANE:-1}
 
 export COMPOSE_PROJECT_NAME=eccube-zap-${LANE}

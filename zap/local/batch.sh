@@ -7,7 +7,7 @@
 #   例: zap/local/batch.sh -p Smoke -l "1 2 3 4"
 #       zap/local/batch.sh -l "1 2" 'admin_product_.*'
 #
-# 結果の一覧は zap/local/out/<policy>/summary.tsv に出力する。
+# 結果の一覧は zap/local/out/<policy>/summary.tsv に出力する (出力先は ZAP_OUT で変更できる)。
 # 各ターゲットの結果は zap/local/out/<policy>/<target>/ にある。
 
 set -uo pipefail
@@ -28,7 +28,7 @@ if [[ -z ${LANES} ]]; then
 fi
 
 source "$(dirname "$0")/env.sh"
-OUT=${ZAP_LOCAL}/out/${POLICY}
+OUT=${ZAP_OUT}/${POLICY}
 QUEUE=${OUT}/queue.txt
 SUMMARY=${OUT}/summary.tsv
 mkdir -p "${OUT}"

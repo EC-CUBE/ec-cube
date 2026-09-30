@@ -80,6 +80,7 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 
 - 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`)。
   `batch.sh` の一覧は `zap/local/out/<policy>/summary.tsv` です。
+  条件を変えて同じターゲットを実行するときは、`ZAP_OUT=<出力先>` で結果の上書きを避けられます。
 - `run.sh` はターゲットごとに DB を準備直後の状態 (`eccubedb_clean`) へ戻します。前のターゲットが作ったデータの影響を受けません。
 - レーンの操作は `LANE=<n> zap/local/compose.sh <サブコマンド>` で行えます (例: `logs ec-cube`)。
 - Docker を再起動した後は `zap/local/setup.sh -r <レーン番号>...` で作り直してください。
