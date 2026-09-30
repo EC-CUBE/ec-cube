@@ -103,11 +103,20 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 
 - ZAP の GUI で記録した Zest スクリプトを `scripts/` に置き、`targets.json` に追加します。
 - 画面操作の途中で変わる値 (CSRF トークン・作成したレコードの ID) は、直前のレスポンスから `ZestAssignStringDelimiters` で取り出して `{{変数}}` で参照します。
-  - prefix / postfix には `{{変数}}` が展開されません。
+  - prefix / postfix には `{{変数}}` が展開されません。前後の値に依存する場合は `ZestAssignRegexDelimiters` を使い、
+    `/shopping/shipping_edit/\d+/` や `refund_request/(?=\d+/edit)` のように正規表現で位置を絞ります。
+  - 取り出しに失敗すると、URL やパラメータに `{{変数}}` がそのまま残って送られます。
+    検索フォームのように CSRF トークンを持たないフォームへ未定義の変数を送ると、余分な項目として検証エラーになります。
   - `ZestActionPrint` は `sequence-activeScan` では出力されません。変数の中身を確かめたいときは、変数を埋めた URL へのリクエストを一時的に足すと、ログの `Response:` 行に出ます。
 - 会員登録のように一意であるべき値は、`ZestAssignRandomInteger` で作った乱数を埋めます。
   `before_script` や能動スキャンの再生で同じ値が繰り返し送られ、2 回目以降が失敗するためです。
-- `formIndex` はページ内の `<form>` の順番です。購入フローの画面にはヘッダーの検索フォームがありません。
+- `formIndex` はページ内の `<form>` の順番です。購入フローやマイページの一部の画面にはヘッダーの検索フォームがありません。
+  ずれていても取り出しの失敗としてログに出ないことがあるため、実際の HTML で順番を確かめてください。
+- 手で書く `ZestRequest` に `response` を含めないでください。`elementType` の無い `response` があると読み込みに失敗し、
+  ログには `認識できないシーケンス: target` とだけ出ます。
+- admin コンテキストのターゲットの `before_script` で会員としてログインすると、セッション ID が変わって以降の管理画面の
+  リクエストが未ログイン扱いになります。会員の操作の後に管理画面を操作する場合は、管理画面にログインし直してください
+  (`admin_create_refund_request.zst`)。
 - `mode=confirm` / `mode=complete` のように POST の値だけが違う遷移は、ZAP が同じノードとして扱います。
   `mode2=dummy` のようなダミーのパラメータで区別してください。
 - 変更したら `Smoke` で再生を確かめてから、`Sequence` で実行してください。
