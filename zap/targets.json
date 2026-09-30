@@ -10,6 +10,7 @@
   {"target": "admin_customer_edit"},
   {"target": "admin_customer_list"},
   {"target": "admin_delivery"},
+  {"target": "admin_faq"},
   {"target": "admin_js_css", "thread_per_host": 1},
   {"target": "admin_log"},
   {"target": "admin_login_history"},
