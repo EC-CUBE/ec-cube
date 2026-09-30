@@ -132,7 +132,8 @@ jobs:
         if: failure()
         run: docker compose logs ec-cube --tail=200
 
-      # バンドル版プラグインは 4.4 対応版のリリースが無いため、各リポジトリの 4.4 ブランチを導入する
+      # バンドル版プラグインは 4.4 対応版のリリースが無いため、各リポジトリの 4.4 ブランチを導入する。
+      # Securitychecker44 はリポジトリが非公開で匿名で clone できず、これを操作するシナリオも無いため導入しない
       - name: Set up plugins
         run: |
           set -euo pipefail
@@ -144,7 +145,6 @@ jobs:
             recommend-plugin:recommend44:Recommend44
             related-product-plugin:relatedproduct44:RelatedProduct44
             sales-report-plugin:salesreport44:SalesReport44
-            securitychecker-plugin:securitychecker44:Securitychecker44
           )
           mkdir -p /tmp/repos
           for p in "${plugins[@]}"; do
@@ -209,6 +209,7 @@ jobs:
 
       # connection.httpStateEnabled: before_script (standalone) でログインしたセッションをシナリオの再生へ引き継ぐ
       - name: Autorun
+        id: autorun
         env:
           THREAD_PER_HOST: ${{ matrix.thread_per_host }}
         run: |
@@ -227,7 +228,7 @@ jobs:
       # Sequence では能動スキャンの攻撃が前のステップの状態を変えて再生が失敗することがあるため、警告に留める。
       # ログは options.properties の view.locale=ja_JP により日本語で出力される。
       - name: Check results
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.autorun.outcome != 'skipped' }}
         run: |
           set -u
           status=0
