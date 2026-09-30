@@ -1,5 +1,7 @@
 [
   {"target": "admin_authority", "thread_per_host": 1},
+  {"target": "admin_calendar"},
+  {"target": "admin_category_faq"},
   {"target": "admin_class_category_csv"},
   {"target": "admin_class_name_csv"},
   {"target": "admin_content_block"},
