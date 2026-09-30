@@ -94,7 +94,7 @@ class PluginManager extends AbstractPluginManager
 ```
 
 - メソッドのシグネチャは **`(array $meta, ContainerInterface $container)`**。`$meta['code']` は composer.json の `extra.code`。
-- **install 直後はデフォルト無効（enabled=false）**。有効化は `eccube:plugin:enable` コマンドか管理画面で行う（無効化はコンソールコマンドが無く、管理画面から行う）。
+- **install 直後はデフォルト無効（enabled=false）**。有効化は `eccube:plugin:enable --code=<Code>`、無効化は `eccube:plugin:disable --code=<Code>`（管理画面からも可）。
 
 ## 拡張パターン（プラグインから何を足すか）
 
@@ -134,6 +134,22 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 
 トレイトに `#[EntityExtension]` を付け忘れるとプロキシに反映されず、カラムが認識されない。
 
+## 権限を分離した構成では CLI が正
+
+`app/Plugin` / `app/proxy` / `vendor` / `composer.json` は**レーン S**（CLI ユーザー所有、Web サーバーは読み取りのみ。Skill `eccube-permission-lanes`）。
+Web サーバーと CLI の権限を分離した環境では管理画面からのプラグイン操作（導入・有効化・無効化・アップデート・削除、オーナーズストア経由を含む）は
+`ECCUBE_RESTRICT_FILE_UPLOAD=1` で 403 になり、画面は代替コマンドを案内する。**`eccube:plugin:*` / `eccube:composer:*` が正の導線**。
+
+- **操作の後は `bin/console eccube:cache:build` を別途実行する。** `eccube:plugin:*` は `cache:clear --no-warmup` を子プロセスで実行するだけで
+  コンパイル済みコンテナを作り直せない（実行中のプロセスは自身のコンテナを差し替えられない）。分離した構成では Web サーバーが
+  `var/build` へ書けないため、再生成せずにアクセスを受けると 500 になる。
+- 終了コード **`3` = 本処理は完了したが手動操作が必要**（キャッシュを削除できなかった等）。`0` 以外を失敗と決めつけず、案内された操作を行う。
+  `1` は本処理が完了していない。
+- **プラグインが実行時に書き込むファイルは `app/PluginData` に置かない。** `app/PluginData` はレーン S で、リクエスト処理中に書くなら
+  Web サーバーの書き込み権限が要る（分離した構成で動かなくなる）。実行時に生成するものは `eccube_runtime_dir`（`var/runtime/{env}`）配下か
+  DB に置く。`app/PluginData` に書かざるを得ない場合は、プラグインの README にその旨と必要な権限を明記する。
+- `mkdir()` は `0755`。`0777` / `umask(0)` を書かない（umask は `ECCUBE_UMASK` で運用側が決める）。
+
 ## よくある間違い
 
 - ❌ 雛形を手で一から作る → ✅ `bin/console eccube:plugin:generate <name> <code> <ver>` で骨組みを生成し、不要分を削る
@@ -144,6 +160,8 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 - ❌ トレイト追加後にプロキシ再生成を忘れる → ✅ `bin/console eccube:generate:proxies`
 - ❌ プロジェクト固有の 1 回限りの改変をプラグイン化 → ✅ それは `app/Customize/`。着脱・再配布するものだけプラグイン
 - ❌ `app/Customize`（`Eccube\` を直接拡張）と `app/Plugin`（`Plugin\{Code}\` 独立名前空間）の名前空間を混同 → ✅ 置き場所で名前空間を使い分ける
+- ❌ `eccube:plugin:*` の後にそのままアクセスを受ける → ✅ `eccube:cache:build` を実行する。分離した構成ではコンテナ未生成で 500
+- ❌ プラグインが実行時に `app/PluginData` へ書く → ✅ `eccube_runtime_dir` 配下か DB へ。`app/PluginData` はレーン S
 
 ## 実行・確認方法
 
@@ -153,8 +171,10 @@ bin/console eccube:generate:proxies   # app/proxy/entity/ を再生成
 bin/console eccube:plugin:generate "My Plugin" Example 1.0.0   # 雛形生成（name code ver）
 bin/console eccube:plugin:install --code=Example   # 既存ディレクトリからインストール
 bin/console eccube:plugin:enable  --code=Example   # 有効化
+bin/console eccube:plugin:disable --code=Example   # 無効化
 bin/console eccube:plugin:update  Example          # 更新（PluginManager::update を呼ぶ）
 bin/console eccube:generate:proxies                # プロキシ再生成
+bin/console eccube:cache:build                     # プラグイン操作後のコンパイル済みコンテナ再生成
 bin/console doctrine:schema:validate               # スキーマ整合確認
 ```
 
