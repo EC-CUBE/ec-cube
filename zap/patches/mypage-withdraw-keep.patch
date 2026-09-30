@@ -1,0 +1,30 @@
+退会しない。退会とログアウトの後の攻撃がログイン画面に戻るのを防ぐ
+
+--- a/src/Eccube/Controller/Mypage/WithdrawController.php
++++ b/src/Eccube/Controller/Mypage/WithdrawController.php
+@@ -86,8 +86,8 @@
+ 
+                     // 退会ステータスに変更
+                     $CustomerStatus = $this->customerStatusRepository->find(CustomerStatus::WITHDRAWING);
+-                    $Customer->setStatus($CustomerStatus);
+-                    $Customer->setEmail(StringUtil::random(60).'@dummy.dummy');
++                    // ZAP: $Customer->setStatus($CustomerStatus);
++                    // ZAP: $Customer->setEmail(StringUtil::random(60).'@dummy.dummy');
+ 
+                     $this->entityManager->flush();
+ 
+@@ -105,11 +105,11 @@
+                     $this->mailService->sendCustomerWithdrawMail($Customer, $email);
+ 
+                     // カートと受注のセッションを削除
+-                    $this->cartService->clear();
+-                    $this->orderHelper->removeSession();
++                    // ZAP: $this->cartService->clear();
++                    // ZAP: $this->orderHelper->removeSession();
+ 
+                     // ログアウト
+-                    $this->tokenStorage->setToken(null);
++                    // ZAP: $this->tokenStorage->setToken(null);
+ 
+                     log_info('ログアウト完了');
+ 

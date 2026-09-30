@@ -1,0 +1,13 @@
+お気に入りを削除しない。削除済みで 400 になるのを防ぐ
+
+--- a/src/Eccube/Controller/Mypage/MypageController.php
++++ b/src/Eccube/Controller/Mypage/MypageController.php
+@@ -352,7 +352,7 @@
+         $CustomerFavoriteProduct = $this->customerFavoriteProductRepository->findOneBy(['Customer' => $Customer, 'Product' => $Product]);
+ 
+         if ($CustomerFavoriteProduct) {
+-            $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
++            // ZAP: $this->customerFavoriteProductRepository->delete($CustomerFavoriteProduct);
+         } else {
+             throw new BadRequestHttpException();
+         }

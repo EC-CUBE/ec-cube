@@ -22,6 +22,10 @@ on:
         description: '実行するターゲットの正規表現 (zap/targets.json の target 全体に一致させる)'
         type: string
         default: '.*'
+      patches:
+        description: 'スキャン用のパッチ (zap/patches/ のファイル名から .patch を除いたものを空白区切り。all ですべて。空なら当てない)'
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -87,6 +91,7 @@ jobs:
       COMPOSE_FILE: docker-compose.yml:docker-compose.pgsql.yml:docker-compose.owaspzap.ci.yml
       POLICY: ${{ inputs.policy || 'Sequence' }}
       TARGET: ${{ matrix.target }}
+      PATCHES: ${{ inputs.patches }}
     strategy:
       fail-fast: false
       matrix:
@@ -135,6 +140,16 @@ jobs:
 
       - name: Relax login throttling and rate limiter
         run: zap/bin/prepare_ec-cube.sh
+
+      - name: Apply scan patches
+        if: env.PATCHES != ''
+        run: |
+          if [[ ${PATCHES} == all ]]; then
+            zap/bin/apply_patches.sh
+          else
+            # shellcheck disable=SC2086
+            zap/bin/apply_patches.sh ${PATCHES}
+          fi
 
       - name: Update and Install Add-ons
         run: zap/bin/prepare_zap.sh

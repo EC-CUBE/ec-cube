@@ -1,0 +1,40 @@
+注文を確定せず、カートと購入フローのセッションを残す。注文完了後の攻撃がカート画面へ戻るのを防ぐ
+
+--- a/src/Eccube/Controller/ShoppingController.php
++++ b/src/Eccube/Controller/ShoppingController.php
+@@ -612,7 +612,7 @@
+                     return $response;
+                 }
+ 
+-                $this->entityManager->flush();
++                // ZAP: $this->entityManager->flush();
+ 
+                 // トランザクションをコミット
+                 if ($this->entityManager->getConnection()->isTransactionActive()) {
+@@ -646,7 +646,7 @@
+ 
+             // カート削除
+             log_info('[注文処理] カートをクリアします.', [$Order->getId()]);
+-            $this->cartService->clear();
++            // ZAP: $this->cartService->clear();
+ 
+             // 受注IDをセッションにセット
+             $this->session->set(OrderHelper::SESSION_ORDER_ID, $Order->getId());
+@@ -654,7 +654,7 @@
+             // メール送信
+             log_info('[注文処理] 注文メールの送信を行います.', [$Order->getId()]);
+             $this->mailService->sendOrderMail($Order);
+-            $this->entityManager->flush();
++            // ZAP: $this->entityManager->flush();
+ 
+             // 配送方法・支払い方法の保存処理(会員かつ単一配送先のみ. 失敗しても注文は継続する).
+             $this->savePreferredShippingPayment($Order, $form);
+@@ -720,7 +720,7 @@
+         }
+ 
+         log_info('[注文完了] 購入フローのセッションをクリアします. ');
+-        $this->orderHelper->removeSession();
++        // ZAP: $this->orderHelper->removeSession();
+ 
+         $hasNextCart = !empty($this->cartService->getCarts());
+ 

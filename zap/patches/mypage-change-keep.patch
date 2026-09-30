@@ -1,0 +1,13 @@
+会員情報を保存しない。攻撃でメールやパスワードが変わり、再ログインできなくなるのを防ぐ
+
+--- a/src/Eccube/Controller/Mypage/ChangeController.php
++++ b/src/Eccube/Controller/Mypage/ChangeController.php
+@@ -92,7 +92,7 @@
+ 
+                 $this->session->remove(self::SESSION_KEY_PRE_EMAIL);
+ 
+-                $this->entityManager->flush();
++                // ZAP: $this->entityManager->flush();
+ 
+                 log_info('会員編集完了');
+ 

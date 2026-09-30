@@ -118,6 +118,23 @@ LANE=1 zap/local/compose.sh exec -T ec-cube bin/console debug:router --format=js
   パラメータの無いリクエストは攻撃されず、再生に失敗したステップも攻撃が届いていない可能性があります。
 - 対象外にするルートは、理由と一緒に `zap/coverage_exclude.txt` に書きます (インストーラ、ストアのプラグイン管理)。
 
+## スキャン用のパッチ (補助モード)
+
+能動スキャンの攻撃で状態が消費されると (登録済み、削除済み、使用済みの URL、ログアウトなど)、後続の攻撃は
+画面の処理まで届かずに弾かれます。`zap/patches/*.patch` は、こうした保存や削除の処理を無効にするパッチです
+([doc4 の「テストが止まらないようにするための設定」](https://doc4.ec-cube.net/penetration-testing/testing/apply_patch) を 4.4 向けに作り直したもの)。
+
+スキャンする対象がリリースするコードと変わり、保存の時点で起きるエラー (制約違反など) は検出できなくなるため、
+既定のスキャンでは当てません。必要なときだけ選んで当てます。
+
+```bash
+LANE=7 zap/local/patch.sh                        # すべて当てる
+LANE=7 zap/local/patch.sh -R entry-no-persist    # 1 つだけ外す
+```
+
+GitHub Actions では、`workflow_dispatch` の `patches` にパッチ名 (空白区切り) か `all` を指定します。
+パッチは `restore.sh` では戻りません。外すか、`setup.sh -r` でレーンを作り直してください。
+
 ## シナリオを追加・修正するとき
 
 - ZAP の GUI で記録した Zest スクリプトを `scripts/` に置き、`targets.json` に追加します。

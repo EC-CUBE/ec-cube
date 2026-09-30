@@ -1,0 +1,13 @@
+パスワード再設定の URL を使用済みにしない。再設定フォームへの攻撃が 404 になるのを防ぐ
+
+--- a/src/Eccube/Controller/ForgotController.php
++++ b/src/Eccube/Controller/ForgotController.php
+@@ -186,7 +186,7 @@
+                 $Customer->setPassword($password);
+ 
+                 // リセットキーをクリア
+-                $Customer->setResetKey();
++                // ZAP: $Customer->setResetKey();
+ 
+                 // パスワードを更新
+                 $this->entityManager->persist($Customer);
