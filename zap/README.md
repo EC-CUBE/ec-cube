@@ -78,7 +78,10 @@ zap/local/batch.sh -p Smoke -l "1 2 3 4"
 zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 ```
 
-- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`)。
+- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`)。
+  CI では成果物 `zap-<target>-report` に同じものが入ります。
+- `attacks.tsv` は、シナリオのリクエストごとに EC-CUBE が受けたリクエストの件数と応答の内訳です (`zap/bin/attack_counts.sh`)。
+  `Sequence` では、パラメータがあるのに正常な応答 (2xx/3xx) が数件しか無いリクエストを「攻撃が届いていない可能性」として通知します。
   `batch.sh` の一覧は `zap/local/out/<policy>/summary.tsv` です。
   条件を変えて同じターゲットを実行するときは、`ZAP_OUT=<出力先>` で結果の上書きを避けられます。
 - `run.sh` はターゲットごとに DB を準備直後の状態 (`eccubedb_clean`) へ戻します。前のターゲットが作ったデータの影響を受けません。
@@ -98,6 +101,22 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 
 `Smoke` では、Coupon44 の不具合 (クーポン適用後の購入画面が 500) により `plugin_coupon_guest_shopping` だけが失敗します
 (EC-CUBE/coupon-plugin#198)。
+
+再生に失敗したステップは、能動スキャンの攻撃が画面に届いていない可能性があります (例: `entry` のパスワード再設定は、
+再設定用の URL が使用済みになって 404 になるため、再設定フォームは実質スキャンされていない)。
+
+## シナリオが通らない画面を調べる
+
+`zap/bin/coverage.sh` は、EC-CUBE のルートのうち、どのシナリオのリクエストも一致しないものを一覧にします。
+シナリオを追加したときや、本体にルートが増えたときに確認してください。
+
+```bash
+LANE=1 zap/local/compose.sh exec -T ec-cube bin/console debug:router --format=json | zap/bin/coverage.sh -
+```
+
+- 「通る」はリクエストの URL とメソッドが一致したというだけで、能動スキャンの攻撃が効いたことは意味しません。
+  パラメータの無いリクエストは攻撃されず、再生に失敗したステップも攻撃が届いていない可能性があります。
+- 対象外にするルートは、理由と一緒に `zap/coverage_exclude.txt` に書きます (インストーラ、ストアのプラグイン管理)。
 
 ## シナリオを追加・修正するとき
 

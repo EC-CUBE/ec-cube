@@ -5,7 +5,8 @@
 # usage: autorun.sh -t <target> -o <出力先> [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]
 #   -p  Sequence (既定) または Smoke
 #
-# 出力先には plan.yml / zap.log / ZAP-Report-<target>.html / alerts.json を置く。
+# 出力先には plan.yml / zap.log / ZAP-Report-<target>.html / alerts.json / access.log / attacks.tsv を置く。
+# attacks.tsv はシナリオのリクエストごとに EC-CUBE が受けたリクエストの件数 (zap/bin/attack_counts.sh)。
 # 終了コードは check_results.sh の判定に従う。
 # docker compose は呼び出し元の環境変数 (COMPOSE_FILE / COMPOSE_PROJECT_NAME) で実行する。
 
@@ -45,6 +46,7 @@ docker compose exec -T -u 0:0 zap sh -c \
     'rm -rf /tmp/scripts /tmp/report /tmp/alerts.json && cp -r /zap/wrk/scripts /tmp/scripts && chown -R zap /tmp/scripts' || exit 1
 docker compose exec -T zap sh -c 'cat > /tmp/plan.yml' < "${OUT}/plan.yml" || exit 1
 
+SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 # connection.httpStateEnabled: before_script (standalone) でログインしたセッションをシナリオの再生へ引き継ぐ
 docker compose exec -T zap /zap/zap.sh -cmd \
     -config anticsrf.tokens.token.name=_csrf_token \
@@ -56,5 +58,15 @@ docker compose exec -T zap /zap/zap.sh -cmd \
 
 docker compose cp zap:/tmp/report/. "${OUT}/" > /dev/null 2>&1
 docker compose cp zap:/tmp/alerts.json "${OUT}/alerts.json" > /dev/null 2>&1
+docker compose logs --since "${SINCE}" --no-log-prefix ec-cube > "${OUT}/access.log" 2> /dev/null
+if zap/bin/attack_counts.sh "zap/scripts/${TARGET}.zst" "${OUT}/access.log" > "${OUT}/attacks.tsv" \
+    && [[ ${POLICY} == Sequence ]]; then
+    # パラメータがあるのに正常な応答 (2xx/3xx) が再生の分程度しか無いリクエストは、攻撃が画面の処理まで届いていない
+    awk -F'\t' -v target="${TARGET}" -v gha="${GITHUB_ACTIONS:-}" '
+        $5 == "あり" { split($6, r, "/"); if (r[1] + r[2] <= 3) {
+            msg = sprintf("%s: 攻撃が届いていない可能性 %s %s (ステップ %s、%d 件、応答 2xx/3xx/4xx/5xx = %s)", target, $2, $3, $4, $1, $6)
+            print (gha != "" ? "::notice::" : "[notice] ") msg
+        } }' "${OUT}/attacks.tsv"
+fi
 
 exec zap/bin/check_results.sh "${OUT}/zap.log" "${POLICY}" "${TARGET}"
