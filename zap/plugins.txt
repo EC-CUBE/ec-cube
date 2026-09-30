@@ -1,0 +1,12 @@
+# zst シナリオが前提とするバンドル版プラグイン。
+# 4.4 対応版のリリースが無いため、https://github.com/EC-CUBE/<リポジトリ> の 4.4 ブランチから導入する。
+# 書式: <リポジトリ>:<パッケージ名 (ec-cube/ を除く)>:<プラグインコード>
+#
+# Securitychecker44 はリポジトリが非公開で匿名では clone できず、これを操作するシナリオも無いため含めない。
+eccube-api4:api44:Api44
+coupon-plugin:coupon44:Coupon44
+mail-magazine-plugin:mailmagazine44:MailMagazine44
+ProductReview-plugin:productreview44:ProductReview44
+recommend-plugin:recommend44:Recommend44
+related-product-plugin:relatedproduct44:RelatedProduct44
+sales-report-plugin:salesreport44:SalesReport44

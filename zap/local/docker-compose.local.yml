@@ -1,0 +1,9 @@
+# ローカル実行用 (zap/local/env.sh で docker-compose.owaspzap.ci.yml に重ねる)。
+# レーン同士や、開発用に起動している EC-CUBE とポートが衝突しないよう、ホストへポートを公開しない。
+services:
+  ec-cube:
+    ports: !reset []
+  postgres:
+    ports: !reset []
+  mailcatcher:
+    ports: !reset []
