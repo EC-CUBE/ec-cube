@@ -35,13 +35,13 @@ mkdir -p "${OUT}"
 # 省略時は sequence-activeScan の既定 (同梱の Sequence ポリシー) を使うため、Sequence は渡さない
 POLICY_ARG=
 [[ ${POLICY} != Sequence ]] && POLICY_ARG=${POLICY}
-zap/generate_automation_config.sh -t "${TARGET}" \
+zap/generate_automation_config.sh -t "${TARGET}" -o "${OUT}/plan.generated.yml" \
     ${BEFORE:+-b "${BEFORE}"} ${CONTEXT:+-c "${CONTEXT}"} ${POLICY_ARG:+-p "${POLICY_ARG}"} || exit 1
 
 # zst はコンテナ内へコピーしてから読ませる (Docker Desktop のバインドマウント越しに読むと遅いため)。
 # 生成したプランは作業ツリーに残さない
-sed 's#/zap/wrk/scripts/#/tmp/scripts/#' "zap/automation/${TARGET}.yml" > "${OUT}/plan.yml"
-rm -f "zap/automation/${TARGET}.yml"
+sed 's#/zap/wrk/scripts/#/tmp/scripts/#' "${OUT}/plan.generated.yml" > "${OUT}/plan.yml"
+rm -f "${OUT}/plan.generated.yml"
 docker compose exec -T -u 0:0 zap sh -c \
     'rm -rf /tmp/scripts /tmp/report /tmp/alerts.json && cp -r /zap/wrk/scripts /tmp/scripts && chown -R zap /tmp/scripts' || exit 1
 docker compose exec -T zap sh -c 'cat > /tmp/plan.yml' < "${OUT}/plan.yml" || exit 1

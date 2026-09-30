@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 
-while getopts "t:c:b:n:p:" OPT
+while getopts "t:c:b:n:p:o:" OPT
 do
     case $OPT in
         t) ZA_TARGET=${OPTARG} ;;
@@ -10,6 +10,7 @@ do
         b) ZA_BEFORE_SCRIPT=${OPTARG} ;;
         n) ZA_THREAD_PER_HOST=${OPTARG} ;;
         p) ZA_POLICY=${OPTARG} ;;
+        o) ZA_OUTPUT=${OPTARG} ;;
     esac
 done
 
@@ -88,4 +89,5 @@ if [[ -n ${ZA_BEFORE_SCRIPT} ]]; then
 fi
 
 TEMPLATE=$(sed 's/"/\\"/g' automation/template.yml)
-eval "echo \"${TEMPLATE}\"" > automation/${ZA_TARGET}.yml
+# -o で出力先を指定できる (省略時は automation/<target>.yml)。同じターゲットを並列に生成しても衝突しないように使う
+eval "echo \"${TEMPLATE}\"" > "${ZA_OUTPUT:-automation/${ZA_TARGET}.yml}"
