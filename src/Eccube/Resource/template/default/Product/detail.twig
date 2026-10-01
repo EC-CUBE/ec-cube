@@ -251,6 +251,9 @@ file that was distributed with this source code.
     {% if product_json_ld is defined and product_json_ld %}
     <script type="application/ld+json">{{ product_json_ld|json_ld }}</script>
     {% endif %}
+    {% if faq_json_ld is defined and faq_json_ld %}
+    <script type="application/ld+json">{{ faq_json_ld|json_ld }}</script>
+    {% endif %}
 {% endblock %}
 
 {% block main %}
@@ -438,5 +441,6 @@ file that was distributed with this source code.
                  {{ include(template_from_string(Product.freearea), sandboxed = true) }}
             </div>
         {% endif %}
+        {% include '_faq_list.twig' with {'Faqs': Faqs|default([])} only %}
     </div>
 {% endblock %}

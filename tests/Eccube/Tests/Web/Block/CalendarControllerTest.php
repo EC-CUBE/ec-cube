@@ -18,10 +18,20 @@ namespace Eccube\Tests\Web\Block;
 use Carbon\Carbon;
 use Eccube\Entity\Calendar;
 use Eccube\Tests\Web\AbstractWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class CalendarControllerTest extends AbstractWebTestCase
 {
+    protected function tearDown(): void
+    {
+        // Carbon::setTestNow() はプロセス全体に効くため, 後続のテストへ漏れないよう必ず戻す.
+        // テストメソッドの末尾で戻すとアサーション失敗時に到達せず, 以降のテストを巻き込む.
+        Carbon::setTestNow();
+
+        parent::tearDown();
+    }
+
     public function testRoutingCalendar()
     {
         $this->client->request(Request::METHOD_GET, '/block/calendar');
@@ -89,56 +99,72 @@ final class CalendarControllerTest extends AbstractWebTestCase
         $this->verify();
     }
 
-    public function testWeekendHolidaysStyle()
+    #[DataProvider(methodName: 'provideTodayForWeekendHolidaysStyle')]
+    public function testWeekendHolidaysStyle(string $today): void
     {
-        // 月初日を取得
-        $firstDayOfThisMonth = Carbon::now()->firstOfMonth();
+        Carbon::setTestNow($today);
 
-        // 月初の日曜日を取得
-        $sunday = null;
-        $sundayDayOfWeekNumber = $firstDayOfThisMonth->dayOfWeek;
-        if ($sundayDayOfWeekNumber == 0) { // Sun
-            $sunday = $firstDayOfThisMonth->copy();
-        } elseif ($sundayDayOfWeekNumber == 1) { // Mon
-            $sunday = $firstDayOfThisMonth->copy()->addDays(6);
-        } elseif ($sundayDayOfWeekNumber == 2) { // Tue
-            $sunday = $firstDayOfThisMonth->copy()->addDays(5);
-        } elseif ($sundayDayOfWeekNumber == 3) { // Wed
-            $sunday = $firstDayOfThisMonth->copy()->addDays(4);
-        } elseif ($sundayDayOfWeekNumber == 4) { // Thu
-            $sunday = $firstDayOfThisMonth->copy()->addDays(3);
-        } elseif ($sundayDayOfWeekNumber == 5) { // Fri
-            $sunday = $firstDayOfThisMonth->copy()->addDays(2);
-        } elseif ($sundayDayOfWeekNumber == 6) { // Sat
-            $sunday = $firstDayOfThisMonth->copy()->addDays(1);
-        }
-        // 日曜の前日が今月かどうかで月初の土曜日を取得
-        $saturday = null;
-        if ($sunday->copy()->addDays(-1)->isCurrentMonth()) {
-            $saturday = $sunday->copy()->addDays(-1);
-        } else {
-            $saturday = $sunday->copy()->addDays(6);
-        }
+        // 当月の最初の土曜日・日曜日を取得
+        $saturday = Carbon::now()->firstOfMonth(Carbon::SATURDAY);
+        $sunday = Carbon::now()->firstOfMonth(Carbon::SUNDAY);
+
+        // 期待値と CSS セレクタを同じ変数から組み立てるため, 日付の取得自体が誤っていても
+        // アサーションは通ってしまう. 取得結果が本当に土日で当月かをここで担保する.
+        $this->assertTrue($saturday->isSaturday(), '当月の最初の土曜日が取得できていない');
+        $this->assertTrue($sunday->isSunday(), '当月の最初の日曜日が取得できていない');
+        $this->assertLessThanOrEqual(7, (int) $saturday->format('j'), '最初の土曜日は 7 日以内のはず');
+        $this->assertLessThanOrEqual(7, (int) $sunday->format('j'), '最初の日曜日は 7 日以内のはず');
 
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
 
         // 土曜日の確認
         $this->expected = $saturday->format('j');
-        $this->actual = $crawler->filter('#this-month-holiday-'.$this->expected)->text();
+        $this->actual = $crawler->filter($this->weekendCellSelector($saturday))->text();
         $this->verify();
 
         // 日曜日の確認
         $this->expected = $sunday->format('j');
-        $this->actual = $crawler->filter('#this-month-holiday-'.$this->expected)->text();
+        $this->actual = $crawler->filter($this->weekendCellSelector($sunday))->text();
         $this->verify();
     }
 
-    public function testTodayStyle()
+    /**
+     * 土日のセルを指す CSS セレクタを返す.
+     *
+     * 対象日が今日の場合, テンプレートは #this-month-holiday-X より #today を優先するため ID が変わる.
+     * (このテストでは定休日を登録していないので #today-and-holiday にはならない)
+     *
+     * @see src/Eccube/Resource/template/default/Block/calendar.twig
+     */
+    private function weekendCellSelector(Carbon $day): string
     {
-        $today = new \DateTime();
+        return $day->isSameDay(Carbon::now())
+            ? '#today'
+            : '#this-month-holiday-'.$day->format('j');
+    }
 
+    /**
+     * 月初の曜日と, 今日が土日と重なるかの組み合わせを網羅する.
+     *
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideTodayForWeekendHolidaysStyle(): \Iterator
+    {
+        yield '月初が日曜・今日は平日' => ['2025-06-03'];
+        yield '月初が日曜・今日が第一日曜(月初と同日)' => ['2025-06-01'];
+        yield '月初が日曜・今日が第一土曜' => ['2025-06-07'];
+        yield '月初が土曜・今日が第一土曜(月初と同日)' => ['2025-11-01'];
+        yield '月初が土曜・今日が第一日曜' => ['2025-11-02'];
+        yield '月初が水曜・今日は平日' => ['2025-10-15'];
+        yield '月初が日曜で28日まで・今日は平日' => ['2026-02-04'];
+    }
+
+    public function testTodayStyle(): void
+    {
+        // 「今日」の判定は CalendarController が Carbon::now() で行うため, 期待値も Carbon に合わせる.
+        // new \DateTime() だと Carbon::setTestNow() で時刻を固定したときに実時刻とずれて破綻する.
         $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('block_calendar'));
-        $this->expected = $today->format('j');
+        $this->expected = Carbon::now()->format('j');
         $this->actual = $crawler->filter('#today')->text();
         $this->verify();
     }

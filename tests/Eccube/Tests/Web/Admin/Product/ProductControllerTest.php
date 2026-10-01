@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Product;
 
 use Eccube\Common\Constant;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\Faq;
 use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Master\RoundingType;
 use Eccube\Entity\Product;
@@ -26,6 +27,8 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Eccube\Entity\TaxRule;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ProductTagRepository;
@@ -123,6 +126,9 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
             'images' => [],
             'add_images' => [],
             'delete_images' => [],
+            // FAQ 欄を描画したテンプレートからの送信であることを示すセンチネル.
+            // 実際のフォームでは @admin/Content/faq_collection.twig が常に出力する.
+            'faqs_rendered' => '1',
             Constant::TOKEN_NAME => 'dummy',
         ];
     }
@@ -395,6 +401,172 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertNotSame($preTimestamp, $editedTimestamp);
     }
 
+    /**
+     * 商品編集経由で商品ごとFAQを追加・更新・削除する保存経路を検証する.
+     *
+     * CollectionType + allow_delete + Product::$Faqs の orphanRemoval を通るため、
+     * 送信内容から漏れた FAQ が削除される（＝全削除事故が起き得る）最も危険な経路。
+     */
+    public function testEditWithProductFaq()
+    {
+        $Product = $this->createProduct(null, 0);
+        $productId = $Product->getId();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        // FAQ を2件付与して保存
+        $formData = $this->createFormData();
+        $formData['faqs'] = [
+            [
+                'question' => '発送はいつですか',
+                'answer' => 'ご注文から3営業日以内に発送します',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+            [
+                'question' => '返品できますか',
+                'answer' => '到着後8日以内なら可能です',
+                'sort_no' => '2',
+                'visible' => '0',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        /** @var Faq[] $Faqs */
+        $Faqs = $faqRepository->findBy(['Product' => $productId], ['sort_no' => 'ASC']);
+        $this->assertCount(2, $Faqs);
+        $this->assertSame('発送はいつですか', $Faqs[0]->getQuestion());
+        $this->assertSame(Faq::FAQ_TYPE_PRODUCT, $Faqs[0]->getFaqType());
+        $this->assertTrue($Faqs[0]->isVisible());
+        $this->assertFalse($Faqs[1]->isVisible());
+        $deletedId = $Faqs[1]->getId();
+
+        // 2件目を除外し1件目を更新して再送信 → orphanRemoval で2件目が削除される
+        $formData['faqs'] = [
+            [
+                'question' => '発送はいつですか（更新）',
+                'answer' => '当日出荷に変更しました',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        $Remaining = $faqRepository->findBy(['Product' => $productId]);
+        $this->assertCount(1, $Remaining);
+        $this->assertSame('発送はいつですか（更新）', $Remaining[0]->getQuestion());
+        $this->assertNotInstanceOf(Faq::class, $faqRepository->find($deletedId));
+    }
+
+    /**
+     * FAQ欄を描画していないテンプレートからの保存では、既存の商品ごとFAQが維持されることを検証する.
+     *
+     * app/template/admin/Product/product.twig を上書きして FAQ 欄を落としている店舗を想定。
+     * faqs キーも faqs_rendered も送信されないため、ProductType の PRE_SUBMIT が faqs を
+     * フォームから取り除き、orphanRemoval による全削除を発生させない。
+     */
+    public function testEditKeepsProductFaqWhenCollectionIsNotRendered()
+    {
+        $Product = $this->createProduct(null, 0);
+        $productId = $Product->getId();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        $formData = $this->createFormData();
+        $formData['faqs'] = [
+            [
+                'question' => '上書きテンプレートでも残るか',
+                'answer' => '残る',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->entityManager->clear();
+        $this->assertCount(1, $faqRepository->findBy(['Product' => $productId]));
+
+        // FAQ欄が描画されていない画面からの保存（faqs / faqs_rendered ともに送信されない）
+        $formData = $this->createFormData();
+        unset($formData['faqs_rendered']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        /** @var Faq[] $Faqs */
+        $Faqs = $faqRepository->findBy(['Product' => $productId]);
+        $this->assertCount(1, $Faqs);
+        $this->assertSame('上書きテンプレートでも残るか', $Faqs[0]->getQuestion());
+    }
+
+    /**
+     * FAQ欄を描画した画面で全行を削除した保存では、商品ごとFAQが全削除されることを検証する.
+     *
+     * JS が行を DOM ごと除去するため、全行削除時も faqs キーは送信されない。
+     * faqs_rendered の有無だけが「未描画」との違いになる。
+     */
+    public function testEditRemovesAllProductFaqWhenAllRowsDeleted()
+    {
+        $Product = $this->createProduct(null, 0);
+        $productId = $Product->getId();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        $formData = $this->createFormData();
+        $formData['faqs'] = [
+            [
+                'question' => 'UIで全行削除されるか',
+                'answer' => 'される',
+                'sort_no' => '1',
+                'visible' => '1',
+            ],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->entityManager->clear();
+        $this->assertCount(1, $faqRepository->findBy(['Product' => $productId]));
+
+        // 全行を削除した状態での保存（faqs キーは無いが faqs_rendered は送信される）
+        $formData = $this->createFormData();
+        $this->assertSame('1', $formData['faqs_rendered']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId])
+        ));
+
+        $this->entityManager->clear();
+        $this->assertCount(0, $faqRepository->findBy(['Product' => $productId]));
+    }
+
     public function testDisplayProduct()
     {
         $productClassNum = 0;
@@ -483,6 +655,108 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 商品コピーで複製した規格が, 複製元ではなく複製した在庫 (ProductStock) を参照することを検証する.
+     *
+     * 在庫数は ProductStock に委譲されるため, 複製元の ProductStock を参照したままだと,
+     * 複製完了イベント以降に複製した規格の在庫を変更すると複製元の在庫が書き換わる.
+     */
+    public function testCopyReplacesProductStockOfCopiedClasses(): void
+    {
+        $Product = $this->createProduct();
+        $sourceStocks = [];
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            $sourceStocks[$ProductClass->getProductStock()->getId()] = $ProductClass->getStock();
+        }
+
+        $copiedClasses = [];
+        static::getContainer()->get('event_dispatcher')->addListener(
+            EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE,
+            function (EventArgs $event) use (&$copiedClasses) {
+                foreach ($event->getArgument('CopyProductClasses') as $ProductClass) {
+                    $copiedClasses[] = $ProductClass;
+                    // 複製した規格の在庫を変更する
+                    $ProductClass->setStock('12345');
+                }
+                $this->entityManager->flush();
+            }
+        );
+
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', [
+            'id' => $Product->getId(),
+            Constant::TOKEN_NAME => 'dummy',
+        ]));
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->assertNotEmpty($copiedClasses);
+        foreach ($copiedClasses as $ProductClass) {
+            $ProductStock = $ProductClass->getProductStock();
+            $this->assertSame($ProductClass, $ProductStock->getProductClass());
+            $this->assertArrayNotHasKey((int) $ProductStock->getId(), $sourceStocks);
+        }
+
+        // 複製元の在庫は変わらない
+        $conn = $this->entityManager->getConnection();
+        foreach ($sourceStocks as $productStockId => $stock) {
+            $this->assertEquals($stock, $conn->fetchOne('SELECT stock FROM dtb_product_stock WHERE id = ?', [$productStockId]));
+        }
+
+        // 複製した規格の在庫の行は 1 行ずつ (ProductClass::__clone() で複製した ProductStock が重複して保存されない)
+        foreach ($copiedClasses as $ProductClass) {
+            $this->assertSame(1, (int) $conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?', [$ProductClass->getId()]));
+        }
+    }
+
+    /**
+     * 商品コピーで商品ごとFAQが複製され、コピー元のFAQが残ることを検証する.
+     *
+     * copyProperties() が $Faqs の PersistentCollection をコピー元と共有した状態で
+     * persist()＋flush() される経路を通るため、orphanRemoval: true との組み合わせで
+     * コピー元が消えないことを固定する（安全性が ORM の実行順に依存している）。
+     */
+    public function testCopyWithProductFaq()
+    {
+        $Product = $this->createProduct();
+        $faqRepository = $this->entityManager->getRepository(Faq::class);
+
+        $Faq = new Faq();
+        $Faq->setQuestion('コピー元FAQ')
+            ->setAnswer('コピー元の回答')
+            ->setSortNo(1)
+            ->setVisible(true)
+            ->setProduct($Product);
+        $Product->addFaq($Faq);
+        $this->entityManager->persist($Faq);
+        $this->entityManager->flush();
+
+        $sourceId = $Product->getId();
+        $sourceFaqId = $Faq->getId();
+
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', [
+            'id' => $sourceId,
+            Constant::TOKEN_NAME => 'dummy',
+        ]));
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->entityManager->clear();
+
+        // コピー元のFAQが残っている（orphanRemoval で消えない）。
+        $SourceFaq = $faqRepository->find($sourceFaqId);
+        $this->assertInstanceOf(Faq::class, $SourceFaq);
+        $this->assertSame('コピー元FAQ', $SourceFaq->getQuestion());
+
+        // コピー先にFAQが複製されている。
+        $CopiedFaqs = $faqRepository->createQueryBuilder('f')
+            ->where('f.Product != :Product')
+            ->andWhere('f.question = :question')
+            ->setParameter('Product', $sourceId)
+            ->setParameter('question', 'コピー元FAQ')
+            ->getQuery()
+            ->getResult();
+        $this->assertCount(1, $CopiedFaqs);
+        $this->assertSame(Faq::FAQ_TYPE_PRODUCT, $CopiedFaqs[0]->getFaqType());
+    }
+
+    /**
      * @param $taxRate
      * @param $expected
      */
@@ -513,6 +787,69 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $taxRate = is_null($taxRate) ? null : $Taxrule?->getTaxRate();
         $this->actual = $taxRate;
         $this->assertSame($this->expected, $this->actual);
+    }
+
+    /**
+     * 商品の新規登録・編集で, 入力した在庫数が ProductStock に保存されることを確認する.
+     */
+    public function testNewAndEditKeepStock(): void
+    {
+        $conn = $this->entityManager->getConnection();
+        $productStocks = fn (int $productClassId) => $conn->fetchFirstColumn(
+            'SELECT stock FROM dtb_product_stock WHERE product_class_id = ?',
+            [$productClassId]
+        );
+
+        // 新規登録
+        $formData = $this->createFormData();
+        $formData['class']['stock'] = 123;
+        // チェックボックスは値を送信すると ON になるため, 在庫数を制限する場合は送信しない
+        unset($formData['class']['stock_unlimited']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
+        $productId = (int) $arrTmp[count($arrTmp) - 2];
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertSame('123', $ProductClass->getStock());
+        $this->assertTrue($ProductClass->isInStock());
+        $this->assertEquals([123], $productStocks($ProductClass->getId()));
+
+        // 編集で在庫数を 0 にする
+        $formData['class']['stock'] = 0;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertSame('0', $ProductClass->getStock());
+        $this->assertFalse($ProductClass->isInStock());
+        $this->assertEquals([0], $productStocks($ProductClass->getId()));
+
+        // 編集で在庫無制限にする
+        $formData['class']['stock'] = null;
+        $formData['class']['stock_unlimited'] = 1;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertNull($ProductClass->getStock());
+        $this->assertTrue($ProductClass->isInStock());
+        $this->assertEquals([null], $productStocks($ProductClass->getId()));
     }
 
     /**
