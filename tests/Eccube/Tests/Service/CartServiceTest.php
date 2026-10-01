@@ -211,6 +211,36 @@ final class CartServiceTest extends AbstractServiceTestCase
         $this->assertNotInstanceOf(Cart::class, $this->cartService->getCart());
     }
 
+    /**
+     * 明細を外したあと, 購入フローを通さずに保存できることのテスト.
+     *
+     * 明細を外すとカートを作り直す. 商品をカートに入れる処理や「もう一度購入」は, 購入フローの検証が
+     * 復旧不可のエラーを出すと明細を外してそのまま保存するため, 合計金額が未設定 (null) のまま
+     * INSERT され, NOT NULL 制約違反になっていた.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/7194
+     */
+    public function testSaveAfterRemoveProductWithoutPurchaseFlow(): void
+    {
+        // 規格を 2 件登録した商品. 規格なしの既定の規格は非表示になるため, 表示する規格だけを使う.
+        $ProductClasses = $this->createProduct('cart remove', 2)->getProductClasses()->filter(fn (ProductClass $ProductClass) => $ProductClass->isVisible())->getValues();
+        [$ProductClass1, $ProductClass2] = $ProductClasses;
+
+        $this->cartService->addProduct($ProductClass1, '1');
+        $this->cartService->addProduct($ProductClass2, '1');
+        $this->purchaseFlow->validate($this->cartService->getCart(), new PurchaseContext());
+        $this->cartService->save();
+
+        $this->cartService->removeProduct($ProductClass2);
+        $this->cartService->save();
+
+        $Cart = $this->cartService->getCart();
+        $this->assertInstanceOf(Cart::class, $Cart);
+        $this->assertCount(1, $Cart->getCartItems());
+        $this->assertSame('0', $Cart->getTotalPrice());
+        $this->assertSame('0', $Cart->getDeliveryFeeTotal());
+    }
+
     public function testSave()
     {
         $preOrderId = sha1(StringUtil::random(32));
