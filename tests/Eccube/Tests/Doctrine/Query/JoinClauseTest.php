@@ -62,7 +62,8 @@ final class JoinClauseTest extends EccubeTestCase
         $clause = JoinClause::leftJoin('p.ProductCategories', 'pct')
             ->addOrderBy(new OrderByClause('pct.sort_no', 'desc'))
             ->addOrderBy(new OrderByClause('pct.categoryId'));
-        $this->assertSame('LEFT JOIN p.ProductCategories pct ORDER BY pct.sort_no desc, pct.categoryId asc', $this->asString($clause));
+        // ORDER BY の方向は doctrine/orm 3.7 から大文字に正規化される (doctrine/orm#12449) ため大小文字を無視して比較する
+        $this->assertEqualsIgnoringCase('LEFT JOIN p.ProductCategories pct ORDER BY pct.sort_no desc, pct.categoryId asc', $this->asString($clause));
     }
 
     private function asString(JoinClause $clause)

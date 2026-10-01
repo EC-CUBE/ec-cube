@@ -25,7 +25,7 @@ use Eccube\Tests\EccubeTestCase;
  * 本テストはコア Entity とジェネレータ雛形への再混入を CI で検知する。
  *
  * 意図的に検査しない:
- * - codeception/_data/plugins (旧プラグイン再現用フィクスチャ)
+ * - e2e/fixtures/plugins (旧プラグイン再現用フィクスチャ)
  * - tests/** (PluginServiceTest 等の意図的な旧パターン)
  * - app/Customize/Entity (プロジェクト固有)
  *
