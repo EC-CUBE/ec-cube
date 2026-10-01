@@ -46,7 +46,7 @@
   <tr><td>DBAL/Types/</td><td><span class="badge">portability</span></td><td>DB へは常に UTC で保存し、PHP 側でアプリのタイムゾーンへ変換するカスタム型</td></tr>
   <tr><td>ORM/Query/</td><td><span class="badge">portability</span></td><td>日本語検索・日時抽出のための独自 DQL 関数（<code>NORMALIZE</code> / <code>EXTRACT</code>。DB 別に SQL 出し分け）</td></tr>
   <tr><td>Filter/</td><td><span class="badge">ドメイン</span></td><td>全クエリに横断的に効く SQL フィルタ（在庫なし非表示・仮受注除外）</td></tr>
-  <tr><td>EventSubscriber/</td><td><span class="badge">基盤</span></td><td>Doctrine ライフサイクルへのフック（作成/更新日時の自動セット・税込価格算出・接続時 TZ 設定）</td></tr>
+  <tr><td>EventSubscriber/</td><td><span class="badge">基盤</span></td><td>Doctrine ライフサイクルへのフック（作成/更新日時の自動セット・税込価格算出・在庫有無フラグの再計算・旧在庫列の保護）と、接続時 TZ 設定の DBAL ミドルウェア</td></tr>
   <tr><td>Common/CsvDataFixtures/</td><td><span class="badge">基盤</span></td><td>インストール時に CSV からマスタ等を一括投入する仕組み</td></tr>
  </table>
  <p>このディレクトリは <strong>7 サブ中 2 つ（Query/・Mapping Driver/）が純粋な拡張ポイント</strong>で、行数の多くを占めます。
@@ -94,7 +94,7 @@ OrderByCustomizer→ OrderByClause[] を addOrderBy で追加</div>
  <p>Doctrine の <code>SQLFilter</code> で、有効化すると<strong>対象エンティティの全クエリに WHERE 条件が自動付与</strong>されます。いずれも <code>doctrine.yaml</code> では既定 <code>enabled: false</code>で、必要な箇所で明示的に有効化します。</p>
  <table>
   <tr><th>フィルタ</th><th>効果</th></tr>
-  <tr><td><code>NoStockHiddenFilter</code>（<code>option_nostock_hidden</code>）</td><td><code>ProductClass</code> を在庫あり（または無制限）だけに絞る。</td></tr>
+  <tr><td><code>NoStockHiddenFilter</code>（<code>option_nostock_hidden</code>）</td><td><code>ProductClass</code> を在庫あり（または無制限）だけに絞る。条件は在庫数ではなく非正規化列 <code>in_stock = true</code>。</td></tr>
   <tr><td><code>OrderStatusFilter</code>（<code>incomplete_order_status_hidden</code>）</td><td>仮受注（<code>PROCESSING</code> / <code>PENDING</code>）の <code>Order</code> を除外する。</td></tr>
  </table>
 </section>
@@ -116,7 +116,9 @@ OrderByCustomizer→ OrderByClause[] を addOrderBy で追加</div>
   <tr><th>Subscriber</th><th>フック</th></tr>
   <tr><td><code>SaveEventSubscriber</code></td><td>prePersist / preUpdate で <code>createDate</code> / <code>updateDate</code> / <code>currencyCode</code> / <code>creator</code> を自動セット（メソッドが在れば）。</td></tr>
   <tr><td><code>TaxRuleEventSubscriber</code></td><td><code>ProductClass</code> の読込・保存時に税込価格（<code>price01IncTax</code> 等）を <code>TaxRuleService</code> で算出。</td></tr>
-  <tr><td><code>InitSubscriber</code></td><td>postConnect で DB セッションのタイムゾーンを UTC に固定。</td></tr>
+  <tr><td><code>ProductClassInStockSubscriber</code></td><td>onFlush で <code>ProductClass::in_stock</code> を在庫数（<code>ProductStock::stock</code>）と在庫無制限フラグから再計算。</td></tr>
+  <tr><td><code>LegacyProductClassStockColumnSubscriber</code></td><td>postGenerateSchemaTable で旧列 <code>dtb_product_class.stock</code> をスキーマに残し、マイグレーション前の <code>schema:update</code> で在庫数が失われないようにする。</td></tr>
+  <tr><td><code>InitSubscriber</code></td><td>（Doctrine イベントではなく DBAL の <code>Middleware</code>）接続時に DB セッションのタイムゾーンを UTC に固定。</td></tr>
  </table>
 </section>
 
@@ -125,6 +127,7 @@ OrderByCustomizer→ OrderByClause[] を addOrderBy で追加</div>
  <ul>
   <li><strong>日時は必ず UTC で DB に入る</strong>。生 SQL で日時を条件に使うと TZ ずれを起こす。DQL の <code>EXTRACT</code> は補正込みだが、直書き SQL は自前で補正が要る。</li>
   <li><strong>SQL フィルタは既定で無効</strong>。「在庫なしを隠す」「仮受注を除く」は自動では効かない。フロント商品一覧や売上集計など、必要な経路で明示的に <code>enableFilter()</code> する（コアの Repository / Controller が手本）。</li>
+  <li><strong><code>in_stock</code> は ORM の flush を通ったときだけ同期される</strong>。DBAL や生 SQL で在庫数を更新すると <code>in_stock</code> がずれ、在庫なし非表示の結果を誤る。</li>
   <li>クエリに条件を足したいときは Repository を書き換えず、<code>QueryCustomizer</code> を <code>eccube.query_customizer</code> タグで登録して差し込む（アップグレード安全）。</li>
   <li><code>WhereClause</code> は必ずパラメータバインドを通す。生値を DQL 文字列へ連結しない（SQL インジェクション回避）。</li>
   <li>Mapping ドライバ／Proxy まわりは <code>app/proxy/entity/</code> 生成物と密結合。トレイト追加後の再生成は <code>bin/console eccube:generate:proxies</code>。</li>

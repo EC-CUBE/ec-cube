@@ -14,6 +14,7 @@ CSV からの初期データ投入、ライフサイクルフックを収める�
 - `ORM/Query/Normalize.php` / `ORM/Query/Extract.php` — 日本語あいまい検索・日時抽出の独自 DQL 関数（`NORMALIZE` / `EXTRACT`）
 - `Filter/OrderStatusFilter.php` / `Filter/NoStockHiddenFilter.php` — 仮受注除外・在庫なし非表示の SQL フィルタ（既定は無効、必要な経路で有効化）
 - `EventSubscriber/SaveEventSubscriber.php` — prePersist/preUpdate で作成・更新日時や creator を自動セット
+- `EventSubscriber/ProductClassInStockSubscriber.php` — onFlush で `ProductClass::in_stock`（在庫なし非表示フィルタの条件）を再計算
 
 > クエリに条件を足すときは Repository を直接書き換えず `QueryCustomizer` を登録して差し込む（アップグレード安全）。
 > SQL フィルタは既定で無効なので、必要な箇所で `enableFilter()` を明示的に呼ぶ点に注意。

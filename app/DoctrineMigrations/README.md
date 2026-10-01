@@ -13,7 +13,8 @@
 - `Version20220603074035.php` — `mtb_csv_type` のマスタ追加（INSERT マイグレーション）
 - `Version20230515023836.php` — `dtb_mail_template` へのレコード投入
 - `Version20260316234241.php` — 構造変更の例（`hasColumn` ガード付きで `ALTER ... ADD`）
-- 命名は `VersionYYYYMMDDHHMMSS.php`。`up()`/`down()` を対で実装し、存在チェックで冪等にする。
+- `Version20260924000000.php` — データ移行を伴う構造変更の例（在庫数の旧列から補完して削除。巻き戻せないため `down()` は空）
+- 命名は `VersionYYYYMMDDHHMMSS.php`。`up()`/`down()` を対で実装し（巻き戻せないものは `down()` を空に）、存在チェックで冪等にする。
 
 ## 注意
 

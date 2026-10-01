@@ -62,7 +62,10 @@
  <ul>
   <li>生成は <code>bin/console doctrine:migrations:generate</code> で<strong>空の雛形</strong>を作り、必要な SQL を手で書く。
   <code>doctrine:migrations:diff</code> は<strong>使わない</strong>（カラム差分まで ALTER 化し、原則と矛盾するため）。</li>
-  <li><code>up()</code> と <code>down()</code> を<strong>対で</strong>実装する（確実に巻き戻せること）。</li>
+  <li><code>up()</code> と <code>down()</code> を<strong>対で</strong>実装する（確実に巻き戻せること）。ただし旧列の削除を伴うデータ移行など、元に戻せないものは
+  <code>down()</code> を空にする（例: <code>Version20260924000000</code> は在庫数の旧列を削除するため巻き戻せない）。</li>
+  <li><strong>① と ② の実行順に依存させない</strong>。データ移行を伴う構造変更では、<code>schema:update</code> が先に旧列を消すとデータが失われる。
+  旧列をスキーマ生成の結果に残す仕組み（例: <code>LegacyProductClassStockColumnSubscriber</code>）と組み合わせ、どちらを先に実行しても同じ結果にする。</li>
   <li><strong>冪等にする</strong>: <code>$schema->hasTable()</code> / <code>$table->hasColumn()</code> や <code>SELECT COUNT(*)</code> で存在確認し、適用済みなら早期 return。</li>
   <li>PHP ファイル先頭に EC-CUBE ライセンスヘッダ。PostgreSQL / MySQL 双方で動く SQL を意識する。</li>
  </ul>

@@ -74,7 +74,10 @@ return $qb-&gt;orderBy('p.id', 'DESC');           // 一覧はページング用
  これらをオーバーライドする場合は<strong>親クラスのシグネチャを厳守</strong>します。</p>
  <div class="note"><strong><code>save()</code> / <code>delete()</code> は <code>flush()</code> しません。</strong> 実体は <code>persist()</code> / <code>remove()</code> の呼び出しのみで、
  DB への確定は行いません（<code>AbstractRepository::save()</code>/<code>delete()</code>）。呼び出し側で <code>EntityManager::flush()</code> を明示的に実行するか、
- 一連の処理をまとめて 1 回 flush します。「<code>save()</code> したのに保存されない」の多くはこの flush 漏れです。</div>
+ 一連の処理をまとめて 1 回 flush します。「<code>save()</code> したのに保存されない」の多くはこの flush 漏れです。
+ <strong>ただしこれは <code>AbstractRepository</code> の既定動作で、オーバーライドして内部で <code>flush()</code> するリポジトリも多い</strong>
+ （<code>MemberRepository</code> / <code>CategoryRepository</code> / <code>NewsRepository</code> / <code>TaxRuleRepository</code> / <code>FaqRepository</code> 等。並び順の採番などを伴う）。
+ トランザクションの途中で呼ぶ前に、対象リポジトリの実装を確認します。</div>
  <p><strong>検索クエリの拡張はサービス／メソッド差し替えではなくフックで行えます。</strong> 主要な検索系メソッドは組み立てた <code>QueryBuilder</code> を
  <code>Queries::customize(QueryKey::&lt;対象&gt;, $qb, $searchData)</code> に通してから返します（<code>ProductRepository</code> / <code>OrderRepository</code> / <code>CustomerRepository</code> 等）。
  <code>QueryCustomizer</code> を実装して登録すると、対象の <code>QueryKey</code>（<code>QueryKey.php</code> に定義）に対して検索条件や JOIN を後付けで注入できます。
