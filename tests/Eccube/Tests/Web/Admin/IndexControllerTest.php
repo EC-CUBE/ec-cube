@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin;
 
+use Carbon\Carbon;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Member;
 use Eccube\Entity\Order;
@@ -23,6 +24,7 @@ use Eccube\Repository\OrderRepository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class IndexControllerTest extends AbstractAdminWebTestCase
@@ -62,6 +64,9 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
     #[Group(name: 'decimal')]
     public function testIndexWithSales($hour)
     {
+        // Clear existing orders to ensure test isolation
+        $this->deleteAllRows(['dtb_order']);
+
         $Customer = $this->createCustomer();
         $Today = new \DateTime();
         $Today->setTime($hour, 0);
@@ -71,6 +76,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $OrderPending = $this->orderStatusRepository->find(OrderStatus::PENDING);
         $OrderCancel = $this->orderStatusRepository->find(OrderStatus::CANCEL);
         $OrderProcessing = $this->orderStatusRepository->find(OrderStatus::PROCESSING);
+        $OrderReturned = $this->orderStatusRepository->find(OrderStatus::RETURNED);
 
         // bulk 生成 → OrderDate 設定 → 1 回 flush. createOrder ループ (内部で createProduct/createDelivery が走る) を避ける.
         $todaysSales = '0';
@@ -88,7 +94,7 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         // excludes: ステータス別に 2 件ずつ bulk 生成し、Today / Yesterday を割り当てる.
-        foreach ([$OrderCancel, $OrderPending, $OrderProcessing] as $OrderStatus) {
+        foreach ([$OrderCancel, $OrderPending, $OrderProcessing, $OrderReturned] as $OrderStatus) {
             $excludeOrders = $this->createOrders(array_fill(0, 2, $Customer), ['orderStatus' => $OrderStatus]);
             $excludeOrders[0]->setOrderDate($Today);
             $excludeOrders[1]->setOrderDate($Yesterday);
@@ -188,5 +194,88 @@ final class IndexControllerTest extends AbstractAdminWebTestCase
             ],
             '_token' => 'dummy',
         ];
+    }
+
+    /**
+     * 売上グラフ (週間・月間・年間) が、アプリケーションのタイムゾーンの日付で集計されることを確認する.
+     */
+    public function testSaleChart()
+    {
+        // Clear existing orders to ensure test isolation
+        $this->deleteAllRows(['dtb_order']);
+
+        $Customer = $this->createCustomer();
+        $OrderNew = $this->orderStatusRepository->find(OrderStatus::NEW);
+
+        $today = Carbon::today();
+        $yesterday = Carbon::yesterday()->endOfDay();
+
+        // 日付境界の直後 (本日 00:00:00) と直前 (昨日 23:59:59) に 1 件ずつ. UTC ではどちらも昨日の日付になる.
+        [$TodayOrder, $YesterdayOrder] = $this->createOrders([$Customer, $Customer], ['orderStatus' => $OrderNew]);
+        $TodayOrder->setOrderDate($today->toDateTime());
+        $TodayOrder->setPaymentTotal('1000');
+        $YesterdayOrder->setOrderDate($yesterday->toDateTime());
+        $YesterdayOrder->setPaymentTotal('2000');
+
+        // 集計から除外されるステータス
+        foreach ([OrderStatus::CANCEL, OrderStatus::PENDING, OrderStatus::PROCESSING, OrderStatus::RETURNED] as $statusId) {
+            $OrderStatus = $this->orderStatusRepository->find($statusId);
+            [$ExcludedOrder] = $this->createOrders([$Customer], ['orderStatus' => $OrderStatus]);
+            $ExcludedOrder->setOrderDate($today->toDateTime());
+            $ExcludedOrder->setPaymentTotal('4000');
+        }
+        $this->entityManager->flush();
+
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_homepage_sale', ['_token' => 'dummy']),
+            [],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+        [$weekly, $monthly, $yearly] = json_decode((string) $this->client->getResponse()->getContent(), true);
+
+        $assertSales = function (array $data, string $key, string $price, int $count): void {
+            $this->assertArrayHasKey($key, $data);
+            $this->assertSame(0, bccomp($price, (string) $data[$key]['price'], 2), $key.' の売上');
+            $this->assertSame($count, $data[$key]['count'], $key.' の件数');
+        };
+        $sumCount = fn (array $data): int => (int) array_sum(array_column($data, 'count'));
+
+        // 週間: 7 日前〜本日の日別
+        $this->assertCount(8, $weekly);
+        $assertSales($weekly, $today->format('Y/m/d'), '1000', 1);
+        $assertSales($weekly, $yesterday->format('Y/m/d'), '2000', 1);
+        $this->assertSame(2, $sumCount($weekly));
+
+        // 月間: 月初〜本日の日別. 本日が月初なら昨日は含まれない
+        $sameMonth = $today->isSameMonth($yesterday);
+        $this->assertCount((int) $today->format('j'), $monthly);
+        $assertSales($monthly, $today->format('Y/m/d'), '1000', 1);
+        if ($sameMonth) {
+            $assertSales($monthly, $yesterday->format('Y/m/d'), '2000', 1);
+        }
+        $this->assertSame($sameMonth ? 2 : 1, $sumCount($monthly));
+
+        // 年間: 1 年前の同月〜本日の月別 (13 か月)
+        $this->assertCount(13, $yearly);
+        if ($sameMonth) {
+            $assertSales($yearly, $today->format('Y/m'), '3000', 2);
+        } else {
+            $assertSales($yearly, $today->format('Y/m'), '1000', 1);
+            $assertSales($yearly, $yesterday->format('Y/m'), '2000', 1);
+        }
+        $this->assertSame(2, $sumCount($yearly));
+    }
+
+    public function testSaleChartWithoutXmlHttpRequest()
+    {
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_homepage_sale', ['_token' => 'dummy'])
+        );
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 }
