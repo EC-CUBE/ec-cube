@@ -56,6 +56,13 @@ class CsvExportService
 
     protected ?QueryBuilder $qb = null;
 
+    /**
+     * exportData() で KnpPaginator に渡すオプション.
+     *
+     * @var array<string, mixed>
+     */
+    protected array $paginateOptions = [];
+
     protected ?CsvType $CsvType = null;
 
     /**
@@ -116,6 +123,20 @@ class CsvExportService
     }
 
     /**
+     * exportData() で KnpPaginator に渡すオプションを設定する. 一覧画面と同じ値をわたす.
+     * 設定は次の exportData() の 1 回だけ有効で, 出力後に破棄する.
+     *
+     * exportData() の引数で受け取らないのは, exportData() を override しているクラスと
+     * シグネチャの互換性を保つため.
+     *
+     * @param array<string, mixed> $paginateOptions
+     */
+    public function setPaginateOptions(array $paginateOptions): void
+    {
+        $this->paginateOptions = $paginateOptions;
+    }
+
+    /**
      * Csv種別からServiceの初期化を行う.
      */
     public function initCsvType(CsvType|int $CsvType): void
@@ -169,10 +190,9 @@ class CsvExportService
     /**
      * クエリビルダにもとづいてデータ行を出力する.
      * このメソッドを使う場合は, 事前にsetExportQueryBuilder($qb)で出力対象のクエリビルダをわたしておく必要がある.
-     *
-     * @param array<string, mixed> $paginateOptions KnpPaginator に渡すオプション. 一覧画面と同じ値をわたす.
+     * ソート順を一覧画面とそろえる場合は, setPaginateOptions() でオプションをわたす.
      */
-    public function exportData(\Closure $closure, array $paginateOptions = []): void
+    public function exportData(\Closure $closure): void
     {
         if (is_null($this->qb)) {
             throw new \LogicException('query builder not set.');
@@ -181,6 +201,9 @@ class CsvExportService
         $this->sanitizeFormulas = $this->baseInfoRepository->get()->isOptionSanitizeCsvFormulas();
 
         $this->fopen();
+
+        $paginateOptions = $this->paginateOptions;
+        $this->paginateOptions = [];
 
         $page = 1;
         $limit = 100;

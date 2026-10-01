@@ -980,6 +980,7 @@ class ProductController extends AbstractController
             }
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->setPaginateOptions($paginate_options);
 
             $this->csvExportService->exportData(function ($entity, CsvExportService $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
@@ -1020,7 +1021,7 @@ class ProductController extends AbstractController
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
-            }, $paginate_options);
+            });
         });
 
         $now = new \DateTime();

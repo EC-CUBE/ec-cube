@@ -145,6 +145,40 @@ final class CsvExportServiceTest extends AbstractServiceTestCase
         $this->verify();
     }
 
+    /**
+     * exportData() のシグネチャを変えないことのテスト.
+     *
+     * 引数を足すと, 足す前のシグネチャで exportData() を override しているクラスが
+     * PHP の互換性チェックで fatal error になる. paginate のオプションは setPaginateOptions() で渡す.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/pull/7070
+     */
+    public function testExportDataKeepsSignature(): void
+    {
+        $Method = new \ReflectionMethod(CsvExportService::class, 'exportData');
+
+        $this->assertSame(1, $Method->getNumberOfParameters());
+    }
+
+    /**
+     * setPaginateOptions() の設定が 1 回の exportData() だけで破棄されることのテスト.
+     *
+     * サービスは共有インスタンスのため, 残ると同じリクエストで続けて出力する別の CSV に効いてしまう.
+     */
+    public function testPaginateOptionsAreResetAfterExport(): void
+    {
+        $this->createOrder($this->createCustomer());
+
+        $this->csvExportService->initCsvType(CsvType::CSV_TYPE_ORDER);
+        $this->csvExportService->setExportQueryBuilder($this->orderRepository->createQueryBuilder('o'));
+        $this->csvExportService->setPaginateOptions(['wrap-queries' => true]);
+        $this->csvExportService->exportData(function (): void {
+        });
+
+        $Property = new \ReflectionProperty(CsvExportService::class, 'paginateOptions');
+        $this->assertSame([], $Property->getValue($this->csvExportService));
+    }
+
     public function testGetDataResolvesRealClassNameOfProxy(): void
     {
         $Product = $this->createProduct('プロキシ商品');

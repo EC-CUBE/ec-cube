@@ -313,6 +313,7 @@ class OrderController extends AbstractController
 
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
+            $this->csvExportService->setPaginateOptions($paginate_options);
             $this->csvExportService->exportData(function ($entity, $csvService) use ($request): void {
                 $Csvs = $csvService->getCsvs();
 
@@ -353,7 +354,7 @@ class OrderController extends AbstractController
                     // 出力.
                     $csvService->fputcsv($ExportCsvRow->getRow());
                 }
-            }, $paginate_options);
+            });
         });
 
         $response->headers->set('Content-Type', 'application/octet-stream');
