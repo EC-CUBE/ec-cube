@@ -31,15 +31,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  *
  * 出力 HTML はブラウザの「印刷 → PDF」で顧客提出用 PDF に変換できる。
  */
-#[AsCommand(
-    name: 'eccube:docs:export',
-    description: 'Export colocated README.html specs, optionally filtered for customer delivery',
-)]
+#[AsCommand(name: 'eccube:docs:export', description: 'Export colocated README.html specs, optionally filtered for customer delivery', help: <<<'TXT'
+全 README.html を集約して出力します。--filter=customer で data-customer="true" の章だけを抽出します。
+TXT)]
 class DocsExportCommand extends Command
 {
     public function __construct(
         private readonly DocsExportService $docsExportService,
-        #[Autowire('%kernel.project_dir%')]
+        #[Autowire(param: 'kernel.project_dir')]
         private readonly string $projectDir,
     ) {
         parent::__construct();
@@ -51,8 +50,7 @@ class DocsExportCommand extends Command
         $this
             ->addOption('filter', null, InputOption::VALUE_REQUIRED, sprintf('Section filter: "%s" or "%s"', DocsExportService::FILTER_ALL, DocsExportService::FILTER_CUSTOMER), DocsExportService::FILTER_ALL)
             ->addOption('source', null, InputOption::VALUE_REQUIRED, 'Directory to scan for README.html (defaults to the project root)')
-            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output directory (defaults to <project>/var/docs/<filter>)')
-            ->setHelp('全 README.html を集約して出力します。--filter=customer で data-customer="true" の章だけを抽出します。');
+            ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output directory (defaults to <project>/var/docs/<filter>)');
     }
 
     #[\Override]
@@ -69,11 +67,11 @@ class DocsExportCommand extends Command
         } catch (\InvalidArgumentException $e) {
             $io->error($e->getMessage());
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $io->success(sprintf('Exported %d README.html file(s) to "%s" (filter: %s).', \count($written), $outputDir, $filter));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }
