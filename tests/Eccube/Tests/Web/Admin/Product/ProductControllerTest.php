@@ -42,6 +42,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ProductControllerTest extends AbstractAdminWebTestCase
 {
@@ -1406,6 +1408,45 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
 
         // ヘッダ行だけでなくデータ行が出力されていること.
+        $this->assertGreaterThan(0, $this->countCsvRows($this->exportProductCsv()));
+    }
+
+    /**
+     * セッションの検索条件に stock_status=0 が入っていても, 在庫数でソートした商品CSVを出力できることのテスト.
+     *
+     * stock_status はコアの検索フォームに無く, プラグイン等がセッションへ入れたときだけ
+     * p と pc を select する経路を通る. この経路でも ORDER BY の ps.stock が select 句に無いと
+     * PostgreSQL が DISTINCT との併用を拒否する.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/6713
+     */
+    public function testExportProductSortedByStockWithStockStatus(): void
+    {
+        $productName = 'Product for csv stock_status '.uniqid();
+        $this->createProduct($productName, 2);
+
+        $searchForm = $this->createSearchForm();
+        $searchForm['id'] = $productName;
+        $searchForm['sortkey'] = 'stock';
+        $searchForm['sorttype'] = 'a';
+        $this->searchProduct($searchForm);
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+
+        // プラグインがセッションへ stock_status を入れた状態を再現する.
+        // リクエストごとにカーネルが再起動するとリスナーが消えるため, 再起動を止める.
+        $this->client->disableReboot();
+        $this->client->getContainer()->get('event_dispatcher')->addListener(
+            KernelEvents::REQUEST,
+            function (RequestEvent $event): void {
+                $request = $event->getRequest();
+                if ($request->attributes->get('_route') !== 'admin_product_export') {
+                    return;
+                }
+                $session = $request->getSession();
+                $session->set('eccube.admin.product.search', ['stock_status' => 0] + $session->get('eccube.admin.product.search', []));
+            }
+        );
+
         $this->assertGreaterThan(0, $this->countCsvRows($this->exportProductCsv()));
     }
 

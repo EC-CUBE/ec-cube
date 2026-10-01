@@ -968,15 +968,16 @@ class ProductController extends AbstractController
             } else {
                 $qb->select('p')
                     ->distinct();
+            }
 
-                // ProductClass 側 (ProductStock を含む) の列でソートしている場合は, その列を HIDDEN で select 句に載せる.
-                // DISTINCT と併用するため, ORDER BY の対象が select 句に無いと
-                // PostgreSQL が「ORDER BY expressions must appear in select list」で拒否する.
-                // pc を fetch join すると ProductClasses が pc.visible の条件で部分初期化され,
-                // 非表示の規格の行が出力から落ちてしまうため, HIDDEN で取得対象には含めない.
-                if ($hiddenSortColumn !== null) {
-                    $qb->addSelect($hiddenSortColumn.' AS HIDDEN sort_key_value');
-                }
+            // ProductClass 側 (ProductStock を含む) の列でソートしている場合は, その列を HIDDEN で select 句に載せる.
+            // DISTINCT と併用するため, ORDER BY の対象が select 句に無いと
+            // PostgreSQL が「ORDER BY expressions must appear in select list」で拒否する.
+            // pc を fetch join すると ProductClasses が pc.visible の条件で部分初期化され,
+            // 非表示の規格の行が出力から落ちてしまうため, HIDDEN で取得対象には含めない.
+            // pc を select する stock_status の経路でも ps は select 句に無いため, 分岐によらず載せる.
+            if ($hiddenSortColumn !== null) {
+                $qb->addSelect($hiddenSortColumn.' AS HIDDEN sort_key_value');
             }
             // データ行の出力.
             $this->csvExportService->setExportQueryBuilder($qb);
