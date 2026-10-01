@@ -384,17 +384,27 @@ class ProductController extends AbstractController
 
         // 明細の正規化
         $Carts = $this->cartService->getCarts();
+        $removed = false;
         foreach ($Carts as $Cart) {
             $result = $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             // 復旧不可のエラーが発生した場合は追加した明細を削除.
             if ($result->hasError()) {
                 $this->cartService->removeProduct($addCartData['product_class_id']);
+                $removed = true;
                 foreach ($result->getErrors() as $error) {
                     $errorMessages[] = $error->getMessage();
                 }
             }
             foreach ($result->getWarning() as $warning) {
                 $errorMessages[] = $warning->getMessage();
+            }
+        }
+
+        // 明細を削除するとカートを作り直すため, 作り直したカートで合計金額等を計算し直す.
+        // ここで出たエラーや警告は, カート画面を開いたときに改めて表示される.
+        if ($removed) {
+            foreach ($this->cartService->getCarts() as $Cart) {
+                $this->purchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
             }
         }
 
