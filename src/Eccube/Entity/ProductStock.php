@@ -72,6 +72,13 @@ class ProductStock extends AbstractEntity
     #[ORM\JoinColumn(name: 'creator_id', referencedColumnName: 'id')]
     private ?Member $Creator = null;
 
+    public function __clone()
+    {
+        $this->id = null;
+        // 在庫のロック済みを表す一時的な値. 複製した在庫では改めてロックを取る
+        $this->product_class_id = null;
+    }
+
     /**
      * Get id.
      *

@@ -29,7 +29,7 @@ class TraitProxyAttributeDriver extends AttributeDriver
      * {@inheritdoc}
      */
     #[\Override]
-    public function getAllClassNames(): ?array
+    public function getAllClassNames(): array
     {
         if ($this->classNames !== null) {
             return $this->classNames;

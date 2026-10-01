@@ -1,0 +1,5 @@
+// SortableJS (ドラッグ & ドロップによる並び替え) の状態クラス
+// ドラッグ中にドロップ位置へ残る元要素 (ghostClass の既定値)
+.sortable-ghost {
+  opacity: .4;
+}

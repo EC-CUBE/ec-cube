@@ -152,7 +152,7 @@ jobs:
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       ## ${PWD}/repos does not exist so service cannot be started
       - name: Run package-api
@@ -169,7 +169,7 @@ jobs:
           ECCUBE_PROJECT_DIR: ${{ github.workspace }}
           ECCUBE_ADMIN_ROUTE: admin
           REPOS_DIR: ${{ github.workspace }}/repos
-          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/e2e/fixtures/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
 
@@ -318,7 +318,7 @@ jobs:
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run package-api
         run: |
@@ -334,7 +334,7 @@ jobs:
           ECCUBE_PROJECT_DIR: ${{ github.workspace }}
           ECCUBE_ADMIN_ROUTE: admin
           REPOS_DIR: ${{ github.workspace }}/repos
-          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/e2e/fixtures/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
 
@@ -484,7 +484,7 @@ jobs:
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run package-api
         run: |
@@ -500,7 +500,7 @@ jobs:
           ECCUBE_PROJECT_DIR: ${{ github.workspace }}
           ECCUBE_ADMIN_ROUTE: admin
           REPOS_DIR: ${{ github.workspace }}/repos
-          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/e2e/fixtures/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
 
@@ -652,7 +652,7 @@ jobs:
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run package-api
         run: |
@@ -668,7 +668,7 @@ jobs:
           ECCUBE_PROJECT_DIR: ${{ github.workspace }}
           ECCUBE_ADMIN_ROUTE: admin
           REPOS_DIR: ${{ github.workspace }}/repos
-          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/e2e/fixtures/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
           METHOD: ${{ matrix.method }}
 
@@ -809,7 +809,7 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run package-api
         run: |
@@ -825,7 +825,7 @@ jobs:
           ECCUBE_PROJECT_DIR: ${{ github.workspace }}
           ECCUBE_ADMIN_ROUTE: admin
           REPOS_DIR: ${{ github.workspace }}/repos
-          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/e2e/fixtures/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
 
       - name: Upload traces
@@ -965,7 +965,7 @@ jobs:
           DATABASE_CHARSET: ${{ matrix.database_charset }}
           MAILER_URL: 'smtp://127.0.0.1:1025'
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
-        run: php -S 127.0.0.1:8000 codeception/router.php &
+        run: php -S 127.0.0.1:8000 e2e/router.php &
 
       - name: Run package-api
         run: |
@@ -981,7 +981,7 @@ jobs:
           ECCUBE_PROJECT_DIR: ${{ github.workspace }}
           ECCUBE_ADMIN_ROUTE: admin
           REPOS_DIR: ${{ github.workspace }}/repos
-          PLUGIN_DATA_DIR: ${{ github.workspace }}/codeception/_data/plugins
+          PLUGIN_DATA_DIR: ${{ github.workspace }}/e2e/fixtures/plugins
           ECCUBE_PACKAGE_API_URL: 'http://127.0.0.1:8080'
 
       - name: Upload traces

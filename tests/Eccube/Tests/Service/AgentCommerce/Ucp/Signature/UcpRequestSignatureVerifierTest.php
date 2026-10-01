@@ -19,9 +19,9 @@ use Eccube\Service\AgentCommerce\Exception\UcpSignatureException;
 use Eccube\Service\AgentCommerce\Ucp\Signature\Rfc9421SignatureBaseBuilder;
 use Eccube\Service\AgentCommerce\Ucp\Signature\UcpProfileFetcher;
 use Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier;
-use phpseclib3\Crypt\EC;
-use phpseclib3\Crypt\EC\PrivateKey;
-use phpseclib3\Crypt\EC\PublicKey;
+use phpseclib4\Crypt\EC;
+use phpseclib4\Crypt\EC\PrivateKey;
+use phpseclib4\Crypt\EC\PublicKey;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
@@ -48,7 +48,6 @@ final class UcpRequestSignatureVerifierTest extends TestCase
 
     protected function setUp(): void
     {
-        /** @var PrivateKey $key */
         $key = EC::createKey('secp256r1');
         $this->privateKey = $key;
         $this->baseBuilder = new Rfc9421SignatureBaseBuilder();
@@ -75,7 +74,6 @@ final class UcpRequestSignatureVerifierTest extends TestCase
 
     public function testRejectsWrongPublicKey(): void
     {
-        /** @var PrivateKey $other */
         $other = EC::createKey('secp256r1');
         $request = $this->signedRequest($this->privateKey->getPublicKey());
         // profile は別人の公開鍵を広告する。

@@ -19,22 +19,15 @@ const acePath = new URL('ace/', bundleSrc).href;
 
 require('jquery.qrcode');
 
-require('jquery-ui/themes/base/all.css');
-// jQuery UI の各モジュールは UMD の AMD 分岐で内部依存を解決しているが、
-// esbuild は AMD を解釈しないため依存が読み込まれない。必要なものを依存順に明示する。
-require('jquery-ui/ui/version');
-require('jquery-ui/ui/position');
-require('jquery-ui/ui/widget');
-require('jquery-ui/ui/widgets/mouse');
-require('jquery-ui/ui/disable-selection');
-require('jquery-ui/ui/plugin');
-require('jquery-ui/ui/widgets/resizable');
-require('jquery-ui/ui/data');
-require('jquery-ui/ui/scroll-parent');
-require('jquery-ui/ui/widgets/sortable');
-require('jquery-ui/ui/keycode');
-require('jquery-ui/ui/unique-id');
-require('jquery-ui/ui/widgets/tooltip');
+// 並び替え (ドラッグ & ドロップ) は SortableJS を使う。jQuery UI は撤去した (#6943)。
+// 管理画面のテンプレートとプラグインから window.Sortable で参照する。
+// package.json の module フィールド経由で ESM 版が解決されるため default を取り出す。
+const SortableModule = require('sortablejs');
+window.Sortable = SortableModule.default || SortableModule;
+
+// jQuery UI の $.fn.sortable / $.fn.resizable に依存するプラグイン向けの互換 shim (非推奨、4.5 で削除)。
+// window.Sortable の後に読み込むこと。
+require('./jquery-ui-compat');
 
 const {
     Chart,

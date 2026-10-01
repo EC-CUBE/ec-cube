@@ -12,7 +12,6 @@ import path from 'path';
  * Codeception の Local_Plugin に相当。
  */
 export class LocalPlugin extends AbstractPlugin {
-  protected managePage!: PluginManagePage;
   protected code: string;
 
   constructor(page: Page, db: DbClient, config: PluginTestConfig, code: string) {

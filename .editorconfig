@@ -19,10 +19,6 @@ indent_size = 2
 [*.md]
 trim_trailing_whitespace = false
 
-[codeception/**.{yml,yaml}]
-indent_style = space
-indent_size = 4
-
 [app/config/eccube/**.{yaml,yml}]
 indent_style = space
 indent_size = 4

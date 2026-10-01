@@ -17,8 +17,8 @@ namespace Eccube\Tests\Service\AgentCommerce\Security;
 
 use Eccube\Service\AgentCommerce\Security\AcpWebhookKeyPurpose;
 use Eccube\Service\AgentCommerce\Security\UcpSigningKeyPurpose;
-use phpseclib3\Crypt\EC\PrivateKey;
-use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\EC\PrivateKey;
+use phpseclib4\Crypt\PublicKeyLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -31,6 +31,8 @@ final class KeyPurposeTest extends TestCase
     public function testUcpSigningGeneratesEcP256PrivateKey(): void
     {
         $pem = (new UcpSigningKeyPurpose())->generate();
+
+        $this->assertStringStartsWith('-----BEGIN PRIVATE KEY-----', $pem, 'パスワード無しの平文 PKCS8 で書き出す (ENCRYPTED PRIVATE KEY にしない)');
 
         $key = PublicKeyLoader::load($pem);
         $this->assertInstanceOf(PrivateKey::class, $key, 'EC 秘密鍵として読み込める');
