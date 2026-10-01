@@ -99,7 +99,10 @@ if ($this->isGranted('IS_AUTHENTICATED_FULLY')) { ... }
 ### 独自 Voter を追加する場合
 `Symfony\Component\Security\Core\Authorization\Voter\Voter` を継承し `supports()`/`voteOnAttribute()` を実装する。
 `services.yaml` の `autoconfigure: true` により `security.voter` タグは自動付与される（手動登録は不要。コアの既存 Voter に倣う）。
-**`access_decision` が unanimous なので、棄権（ABSTAIN）と拒否（DENY）の使い分けを誤ると全体が拒否になる**点に注意。
+**`access_decision` が unanimous なので、棄権（ABSTAIN）と拒否（DENY）の使い分けに注意する。**
+`supports()` が `false` の対象外は ABSTAIN にする（DENY にすると無関係な判定まで拒否される）。
+`supports()` が `true` の対象で権限が足りない場合は `voteOnAttribute()` で `false` を返して DENY にする
+（ABSTAIN にすると、他の Voter が 1 つでも GRANT を返せば許可される）。
 
 ## よくある間違い
 

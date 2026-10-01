@@ -95,15 +95,31 @@ services:
 // app/Customize/Service/MyCartServiceDecorator.php
 namespace Customize\Service;
 
+use Eccube\Entity\ProductClass;
 use Eccube\Service\CartService;
 
-class MyCartServiceDecorator
+// CartService 型の引数（CartController 等）へ注入されるため、CartService を継承して型を満たす。
+// CartService はインターフェースを持たない具象クラスなので implements はできない。
+class MyCartServiceDecorator extends CartService
 {
+    // 親のコンストラクタは呼ばない。状態はすべて $inner が持つ
     public function __construct(private CartService $inner)
     {
     }
 
-    // 必要なメソッドだけ振る舞いを変え、それ以外は $this->inner に委譲する
+    public function addProduct(ProductClass|int $ProductClass, string $quantity = '1'): bool
+    {
+        // 振る舞いを変える処理
+        return $this->inner->addProduct($ProductClass, $quantity);
+    }
+
+    public function getCarts(bool $empty_delete = false): array
+    {
+        return $this->inner->getCarts($empty_delete);
+    }
+
+    // 残りの public メソッドも同じシグネチャですべて $this->inner へ委譲する。
+    // 委譲を漏らすと親の実装が未初期化のプロパティで動き、Error になる。
 }
 ```
 

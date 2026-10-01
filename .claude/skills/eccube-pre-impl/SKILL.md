@@ -36,7 +36,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ Ajax 専用アクションで XHR 以外も受け付ける → ✅ CSRF 検証に加え **`$request->isXmlHttpRequest()`** を併用し XHR に限定する
 - ❌ フロントで `{id}` から取得したエンティティを所有権チェックせず編集/削除（**IDOR**）
 - ❌ パスワード変更・退会など重要操作を `IS_AUTHENTICATED_REMEMBERED` で許可
-- ❌ 独自 Voter で「対象外」を `ACCESS_DENIED` で返す → ✅ 対象外は `ACCESS_ABSTAIN`（unanimous 戦略で誤拒否を防ぐ）
+- ❌ 独自 Voter で対象外を `DENIED`、権限不足を `ABSTAIN` で返す → ✅ 対象外は `ABSTAIN`、権限不足は `DENIED`（ABSTAIN は他 Voter の GRANT で通る）
 - ❌ 自前でパスワードをハッシュ/平文比較 → ✅ `PasswordHasher` 経由に統一
 - ❌ ユーザー入力を Twig で `|raw` 出力 → ✅ エスケープを効かせる（Skill `eccube-twig-template`）
 - ❌ ファイル操作を伴う管理ルートを新設して `eccube_restrict_file_upload` を考慮しない → ✅ 遮断対象（`eccube_restrict_file_upload_urls`）に含めるべきか検討する
@@ -83,7 +83,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ 在庫引当・採番・ポイント付与などの受注処理をエンティティに書く → ✅ PurchaseFlow / Service へ。エンティティは自身の状態から導く計算/判定まで
 - ❌ `create_date` / `update_date` を自前の `#[ORM\PrePersist]` でセット → ✅ `SaveEventSubscriber` が自動セットするので二重実装
 - ❌ 他エンティティへの関連で親削除時の挙動を未決定 → ✅ FK は既定で削除を止めるので、未指定だと親の削除が FK 違反で失敗する。`onDelete` を指定するか Service 側で後始末する（コアは大半が後者）
-- ❌ 金額を int/float で扱う → ✅ DECIMAL は `?string`（getter は `string`）。四則演算は `bcmath`（`bcadd` / `bcmul` / `bccomp`、スケール 2）
+- ❌ 金額を int/float で扱う → ✅ DECIMAL は `?string`（getter は `string`）。四則演算は `bcmath`（`bcadd` / `bcmul` / `bccomp`）。スケールは対象カラムの scale に合わせる
 - ❌ `@deprecated` なゲッタを未使用と判断して削除する → ✅ CSV 出力項目（`dtb_csv`）のアクセサとして現役のことがあり、削除は仕様変更になる。先に CSV 定義と照合する
 - ❌ プロキシ絡みの不具合を「手元で再現しないから誤検知」と判断 → ✅ 対象クラスが未宣言のときだけプロキシが `require` される。先にロードした状態で試す
 - ❌ プロパティだけ `?T = null` にしてカラム属性は据え置く → ✅ `nullable: true` が無ければ DB は NOT NULL。上位層で補完する設計は、その経路を通らない永続化で INSERT が落ちる

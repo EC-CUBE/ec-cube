@@ -79,7 +79,8 @@ class Example extends AbstractEntity
   - 副作用を持たず、外部（Repository・EntityManager・他サービス）に依存しない純粋な計算/判定はエンティティの責務。
   - **金額プロパティ（`Types::DECIMAL`）は Doctrine ORM 3.x で `?string`**（getter は `string` 戻り、setter も `string` 引数）。
     `Order` の `total` / `subtotal` / `payment_total` 等（`src/Eccube/Entity/Order.php`）が実例。
-    計算は **float で四則演算せず `bcmath`**（`bcadd` / `bcmul` / `bccomp` 等、スケール 2）で行う。
+    計算は **float で四則演算せず `bcmath`**（`bcadd` / `bcmul` / `bccomp` 等）で行う。
+    スケールは対象カラムの scale に合わせる（コアは価格・合計が `scale: 2`、数量・ポイント・税額が `scale: 0`）。
     実例: `OrderItem::getTotalPrice()` = `bcmul($this->getPriceIncTax(), $this->getQuantity(), 2)`（`src/Eccube/Entity/OrderItem.php`）。
 - **外に出す（副作用・横断・採番を伴う「処理」）**: 永続化や複数エンティティ・外部リソースを巻き込む処理。
   - **在庫引当・注文番号の採番・ポイント付与・値引き適用などの受注処理は PurchaseFlow（Skill `eccube-service` 参照）パイプラインへ**。
