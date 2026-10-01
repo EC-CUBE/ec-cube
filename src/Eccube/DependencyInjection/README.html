@@ -62,6 +62,10 @@
   <tr><td><code>TwigBlockPass</code></td><td><code>eccube.twig_block</code> タグの <code>EccubeTwigBlock::getTwigBlock()</code> を <code>eccube_twig_block_templates</code> へ集約。</td></tr>
   <tr><td><code>TwigExtensionPass</code></td><td>本番環境のみ、<code>twig</code> に <code>IgnoreRoutingNotFoundExtension</code> を追加（未定義ルートで例外を投げない）。</td></tr>
   <tr><td><code>WebServerDocumentRootPass</code></td><td><code>web_server</code> コマンドのドキュメントルートを <code>public</code> からプロジェクトルートへ変更。</td></tr>
+  <tr><td><code>RuntimeCacheDirPass</code></td><td>リクエスト処理中に書き込まれるキャッシュ（設定で変えられないもの）の出力先を <code>%eccube_runtime_dir%</code>（<code>var/runtime/{env}</code>）へ差し替える。</td></tr>
+  <tr><td><code>BuildDirCacheWarmerPass</code></td><td>テンプレートの一括事前コンパイルを自動 warmup から外し、<code>eccube:cache:build</code> のときだけ実行させる。</td></tr>
+  <tr><td><code>CliFileLogHandlerPass</code></td><td>ファイルへ書く monolog ハンドラをラップし、<code>ECCUBE_CLI_LOG_TO_FILE=0</code> のとき CLI 実行時だけファイル出力を止められるようにする。</td></tr>
+  <tr><td><code>RuntimeCachePoolFailsafePass</code></td><td>ファイルへ書く cache pool を、書き込めない場合は保存を諦める実装へ差し替える（CLI から Web サーバー所有の領域へ書けない構成向け）。</td></tr>
   <tr><td><code>StripReportFieldsArgPass</code></td><td>ORM3 環境で <code>AttributeDriver</code> の余分な引数を <code>paths</code> 1 引数へ統一（<a href="https://github.com/doctrine/DoctrineBundle/issues/1844">DoctrineBundle #1844</a> 回避）。<span class="badge">優先度 -1000</span>。</td></tr>
  </table>
 </section>
@@ -107,7 +111,10 @@
 <section data-section="notes" data-customer="false">
  <h2>注意点<span class="dev-only">開発者向け</span></h2>
  <ul>
-  <li><strong>ここは基本的にコンパイル時のコード</strong>。CompilerPass や <code>prepend()</code> の変更はコンテナの再ビルド（<code>bin/console cache:clear</code>）で反映される。</li>
+  <li><strong>ここは基本的にコンパイル時のコード</strong>。CompilerPass や <code>prepend()</code> の変更はコンテナの再ビルドで反映される。
+  コンパイル済みコンテナの出力先は <code>var/build/{env}</code>（<code>Kernel::getBuildDir()</code>）で、再生成は <code>bin/console eccube:cache:build</code>。
+  Web サーバーと CLI の権限を分けた構成では <code>cache:clear</code> ではなくこちらを使う。</li>
+  <li><code>Kernel::getCacheDir()</code>（<code>var/cache</code>）と <code>getBuildDir()</code>（<code>var/build</code>）を<strong>同じパスに統合しない</strong>。別パスであることが twig の 3 層キャッシュが有効になる条件になっている。</li>
   <li><code>configurePlugins()</code> は prepend フェーズでコンテナが未完成のため、<strong>DBAL の接続を直接生成</strong>して <code>dtb_plugin</code> を読む。DB 未接続・テーブル未作成時は安全に空扱いで抜ける（インストール前を考慮）。</li>
   <li>認可仕様を確認するときは <code>security.yaml</code> だけでなく必ず <code>EccubeExtension::configureFramework()</code> を併読する（上記 access_control 動的生成のため）。</li>
   <li>CompilerPass の実行順が重要なものは優先度で制御されている（<code>AutoConfigurationTagPass</code>=11 → <code>PluginPass</code>=10、<code>StripReportFieldsArgPass</code>=-1000）。順序前提を崩さないこと。</li>

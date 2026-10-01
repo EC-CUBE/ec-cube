@@ -12,4 +12,5 @@
 - `AgentCommerceOAuth2Authenticator.php` — インバウンド OAuth2 検証 + scope×protocol 照合（トークン検証は eccube-api4 依存、未導入時は 503）
 - `AgentCommerceScopeRegistry.php` — scope を `<protocol>:<capability>` 形式へ正準化（protocol 越境を禁止）
 - `AgentCommerceMessageSignerInterface.php`（`UcpMessageSigner.php`）— メッセージ署名（RFC 9421 / EC P-256 / ES256）
-- `KeyStoreInterface.php`（`FilesystemKeyStore.php`）— 署名鍵の永続化（標準は FS、0600/0700）
+- `KeyStoreInterface.php`（`FilesystemKeyStore.php`）— 署名鍵の永続化（標準は FS、既定 0644/0755・厳格モードで 0600/0700）
+- `KeyPurposeInterface.php`（`KeyPurposeRegistry.php`）— 鍵の用途ごとの生成方法。`eccube:keystore:generate` と実行時の自動生成が共用

@@ -58,9 +58,14 @@
   <tr><td><code>eccube:delete-carts</code></td><td>不要になったカートデータの削除（バッチの手本）。</td></tr>
   <tr><td><code>eccube:plugin:install|enable|disable|uninstall|update</code></td><td>プラグインのライフサイクル操作。</td></tr>
   <tr><td><code>eccube:composer:install|require|update|remove</code></td><td>プラグイン導入に伴う Composer 操作のラッパ。</td></tr>
+  <tr><td><code>eccube:cache:build</code></td><td>コンパイル済みコンテナ・ルーティング・テンプレートを <code>var/build/{env}</code> へ生成する。Web サーバーと CLI の権限を分けた構成では <code>cache:clear</code> の代わりにこれを使う。</td></tr>
+  <tr><td><code>eccube:doctor:permissions</code></td><td>ディレクトリごとの書き込み権限（Web サーバー／CLI のどちらが書けるべきか）を検査する。</td></tr>
+  <tr><td><code>eccube:page|block|mail-template:list|show|apply|remove</code></td><td>ページ・ブロック・メールテンプレートを CLI から操作する（管理画面と同じ FormType で検証）。</td></tr>
+  <tr><td><code>eccube:asset:*</code> / <code>eccube:user-data:*</code> / <code>eccube:env:*</code> / <code>eccube:keystore:*</code></td><td>CSS/JS・<code>html/user_data</code>・<code>.env</code>・署名鍵を CLI から操作する。</td></tr>
+  <tr><td><code>eccube:contents:export|import</code></td><td>ページ・ブロック・メールテンプレート・レイアウトの定義（DB 側）を <code>app/contents/*.yaml</code> と入出力する。</td></tr>
  </table>
  <div class="note"><strong><code>eccube:schema:update</code> は Doctrine の <code>doctrine:schema:update</code> を alias で上書きしている</strong>（<code>#[AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]</code>、<code>OrmUpdateCommand</code> を継承）。
- 素の Doctrine コマンドと違い、<strong>プラグインのプロキシを一時生成してから差分を取る</strong>ため、トレイト拡張分も含めてスキーマ更新できる（<code>--no-proxy</code> で素の挙動に戻る）。<code>src/Eccube/Command/UpdateSchemaDoctrineCommand.php:38,82</code>。</div>
+ 素の Doctrine コマンドと違い、<strong>プラグインのプロキシを一時生成してから差分を取る</strong>ため、トレイト拡張分も含めてスキーマ更新できる（<code>--no-proxy</code> で素の挙動に戻る）。<code>UpdateSchemaDoctrineCommand</code> の <code>#[AsCommand]</code> と <code>execute()</code>。</div>
 </section>
 
 <section data-section="flow" data-customer="true">
@@ -80,7 +85,7 @@ execute(InputInterface, OutputInterface): int
    │  $io = new SymfonyStyle(...)     … 出力は SymfonyStyle に寄せる
    │  業務処理は Service へ委譲
    ▼
-return 0;                            … 正常 0 / 異常は非 0（コアは 0 リテラルで統一）</div>
+return Command::SUCCESS;             … 正常 SUCCESS(0) / 異常 FAILURE(1)・INVALID(2)</div>
  <div class="note">大量データを扱うバッチは、ループ内で毎回 <code>flush()</code> せず
  <strong>一定件数ごとにまとめて <code>flush()</code></strong> する（端数も最後に flush）。トランザクション境界が要るなら
  <code>beginTransaction()</code>／<code>commit()</code>／失敗時 <code>rollback()</code> で囲む（<code>DeleteCartsCommand</code> が手本）。</div>
@@ -105,7 +110,8 @@ return 0;                            … 正常 0 / 異常は非 0（コアは 0
  <h2>注意点<span class="dev-only">開発者向け</span></h2>
  <ul>
   <li><strong><code>parent::__construct()</code> を呼び忘れない</strong>（呼ばないと実行時エラー）。</li>
-  <li><strong><code>execute()</code> は <code>int</code> を返す</strong>（正常 <code>0</code>、異常は非 0）。<code>void</code> にしない。</li>
+  <li><strong><code>execute()</code> は <code>int</code> を返す</strong>。<code>void</code> にしない。値はリテラルではなく <code>Command::SUCCESS</code>／<code>FAILURE</code>／<code>INVALID</code> を使う（Rector が書き換える）。</li>
+  <li>コア独自の終了コード <strong><code>3</code></strong> は「本処理は完了したが手動対応が要る」（例: build ディレクトリへ書けず <code>eccube:cache:build</code> の実行が必要）。<code>2</code> は Symfony の <code>INVALID</code> と衝突するため使わない。</li>
   <li><code>execute()</code> に業務ロジックを直書きしない。複数 Repository 横断や計算・判定は Service へ委譲する。</li>
   <li><code>#[AsCommand]</code>＋<code>autoconfigure</code> 任せにし、<strong><code>services.yaml</code> に手書きで <code>console.command</code> タグを足さない</strong>。</li>
   <li>コマンド名は独自命名にせず <strong><code>eccube:</code> 接頭辞のコロン区切り</strong>（既存コマンドに倣う）。</li>

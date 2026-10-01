@@ -52,7 +52,10 @@
   <tr><td><code>AgentCommerceMessageSignerInterface</code></td><td>メッセージ署名・検証の抽象。アルゴリズムはプロトコルごとに差し替え可能。</td></tr>
   <tr><td><code>UcpMessageSigner</code></td><td>UCP の RFC 9421 実装。EC P-256 / ES256、署名は raw R‖S（IEEE P1363, 64byte）。公開鍵を EC JWK として広告。</td></tr>
   <tr><td><code>KeyStoreInterface</code></td><td>署名鍵の永続化抽象（<code>app/Customize</code> で DB 保管・Vault 連携等に差し替え可能）。</td></tr>
-  <tr><td><code>FilesystemKeyStore</code></td><td>標準実装。既定パス <code>{projectDir}/app/keystore/agent-commerce/{purpose}.key</code>。鍵ファイルは 0600、ディレクトリは 0700。</td></tr>
+  <tr><td><code>FilesystemKeyStore</code></td><td>標準実装。既定パス <code>{projectDir}/app/keystore/agent-commerce/{purpose}.key</code>。既定はディレクトリ 0755 / ファイル 0644（CLI が配置した鍵を Web サーバーが読めるようにするため）。<code>ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1</code> で 0700 / 0600。</td></tr>
+  <tr><td><code>KeyPurposeInterface</code> / <code>KeyPurposeRegistry</code></td><td>鍵の用途（purpose）ごとの生成方法の定義と、その一覧（<code>UcpSigningKeyPurpose</code> / <code>AcpWebhookKeyPurpose</code>）。CLI の <code>eccube:keystore:generate</code> と実行時の自動生成が同じ実装を通る。実装を追加すると自動でタグ付けされ <code>eccube:keystore:*</code> の対象になる。</td></tr>
+  <tr><td><code>EcJwkFactory</code></td><td>EC 公開鍵を JWK と <code>kid</code>（RFC 7638 JWK Thumbprint）へ変換する。discovery と <code>eccube:keystore:show</code> が同じ <code>kid</code> を返すよう 1 箇所に置く。</td></tr>
+  <tr><td><code>KeyStoreInspector</code></td><td><code>eccube:keystore:*</code> の出力源。鍵の有無・保管先・権限と、Web サーバーから読めるかを判定する。</td></tr>
  </table>
 </section>
 
@@ -61,9 +64,9 @@
  <ul>
   <li>OAuth2 の実体（リソースサーバー）は eccube-api4 が提供する想定（[EC-CUBE/eccube-api4#188]）。<strong>eccube-api4 未導入時は handler が null となり 503（ServiceUnavailable）を返す</strong>機能フラグのようなフォールバック。firewall への配線は checkout エンドポイントを持つ #6776/#6574 で行う。</li>
   <li>付与 scope は <code>UserBadge</code> の attributes に handler が載せる前提（<code>scopes</code>: array もしくは <code>scope</code>: 空白区切り string）。</li>
-  <li><code>signing_keys[]</code> には EC <strong>公開鍵</strong> JWK のみを出す（秘密鍵パラメータ非混入）。秘密鍵が鍵ストアに無ければ生成して永続化する。<code>kid</code> は RFC 7638 の JWK Thumbprint。</li>
+  <li><code>signing_keys[]</code> には EC <strong>公開鍵</strong> JWK のみを出す（秘密鍵パラメータ非混入）。秘密鍵が鍵ストアに無ければ生成して永続化するが、これは CLI を使えない環境向けのフォールバック。Web サーバーと CLI の権限を分けた構成では <code>app/keystore</code> へ Web サーバーが書けないため、<code>bin/console eccube:keystore:generate</code> で事前に配置する。<code>kid</code> は RFC 7638 の JWK Thumbprint。</li>
   <li><code>UcpMessageSigner</code> は grace period の<strong>旧公開鍵（<code>gracePublicKeyPems</code>）を verify と <code>signing_keys[]</code> 広告の両方に含める</strong>ことで無停止の鍵ローテーションを可能にする。verify は現用＋旧鍵を順に試し、署名長不正等の例外は捕捉して破棄し、次の鍵を試す。</li>
-  <li><code>FilesystemKeyStore::write()</code> は書き込みの間だけ <code>umask(0077)</code> に切り替える。<code>file_put_contents</code> の作成直後～<code>chmod(0600)</code> までの間に秘密鍵が group/other から読める<strong>競合ウィンドウを塞ぐ</strong>ためで、単なる 0600 設定ではない。</li>
+  <li>厳格モード（<code>ECCUBE_KEYSTORE_STRICT_PERMISSIONS=1</code>）では、<code>FilesystemKeyStore::write()</code> が書き込みの間だけ <code>umask(0077)</code> に切り替える。<code>file_put_contents</code> の作成直後～<code>chmod(0600)</code> までの間に秘密鍵が group/other から読める<strong>競合ウィンドウを塞ぐ</strong>ためで、単なる 0600 設定ではない（既定モードは 0644 なので切り替えない）。</li>
   <li><code>purpose</code> は既定パスへ直接連結されるため <code>[a-z0-9_-]</code> のみに制限し、<strong>パストラバーサル（<code>../</code> 等）を防ぐ</strong>（違反時 <code>InvalidArgumentException</code>）。</li>
  </ul>
 </section>
