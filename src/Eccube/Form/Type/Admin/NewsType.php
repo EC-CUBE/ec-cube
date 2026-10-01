@@ -51,6 +51,7 @@ class NewsType extends AbstractType
                 ],
             ])
             ->add('title', TextType::class, [
+                'empty_data' => '',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),

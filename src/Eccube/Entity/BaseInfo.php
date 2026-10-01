@@ -642,7 +642,7 @@ class BaseInfo extends AbstractEntity
     /**
      * Set invoiceRegistrationNumber.
      */
-    public function setInvoiceRegistrationNumber(string $invoiceRegistrationNumber): BaseInfo
+    public function setInvoiceRegistrationNumber(?string $invoiceRegistrationNumber): BaseInfo
     {
         $this->invoice_registration_number = $invoiceRegistrationNumber;
 

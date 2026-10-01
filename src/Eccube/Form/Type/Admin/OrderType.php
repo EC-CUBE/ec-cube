@@ -139,12 +139,15 @@ class OrderType extends AbstractType
                 ],
             ])
             ->add('discount', PriceType::class, [
+                'empty_data' => '0',
                 'required' => false,
             ])
             ->add('delivery_fee_total', PriceType::class, [
+                'empty_data' => '0',
                 'required' => false,
             ])
             ->add('charge', PriceType::class, [
+                'empty_data' => '0',
                 'required' => false,
             ])
             ->add('use_point', NumberType::class, [

@@ -106,7 +106,7 @@ class DeliveryTime extends AbstractEntity implements \Stringable
     /**
      * Set sort_no.
      */
-    public function setSortNo(int $sort_no): static
+    public function setSortNo(?int $sort_no): static
     {
         $this->sort_no = $sort_no;
 
@@ -116,7 +116,7 @@ class DeliveryTime extends AbstractEntity implements \Stringable
     /**
      * Get sort_no.
      */
-    public function getSortNo(): int
+    public function getSortNo(): ?int
     {
         return $this->sort_no;
     }
@@ -124,7 +124,7 @@ class DeliveryTime extends AbstractEntity implements \Stringable
     /**
      * Set visible
      */
-    public function setVisible(bool $visible): DeliveryTime
+    public function setVisible(?bool $visible): DeliveryTime
     {
         $this->visible = $visible;
 
