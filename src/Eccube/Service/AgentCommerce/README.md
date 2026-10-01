@@ -19,6 +19,7 @@ ACP（Agentic Commerce Protocol）/ UCP（Universal Commerce Protocol）の 2 �
 - [Payment](./Payment/README.html) — 決済ハンドラレジストリと支払方法割当リゾルバ
 - [Security](./Security/README.html) — OAuth2 検証・scope 照合・メッセージ署名・鍵ストア
 - [Exception](./Exception/README.html) — プロトコル系エラーのコード分類と例外
+- `Acp/` / `Ucp/` — プロトコル別のマッパー・メッセージ署名・リクエスト署名検証（HTTP の入口は `Controller/AgentCommerce/`）
 
 ## ルート直下の共通ユーティリティ
 

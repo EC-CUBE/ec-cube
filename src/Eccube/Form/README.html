@@ -56,12 +56,12 @@
 
 <section data-section="type" data-customer="true">
  <h2>フォーム型（<code>Type/</code>）</h2>
- <p>各型は Symfony の <code>AbstractType</code> を継承し、次の 3 つで構成されます。</p>
+ <p>各型は Symfony の <code>AbstractType</code> を継承し、主に次のメソッドで構成されます。</p>
  <table>
   <tr><th>メソッド</th><th>役割</th></tr>
   <tr><td><code>buildForm()</code></td><td>フィールド（<code>add()</code>）とバリデーション制約（<code>Assert\*</code>）を組み立てる</td></tr>
   <tr><td><code>configureOptions()</code></td><td>既定オプションを設定。エンティティに紐づくフォームは <code>data_class</code> を指定する</td></tr>
-  <tr><td><code>getBlockPrefix(): string</code></td><td>テンプレートのブロック名・フィールド名の接頭辞。<strong>戻り値型 <code>: string</code> は必須</strong></td></tr>
+  <tr><td><code>getBlockPrefix(): string</code></td><td>テンプレートのブロック名・フィールド名の接頭辞。<strong>クラス名から導かれる既定値と異なる場合だけ</strong>定義する（既定値と同じものは Rector が削除する）。定義するなら戻り値型 <code>: string</code> は必須</td></tr>
  </table>
  <p>用途ごとにサブディレクトリへ分かれ、直下には「どの画面からも使い回す部品型」を置きます。
  <strong>同じ入力（住所・金額・都道府県 等）を毎回手書きせず</strong>、汎用型を <code>add()</code> で組み合わせるのが原則です。</p>
@@ -108,7 +108,7 @@
 <section data-section="notes" data-customer="false">
  <h2>注意点<span class="dev-only">開発者向け</span></h2>
  <ul>
-  <li><strong><code>getBlockPrefix(): string</code> の戻り値型は必須</strong>。省略すると動かない（Symfony 6+）。</li>
+  <li><strong><code>getBlockPrefix()</code> は既定値（クラス名から導かれる接頭辞）と異なる場合だけ書く</strong>。書くなら戻り値型 <code>: string</code> は必須（Symfony 6+）。</li>
   <li><strong>管理画面の検索フォームでも CSRF を無効化しない</strong>。<code>csrf_protection =&gt; true</code>（既定）を保ち、テンプレートでトークンを出力する。</li>
   <li>バリデーションは制約クラス（<code>Assert\NotBlank</code> 等）で付ける。<code>Range</code> で min/max 両方指定時は <code>notInRangeMessage</code> を使う。</li>
   <li>既存の EC-CUBE 提供 Type（<code>AddCartType</code> / <code>AddressType</code> / <code>PriceType</code> 等）があれば再利用し、具象クラス直依存を避ける。</li>

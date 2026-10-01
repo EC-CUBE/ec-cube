@@ -35,7 +35,7 @@
  <p>エージェントが店舗の対応機能を発見するための <strong>UCP discovery profile（<code>/.well-known/ucp</code>）</strong>を組み立てるサブドメインです。
  profile には対応サービス・決済ハンドラ・署名鍵（JWK）が含まれ、これを起点にエージェントはカタログ取得やチェックアウトを行います。</p>
  <div class="flow">{ "ucp": { version, services, payment_handlers, capabilities }, "signing_keys": [JWK...] }</div>
- <p>services / capabilities / payment_handlers のキーは <strong>reverse-domain</strong> 形式。endpoint（絶対 URL）はパスをハードコードせず <code>UrlGenerator</code>（<code>RequestContext</code>）から動的生成します。</p>
+ <p>services / capabilities / payment_handlers のキーは <strong>reverse-domain</strong> 形式で、<strong>値は単一のオブジェクトではなくエントリのリスト</strong>（UCP の <code>ucp.json</code> スキーマが要求。単一オブジェクトだとスキーマ検証するクライアントに拒否される）。endpoint（絶対 URL）はパスをハードコードせず <code>UrlGenerator</code>（<code>RequestContext</code>）から動的生成します。</p>
 </section>
 
 <section data-section="classes" data-customer="true">

@@ -38,8 +38,8 @@
  カタログ提供・チェックアウト・決済・署名検証を、コントローラや個別サービスに散らさずこのディレクトリに集約します。</p>
 
  <p>対応プロトコルは 2 系統あり、<strong>プロトコル非依存の中立表現（DTO・中間結果）</strong>を核に置いて、
- 各プロトコルの入出力へ写す設計です。プロトコル固有のコントローラ／マッパーは別 PR（ACP=#6776 / UCP=#6574）が担い、
- 本ディレクトリはその共通基盤に徹します。</p>
+ 各プロトコルの入出力へ写す設計です。プロトコル固有のマッパー・署名は本ディレクトリの <code>Acp/</code> / <code>Ucp/</code>、
+ HTTP の入口は <code>src/Eccube/Controller/AgentCommerce/</code> が担い、それ以外のサブドメインは共通基盤に徹します。</p>
 
  <table>
   <tr><th>プロトコル</th><th>意味</th></tr>
@@ -67,7 +67,7 @@
 
 <section data-section="subdomains" data-customer="true">
  <h2>サブドメイン索引</h2>
- <p>本ディレクトリは 8 つのサブドメインで構成されます。各サブドメインの詳細はそれぞれの README を参照してください。</p>
+ <p>本ディレクトリはプロトコル非依存の 8 つのサブドメインと、プロトコル別の <code>Acp/</code> / <code>Ucp/</code> で構成されます。各サブドメインの詳細はそれぞれの README を参照してください。</p>
  <table>
   <tr><th>サブドメイン</th><th>担うこと</th></tr>
   <tr><td><a href="./Catalog/README.html">Catalog</a></td><td>商品カタログの中立 DTO 化と ACP Feed / UCP Catalog への出力・検証。</td></tr>
@@ -78,6 +78,7 @@
   <tr><td><a href="./Payment/README.html">Payment</a></td><td>エージェント決済ハンドラのレジストリと、Order への支払方法割当リゾルバ。</td></tr>
   <tr><td><a href="./Security/README.html">Security</a></td><td>インバウンド OAuth2 検証・scope 照合・メッセージ署名（RFC 9421）・鍵ストア。</td></tr>
   <tr><td><a href="./Exception/README.html">Exception</a></td><td>プロトコル系エラーのコード分類と例外（ビジネス系は CheckoutSession の message で表現）。</td></tr>
+  <tr><td><code>Acp/</code> / <code>Ucp/</code></td><td>中立表現と各プロトコルの入出力の相互変換（マッパー）、メッセージ署名、UCP のリクエスト署名検証（<code>Ucp/Signature/</code>）。</td></tr>
  </table>
 </section>
 
@@ -101,7 +102,7 @@
   <li><strong>会員は既定でゲスト購入</strong>。会員 ID 連携は eccube-api4 の Customer authorization_code grant に依存し、標準実装（<code>GuestCustomerResolver</code>）は常に <code>null</code>（ゲスト）を返す。会員解決は <code>CustomerResolverInterface</code> の差し替えで有効化する。</li>
   <li><strong>ハンドラ非対応の支払方法が検知されず割り当たる問題に注意</strong>。利用可能な支払方法の先頭（sort_no 最小）を機械採用するとエージェント決済不可能な方法（銀行振込等）が割り当たる。<code>AgentPaymentMethodResolverInterface</code> は登録済みハンドラが扱える <code>Payment</code> のみを候補にする。</li>
   <li><strong>拡張は各 Interface の差し替え（seam）で</strong>。<code>ProductReferenceResolverInterface</code> / <code>CustomerResolverInterface</code> / <code>FulfillmentOptionMapperInterface</code> / <code>KeyStoreInterface</code> 等を <code>app/Customize</code> で実装・alias 上書きする。core は具象決済実装を持たず、決済ハンドラは決済プラグインがタグ付きサービスで寄与する。</li>
-  <li><strong>本ディレクトリはプロトコル非依存に徹する</strong>。HTTP ステータス／各プロトコルのレスポンス形への変換はプロトコル層（ACP=#6776 / UCP=#6574）が担う。ここに HTTP 依存を持ち込まない。</li>
+  <li><strong>本ディレクトリはプロトコル非依存に徹する</strong>。HTTP ステータス／各プロトコルのレスポンス形への変換はプロトコル層（<code>Acp/</code> / <code>Ucp/</code> とコントローラ）が担う。共通サブドメインに HTTP 依存を持ち込まない。</li>
   <li><strong>エージェント所有 <code>Cart</code> は Web カートと隔離</strong>。<code>AgentCheckoutPurchaseFlowAdapter</code> が組む <code>Cart</code> は <code>setAgentOwned(true)</code> を立て、Web ストアフロントの <code>CartService</code> の解決対象から外す。会員帰属は <code>Order</code> 側に持たせ <code>Cart</code> の <code>customer_id</code> は常に NULL に保つ（ログイン会員の Web カートへの混入・操作を防ぐため）。</li>
   <li><strong><code>MinorUnitConverter</code> は不正入力を例外にせず既定値で処理する</strong>。未知の通貨コードは安全側に倒して 2 桁（<code>×100</code>）扱い、数値として解釈できない金額文字列（<code>abc</code> / <code>1,000</code> / <code>1e3</code> 等）は例外でなく <code>0</code> を返す。呼び出し側で通貨・金額の妥当性を保証すること。</li>
  </ul>

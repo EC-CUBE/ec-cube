@@ -71,7 +71,7 @@
  <p>第 3 引数 <code>$version</code> で<strong>マイグレーション先を指定</strong>できます（既定 <code>null</code>）。
  <code>null</code>＝最新まで適用、<strong><code>'0'</code>＝先頭まで巻き戻し（全ロールバック）</strong>。<code>disable()</code> で
  「マイグレーションを戻す」のはこの <code>migration($conn, $code, '0')</code> を指します。第 4 引数でディレクトリも差し替え可
- （<code>AbstractPluginManager.php:35-51,77-81</code>）。</p>
+ （<code>AbstractPluginManager::migration()</code>）。</p>
 </section>
 
 <section data-section="extension" data-customer="false">
