@@ -103,7 +103,12 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 (EC-CUBE/coupon-plugin#198)。
 
 再生に失敗したステップは、能動スキャンの攻撃が画面に届いていない可能性があります (例: `entry` のパスワード再設定は、
-再設定用の URL が使用済みになって 404 になるため、再設定フォームは実質スキャンされていない)。
+再設定用の URL が攻撃の前の再生で既に 404 になるため、再設定フォームは実質スキャンされていない)。
+
+再生に成功していても、次のリクエストは攻撃が処理まで届いていません (`attacks.tsv` で確認できます)。
+
+- `multipart/form-data` のリクエスト (商品・支払方法の登録、CSV・テンプレート・画像のアップロード): 攻撃が 1 件も送られない。原因は未特定
+- 削除のリクエスト: パラメータが `_token` と `_method` だけで、`_method` への攻撃は Symfony が 400 を返す
 
 ## シナリオが通らない画面を調べる
 
@@ -127,9 +132,22 @@ LANE=1 zap/local/compose.sh exec -T ec-cube bin/console debug:router --format=js
 スキャンする対象がリリースするコードと変わり、保存の時点で起きるエラー (制約違反など) は検出できなくなるため、
 既定のスキャンでは当てません。必要なときだけ選んで当てます。
 
+| パッチ | 内容 |
+|---|---|
+| `mypage-delivery-keep` | お届け先の登録上限と削除を無効にする。`mypage_delivery`・`mypage_shopping_shipping` で、お届け先の新規登録への攻撃が上限到達の 4xx で弾かれなくなる |
+
+doc4 のパッチのうち次のものは、当てても `attacks.tsv` の正常な応答が増えなかったため収録していません。
+
+- 削除の処理を無効にするもの: 削除のリクエストのパラメータは `_token` と `_method` だけで、`_method` への攻撃は
+  Symfony が 400 を返す。パスの ID は攻撃されないため、削除済みかどうかに関わらず攻撃は処理まで届かない
+- カートを残すもの: `/shopping/checkout` のパラメータは CSRF トークンだけで、攻撃されない
+- 会員登録で会員を保存しないもの: `entry` の有効化とパスワード再設定の再生が壊れる
+- パスワード再設定のキーを使用済みにしないもの: 再設定フォームは攻撃の前の再生で既に 404 になる。
+  直前の `POST /forgot` への攻撃がキーを作り直すためと推測している (未検証)
+
 ```bash
-LANE=7 zap/local/patch.sh                        # すべて当てる
-LANE=7 zap/local/patch.sh -R entry-no-persist    # 1 つだけ外す
+LANE=7 zap/local/patch.sh                            # すべて当てる
+LANE=7 zap/local/patch.sh -R mypage-delivery-keep    # 1 つだけ外す
 ```
 
 GitHub Actions では、`workflow_dispatch` の `patches` にパッチ名 (空白区切り) か `all` を指定します。

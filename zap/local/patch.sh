@@ -5,7 +5,7 @@
 #
 # usage: LANE=<n> patch.sh [-R] [<パッチ名>...]
 #   例: LANE=7 zap/local/patch.sh
-#       LANE=7 zap/local/patch.sh -R entry-no-persist
+#       LANE=7 zap/local/patch.sh -R mypage-delivery-keep
 
 set -euo pipefail
 source "$(dirname "$0")/env.sh"
