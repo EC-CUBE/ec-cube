@@ -81,3 +81,10 @@ form_error.refund_request.quantity_exceed: 返品数量は{{ compared_value }}�
 form_error.refund_request.max_files: ファイルは{{ limit }}件まで添付できます。
 form_error.refund_request.file_size: ファイルサイズが大きすぎます。{{ limit }}以内にしてください。
 form_error.refund_request.file_type: 許可されていないファイル形式です。画像（JPEG, PNG, GIF, WebP）または動画（MP4, MOV, AVI）を添付してください。
+admin.setting.shop.opening_hours.error.day_required: 曜日を1つ以上選択してください。
+admin.setting.shop.opening_hours.error.opens_required: 開店時刻を入力してください。
+admin.setting.shop.opening_hours.error.closes_required: 閉店時刻を入力してください。
+admin.setting.shop.opening_hours.error.opens_before_closes: 開店時刻は閉店時刻より前にしてください。
+admin.setting.shop.opening_hours.error.overlap: 同じ曜日で営業時間が重複しています。
+admin.setting.shop.same_as.error.invalid_url: 各行にSNS等の有効なURLを入力してください。
+admin.setting.shop.founding_date.error.not_future: 稼働開始日は未来の日付にできません。
