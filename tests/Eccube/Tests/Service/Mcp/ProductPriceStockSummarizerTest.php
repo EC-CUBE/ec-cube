@@ -17,8 +17,10 @@ namespace Eccube\Tests\Service\Mcp;
 
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 use Eccube\Service\Mcp\AllowListResolver;
 use Eccube\Service\Mcp\ProductPriceStockSummarizer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,7 +34,8 @@ final class ProductPriceStockSummarizerTest extends TestCase
     public function testAggregatesFinitePriceAndStockRange(): void
     {
         $summarizer = $this->summarizerWith([
-            ProductClass::class => ['price02', 'stock', 'stock_unlimited'],
+            ProductClass::class => ['price02', 'stock_unlimited', 'ProductStock'],
+            ProductStock::class => ['stock'],
         ]);
         $product = $this->productWith([
             ['price02' => '1000', 'stock' => '5'],
@@ -53,7 +56,8 @@ final class ProductPriceStockSummarizerTest extends TestCase
         // HIGH 回帰: 有限在庫(5) と無制限が混在しても stock.min が null に化けず、
         // 有限クラスだけで min/max を出し、 unlimited フラグで無制限を示す。
         $summarizer = $this->summarizerWith([
-            ProductClass::class => ['price02', 'stock', 'stock_unlimited'],
+            ProductClass::class => ['price02', 'stock_unlimited', 'ProductStock'],
+            ProductStock::class => ['stock'],
         ]);
         $product = $this->productWith([
             ['price02' => '1000', 'stock' => '5'],
@@ -72,7 +76,8 @@ final class ProductPriceStockSummarizerTest extends TestCase
     public function testAllUnlimitedYieldsNullStockRange(): void
     {
         $summarizer = $this->summarizerWith([
-            ProductClass::class => ['price02', 'stock', 'stock_unlimited'],
+            ProductClass::class => ['price02', 'stock_unlimited', 'ProductStock'],
+            ProductStock::class => ['stock'],
         ]);
         $product = $this->productWith([
             ['price02' => '800', 'stock' => null, 'unlimited' => true],
@@ -87,7 +92,8 @@ final class ProductPriceStockSummarizerTest extends TestCase
     public function testInvisibleClassExcluded(): void
     {
         $summarizer = $this->summarizerWith([
-            ProductClass::class => ['price02', 'stock', 'stock_unlimited'],
+            ProductClass::class => ['price02', 'stock_unlimited', 'ProductStock'],
+            ProductStock::class => ['stock'],
         ]);
         $product = $this->productWith([
             ['price02' => '1000', 'stock' => '5', 'visible' => true],
@@ -107,7 +113,8 @@ final class ProductPriceStockSummarizerTest extends TestCase
     {
         // price02 が allow_list に無ければ price は出さない (fail-closed)。 stock は許可されていれば出す。
         $summarizer = $this->summarizerWith([
-            ProductClass::class => ['stock'],
+            ProductClass::class => ['ProductStock'],
+            ProductStock::class => ['stock'],
         ]);
         $product = $this->productWith([['price02' => '1000', 'stock' => '5']]);
 
@@ -121,11 +128,41 @@ final class ProductPriceStockSummarizerTest extends TestCase
     {
         // stock は許可だが stock_unlimited が未許可なら unlimited は常に false 扱い
         $summarizer = $this->summarizerWith([
-            ProductClass::class => ['stock'],
+            ProductClass::class => ['ProductStock'],
+            ProductStock::class => ['stock'],
         ]);
         $product = $this->productWith([['stock' => null, 'unlimited' => true]]);
 
         $this->assertFalse($summarizer->summarize($product)['stock']['unlimited']);
+    }
+
+    /**
+     * 在庫数の正典は ProductStock::stock のため, ProductClass.stock の許可では在庫を出さない.
+     * ProductClass.ProductStock と ProductStock.stock の両方が許可されている時だけ出す (fail-closed).
+     */
+    #[DataProvider(methodName: 'stockAllowMapProvider')]
+    public function testStockRequiresProductStockAllowed(array $allowMap, bool $expectStock): void
+    {
+        $product = $this->productWith([['price02' => '1000', 'stock' => '5']]);
+
+        $result = $this->summarizerWith($allowMap)->summarize($product);
+
+        if ($expectStock) {
+            $this->assertSame(['min' => '5', 'max' => '5', 'unlimited' => false], $result['stock']);
+        } else {
+            $this->assertNull($result['stock']);
+        }
+    }
+
+    /**
+     * @return \Iterator<string, array{array<string, list<string>>, bool}>
+     */
+    public static function stockAllowMapProvider(): \Iterator
+    {
+        yield '関連と在庫数を許可' => [[ProductClass::class => ['ProductStock'], ProductStock::class => ['stock']], true];
+        yield 'ProductClass.stock のみ許可' => [[ProductClass::class => ['stock']], false];
+        yield '関連が未許可' => [[ProductClass::class => ['in_stock'], ProductStock::class => ['stock']], false];
+        yield '在庫数が未許可' => [[ProductClass::class => ['ProductStock'], ProductStock::class => ['id']], false];
     }
 
     /**
