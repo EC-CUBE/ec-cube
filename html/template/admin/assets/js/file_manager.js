@@ -196,7 +196,8 @@
         old_select_id: '',       // 前回選択していたファイル
         selectFileHidden: "",    // 選択したファイルのhidden名
         treeStatusHidden: "",    // ツリー状態保存用のhidden名
-        modeHidden: ""           // modeセットhidden名
+        modeHidden: "",          // modeセットhidden名
+        nodeIdSeq: 0             // ツリーノードの id 採番用の連番
     };
 
     // ツリー表示
@@ -204,6 +205,15 @@
         eccube.fileManager.selectFileHidden = selectHidden;
         eccube.fileManager.treeStatusHidden = treeHidden;
         eccube.fileManager.modeHidden = mode;
+
+        // サーバーから渡された開閉状態 (tree_status 由来) を復元する.
+        // arrTree の 5 番目が FileController::getTree() の open フラグ.
+        eccube.fileManager.arrTreeStatus = [];
+        $.each(arrTree, function(key, value) {
+            if ('true' === value[4]) {
+                eccube.fileManager.arrTreeStatus.push(value[2]);
+            }
+        });
 
         var tmp = [];
         $.each(arrTree, function(key, value) {
@@ -233,6 +243,7 @@
             delete tmp[i];
         }
         var rootNode = tmp[0][0];
+        eccube.fileManager.nodeIdSeq = 0;
         var li = eccube.fileManager.buildDirectoryNode(rootNode['name'], rootNode['path'], rootNode['children'], openFolder);
         eccube.fileManager.tree = li.html();
         $('#' + view_id).html(li);
@@ -323,34 +334,71 @@
     eccube.fileManager.buildDirectoryNode = function(name, path, children, currentPath) {
         var ul = $('<ul></ul>'),
             li = $('<li></li>'),
-            label = $('<label></label>'),
+            // 開閉トグルは button にする。label はフォーカスできず、キーボードでは開閉できないため。
+            toggle = $('<button type="button" class="c-directoryTree__toggle"></button>'),
             a = $('<a href="#"></a>');
         currentPath = currentPath || '';
 
-        a.html(name);
+        // パスから id を作ると、"/" を "_" へ置き換えた結果が別のパスと一致することがある
+        // (例: "/foo/bar_baz" と "/foo/bar/baz")。ディレクトリ名には "_" を使えるため実際に起こり、
+        // id が重複すると Bootstrap の collapse は一致した要素をすべて開閉してしまう。
+        // そのためパスではなくノードごとの連番から id を作る。
+        var targetId = 'directory_tree_' + (++eccube.fileManager.nodeIdSeq);
+        // 表示中のディレクトリ自身とその祖先を展開状態で描画する。前方一致だけで判定すると
+        // "/images_backup" を表示中に "/images" まで開いてしまうため、区切り文字まで含めて比較する
+        // 表示中のディレクトリ自身とその祖先に加えて, 利用者が開いたまま残しているものも展開する
+        var isOpen = currentPath === path
+            || currentPath.indexOf(path.replace(/\/$/, '') + '/') === 0
+            || eccube.fileManager.isTreeOpen(path);
+
+        a.text(name);
         a.on('click', function(e) {
             eccube.fileManager.openFolder(path);
             return e.preventDefault();
         });
 
-        label.attr('data-toggle', 'collapse');
-        label.attr('href', '#' + path.replace('/', '_'));
-        label.attr('aria-expanded', false);
-        label.attr('aria-control', '');
-        label.appendTo(li);
+        if (children.length) {
+            // Bootstrap 5 は data-bs-toggle のみ解釈する (data-toggle は Bootstrap 4 の書式)。
+            // button では href が効かないため、対象は data-bs-target で指定する。
+            toggle.attr('data-bs-toggle', 'collapse');
+            toggle.attr('data-bs-target', '#' + targetId);
+            toggle.attr('aria-expanded', isOpen);
+            toggle.attr('aria-controls', targetId);
+            // 開閉の対象がフォルダ名で分かるようにする (開いているかは aria-expanded が伝える)
+            toggle.attr('aria-label', name);
+        } else {
+            // 子が無いフォルダのトグルは押しても対象が無い。階層の罫線を描くためだけに置くので、
+            // フォーカスも読み上げもさせない。
+            toggle.attr('disabled', 'disabled');
+            toggle.attr('aria-hidden', 'true');
+        }
+        toggle.appendTo(li);
         a.appendTo(li);
-        if (currentPath.indexOf(path) !== 0) {
-            label.addClass('collapsed')
+        if (!isOpen) {
+            toggle.addClass('collapsed');
         }
 
         if (children.length) {
-            if (currentPath.indexOf(path) !== 0) {
-                ul.addClass('collapse list-unstyled');
-            } else {
-                ul.addClass('collapsed list-unstyled');
+            // Bootstrap 5 の collapse は .collapse を土台に .show の有無で開閉する
+            ul.addClass('collapse list-unstyled');
+            if (isOpen) {
+                ul.addClass('show');
             }
 
-            ul.attr('id', path.replace('/', '_'));
+            ul.attr('id', targetId);
+            // 開閉を記録しておき, フォルダ移動やアップロードで再描画されても状態を保つ.
+            // 子孫の開閉も伝播してくるため, 自分自身の分だけ拾う.
+            ul.on('shown.bs.collapse', function(e) {
+                if (e.target === this) {
+                    eccube.fileManager.addTreeStatus(path);
+                }
+            });
+            ul.on('hidden.bs.collapse', function(e) {
+                if (e.target === this) {
+                    eccube.fileManager.deleteTreeStatus(path);
+                }
+            });
+
             $.each(children, function(k, v) {
                 var li = eccube.fileManager.buildDirectoryNode(v['name'], v['path'], v['children'], currentPath);
                 li.appendTo(ul);
@@ -390,12 +438,24 @@
         }
     };
 
+    // 開いているディレクトリとして記録されているか
+    eccube.fileManager.isTreeOpen = function(path) {
+        return -1 !== $.inArray(path, eccube.fileManager.arrTreeStatus);
+    };
+
+    // Tree状態を追加する(開いた状態へ)
+    eccube.fileManager.addTreeStatus = function(path) {
+        if (!eccube.fileManager.isTreeOpen(path)) {
+            eccube.fileManager.arrTreeStatus.push(path);
+        }
+    };
+
     // Tree状態を削除する(閉じる状態へ)
     eccube.fileManager.deleteTreeStatus = function(path) {
-        for (var i = 0; i < eccube.fileManager.arrTreeStatus.length; i++) {
-            if (eccube.fileManager.arrTreeStatus[i] === path) {
-                eccube.fileManager.arrTreeStatus[i] = "";
-            }
+        var index = $.inArray(path, eccube.fileManager.arrTreeStatus);
+        // 空文字で埋めると tree_status に空の区切りが混ざるため, 要素ごと取り除く
+        if (-1 !== index) {
+            eccube.fileManager.arrTreeStatus.splice(index, 1);
         }
     };
 
