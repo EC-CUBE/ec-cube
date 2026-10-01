@@ -102,10 +102,8 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 再生に失敗したステップは、能動スキャンの攻撃が画面に届いていない可能性があります (例: `entry` のパスワード再設定は、
 再設定用の URL が攻撃の前の再生で既に 404 になるため、再設定フォームは実質スキャンされていない)。
 
-再生に成功していても、次のリクエストは攻撃が処理まで届いていません (`attacks.tsv` で確認できます)。
-
-- `multipart/form-data` のリクエスト (商品・支払方法の登録、CSV・テンプレート・画像のアップロード): 攻撃が 1 件も送られない。原因は未特定
-- 削除のリクエスト: パラメータが `_token` と `_method` だけで、`_method` への攻撃は Symfony が 400 を返す
+再生に成功していても、削除のリクエストは攻撃が処理まで届いていません (`attacks.tsv` で確認できます)。
+パラメータが `_token` と `_method` だけで、`_method` への攻撃は Symfony が 400 を返すためです。
 
 ## シナリオが通らない画面を調べる
 
@@ -168,6 +166,12 @@ GitHub Actions では、`workflow_dispatch` の `patches` にパッチ名 (空�
 - admin コンテキストのターゲットの `before_script` で会員としてログインすると、セッション ID が変わって以降の管理画面の
   リクエストが未ログイン扱いになります。会員の操作の後に管理画面を操作する場合は、管理画面にログインし直してください
   (`admin_create_refund_request.zst`)。
+- `multipart/form-data` のリクエストは、boundary を小文字だけにし、boundary の行の前の改行を CRLF にしてください。
+  ZAP は Content-Type を小文字にしてから boundary を取り出すため、ブラウザが付ける `----WebKitFormBoundary...` のように
+  大文字を含むと本文を分割できず、能動スキャンの攻撃が 1 件も送られません (ZAP のログ `/home/zap/.ZAP/zap.log` に
+  `VariantMultipartFormParameters.setParameter` の `IndexOutOfBoundsException` が出ます)。
+  また ZAP は改行を CRLF として本文を分割するため、手で編集して LF だけになった箇所があると値の範囲がずれます。
+  `zap/bin/lint_zst.sh` で確かめられます (CI でも実行します)。
 - `mode=confirm` / `mode=complete` のように POST の値だけが違う遷移は、ZAP が同じノードとして扱います。
   `mode2=dummy` のようなダミーのパラメータで区別してください。
 - 変更したら `Smoke` で再生を確かめてから、`Sequence` で実行してください。
