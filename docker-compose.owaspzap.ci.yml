@@ -7,7 +7,7 @@ services:
       APP_DEBUG: 0
 
   zap:
-    image: ghcr.io/ec-cube/zaproxy:0.1.2
+    image: ghcr.io/zaproxy/zaproxy:stable
     
     # コンテナを待機させる
     entrypoint: ["sh", "-c"]
