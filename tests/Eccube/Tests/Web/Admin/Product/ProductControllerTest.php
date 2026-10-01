@@ -27,6 +27,8 @@ use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Entity\Tag;
 use Eccube\Entity\TaxRule;
+use Eccube\Event\EccubeEvents;
+use Eccube\Event\EventArgs;
 use Eccube\Repository\Master\ProductStatusRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\ProductTagRepository;
@@ -653,6 +655,58 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 商品コピーで複製した規格が, 複製元ではなく複製した在庫 (ProductStock) を参照することを検証する.
+     *
+     * 在庫数は ProductStock に委譲されるため, 複製元の ProductStock を参照したままだと,
+     * 複製完了イベント以降に複製した規格の在庫を変更すると複製元の在庫が書き換わる.
+     */
+    public function testCopyReplacesProductStockOfCopiedClasses(): void
+    {
+        $Product = $this->createProduct();
+        $sourceStocks = [];
+        foreach ($Product->getProductClasses() as $ProductClass) {
+            $sourceStocks[$ProductClass->getProductStock()->getId()] = $ProductClass->getStock();
+        }
+
+        $copiedClasses = [];
+        static::getContainer()->get('event_dispatcher')->addListener(
+            EccubeEvents::ADMIN_PRODUCT_COPY_COMPLETE,
+            function (EventArgs $event) use (&$copiedClasses) {
+                foreach ($event->getArgument('CopyProductClasses') as $ProductClass) {
+                    $copiedClasses[] = $ProductClass;
+                    // 複製した規格の在庫を変更する
+                    $ProductClass->setStock('12345');
+                }
+                $this->entityManager->flush();
+            }
+        );
+
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_product_product_copy', [
+            'id' => $Product->getId(),
+            Constant::TOKEN_NAME => 'dummy',
+        ]));
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+
+        $this->assertNotEmpty($copiedClasses);
+        foreach ($copiedClasses as $ProductClass) {
+            $ProductStock = $ProductClass->getProductStock();
+            $this->assertSame($ProductClass, $ProductStock->getProductClass());
+            $this->assertArrayNotHasKey((int) $ProductStock->getId(), $sourceStocks);
+        }
+
+        // 複製元の在庫は変わらない
+        $conn = $this->entityManager->getConnection();
+        foreach ($sourceStocks as $productStockId => $stock) {
+            $this->assertEquals($stock, $conn->fetchOne('SELECT stock FROM dtb_product_stock WHERE id = ?', [$productStockId]));
+        }
+
+        // 複製した規格の在庫の行は 1 行ずつ (ProductClass::__clone() で複製した ProductStock が重複して保存されない)
+        foreach ($copiedClasses as $ProductClass) {
+            $this->assertSame(1, (int) $conn->fetchOne('SELECT COUNT(*) FROM dtb_product_stock WHERE product_class_id = ?', [$ProductClass->getId()]));
+        }
+    }
+
+    /**
      * 商品コピーで商品ごとFAQが複製され、コピー元のFAQが残ることを検証する.
      *
      * copyProperties() が $Faqs の PersistentCollection をコピー元と共有した状態で
@@ -733,6 +787,69 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $taxRate = is_null($taxRate) ? null : $Taxrule?->getTaxRate();
         $this->actual = $taxRate;
         $this->assertSame($this->expected, $this->actual);
+    }
+
+    /**
+     * 商品の新規登録・編集で, 入力した在庫数が ProductStock に保存されることを確認する.
+     */
+    public function testNewAndEditKeepStock(): void
+    {
+        $conn = $this->entityManager->getConnection();
+        $productStocks = fn (int $productClassId) => $conn->fetchFirstColumn(
+            'SELECT stock FROM dtb_product_stock WHERE product_class_id = ?',
+            [$productClassId]
+        );
+
+        // 新規登録
+        $formData = $this->createFormData();
+        $formData['class']['stock'] = 123;
+        // チェックボックスは値を送信すると ON になるため, 在庫数を制限する場合は送信しない
+        unset($formData['class']['stock_unlimited']);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $arrTmp = explode('/', (string) $this->client->getResponse()->getTargetUrl());
+        $productId = (int) $arrTmp[count($arrTmp) - 2];
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertSame('123', $ProductClass->getStock());
+        $this->assertTrue($ProductClass->isInStock());
+        $this->assertEquals([123], $productStocks($ProductClass->getId()));
+
+        // 編集で在庫数を 0 にする
+        $formData['class']['stock'] = 0;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertSame('0', $ProductClass->getStock());
+        $this->assertFalse($ProductClass->isInStock());
+        $this->assertEquals([0], $productStocks($ProductClass->getId()));
+
+        // 編集で在庫無制限にする
+        $formData['class']['stock'] = null;
+        $formData['class']['stock_unlimited'] = 1;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $productId]),
+            ['admin_product' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $ProductClass = $this->productRepository->find($productId)->getProductClasses()->first();
+        $this->assertNull($ProductClass->getStock());
+        $this->assertTrue($ProductClass->isInStock());
+        $this->assertEquals([null], $productStocks($ProductClass->getId()));
     }
 
     /**

@@ -22,7 +22,7 @@ use Symfony\Component\Dotenv\Dotenv;
  * ただし bootEnv() は APP_ENV が prod 以外のとき APP_DEBUG を自動導出して
  * $_SERVER / $_ENV へ書き込む. EC-CUBE は APP_DEBUG 未定義を「未指定」として扱い,
  * デバッグ判定は index.php / bin/console 側で, 画面表示は env('APP_DEBUG') で行うため,
- * 導出値が混入すると .env に APP_DEBUG を持たない環境（APP_ENV=codeception 等）で
+ * 導出値が混入すると .env に APP_DEBUG を持たない環境（APP_ENV=e2e 等）で
  * 挙動が変わってしまう. これを避けるため, 導出先を未使用のキーへ逃がして破棄する.
  * .env 系や OS 環境変数に APP_DEBUG が定義されている場合は, 従来どおりその値が使われる.
  *
