@@ -153,6 +153,154 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         }
     }
 
+    /**
+     * プラグインの名前空間を指すページを管理画面から保存すると,
+     * 上書き用の app/template/plugin/[code] へ書き出される.
+     *
+     * "@" を付けたまま書くと EccubeExtension が登録するパスと一致せず,
+     * 保存できたように見えて画面へ反映されない.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testRoutingAdminContentPageWithPluginNamespace()
+    {
+        $client = $this->client;
+        $faker = $this->getFaker();
+
+        $name = $faker->word();
+        $fileName = '@Boomerang/'.$name;
+        $source = $faker->realText();
+        $client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_page_new'),
+            [
+                'main_edit' => [
+                    'name' => $name,
+                    'url' => $name,
+                    'file_name' => $fileName,
+                    'tpl_data' => $source,
+                    '_token' => 'dummy',
+                ],
+            ]
+        );
+
+        $this->assertTrue($client->getResponse()->isRedirection());
+        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
+        $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
+        $this->assertSame($fileName, $Page->getFileName());
+
+        $expectedPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig';
+        $unexpectedPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/@Boomerang/'.$name.'.twig';
+
+        try {
+            $this->assertFileExists($expectedPath, '@ を除いたパスへ書き出す');
+            $this->assertFileDoesNotExist($unexpectedPath, '@ を含むパスへは書き出さない');
+            $this->assertSame($source, file_get_contents($expectedPath));
+        } finally {
+            foreach ([$expectedPath, $unexpectedPath] as $path) {
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+            }
+        }
+    }
+
+    /**
+     * 名前空間付きのファイル名を持つページの編集画面が開ける.
+     *
+     * 読み取り時に @user_data/ を前置すると "@user_data/@Boomerang/xxx.twig" という
+     * 解決できない名前になり 500 になる. 保存経路だけを見ていると気付けない.
+     */
+    public function testRoutingAdminContentPageEditWithPluginNamespace()
+    {
+        $client = $this->client;
+        $faker = $this->getFaker();
+
+        $name = $faker->word();
+        $fileName = '@Boomerang/'.$name;
+        $source = '{% extends \'default_frame.twig\' %}';
+        $client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_page_new'),
+            [
+                'main_edit' => [
+                    'name' => $name,
+                    'url' => $name,
+                    'file_name' => $fileName,
+                    'tpl_data' => $source,
+                    '_token' => 'dummy',
+                ],
+            ]
+        );
+        $this->assertTrue($client->getResponse()->isRedirection());
+        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
+
+        $writtenPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig';
+
+        try {
+            // 編集画面を開く. ここで名前空間を二重に付けると 500 になる
+            $crawler = $client->request(
+                Request::METHOD_GET,
+                $this->generateUrl('admin_content_page_edit', ['id' => $matches[1]])
+            );
+            $this->assertTrue(
+                $client->getResponse()->isSuccessful(),
+                '名前空間付きのページでも編集画面を開ける'
+            );
+            $this->assertSame(
+                $source,
+                $crawler->filter('#main_edit_tpl_data')->text(),
+                '書き出したテンプレートを読み戻す'
+            );
+            $this->assertStringContainsString(
+                'app/template/plugin',
+                $crawler->filter('.card-body')->text(),
+                '配置先を app/template/plugin として表示する'
+            );
+        } finally {
+            if (file_exists($writtenPath)) {
+                unlink($writtenPath);
+            }
+        }
+    }
+
+    /**
+     * ファイル名の検証は "." を許さないため, 名前空間を許可しても
+     * 上位ディレクトリへ抜けるファイル名は受け付けない.
+     */
+    public function testRoutingAdminContentPageRejectsPathTraversal()
+    {
+        $client = $this->client;
+        $faker = $this->getFaker();
+
+        foreach (['@../../../../etc/passwd', '../../etc/passwd', '@Boomerang/../../../etc/passwd'] as $fileName) {
+            $name = $faker->word();
+            $crawler = $client->request(
+                Request::METHOD_POST,
+                $this->generateUrl('admin_content_page_new'),
+                [
+                    'main_edit' => [
+                        'name' => $name,
+                        'url' => $name,
+                        'file_name' => $fileName,
+                        'tpl_data' => 'body',
+                        '_token' => 'dummy',
+                    ],
+                ]
+            );
+
+            $this->assertFalse(
+                $client->getResponse()->isRedirection(),
+                sprintf('%s は登録されない', $fileName)
+            );
+            $this->assertGreaterThan(
+                0,
+                $crawler->filter('.invalid-feedback')->count(),
+                sprintf('%s はバリデーションエラーになる', $fileName)
+            );
+        }
+    }
+
     public function testAdminContentPageDuplicateWithEditTypeDefault()
     {
         $client = $this->client;

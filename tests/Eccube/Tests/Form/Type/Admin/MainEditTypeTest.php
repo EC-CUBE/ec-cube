@@ -138,9 +138,16 @@ final class MainEditTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testValidFileNameEndsWithSlash()
+    public function testValidFileNameNamespace()
     {
-        $this->formData['file_name'] = 'hoge/fuga/piyo/';
+        $this->formData['file_name'] = '@PluginCode/xxx';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testValidFileNameNamespaceNested()
+    {
+        $this->formData['file_name'] = '@PluginCode/xxx/yyy';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
     }
@@ -155,6 +162,29 @@ final class MainEditTypeTest extends AbstractTypeTestCase
     public function testInValidFileNameStartsWithSlash()
     {
         $this->formData['file_name'] = '/hoge/fuga/piyo';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    // 末尾のスラッシュは保存先が hoge/fuga/piyo/.twig となりファイル名が空になるため許可しない.
+    // 4.3 以前は許可していた (url 側は 2016 年から一貫して不許可).
+    public function testInValidFileNameEndsWithSlash()
+    {
+        $this->formData['file_name'] = 'hoge/fuga/piyo/';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidFileNameNamespaceOnly()
+    {
+        $this->formData['file_name'] = '@PluginCode';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    public function testInValidFileNameNamespaceEndsWithSlash()
+    {
+        $this->formData['file_name'] = '@PluginCode/';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
     }
