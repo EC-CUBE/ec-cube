@@ -76,30 +76,7 @@ final class CsrfProtectionTest extends TestCase
         $lines = file($path, FILE_IGNORE_NEW_LINES);
         $this->assertNotFalse($lines);
 
-        $violations = [];
-        foreach ($lines as $i => $line) {
-            if (!str_contains($line, '#[Route(')) {
-                continue;
-            }
-            // 属性は複数行に分かれることがあるため, 閉じ括弧までを 1 つの文字列として集める
-            $attribute = $this->collectAttribute($lines, $i);
-
-            // GET 以外だけを受けるルートに絞る（methods の値は単一引用符・二重引用符の両方を許す）
-            if (!preg_match('/methods:\s*\[[^\]]*[\'"](?:POST|DELETE|PUT|PATCH)[\'"]/', $attribute)) {
-                continue;
-            }
-            if (preg_match('/methods:\s*\[[^\]]*[\'"]GET[\'"]/', $attribute)) {
-                continue;
-            }
-
-            $method = $this->findMethodName($lines, $i);
-            if (null === $method) {
-                continue;
-            }
-            if (!$this->isProtected($this->extractBody($lines, $method['line']))) {
-                $violations[] = $method['name'];
-            }
-        }
+        $violations = $this->findViolations($lines);
 
         $this->assertSame([], $violations, sprintf(
             "%s の以下のアクションに CSRF 保護が見当たりません: %s\n".
@@ -110,33 +87,115 @@ final class CsrfProtectionTest extends TestCase
     }
 
     /**
-     * `#[Route(` から属性が閉じるまでを 1 つの文字列として返す.
+     * 検査自体が属性やメソッドを取りこぼさないことのテスト.
      *
-     * 行単位で `methods:` を探すと, 複数行に分けて書かれた属性を取りこぼす.
+     * 走査を固定の行数で打ち切ると, 長い属性の methods や, 属性から離れたメソッドを読めず,
+     * 保護の無いアクションが検査を素通りする.
+     */
+    public function testFindViolationsReadsLongAttributeAndDistantMethod(): void
+    {
+        $lines = [
+            '    #[Route(',
+            "        path: '/%eccube_admin_route%/example/{id}/delete',",
+            "        name: 'admin_example_delete',",
+            "        requirements: ['id' => '\\d+'],",
+            '        defaults: [',
+            "            'a' => 1,",
+            "            'b' => 2,",
+            "            'c' => 3,",
+            "            'd' => 4,",
+            "            'e' => 5,",
+            "            'f' => 6,",
+            '        ],',
+            "        methods: ['DELETE']",
+            '    )]',
+            '    #[Template(template: \'@admin/example.twig\')]',
+            '    /**',
+            '     * 属性からメソッドまでが離れている.',
+            '     *',
+            '     * @return array<string, mixed>',
+            '     */',
+            '    public function delete(Request $request): array',
+            '    {',
+            '        return [];',
+            '    }',
+        ];
+
+        $this->assertSame(['delete'], $this->findViolations($lines));
+    }
+
+    /**
+     * GET 以外だけを受けるルートのうち, CSRF 保護が見当たらないアクション名を返す.
      *
      * @param list<string> $lines
+     *
+     * @return list<string>
      */
-    private function collectAttribute(array $lines, int $routeLine): string
+    private function findViolations(array $lines): array
+    {
+        $violations = [];
+        foreach ($lines as $i => $line) {
+            if (!str_contains($line, '#[Route(')) {
+                continue;
+            }
+            // 属性は複数行に分かれることがあるため, 閉じ括弧までを 1 つの文字列として集める
+            [$attribute, $attributeEnd] = $this->collectAttribute($lines, $i);
+
+            // GET 以外だけを受けるルートに絞る（methods の値は単一引用符・二重引用符の両方を許す）
+            if (!preg_match('/methods:\s*\[[^\]]*[\'"](?:POST|DELETE|PUT|PATCH)[\'"]/', $attribute)) {
+                continue;
+            }
+            if (preg_match('/methods:\s*\[[^\]]*[\'"]GET[\'"]/', $attribute)) {
+                continue;
+            }
+
+            $method = $this->findMethodName($lines, $attributeEnd);
+            if (null === $method) {
+                continue;
+            }
+            if (!$this->isProtected($this->extractBody($lines, $method['line']))) {
+                $violations[] = $method['name'];
+            }
+        }
+
+        return $violations;
+    }
+
+    /**
+     * `#[Route(` から属性が閉じるまでを 1 つの文字列として返す. 閉じた行の位置も返す.
+     *
+     * 行単位で `methods:` を探すと, 複数行に分けて書かれた属性を取りこぼす.
+     * 行数で打ち切ると長い属性を取りこぼすため, 閉じるまで読む.
+     *
+     * @param list<string> $lines
+     *
+     * @return array{string, int}
+     */
+    private function collectAttribute(array $lines, int $routeLine): array
     {
         $collected = [];
-        for ($j = $routeLine, $max = min($routeLine + 12, count($lines)); $j < $max; ++$j) {
+        for ($j = $routeLine, $n = count($lines); $j < $n; ++$j) {
             $collected[] = $lines[$j];
             if (str_contains($lines[$j], ')]')) {
                 break;
             }
         }
 
-        return implode(' ', $collected);
+        return [implode(' ', $collected), $j];
     }
 
     /**
+     * 属性の直後から, 次のメソッド宣言を探す.
+     *
+     * 間に別の属性や docblock が挟まっても読み飛ばす. 行数では打ち切らない.
+     *
      * @param list<string> $lines
      *
      * @return array{name: string, line: int}|null
      */
-    private function findMethodName(array $lines, int $routeLine): ?array
+    private function findMethodName(array $lines, int $attributeEnd): ?array
     {
-        for ($j = $routeLine + 1, $max = min($routeLine + 8, count($lines)); $j < $max; ++$j) {
+        for ($j = $attributeEnd + 1, $n = count($lines); $j < $n; ++$j) {
             if (preg_match('/public function (\w+)/', $lines[$j], $m)) {
                 return ['name' => $m[1], 'line' => $j];
             }
