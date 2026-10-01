@@ -65,8 +65,11 @@ jobs:
 #          APP_ENV: 'prod'
 #          DATABASE_URL: postgres://postgres:password@127.0.0.1:5432/eccube_db
 #          DATABASE_SERVER_VERSION: 18
+#          ## secret は run へ直接展開せず環境変数で渡す (シェルの解釈・ログ出力を避ける)
+#          ECCUBE_AUTHENTICATION_KEY: ${{ secrets.X_ECCUBE_KEY }}
 #        run: |
-#           PGPASSWORD=password psql eccube_db -h 127.0.0.1 -U postgres -c "update dtb_base_info set authentication_key='${{ secrets.X_ECCUBE_KEY }}';"
+#           ## オーナーズストアから AmazonPay / EC-CUBE Payment Lite を取得するため認証キーを設定する
+#           PGPASSWORD=password psql eccube_db -h 127.0.0.1 -U postgres -v ON_ERROR_STOP=1 -v key="$ECCUBE_AUTHENTICATION_KEY" <<< "update dtb_base_info set authentication_key = :'key';"
 #           bin/console eccube:composer:require "ec-cube/recommend42"
 #           bin/console eccube:composer:require "ec-cube/coupon42"
 #           bin/console eccube:composer:require "ec-cube/mailmagazine42"
@@ -75,6 +78,7 @@ jobs:
 #           bin/console eccube:composer:require "ec-cube/securitychecker42"
 #           bin/console eccube:composer:require "ec-cube/productreview42"
 #           bin/console eccube:composer:require "ec-cube/api42"
+#           ## 4.4 対応版の公開後にパッケージ名を差し替える
 #           bin/console eccube:composer:require "ec-cube/amazonpayv2_42_bundle"
 #           bin/console eccube:composer:require "ec-cube/eccubepaymentlite42"
 
