@@ -54,7 +54,7 @@ PR では以下が GitHub Actions で走る。**同じものを手元で先に�
 | リファクタ規約（`rector.yml`） | `vendor/bin/rector process --dry-run --ansi --config=rector.php` | `vendor/bin/rector process`（差分適用） |
 | ユニットテスト（`unit-test.yml`） | `vendor/bin/phpunit`（一部グループは分割実行） | 変更に関係するテストを `vendor/bin/phpunit <path>` |
 
-- このほか **E2E（`e2e-test.yml`）・プラグインテスト（`plugin-test.yml`）・セキュリティスキャン（zaproxy/vaddy）** が走る。重いので CI に任せてよいが、落ちたら該当ジョブのログを読む。
+- このほか **E2E（`e2e-test.yml`）・プラグインテスト（`plugin-test.yml`）・セキュリティスキャン（zaproxy）** が走る。重いので CI に任せてよいが、落ちたら該当ジョブのログを読む。
 - **rector は関門になりやすい**（PHP/Symfony/Doctrine の機械的な現代化を強制）。`--dry-run` で出た差分は基本そのまま適用する。
 
 ## よくある間違い
@@ -65,7 +65,7 @@ PR では以下が GitHub Actions で走る。**同じものを手元で先に�
 - ❌ 機能追加なのにテスト無し / 既存テストを壊す → ✅ テストを伴わせ、関連テストを実行
 - ❌ マイナー互換を壊す変更（既存シグネチャ・フック・CSV 仕様の変更）を含める → ✅ 互換チェックリストを確認し、壊す場合は別途相談
 - ❌ PR テンプレートの節を空のまま提出 → ✅ 概要・方針・テスト範囲・互換性チェックを埋める
-- ❌ `@deprecated` の削除可否を `src/` と PHPUnit の grep だけで判定 → ✅ `e2e/` と `codeception/` も実行される。全ツリー `git grep` で 0 件を確認する
+- ❌ `@deprecated` の削除可否を `src/` と PHPUnit の grep だけで判定 → ✅ `e2e/` も実行される。全ツリー `git grep` で 0 件を確認する
 
 ## 実行・確認方法
 

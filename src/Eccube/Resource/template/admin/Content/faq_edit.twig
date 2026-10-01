@@ -1,0 +1,125 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['content', 'faq'] %}
+
+
+{% block title %}{{ 'admin.content.faq_management'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.content.contents_management'|trans }}{% endblock %}
+
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <form role="form" class="form-horizontal" name="form1" id="form1" method="post" action="?">
+        {{ form_widget(form._token) }}
+        <div class="c-contentsArea__cols">
+            <div class="c-contentsArea__primaryCol">
+                <div class="c-primaryCol">
+                    <div class="card rounded border-0 mb-4">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-8">
+                                    <span class="card-title">{{ 'admin.content.faq.faq_registration'|trans }}</span></div>
+                                <div class="col-4 text-end">
+                                    <a data-bs-toggle="collapse" href="#faqForm"
+                                                                 aria-expanded="true" aria-controls="faqForm"><i class="fa fa-lg fa-angle-up"></i></a></div>
+                            </div>
+                        </div>
+                        <div class="ec-cardCollapse collapse show" id="faqForm" style="">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.content.faq.question'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">
+                                                {{ 'admin.common.required'|trans }}
+                                        </span>
+                                    </div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.question) }}
+                                        {{ form_errors(form.question) }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.content.faq.answer'|trans }}</span>
+                                        <span class="badge bg-primary ms-1">
+                                                {{ 'admin.common.required'|trans }}
+                                        </span>
+                                    </div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.answer) }}
+                                        {{ form_errors(form.answer) }}
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-3">
+                                        <span>{{ 'admin.content.faq.sort_no'|trans }}</span>
+                                    </div>
+                                    <div class="col mb-2">
+                                        {{ form_widget(form.sort_no) }}
+                                        {{ form_errors(form.sort_no) }}
+                                    </div>
+                                </div>
+
+                                {# エンティティ拡張の自動出力 #}
+                                {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
+                                    {% if f.vars.eccube_form_options.form_theme %}
+                                        {% form_theme f f.vars.eccube_form_options.form_theme %}
+                                        {{ form_row(f) }}
+                                    {% else %}
+                                        <div class="row mb-2">
+                                            <div class="col-3">
+                                                <span>{{ f.vars.label|trans }}</span>
+                                            </div>
+                                            <div class="col">
+                                                {{ form_widget(f) }}
+                                                {{ form_errors(f) }}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="c-conversionArea">
+                    <div class="c-conversionArea__container">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col-6">
+                                <div class="c-conversionArea__leftBlockItem">
+                                    <a class="c-baseLink" href="{{ url('admin_content_faq') }}">
+                                        <i class="fa fa-backward" aria-hidden="true"></i>
+                                        <span>{{ 'admin.content.faq_management'|trans }}</span></a>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div id="ex-conversion-action" class="row align-items-center justify-content-end">
+                                    <div class="col-auto">
+                                        {{ form_widget(form.visible) }}
+                                        {{ form_errors(form.visible) }}
+                                    </div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-ec-conversion px-5" type="submit">{{ 'admin.common.registration'|trans }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

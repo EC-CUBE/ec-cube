@@ -904,34 +904,34 @@ test.describe('Front Order (EF03)', () => {
  *
  * 2 つのテストは保存→復元の順序に依存するため serial で実行する。
  */
+/**
+ * Helper: カートに商品を入れ、レジに進んで /shopping まで遷移する。
+ */
+async function goToShopping(page: import('@playwright/test').Page) {
+  await addProductToCartAndGoToCart(page, 1);
+  await page.locator('a.ec-blockBtn--action', { hasText: 'レジに進む' }).click();
+  await page.waitForLoadState('load');
+  await expect(page).toHaveURL(/\/shopping$/);
+}
+
+/**
+ * Helper: 支払方法のラジオを選択する。
+ * data-trigger="change" によりフォームが /shopping/redirect_to へ送信され、画面がリロードされる。
+ */
+async function selectPayment(page: import('@playwright/test').Page, label: string) {
+  const radio = page.getByRole('radio', { name: label });
+  if (await radio.isChecked()) {
+    return;
+  }
+  await Promise.all([
+    page.waitForResponse((resp) => resp.url().includes('/shopping/redirect_to')),
+    radio.check(),
+  ]);
+  await page.waitForLoadState('load');
+  await expect(page.getByRole('radio', { name: label })).toBeChecked();
+}
+
 test.describe.serial('Front Order 配送方法・支払い方法の保存と復元 (#6819)', () => {
-
-  /**
-   * Helper: カートに商品を入れ、レジに進んで /shopping まで遷移する。
-   */
-  async function goToShopping(page: import('@playwright/test').Page) {
-    await addProductToCartAndGoToCart(page, 1);
-    await page.locator('a.ec-blockBtn--action', { hasText: 'レジに進む' }).click();
-    await page.waitForLoadState('load');
-    await expect(page).toHaveURL(/\/shopping$/);
-  }
-
-  /**
-   * Helper: 支払方法のラジオを選択する。
-   * data-trigger="change" によりフォームが /shopping/redirect_to へ送信され、画面がリロードされる。
-   */
-  async function selectPayment(page: import('@playwright/test').Page, label: string) {
-    const radio = page.getByRole('radio', { name: label });
-    if (await radio.isChecked()) {
-      return;
-    }
-    await Promise.all([
-      page.waitForResponse((resp) => resp.url().includes('/shopping/redirect_to')),
-      radio.check(),
-    ]);
-    await page.waitForLoadState('load');
-    await expect(page.getByRole('radio', { name: label })).toBeChecked();
-  }
 
   test.afterEach(async ({ page }) => {
     await clearCart(page);
@@ -998,5 +998,35 @@ test.describe.serial('Front Order 配送方法・支払い方法の保存と復�
 
     // 合計金額(送料込み)が表示されている
     await expect(page.locator('.ec-totalBox__paymentTotal')).toContainText('￥');
+  });
+});
+
+/**
+ * 支払い方法を変更した後、ページ先頭ではなく支払い方法の欄へ移動する (#5186)。
+ *
+ * サーバ側は fragment を扱わない。支払い方法の radio (data-fragment="payment-method") の change で
+ * フォームの送信先を /shopping/redirect_to#payment-method にし、リダイレクト応答の Location に
+ * fragment が無いためブラウザが送信先 URL の fragment を引き継ぐ (Fetch Standard, HTTP-redirect fetch)。
+ */
+test.describe('Front Order 支払い方法変更後に支払い方法の欄へ移動する (#5186)', () => {
+  test.afterEach(async ({ page }) => {
+    await clearCart(page);
+  });
+
+  test('支払い方法を変更すると /shopping#payment-method に戻り支払い方法の欄が表示される', async ({ page }) => {
+    await loginAsTestCustomer(page);
+    await goToShopping(page);
+
+    // 現在の選択と異なる支払方法を選ぶ (fixture の初期値に依存しない)
+    const target = (await page.getByRole('radio', { name: '銀行振込' }).isChecked()) ? '郵便振替' : '銀行振込';
+    await selectPayment(page, target);
+
+    await expect(page).toHaveURL(/\/shopping#payment-method$/);
+    await expect(page.locator('#payment-method')).toBeInViewport();
+
+    // 支払方法以外の data-trigger (お届け先の変更) は fragment を持たないため引き継がれない
+    await page.locator('div.ec-orderDelivery__change > button').first().click();
+    await page.waitForLoadState('load');
+    await expect(page).toHaveURL(/\/shopping\/shipping\/\d+$/);
   });
 });
