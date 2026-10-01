@@ -1422,7 +1422,7 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
      */
     public function testExportProductSortedByStockWithStockStatus(): void
     {
-        $productName = 'Product for csv stock_status '.uniqid();
+        $productName = 'Product for csv stock status '.uniqid();
         $this->createProduct($productName, 2);
 
         $searchForm = $this->createSearchForm();
