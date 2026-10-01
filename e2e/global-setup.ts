@@ -7,6 +7,15 @@ import path from 'path';
  * Codeception の _bootstrap.php と同等のデータ（会員、商品、受注）を作成。
  */
 export default function globalSetup() {
+  // フィクスチャの生成には Eccube\Tests\Fixture\Generator が要る。これはテスト環境専用の
+  // サービスのため、APP_ENV=prod で動く環境 (permission-lanes) では解決できない。
+  // そこでは eccube:fixtures:load が入れた基本データだけで足りるので、実行自体を省く
+  // (省かないと毎回スタックトレースが出て、本当の失敗が埋もれる)。
+  if (process.env.SKIP_FIXTURES === '1') {
+    console.log('SKIP_FIXTURES=1 のためフィクスチャの生成を省略します。');
+    return;
+  }
+
   const projectDir = path.resolve(__dirname, '..');
   const phpBin = process.env.PHP_BIN || 'php';
 

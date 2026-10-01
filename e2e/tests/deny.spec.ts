@@ -10,7 +10,7 @@ test.describe('Deny check (CL01)', () => {
     { title: 'varが公開されていないか', file: 'var/cache/prod/annotations.map' },
     { title: '.envが公開されていないか', file: '.env' },
     { title: 'vendorが公開されていないか', file: 'vendor/symfony/config/README.md' },
-    { title: 'codeceptionが公開されていないか', file: 'codeception/acceptance/config.ini' },
+    { title: 'e2eが公開されていないか', file: 'e2e/playwright.config.ts' },
   ];
 
   for (const { title, file } of denyFiles) {

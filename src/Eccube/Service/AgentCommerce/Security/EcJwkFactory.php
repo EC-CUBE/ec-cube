@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Service\AgentCommerce\Security;
 
-use phpseclib3\Crypt\EC\PublicKey;
+use phpseclib4\Crypt\EC\PublicKey;
 
 /**
  * EC 公開鍵を JWK (RFC 7517) と Key ID (RFC 7638 JWK Thumbprint) へ変換する.
@@ -87,7 +87,7 @@ final class EcJwkFactory
         }
 
         if ($x === null || $y === null) {
-            // phpseclib3 の EC 公開鍵は toString('JWK') で必ず x/y を返すため通常到達しない.
+            // phpseclib の EC 公開鍵は toString('JWK') で必ず x/y を返すため通常到達しない.
             throw new \RuntimeException('EC 公開鍵から JWK 座標を取得できませんでした.');
         }
 

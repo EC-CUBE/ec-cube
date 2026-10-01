@@ -71,7 +71,7 @@ DirectoryIndex index.php index.html .ht
     RewriteRule "^vendor/" - [F]
     RewriteRule "^node_modules/" - [F]
     RewriteRule "^gulp/" - [F]
-    RewriteRule "^codeception/" - [F]
+    RewriteRule "^e2e/" - [F]
     RewriteRule "^bin/" - [F]
     RewriteRule "^dockerbuild/" - [F]
     RewriteRule "^\.devcontainer/" - [F]
