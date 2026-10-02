@@ -42,6 +42,9 @@ GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net
   シナリオでは `Idempotency-Key: ZAP_RANDOM` を送り、`scripts/idempotency_key.js` (httpsender スクリプト) が送信のたびに新しい値へ置き換えます。
   固定のキーのままだと、本文を書き換えた攻撃がすべて 422 で止まります。
 - eccube-api4 の動的クライアント登録 (`/register`) のレート制限 (IP ごとに 1 時間 20 件) は、`bin/prepare_ec-cube.sh` で緩めています。
+- ACP の商品フィードの push (`admin_agent_commerce`) は送り先 (`ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL`) を設定していないため、
+  攻撃は送り先の設定の確認でエラーになり、フィードの生成や送信までは届きません。攻撃できる入力が `feed_id` だけで、
+  ダミーの送り先を用意する手間に見合わないため、この状態のままにしています。
 
 ### OFF にしているルール
 
@@ -202,6 +205,9 @@ GitHub Actions では、`workflow_dispatch` の `patches` にパッチ名 (空�
   `VariantMultipartFormParameters.setParameter` の `IndexOutOfBoundsException` が出ます)。
   また ZAP は改行を CRLF として本文を分割するため、手で編集して LF だけになった箇所があると値の範囲がずれます。
   `zap/bin/lint_zst.sh` で確かめられます (CI でも実行します)。
+- ZAP は anti-CSRF トークン名を部分一致 (大文字小文字を区別しない) で判定し、該当するパラメータを攻撃しません。
+  `options.properties` のトークン名に `_token` を有効のまま置くと、`mcp_token[label]` や `device_token` のような項目まで
+  攻撃されなくなります。フォームのトークンは `[_token]` で外しています。トークン名を足すときは、ほかの項目名に含まれないか確かめてください。
 - POST の値と送り先は、現在の画面がブラウザから送るものに揃えてください。古い版で記録したシナリオは、次のような食い違いで
   入力エラーになり、確認画面などに攻撃が届かないことがあります。`Smoke` の `Form error:` で見つけられます。
   - 後から増えた項目が無い: プラグインが足す必須項目 (会員登録の `entry[mailmaga_flg]`) や、hidden の項目
