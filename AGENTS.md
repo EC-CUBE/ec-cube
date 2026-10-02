@@ -44,10 +44,9 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **ORM**: Doctrine ORM 3.x / DBAL 4.x（マッピングは **PHP8 属性** `#[ORM\...]`）
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
-- **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 4.x
+- **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 3.x
 - **テスト**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ Playwright（E2E、`e2e/`）
   - ※ `symfony/phpunit-bridge` は依存にあるが、その `DeprecationErrorHandler`（`SYMFONY_DEPRECATIONS_HELPER`）は **PHPUnit 10 以上では無効**（bridge の `bootstrap.php` が早期 return する）。非推奨の検出は PHPUnit 11 ネイティブの `failOnDeprecation` で行う（`phpunit.xml.dist`）。
-  - ※ `codeception/` は残置（レガシー）。CI の Codeception ジョブは無効化（`if: false`）されており、E2E は Playwright が正。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
 - **コードスタイル**: PHP-CS-Fixer（PSR-12）
 
@@ -69,7 +68,6 @@ src/Eccube/           # コアアプリケーション
   Resource/
     doctrine/         # Doctrine 関連リソース（CSV インポート定義・マイグレーション）
     template/         # コアの Twig テンプレート
-    config/           # サービス定義
 
 app/
   Customize/          # プロジェクト固有のカスタマイズ（アップグレード安全）
@@ -317,13 +315,15 @@ bin/console doctrine:migrations:generate
 
 ### PurchaseFlow（受注処理パイプライン）
 
-`src/Eccube/Service/PurchaseFlow/` にあるコアの受注処理エンジン。以下のパイプラインで注文を処理します。
+`src/Eccube/Service/PurchaseFlow/` にあるコアの受注処理エンジン。`PurchaseFlow::validate()` が次の順で処理します。
 
-1. **ItemPreprocessor / ItemHolderPreprocessor**: 明細の準備（送料・手数料の計算）
-2. **ItemValidator / ItemHolderValidator**: 明細の検証（在庫・販売制限・合計金額）
-3. **ItemHolderPostValidator**: 全処理後の最終検証
-4. **PurchaseProcessor**: 購入実行（在庫引当・ポイント付与・注文番号採番）
-5. **DiscountProcessor**: 値引き適用
+1. **ItemValidator / ItemHolderValidator**: 明細・受注全体の検証（在庫・販売制限・価格変更等）
+2. **ItemPreprocessor / ItemHolderPreprocessor**: 明細の準備（送料・手数料の明細追加、注文番号の採番）
+3. **DiscountProcessor**: 値引き適用（利用ポイントの値引き化等）
+4. **ItemHolderPostValidator**: 全処理後の最終検証（合計金額の上限、加算ポイントの計算等）
+
+**PurchaseProcessor** は `validate()` には含まれず、購入確定時に `prepare()` / `commit()`（失敗時 `rollback()`）で
+実行されます（在庫の減算・利用ポイントの減算・会員の購入情報更新等）。
 
 設定は `app/config/eccube/packages/purchaseflow.yaml`。
 
@@ -331,8 +331,8 @@ bin/console doctrine:migrations:generate
 
 EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実現します。
 
-- **テンプレートイベント**: 特定のテンプレート位置にコンテンツを差し込む（`Event/EccubeEvents.php`）
-- **コントローライベント**: ライフサイクル中のリクエスト/レスポンスを変更
+- **テンプレートイベント**: 特定のテンプレート位置にコンテンツを差し込む（`Event/TemplateEvent.php`。イベント名はテンプレートのファイル名）
+- **コントローライベント**: ライフサイクル中のリクエスト/レスポンスを変更（`Event/EventArgs.php`。イベント名は `Event/EccubeEvents.php` の定数）
 - **エンティティイベント**: Doctrine ライフサイクルコールバック
 
 ### プラグインシステム
