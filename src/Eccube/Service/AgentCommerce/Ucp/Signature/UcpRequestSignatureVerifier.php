@@ -14,8 +14,8 @@
 namespace Eccube\Service\AgentCommerce\Ucp\Signature;
 
 use Eccube\Service\AgentCommerce\Exception\UcpSignatureException;
-use phpseclib3\Crypt\EC\PublicKey;
-use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\EC\PublicKey;
+use phpseclib4\Crypt\PublicKeyLoader;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 /**
- * codeception/_data/plugins/ 配下のプラグインディレクトリを .tgz に圧縮する。
+ * e2e/fixtures/plugins/ 配下のプラグインディレクトリを .tgz に圧縮する。
  * Codeception の AcceptanceTester::compressPlugin() と同等の処理。
  */
 export async function compressPlugin(pluginDirName: string, destDir: string, pluginDataDir: string): Promise<void> {

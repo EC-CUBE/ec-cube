@@ -13,9 +13,9 @@
 
 namespace Eccube\Service\AgentCommerce\Security;
 
-use phpseclib3\Crypt\EC\PrivateKey;
-use phpseclib3\Crypt\EC\PublicKey;
-use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib4\Crypt\EC\PrivateKey;
+use phpseclib4\Crypt\EC\PublicKey;
+use phpseclib4\Crypt\PublicKeyLoader;
 
 /**
  * UCP の RFC 9421 HTTP Message Signatures 向け署名実装.
