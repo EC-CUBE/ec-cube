@@ -14,14 +14,14 @@
   },
   "statements": [
     {
-      "url": "http://mailcatcher:1080/messages",
+      "url": "http://mailpit:8025/api/v1/messages",
       "data": "",
       "method": "DELETE",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: http://mailcatcher:1080\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nContent-Length: 0\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: http://mailpit:8025\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nContent-Length: 0\r\n",
       "assertions": [
         {
           "rootExpression": {
-            "code": 204,
+            "code": 200,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
@@ -154,7 +154,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "url": "http://mailcatcher:1080/messages/1.plain",
+      "url": "http://mailpit:8025/view/latest.txt?query=to:user-{{user-id}}@example.com",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -239,14 +239,14 @@
       "elementType": "ZestRequest"
     },
     {
-      "url": "http://mailcatcher:1080/messages",
+      "url": "http://mailpit:8025/api/v1/messages",
       "data": "",
       "method": "DELETE",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: http://mailcatcher:1080\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nContent-Length: 0\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: http://mailpit:8025\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\nContent-Length: 0\r\n",
       "assertions": [
         {
           "rootExpression": {
-            "code": 204,
+            "code": 200,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
@@ -338,7 +338,13 @@
       "elementType": "ZestRequest"
     },
     {
-      "url": "http://mailcatcher:1080/messages/1.plain",
+      "comment": "メールは宛先で絞った最新のものを読む。POST /forgot への攻撃が成功するたびに再設定キーが作り直され、最初のメールのキーは古くなる",
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "http://mailpit:8025/view/latest.txt?query=to:user-{{user-id}}@example.com",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -355,7 +361,7 @@
       "followRedirects": false,
       "timestamp": 1655472749184,
       "cookies": [],
-      "index": 19,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -364,7 +370,7 @@
       "postfix": "\\r?\\n",
       "location": "BODY",
       "variableName": "reset-key",
-      "index": 20,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -386,7 +392,7 @@
       "followRedirects": false,
       "timestamp": 1655473553501,
       "cookies": [],
-      "index": 21,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -397,19 +403,25 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 22,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
+      "comment": "確認用のパスワードをわざと一致させない。再設定が成功すると再設定キーが消え、再生の後の攻撃がすべて 404 になるため",
+      "index": 24,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
       "urlToken": "https://ec-cube/forgot/reset/{{reset-key}}",
-      "data": "_token={{csrf4}}&login_email=user-{{user-id}}%40example.com&password%5Bfirst%5D=EccubeE2ePassword1&password%5Bsecond%5D=EccubeE2ePassword1",
+      "data": "_token={{csrf4}}&login_email=user-{{user-id}}%40example.com&password%5Bfirst%5D=EccubeE2ePassword1&password%5Bsecond%5D=EccubeE2ePassword2",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 151\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Expect-Form-Error: 1\r\n",
       "assertions": [
         {
           "rootExpression": {
-            "code": 302,
+            "code": 200,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
@@ -419,7 +431,7 @@
       "followRedirects": false,
       "timestamp": 1655473576906,
       "cookies": [],
-      "index": 23,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestRequest"
     }

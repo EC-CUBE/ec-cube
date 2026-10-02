@@ -11,7 +11,8 @@ var ERROR_PATTERN = /class="(?:ec-errorMessage|form-error-message)">([^<]*)/;
 function sendingRequest(msg, initiator, helper) {}
 
 function responseReceived(msg, initiator, helper) {
-    if (msg.getRequestHeader().getMethod() != "POST") {
+    // 入力エラーを意図したリクエスト (シナリオで X-ZAP-Expect-Form-Error を付ける) は対象にしない
+    if (msg.getRequestHeader().getMethod() != "POST" || msg.getRequestHeader().getHeader("X-ZAP-Expect-Form-Error") != null) {
         return;
     }
     var m = ERROR_PATTERN.exec(msg.getResponseBody().toString());

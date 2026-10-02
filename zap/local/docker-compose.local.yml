@@ -5,5 +5,5 @@ services:
     ports: !reset []
   postgres:
     ports: !reset []
-  mailcatcher:
+  mailpit:
     ports: !reset []

@@ -55,7 +55,7 @@ env:
     - name: default
       urls:
         - https://ec-cube
-        - http://mailcatcher:1080
+        - http://mailpit:8025
 
   parameters:
     failOnError: true
