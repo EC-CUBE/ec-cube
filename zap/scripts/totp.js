@@ -56,10 +56,18 @@ function sendingRequest(msg, initiator, helper) {
         return;
     }
     var m = AUTH_KEY_PATTERN.exec(body);
-    if (!m) {
+    // 攻撃で auth_key が 1 文字などになると鍵が空になる。ZAP は例外を投げたスクリプトを止め、以降の再生で
+    // ZAP_TOTP が置き換わらなくなるため、計算できないときはそのまま送る
+    if (!m || base32Decode(m[1]).length === 0) {
         return;
     }
-    msg.setRequestBody(body.replace(PLACEHOLDER, 'device_token%5D=' + totp(m[1])));
+    var code;
+    try {
+        code = totp(m[1]);
+    } catch (e) {
+        return;
+    }
+    msg.setRequestBody(body.replace(PLACEHOLDER, 'device_token%5D=' + code));
     msg.getRequestHeader().setContentLength(msg.getRequestBody().length());
 }
 
