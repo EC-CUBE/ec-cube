@@ -650,8 +650,20 @@ class PluginService
             $Plugins[] = $Plugin;
         }
 
+        // PluginManager::uninstall() の出力は, これまで composer remove の出力としてログに含まれていた.
+        // 出力先が無い (Web から呼ばれた) 場合は, 応答に混ざらないよう同じくログへ集める.
+        $uninstallLog = '';
         foreach ($Plugins as $Plugin) {
-            $this->uninstall($Plugin, false);
+            if ($output === null) {
+                ob_start();
+            }
+            try {
+                $this->uninstall($Plugin, false);
+            } finally {
+                if ($output === null) {
+                    $uninstallLog .= (string) ob_get_clean();
+                }
+            }
         }
 
         $log = $this->composerService->execRemove($packageNames, $output);
@@ -660,7 +672,7 @@ class PluginService
             $this->removeAssets($Plugin->getCode());
         }
 
-        return $log;
+        return $uninstallLog.$log;
     }
 
     /**

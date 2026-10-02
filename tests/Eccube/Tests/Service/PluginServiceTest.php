@@ -803,6 +803,29 @@ EOD;
         $this->assertDirectoryDoesNotExist($assetsDir);
     }
 
+    /**
+     * PluginManager::uninstall() の出力は応答に混ぜず, ログとして返す.
+     *
+     * Web では応答が JSON のため, 出力が混ざると画面が削除の完了を判定できなくなる.
+     */
+    public function testRemoveByComposerCollectsUninstallOutputIntoLog(): void
+    {
+        $code = $this->installDummyPlugin(true);
+        $Plugin = $this->pluginRepository->findByCode($code);
+        // PluginManager::uninstall() は一度有効化したプラグインでのみ呼ばれる
+        ob_start();
+        $this->service->enable($Plugin);
+        $this->service->disable($Plugin);
+        ob_end_clean();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->method('execRemove')->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->expectOutputString('');
+        $this->assertSame('Uninstalledremoved', $this->service->removeByComposer('ec-cube/'.$code));
+    }
+
     public function testRemoveByComposerRejectsEnabledPlugin(): void
     {
         $code = $this->installDummyPlugin();
@@ -834,7 +857,7 @@ EOD;
         $this->assertSame('removed', $this->service->removeByComposer('vendor/library'));
     }
 
-    private function installDummyPlugin(): string
+    private function installDummyPlugin(bool $withManager = false): string
     {
         $code = 'dummy'.sha1((string) mt_rand());
         $tmpfile = $this->createTempDir().'/plugin.tar';
@@ -844,6 +867,23 @@ EOD;
             'description' => $code,
             'extra' => ['code' => $code],
         ]));
+        if ($withManager) {
+            $tar->addFromString('PluginManager.php', <<<EOD
+<?php
+namespace Plugin\\{$code};
+
+use Eccube\\Plugin\\AbstractPluginManager;
+use Psr\\Container\\ContainerInterface;
+
+class PluginManager extends AbstractPluginManager
+{
+    public function uninstall(array \$meta, ContainerInterface \$container): void
+    {
+        echo 'Uninstalled';
+    }
+}
+EOD);
+        }
         $this->service->install($tmpfile);
 
         return $code;
