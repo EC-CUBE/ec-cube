@@ -236,20 +236,32 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $this->verify();
     }
 
-    public function testBulkDelete()
+    /**
+     * 受注の一括削除は、出荷の ID を受注の ID として扱い別の受注を削除していたため撤去した.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/7208
+     */
+    public function testBulkDeleteIsNotAvailable(): void
     {
         $Customer = $this->createCustomer();
-        $NewOrders = $this->createOrders(array_fill(0, 5, $Customer));
-        $orderIds = array_map(static fn ($o) => $o->getId(), $NewOrders);
+        $NewOrders = $this->createOrders(array_fill(0, 3, $Customer));
+        $orderIds = array_map(static fn (Order $Order) => $Order->getId(), $NewOrders);
+        $shippingIds = array_map(static fn (Order $Order) => $Order->getShippings()->first()->getId(), $NewOrders);
 
         $this->client->request(
             Request::METHOD_POST,
-            $this->generateUrl('admin_order_bulk_delete'),
-            ['ids' => $orderIds]
+            '/'.static::getContainer()->getParameter('eccube_admin_route').'/order/bulk_delete',
+            [
+                'ids' => array_merge($orderIds, $shippingIds),
+                Constant::TOKEN_NAME => 'dummy',
+            ]
         );
 
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+        $this->entityManager->clear();
         $Orders = $this->entityManager->getRepository(Order::class)->findBy(['id' => $orderIds]);
-        $this->assertCount(0, $Orders);
+        $this->assertCount(3, $Orders);
     }
 
     public function testExportOrder()
