@@ -173,7 +173,7 @@ HTML メールを足したいときは **同じディレクトリに `*.html.twi
 QA ツール（PHPUnit / PHPStan / PHP-CS-Fixer / Rector）の実行方法は AGENTS.md「開発コマンド」を参照。
 
 - 送信トランスポートは `MAILER_DSN`（`app/config/eccube/packages/mailer.yaml` の `%env(MAILER_DSN)%`）で決まる。デフォルトは `null://null`（送信しない）。
-- `docker-compose.yml` には mailcatcher コンテナが含まれるため、開発環境では `MAILER_DSN` を mailcatcher（SMTP）に向ければ、送信メールをブラウザ UI で確認できる。
+- `docker-compose.yml` には mailpit コンテナが含まれ、`MAILER_DSN` は mailpit（SMTP 1025）を向いている。送信メールは http://localhost:8025 で確認できる。
 - 送信履歴は管理画面（受注詳細のメール履歴）および `dtb_mail_history` テーブルで確認する。
 
 ---
