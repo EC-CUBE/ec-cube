@@ -277,8 +277,104 @@
       "elementType": "ZestAssignStringDelimiters"
     },
     {
-      "comment": "お届け先の選択画面から、登録済みのお届け先を編集する",
+      "comment": "保存した配送方法・支払方法を復元する",
       "index": 17,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "url": "https://ec-cube/shopping/restore_preferred",
+      "data": "_token={{eccube-csrf-token}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "購入エラー画面",
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/shopping/error",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 21,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/shopping",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 22,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "data-path=\"/shopping/shipping/",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "shipping-id",
+      "index": 23,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "comment": "お届け先の選択画面から、登録済みのお届け先を編集する",
+      "index": 24,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -300,7 +396,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 18,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -309,7 +405,7 @@
       "postfix": "\"",
       "location": "BODY",
       "variableName": "address-id",
-      "index": 19,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -331,7 +427,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 20,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -342,7 +438,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 21,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -364,13 +460,13 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 22,
+      "index": 29,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "登録済みのお届け先を削除する",
-      "index": 23,
+      "index": 30,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -392,7 +488,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 24,
+      "index": 31,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -401,7 +497,7 @@
       "postfix": "\"",
       "location": "BODY",
       "variableName": "eccube-csrf-token",
-      "index": 25,
+      "index": 32,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -423,7 +519,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 26,
+      "index": 33,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -445,7 +541,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 27,
+      "index": 34,
       "enabled": true,
       "elementType": "ZestRequest"
     }

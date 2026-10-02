@@ -171,9 +171,9 @@
     },
     {
       "url": "https://ec-cube/mypage/refund_request/{{order-no}}/{{order-item-id}}",
-      "data": "refund_request%5Bquantity%5D=1&refund_request%5Breason%5D=%E5%95%86%E5%93%81%E3%81%AB%E4%B8%8D%E5%82%99%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%97%E3%81%9F&refund_request%5B_token%5D={{csrf-refund}}",
+      "data": "------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[quantity]\"\r\n\r\n1\r\n------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[reason]\"\r\n\r\ndefective item\r\n------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[files][]\"; filename=\"1.png\"\r\nContent-Type: image/png\r\n\r\nPNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0001\u0000\u0000\u0000\u00007nù$\u0000\u0000\u0000\u0004gAMA\u0000\u0000±\u000büa\u0005\u0000\u0000\u0000 cHRM\u0000\u0000z&\u0000\u0000\u0000\u0000ú\u0000\u0000\u0000è\u0000\u0000u0\u0000\u0000ê`\u0000\u0000:\u0000\u0000\u0017pºQ<\u0000\u0000\u0000\u0002bKGD\u0000\u0001Ý\u0013¤\u0000\u0000\u0000\u0007tIME\u0007æ\u0007\u0001\u0007#(\u0006 T\u0000\u0000\u0000\nIDAT\b×ch\u0000\u0000\u0000\u0000ÝCjô\u0000\u0000\u0000%tEXtdate:create\u00002022-07-01T07:34:58+00:00Pï5\u0000\u0000\u0000%tEXtdate:modify\u00002022-07-01T07:34:58+00:00!²4\u0000\u0000\u0000\u0019tEXtSoftware\u0000gnome-screenshotï\u0003¿>\u0000\u0000\u0000\u0000IEND®B`\r\n------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[_token]\"\r\n\r\n{{csrf-refund}}\r\n------webkitformboundaryrefundrequest01--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryrefundrequest01\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -223,6 +223,37 @@
       "elementType": "ZestAssignStringDelimiters"
     },
     {
+      "prefix": "https://ec-cube/mypage/refund_request/temp_file/",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "temp-file-key",
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/mypage/refund_request/temp_file/{{temp-file-key}}"
+    },
+    {
       "url": "https://ec-cube/mypage/refund_request/{{order-no}}/{{order-item-id}}/confirm",
       "data": "_token={{eccube-csrf-token}}",
       "method": "POST",
@@ -240,7 +271,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 14,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -262,7 +293,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 15,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -284,9 +315,49 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 16,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "https://ec-cube/mypage/refund_request/file/",
+      "postfix": "/\\d+\"",
+      "location": "BODY",
+      "variableName": "refund-request-id",
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "prefix": "https://ec-cube/mypage/refund_request/file/\\d+/",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "refund-file",
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 21,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/mypage/refund_request/file/{{refund-request-id}}/{{refund-file}}"
     }
   ],
   "authentication": [],

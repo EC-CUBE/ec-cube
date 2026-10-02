@@ -295,6 +295,37 @@
       "elementType": "ZestRequest"
     },
     {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "data": "_token={{eccube-csrf-token}}&_method=put",
+      "method": "PUT",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/admin/setting/system/member/{{member-id}}/up"
+    },
+    {
       "urlToken": "https://ec-cube/admin/setting/system/member/{{member-id}}/edit",
       "data": "",
       "method": "GET",
@@ -312,7 +343,7 @@
       "followRedirects": false,
       "timestamp": 1656667679107,
       "cookies": [],
-      "index": 17,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -323,7 +354,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf7",
-      "index": 18,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -345,7 +376,7 @@
       "followRedirects": false,
       "timestamp": 1656667690539,
       "cookies": [],
-      "index": 19,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -367,7 +398,7 @@
       "followRedirects": false,
       "timestamp": 1656667690581,
       "cookies": [],
-      "index": 20,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -389,7 +420,7 @@
       "followRedirects": false,
       "timestamp": 1656667690601,
       "cookies": [],
-      "index": 21,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -400,7 +431,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf8",
-      "index": 22,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -411,7 +442,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "two_factor_auth_key",
-      "index": 23,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -433,7 +464,7 @@
       "followRedirects": false,
       "timestamp": 1656667715340,
       "cookies": [],
-      "index": 24,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestRequest"
     }

@@ -466,7 +466,7 @@
     {
       "url": "https://ec-cube/shopping/checkout",
       "urlToken": "https://ec-cube/shopping/checkout",
-      "data": "_shopping_order%5B_token%5D={{csrf7}}",
+      "data": "_shopping_order%5B_token%5D={{csrf7}}&_shopping_order%5Bsave_preferred_shipping_payment%5D=1",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 71\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [

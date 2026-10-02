@@ -737,9 +737,9 @@
     },
     {
       "url": "https://ec-cube/mypage/refund_request/{{order-no}}/{{order-item-id}}",
-      "data": "refund_request%5Bquantity%5D=1&refund_request%5Breason%5D=%E5%95%86%E5%93%81%E3%81%AB%E4%B8%8D%E5%82%99%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%97%E3%81%9F&refund_request%5B_token%5D={{csrf-refund}}",
+      "data": "------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[quantity]\"\r\n\r\n1\r\n------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[reason]\"\r\n\r\ndefective item\r\n------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[files][]\"; filename=\"1.gif\"\r\nContent-Type: image/gif\r\n\r\nGIF89a;\r\n------webkitformboundaryrefundrequest01\r\nContent-Disposition: form-data; name=\"refund_request[_token]\"\r\n\r\n{{csrf-refund}}\r\n------webkitformboundaryrefundrequest01--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryrefundrequest01\r\n",
       "assertions": [
         {
           "rootExpression": {

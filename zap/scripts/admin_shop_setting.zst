@@ -174,6 +174,67 @@
       "index": 8,
       "enabled": true,
       "elementType": "ZestRequest"
+    },
+    {
+      "comment": "特定商取引法",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop/tradelaw",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "form__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf-tradelaw",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop/tradelaw",
+      "data": "form%5B_token%5D\u003d{{csrf-tradelaw}}\u0026form%5BTradeLaws%5D%5B0%5D%5Bname%5D\u003d%E8%B2%A9%E5%A3%B2%E6%A5%AD%E8%80%85\u0026form%5BTradeLaws%5D%5B0%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B1%5D%5Bname%5D\u003d%E4%BB%A3%E8%A1%A8%E8%B2%AC%E4%BB%BB%E8%80%85\u0026form%5BTradeLaws%5D%5B1%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B2%5D%5Bname%5D\u003d%E6%89%80%E5%9C%A8%E5%9C%B0\u0026form%5BTradeLaws%5D%5B2%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B3%5D%5Bname%5D\u003d%E9%9B%BB%E8%A9%B1%E7%95%AA%E5%8F%B7\u0026form%5BTradeLaws%5D%5B3%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B4%5D%5Bname%5D\u003d%E3%83%A1%E3%83%BC%E3%83%AB%E3%82%A2%E3%83%89%E3%83%AC%E3%82%B9\u0026form%5BTradeLaws%5D%5B4%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B5%5D%5Bname%5D\u003dURL\u0026form%5BTradeLaws%5D%5B5%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B6%5D%5Bname%5D\u003d%E5%95%86%E5%93%81%E4%BB%A3%E9%87%91%E4%BB%A5%E5%A4%96%E3%81%AE%E5%BF%85%E8%A6%81%E6%96%99%E9%87%91\u0026form%5BTradeLaws%5D%5B6%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B7%5D%5Bname%5D\u003d%E5%BC%95%E3%81%8D%E6%B8%A1%E3%81%97%E6%99%82%E6%9C%9F\u0026form%5BTradeLaws%5D%5B7%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B8%5D%5Bname%5D\u003d%E3%81%8A%E6%94%AF%E6%89%95%E6%96%B9%E6%B3%95\u0026form%5BTradeLaws%5D%5B8%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B9%5D%5Bname%5D\u003d%E8%BF%94%E5%93%81%E3%83%BB%E4%BA%A4%E6%8F%9B%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6\u0026form%5BTradeLaws%5D%5B9%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B10%5D%5Bname%5D\u003d\u0026form%5BTradeLaws%5D%5B10%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B11%5D%5Bname%5D\u003d\u0026form%5BTradeLaws%5D%5B11%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B12%5D%5Bname%5D\u003d\u0026form%5BTradeLaws%5D%5B12%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B13%5D%5Bname%5D\u003d\u0026form%5BTradeLaws%5D%5B13%5D%5Bdescription%5D\u003d\u0026form%5BTradeLaws%5D%5B14%5D%5Bname%5D\u003d\u0026form%5BTradeLaws%5D%5B14%5D%5Bdescription%5D\u003d",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
     }
   ],
   "authentication": [],
