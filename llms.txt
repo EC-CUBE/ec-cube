@@ -57,7 +57,7 @@ ec-cube/
     template/          # Template overrides
     proxy/entity/      # Auto-generated entity proxies
   html/                # Web root (public assets)
-  tests/               # PHPUnit tests
+  tests/               # PHPUnit and Codeception tests
 ```
 
 ## Key Features
