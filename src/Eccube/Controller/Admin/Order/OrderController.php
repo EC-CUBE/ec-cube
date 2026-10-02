@@ -13,7 +13,6 @@
 
 namespace Eccube\Controller\Admin\Order;
 
-use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Entity\ExportCsvRow;
 use Eccube\Entity\Master\CsvType;
@@ -245,27 +244,6 @@ class OrderController extends AbstractController
             'has_errors' => false,
             'OrderStatuses' => $this->orderStatusRepository->findBy([], ['sort_no' => 'ASC']),
         ];
-    }
-
-    #[Route(path: '/%eccube_admin_route%/order/bulk_delete', name: 'admin_order_bulk_delete', methods: ['POST'])]
-    public function bulkDelete(Request $request): RedirectResponse
-    {
-        $this->isTokenValid();
-        $ids = $request->get('ids');
-        foreach ($ids as $order_id) {
-            $Order = $this->orderRepository
-                ->find($order_id);
-            if ($Order) {
-                $this->entityManager->remove($Order);
-                log_info('受注削除', [$Order->getId()]);
-            }
-        }
-
-        $this->entityManager->flush();
-
-        $this->addSuccess('admin.common.delete_complete', 'admin');
-
-        return $this->redirectToRoute('admin_order', ['resume' => Constant::ENABLED]);
     }
 
     /**
