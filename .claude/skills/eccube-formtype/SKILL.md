@@ -1,11 +1,11 @@
 ---
 name: eccube-formtype
-description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修するときの規約。「フォームを作って」「FormTypeを追加して」「入力項目を足して」「バリデーションを設定して」「検索フォームを作って」「既存フォームに項目を追加して」などと言われたとき、または src/Eccube/Form・app/Customize/Form 配下を作成・編集するときに使用する。
+description: EC-CUBE 4.4 のフォーム（FormType）を実装・改修するときの規約。「フォームを作って」「FormTypeを追加して」「入力項目を足して」「バリデーションを設定して」「検索フォームを作って」「既存フォームに項目を追加して」などと言われたとき、またはフォームを作成・編集するとき（コア・app/Customize・プラグインのいずれでも）に使用する。
 ---
 
 # FormType 規約（EC-CUBE 4.4）
 
-**対象**: `src/Eccube/Form/Type/**/*.php`, `app/Customize/Form/**/*.php`
+**対象**: `src/Eccube/Form/Type/**/*.php`, `app/Customize/Form/**/*.php`, `app/Plugin/*/Form/**/*.php`
 **前提**: Symfony 7.4 Form / PHP 8.2+
 
 ## 基本ルール
@@ -73,10 +73,5 @@ class ExampleType extends AbstractType
 
 ## よくある間違い
 
-- ❌ `getBlockPrefix()` の戻り値型を省略 → ✅ `: string` を付ける
-- ❌ 既存フォームをコアで直接改変 → ✅ `FormTypeExtension`（app/Customize）で拡張
-- ❌ 管理画面検索フォームで CSRF 無効化 → ✅ CSRF 保護を保つ
-- ❌ 具象クラス依存 → ✅ コンストラクタ DI ＋ 必要なサービスの注入
-- ❌ 既存フォームに二重送信防止/楽観ロック用の unmapped hidden を足し、サーバー側で値未送信を即エラー扱い → ✅ 値が空/未送信なら判定をスキップ（プログラム的 POST・既存テスト・外部連携を壊さない後方互換を保つ）
-- ❌ 共通 FormType(RepeatedPasswordType 等)を子で使い `options.constraints` を渡す（親が定義した制約が全置換され消える） → ✅ 親の制約一式も再掲して付与する
-- ❌ `CollectionType`＋`allow_delete` の欄が上書きテンプレートで未描画でも無害と考える → ✅ 送信キー欠落は空コレクション扱いになり既存の子が無警告で全削除される（mapped/unmapped 問わず）。描画済みを示す unmapped hidden を欄と同じパーシャルに置き、無い時だけ `PRE_SUBMIT` で当該フィールドを `remove()` する
+このレイヤの「よくある間違い」は [`eccube-pre-impl`](../eccube-pre-impl/SKILL.md) の「FormType」節に集約している。
+全レイヤの注意を 1 か所で読めるようにするため、ここには重複して置かない。

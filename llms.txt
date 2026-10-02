@@ -32,7 +32,7 @@ bin/console eccube:install
 - **ORM**: Doctrine ORM 3.x with Doctrine DBAL 4.x
 - **Template Engine**: Twig 3.x
 - **Database**: PostgreSQL 13–18 or MySQL 8.4 LTS
-- **Frontend**: Sass (SCSS), esbuild, Bootstrap 5.3, jQuery 4.x
+- **Frontend**: Sass (SCSS), esbuild, Bootstrap 5.3, jQuery 3.x
 - **License**: GPL-2.0 / proprietary dual license
 
 ### Directory Structure
@@ -102,10 +102,11 @@ The Symfony EventDispatcher-based event system allows hooking into:
 
 PurchaseFlow is EC-CUBE's pipeline-based order processing engine:
 
-- **Validators**: Check stock availability, sale limits, payment totals
-- **Preprocessors**: Calculate delivery fees, payment charges, point usage
-- **Processors**: Reduce stock, update customer purchase info, generate order numbers
-- **Discount Processors**: Apply coupon and campaign discounts
+- **Validators**: Check stock availability, sale limits, price changes
+- **Preprocessors**: Add delivery fee and payment charge items, generate order numbers
+- **Discount Processors**: Apply discounts such as point usage
+- **Post Validators**: Check payment totals, calculate points to be added
+- **Purchase Processors**: Run on order confirmation (prepare/commit/rollback) to reduce stock and used points and update customer purchase info
 
 Each step in the pipeline can be customized or replaced via DI configuration.
 

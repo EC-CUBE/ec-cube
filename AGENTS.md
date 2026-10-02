@@ -44,7 +44,7 @@ EC-CUBE は日本で広く使われる OSS の EC プラットフォームです
 - **ORM**: Doctrine ORM 3.x / DBAL 4.x（マッピングは **PHP8 属性** `#[ORM\...]`）
 - **テンプレート**: Twig 3.x
 - **データベース**: PostgreSQL 13–18 または MySQL 8.4 LTS
-- **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 4.x
+- **フロントエンド**: Sass (SCSS) / esbuild / Bootstrap 5.3 / jQuery 3.x
 - **テスト**: PHPUnit 11（`vendor/bin/phpunit` を直接実行）/ Playwright（E2E、`e2e/`）
   - ※ `symfony/phpunit-bridge` は依存にあるが、その `DeprecationErrorHandler`（`SYMFONY_DEPRECATIONS_HELPER`）は **PHPUnit 10 以上では無効**（bridge の `bootstrap.php` が早期 return する）。非推奨の検出は PHPUnit 11 ネイティブの `failOnDeprecation` で行う（`phpunit.xml.dist`）。
 - **静的解析**: PHPStan（`phpstan.neon.dist` で level 6）
@@ -68,7 +68,6 @@ src/Eccube/           # コアアプリケーション
   Resource/
     doctrine/         # Doctrine 関連リソース（CSV インポート定義・マイグレーション）
     template/         # コアの Twig テンプレート
-    config/           # サービス定義
 
 app/
   Customize/          # プロジェクト固有のカスタマイズ（アップグレード安全）
@@ -316,13 +315,15 @@ bin/console doctrine:migrations:generate
 
 ### PurchaseFlow（受注処理パイプライン）
 
-`src/Eccube/Service/PurchaseFlow/` にあるコアの受注処理エンジン。以下のパイプラインで注文を処理します。
+`src/Eccube/Service/PurchaseFlow/` にあるコアの受注処理エンジン。`PurchaseFlow::validate()` が次の順で処理します。
 
-1. **ItemPreprocessor / ItemHolderPreprocessor**: 明細の準備（送料・手数料の計算）
-2. **ItemValidator / ItemHolderValidator**: 明細の検証（在庫・販売制限・合計金額）
-3. **ItemHolderPostValidator**: 全処理後の最終検証
-4. **PurchaseProcessor**: 購入実行（在庫引当・ポイント付与・注文番号採番）
-5. **DiscountProcessor**: 値引き適用
+1. **ItemValidator / ItemHolderValidator**: 明細・受注全体の検証（在庫・販売制限・価格変更等）
+2. **ItemPreprocessor / ItemHolderPreprocessor**: 明細の準備（送料・手数料の明細追加、注文番号の採番）
+3. **DiscountProcessor**: 値引き適用（利用ポイントの値引き化等）
+4. **ItemHolderPostValidator**: 全処理後の最終検証（合計金額の上限、加算ポイントの計算等）
+
+**PurchaseProcessor** は `validate()` には含まれず、購入確定時に `prepare()` / `commit()`（失敗時 `rollback()`）で
+実行されます（在庫の減算・利用ポイントの減算・会員の購入情報更新等）。
 
 設定は `app/config/eccube/packages/purchaseflow.yaml`。
 
@@ -330,8 +331,8 @@ bin/console doctrine:migrations:generate
 
 EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実現します。
 
-- **テンプレートイベント**: 特定のテンプレート位置にコンテンツを差し込む（`Event/EccubeEvents.php`）
-- **コントローライベント**: ライフサイクル中のリクエスト/レスポンスを変更
+- **テンプレートイベント**: 特定のテンプレート位置にコンテンツを差し込む（`Event/TemplateEvent.php`。イベント名はテンプレートのファイル名）
+- **コントローライベント**: ライフサイクル中のリクエスト/レスポンスを変更（`Event/EventArgs.php`。イベント名は `Event/EccubeEvents.php` の定数）
 - **エンティティイベント**: Doctrine ライフサイクルコールバック
 
 ### プラグインシステム
@@ -342,9 +343,11 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 - エンティティ・コントローラ・フォーム・テンプレート・イベントサブスクライバを追加可能
 - メタデータはプラグイン内の `composer.json` で定義
 
-### app/Customize によるカスタマイズ
+### app/Customize によるカスタマイズ（**店舗向け**。本体開発では使わない）
 
-プロジェクト固有のコードはコア改変ではなく `app/Customize/` に置き、コアアップグレードの影響を避けます。
+**この節は店舗を構築する立場の話です。** 本体へのコントリビュートでは `src/Eccube/` を改修してください。
+
+店舗のプロジェクト固有コードはコア改変ではなく `app/Customize/` に置き、コアアップグレードの影響を避けます。
 
 - **エンティティ拡張**: Doctrine トレイトで既存エンティティにフィールド追加
 - **フォーム拡張**: Symfony FormTypeExtension で既存フォームにフィールド追加
@@ -369,12 +372,31 @@ EC-CUBE は Symfony の EventDispatcher を拡張してカスタマイズを実�
 
 ## コーディング規約（レイヤ別・オンデマンド）
 
-レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が本文を直接持ちます。
-frontmatter の `description` がトリガ条件で、該当レイヤを触るときだけ発火・参照されます（常時読み込まない）。
-本文は純 Markdown なので GitHub でもそのまま読めます。
+レイヤ別の詳細規約は各 **Skill**（`.claude/skills/<name>/SKILL.md`）が実装パターンとして直接持ちます。
+各レイヤの「よくある間違い」は [`eccube-pre-impl`](./.claude/skills/eccube-pre-impl/SKILL.md) の該当レイヤ節に集約しています（レイヤ Skill 側は誘導のみ）。
+各 `SKILL.md` は純 Markdown なので GitHub でもそのまま読めます。
+
+### 作業の進め方（規約の読み込み）
+
+レイヤ規約は **作業開始時に該当 Skill を能動的に読む** と最も確実に活用できます。
+`description` による自動発火もあるが、設計相談から入る依頼（「〜を作りたい」「〜機能を追加したい」）では発火しないことがある。
+
+1. **設計・検討フェーズ** — 新規機能の相談・設計から始まる場合
+   - まず [`eccube-pre-impl`](./.claude/skills/eccube-pre-impl/SKILL.md) を読み、触るレイヤに対応する Skill を特定する
+   - 該当 Skill を **既存コードの調査より先に** 読み、制約・罠・実装パターンを把握してから設計する
+
+2. **実装フェーズ** — コードを書く直前
+   - 触るレイヤの Skill を再確認する（自動発火に頼らない）
+
+3. **レビューフェーズ** — 実装が一区切りついたら
+   - [`eccube-review-responsibility`](./.claude/skills/eccube-review-responsibility/SKILL.md) で責務分離・セキュリティ・レイヤ違反を横断点検
+
+**Skill に書いてあるもの**: 見ても分からない罠・理由・EC-CUBE 固有の判断基準。
+**Skill に書いていないもの**: 設定ファイルや `src/Eccube/` を見れば分かること（リンターが強制する規約など）。
 
 | レイヤ / 観点 | 規約 Skill（本文） | Skill 名 |
 |--------|------------------|----------|
+| 実装前チェックリスト（設計→実装の橋渡し） | [`.claude/skills/eccube-pre-impl/SKILL.md`](./.claude/skills/eccube-pre-impl/SKILL.md) | `eccube-pre-impl` |
 | PHPUnit テスト | [`.claude/skills/eccube-phpunit/SKILL.md`](./.claude/skills/eccube-phpunit/SKILL.md) | `eccube-phpunit` |
 | E2E（Playwright・spec 作成 / flaky 対策） | [`.claude/skills/eccube-e2e/SKILL.md`](./.claude/skills/eccube-e2e/SKILL.md) | `eccube-e2e` |
 | コントローラ（責務分離・Fat化防止） | [`.claude/skills/eccube-controller/SKILL.md`](./.claude/skills/eccube-controller/SKILL.md) | `eccube-controller` |
@@ -389,13 +411,14 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 | プラグイン（ライフサイクル・配置・拡張） | [`.claude/skills/eccube-plugin/SKILL.md`](./.claude/skills/eccube-plugin/SKILL.md) | `eccube-plugin` |
 | 受注処理（PurchaseFlow の Processor/Validator） | [`.claude/skills/eccube-purchase-flow/SKILL.md`](./.claude/skills/eccube-purchase-flow/SKILL.md) | `eccube-purchase-flow` |
 | メール（MailService・テンプレート・MailHistory） | [`.claude/skills/eccube-mail/SKILL.md`](./.claude/skills/eccube-mail/SKILL.md) | `eccube-mail` |
-| カスタマイズ（app/Customize での拡張・上書き・デコレーション） | [`.claude/skills/eccube-customize/SKILL.md`](./.claude/skills/eccube-customize/SKILL.md) | `eccube-customize` |
 | CSV 入出力（CsvImport/Export・CSV 定義） | [`.claude/skills/eccube-csv/SKILL.md`](./.claude/skills/eccube-csv/SKILL.md) | `eccube-csv` |
 | コンソールコマンド（Symfony Console・バッチ） | [`.claude/skills/eccube-command/SKILL.md`](./.claude/skills/eccube-command/SKILL.md) | `eccube-command` |
+| アセットビルド（SCSS / JS バンドル・生成物のコミット） | [`.claude/skills/eccube-asset/SKILL.md`](./.claude/skills/eccube-asset/SKILL.md) | `eccube-asset` |
 | 責務分離レビュー（実装直後の自己チェック・全層） | [`.claude/skills/eccube-review-responsibility/SKILL.md`](./.claude/skills/eccube-review-responsibility/SKILL.md) | `eccube-review-responsibility` |
+| コントリビューション（PR 作成・CI ゲートの再現） | [`.claude/skills/eccube-contributing/SKILL.md`](./.claude/skills/eccube-contributing/SKILL.md) | `eccube-contributing` |
 
 > 規約は必要になった時点で `.claude/skills/eccube-<name>/SKILL.md` を 1 ファイル追加して足す（`.codex`/`.agents` は symlink で自動共有）。
-> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／よくある間違い／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。
+> 各ファイルは frontmatter（`name` / `description`）＋本文の順で書き、本文は「対象／基本ルール／実装パターン／実行・確認方法」の構成を推奨する（推測を載せず、必ず `src/Eccube/` の実コードで裏取りする）。「よくある間違い」は `eccube-pre-impl` に書き、レイヤ Skill には誘導だけを置く。
 
 **Skill 命名規則**: **`eccube-` 接頭辞を必ず付ける**（`eccube-controller` / `eccube-service` / `eccube-phpunit`）。
 接頭辞の後ろは、自動発火するレイヤ規約系はトピック名、
@@ -408,24 +431,23 @@ frontmatter の `description` がトリガ条件で、該当レイヤを触る�
 1 件ずつ例外対応せず全 Skill を `eccube-` 名前空間に入れる。接頭辞だけで衝突回避と
 ピッカーでの一括絞り込みは足りるので、`-dev` のような接尾辞は付けない。
 
-**「よくある間違い」を書き足すときの歯止め**: 検証やレビューで得た知見を追記していくと、
-このセクションは放置すると際限なく伸び、個別事例が一般則の顔で並ぶ。次の 3 点を守る。
+**「よくある間違い」を書き足すときの歯止め**: 追記先は `eccube-pre-impl` の該当レイヤ節。検証やレビューで得た知見を追記していくと、
+放置すれば際限なく伸び、個別事例が一般則の顔で並ぶ。次の 3 点を守る。
 
 - **一般化テスト**: 固有のメソッド名・列名・テーブル名を消しても項目が成立するか確認する。
   成立しないものは Skill に書かない（そのレイヤ全体に効く規約ではなく、特定の調査結果である）。
   成立するなら例示を削って一般則だけ残す。固有名を残すと、無関係な箇所へ誤って適用される。
-- **上限**: 1 Skill あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
+- **上限**: 1 レイヤ節あたり 10 項・1 項 120 字程度に収める。超えたら**追記ではなく既存項への統合か削除**を選ぶ。
 - **頻度順**: 踏まれやすいものを上に置く。読み手の注意は前方に効くため、頻度順でないリストは下位が実質死ぬ。
 
-この歯止めは**追記するときに適用する**。本規則の導入時点で超過していた Skill
-（項数 2 件・字数 8 件）は統合・短縮済みで、現在はすべて 10 項以内に収まっている。
+この歯止めは**追記するときに適用する**。現在は `eccube-pre-impl` の全レイヤ節が 10 項以内に収まっている。
 超過の有無は次で確認できる。
 
 ```bash
-for f in .claude/skills/eccube-*/SKILL.md; do
-  sed -n '/よくある間違い/,/^## /p' "$f" | grep -E '^- ' \
-    | awk -v s="$(basename "$(dirname "$f")")" '{n++; if (length>m) m=length} END {if (n) printf "%-28s 項数=%-3s 最長=%s\n", s, n, m}'
-done
+awk '/^## /{if(n)printf "%-34s 項数=%-3s 最長=%s\n",s,n,m; s=substr($0,4); n=0; m=0}
+     /^- /{n++; if(length>m)m=length}
+     END{if(n)printf "%-34s 項数=%-3s 最長=%s\n",s,n,m}' \
+  .claude/skills/eccube-pre-impl/SKILL.md | awk '$2!="項数=0"'
 ```
 
 ## 主要エンティティ
@@ -484,4 +506,6 @@ Skill（`SKILL.md`）の形式は Claude Code / Cursor / Codex / Antigravity で
 - **規約準拠**: 該当レイヤの Skill（`.claude/skills/`）に従う。
 - **静的解析**: 実装後は `vendor/bin/phpstan analyse src`（level 6）を通す。
 - **コードスタイル**: `vendor/bin/php-cs-fixer fix` で PSR-12 に整える。ライセンスヘッダ必須。
-- **app/Customize 優先**: プロジェクト固有のカスタマイズはコア改変ではなく `app/Customize/` で行う。
+- **置き場の判別**: 本体へのコントリビュート（Issue 対応・機能追加・バグ修正）は `src/Eccube/` を改修する。
+  `app/Customize/` は**店舗が自分のプロジェクト固有コードを置く場所**で、本体の機能追加には使わない。
+  依頼文からどちらの立場か判別できないときは、実装を始める前に確認する。

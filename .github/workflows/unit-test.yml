@@ -138,7 +138,7 @@ jobs:
           timeout_minutes: 10
           max_attempts: 2
           retry_on: error
-          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service --exclude-group mcp
+          command: vendor/bin/phpunit --exclude-group cache-clear --exclude-group cache-clear-install --exclude-group update-schema-doctrine --exclude-group plugin-service --exclude-group mcp --exclude-group architecture
         env:
           APP_ENV: 'test'
           DATABASE_URL: ${{ matrix.database_url }}
@@ -195,6 +195,31 @@ jobs:
           echo "session.save_path=$PWD/var/sessions/test" > php.ini
           echo "memory_limit=512M" >> php.ini
           php -c php.ini vendor/bin/phpunit --group plugin-service
+
+  ## アーキテクチャ制約の検査 (ルートの配置・CSRF 保護・Skill の frontmatter).
+  ## ファイルを読んで静的に検査するだけで DB もカーネルも使わないため、
+  ## PHP/DB のマトリクスから外して 1 セルだけで実行する。
+  architecture:
+    name: Architecture
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@0f7f1d08e3e32076e51cae65eb0b0c871405b16e  # v2
+        with:
+          php-version: '8.2'
+          tools: composer
+          coverage: none
+
+      - name: Install to Composer
+        run: composer install --no-interaction --no-scripts
+
+      - name: PHPUnit (architecture)
+        run: vendor/bin/phpunit --group architecture --no-coverage
 
   ## MCP は Api44 (OAuth2 / scope / allow_list) が前提のため、 メインのマトリクスからは
   ## --exclude-group mcp で外し、 ここで Api44 を導入した専用環境で --group mcp を実走する。
