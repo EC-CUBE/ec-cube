@@ -5,9 +5,6 @@ networks:
     driver: bridge
 
 volumes:
-  mailcatcher-data:
-    driver: local
-
   ### ignore folder volume #####
   var:
     driver: local
@@ -51,7 +48,7 @@ services:
       DATABASE_URL: "sqlite:///var/eccube.db"
       DATABASE_SERVER_VERSION: 3
       DATABASE_CHARSET: 'utf8'
-      MAILER_DSN: "smtp://mailcatcher:1025"
+      MAILER_DSN: "smtp://mailpit:1025"
       ECCUBE_AUTH_MAGIC: "<change.me>"
       # TRUSTED_HOSTS: '^127.0.0.1$$,^localhost$$'
       # ECCUBE_LOCALE: "ja"
@@ -72,11 +69,14 @@ services:
     networks:
       - backend
 
-  ### Mailcatcher ##################################
-  mailcatcher:
-    image: schickling/mailcatcher
+  ### Mailpit ##################################
+  ## 送信メールを http://localhost:8025 で確認できる。
+  ## Docker Hub の pull 制限を避けるため ghcr.io から取得する。
+  ## バージョンは CI (.github/actions/mailpit) と揃える。
+  mailpit:
+    image: ghcr.io/axllent/mailpit:v1.30.3
     ports:
-      - "1080:1080"
+      - "8025:8025"
       - "1025:1025"
     networks:
       - backend

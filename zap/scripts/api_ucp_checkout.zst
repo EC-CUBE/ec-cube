@@ -1,0 +1,183 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "api_ucp_checkout.zst",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "UCP のチェックアウト。RFC 9421 の署名は既定で必須でないため、署名なしで送る (チェックアウトの有効化は admin_enable_agent_checkout.zst)",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/ucp/checkout-sessions",
+      "data": "{\"currency\":\"JPY\",\"line_items\":[{\"item\":{\"id\":\"10\"},\"quantity\":1}],\"buyer\":{\"first_name\":\"\\u592a\\u90ce\",\"last_name\":\"\\u5c71\\u7530\",\"email\":\"zap-agent@example.com\",\"phone_number\":\"0612345678\"},\"fulfillment\":{\"destinations\":[{\"id\":\"dest-1\",\"last_name\":\"\\u5c71\\u7530\",\"first_name\":\"\\u592a\\u90ce\",\"postal_code\":\"5300001\",\"address_region\":\"\\u5927\\u962a\\u5e9c\",\"address_locality\":\"\\u5927\\u962a\\u5e02\\u5317\\u533a\",\"street_address\":\"\\u6885\\u75301-1-1\",\"phone_number\":\"0612345678\"}]}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 201,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "\"id\":\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "session-id",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/ucp/checkout-sessions/{{session-id}}"
+    },
+    {
+      "data": "{\"line_items\":[{\"item\":{\"id\":\"10\"},\"quantity\":2}]}",
+      "method": "PUT",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/ucp/checkout-sessions/{{session-id}}"
+    },
+    {
+      "data": "{\"payment\":{\"instruments\":[{\"credential\":{\"type\":\"zap\"}}]}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/ucp/checkout-sessions/{{session-id}}/complete"
+    },
+    {
+      "comment": "取り消し (別のセッションを作って取り消す)",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/ucp/checkout-sessions",
+      "data": "{\"currency\":\"JPY\",\"line_items\":[{\"item\":{\"id\":\"10\"},\"quantity\":1}],\"buyer\":{\"first_name\":\"\\u592a\\u90ce\",\"last_name\":\"\\u5c71\\u7530\",\"email\":\"zap-agent@example.com\",\"phone_number\":\"0612345678\"},\"fulfillment\":{\"destinations\":[{\"id\":\"dest-1\",\"last_name\":\"\\u5c71\\u7530\",\"first_name\":\"\\u592a\\u90ce\",\"postal_code\":\"5300001\",\"address_region\":\"\\u5927\\u962a\\u5e9c\",\"address_locality\":\"\\u5927\\u962a\\u5e02\\u5317\\u533a\",\"street_address\":\"\\u6885\\u75301-1-1\",\"phone_number\":\"0612345678\"}]}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 201,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "\"id\":\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "cancel-session-id",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "data": "{}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/ucp/checkout-sessions/{{cancel-session-id}}/cancel"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

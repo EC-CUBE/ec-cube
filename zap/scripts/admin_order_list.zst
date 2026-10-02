@@ -141,6 +141,34 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
+      "comment": "売上グラフ (管理画面トップの Ajax)",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/sale_chart",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nX-Requested-With: XMLHttpRequest\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/order",
       "data": "admin_search_order%5B_token%5D={{csrf2}}&admin_search_order%5Bmulti%5D=&admin_search_order%5Bname%5D=&admin_search_order%5Bkana%5D=&admin_search_order%5Border_datetime_start%5D=&admin_search_order%5Border_datetime_end%5D=&admin_search_order%5Bcompany_name%5D=&admin_search_order%5Bpayment_datetime_start%5D=&admin_search_order%5Bpayment_datetime_end%5D=&admin_search_order%5Bemail%5D=&admin_search_order%5Bupdate_datetime_start%5D=&admin_search_order%5Bupdate_datetime_end%5D=&admin_search_order%5Bphone_number%5D=&admin_search_order%5Bshipping_delivery_datetime_start%5D=&admin_search_order%5Bshipping_delivery_datetime_end%5D=&admin_search_order%5Border_no%5D=&admin_search_order%5Bpayment_total_start%5D=&admin_search_order%5Bpayment_total_end%5D=&admin_search_order%5Btracking_number%5D=&admin_search_order%5Bbuy_product_name%5D=&admin_search_order%5Bsortkey%5D=&admin_search_order%5Bsorttype%5D=",
       "method": "POST",
@@ -158,7 +186,7 @@
       "followRedirects": false,
       "timestamp": 1655432920069,
       "cookies": [],
-      "index": 11,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -180,7 +208,7 @@
       "followRedirects": false,
       "timestamp": 1655432942882,
       "cookies": [],
-      "index": 12,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -189,13 +217,13 @@
       "postfix": "\" name=\"ids\\[\\]\"",
       "location": "BODY",
       "variableName": "order-id",
-      "index": 13,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "comment": "受注CSVダウンロード",
-      "index": 14,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -217,13 +245,13 @@
       "followRedirects": false,
       "timestamp": 1655432964922,
       "cookies": [],
-      "index": 15,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "出荷CSVダウンロード",
-      "index": 16,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -245,13 +273,13 @@
       "followRedirects": false,
       "timestamp": 1655432969014,
       "cookies": [],
-      "index": 17,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "受注ステータス更新",
-      "index": 18,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -274,13 +302,13 @@
       "followRedirects": false,
       "timestamp": 1655432987112,
       "cookies": [],
-      "index": 19,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "お問い合わせ番号設定",
-      "index": 20,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -303,13 +331,13 @@
       "followRedirects": false,
       "timestamp": 1655432995250,
       "cookies": [],
-      "index": 21,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "納品書出力",
-      "index": 22,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -331,7 +359,7 @@
       "followRedirects": false,
       "timestamp": 1655433008941,
       "cookies": [],
-      "index": 23,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -342,7 +370,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf9",
-      "index": 24,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -364,7 +392,35 @@
       "followRedirects": false,
       "timestamp": 1655433020281,
       "cookies": [],
-      "index": 25,
+      "index": 27,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "受注一括削除",
+      "index": 28,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/order/bulk_delete",
+      "data": "_token={{eccube-csrf-token}}&ids%5B%5D={{order-id}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 29,
       "enabled": true,
       "elementType": "ZestRequest"
     }

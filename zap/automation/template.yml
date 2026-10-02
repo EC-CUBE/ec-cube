@@ -26,10 +26,36 @@ env:
           username: admin
           password: password
 
+    - name: front_login
+      urls:
+        - 'https://ec-cube'
+      includePaths:
+        - '\Qhttps://ec-cube\E.*'
+      excludePaths:
+        - '\Qhttps://ec-cube/admin\E.*'
+      authentication:
+        method: 'form'
+        parameters:
+          loginPageUrl: https://ec-cube/mypage/login
+          loginRequestUrl: https://ec-cube/mypage/login
+          loginRequestBody: _csrf_token=&login_email={%username%}&login_pass={%password%}
+        verification:
+          method: 'poll'
+          pollUrl: 'https://ec-cube/mypage/'
+          pollFrequency: 1000
+          pollUnits: 'requests'
+          loggedOutRegex: 'name="login_email"'
+      users:
+      # admin_create_customer.zst が作成する会員
+      - name: customer
+        credentials:
+          username: user@example.com
+          password: EccubeE2ePassword1
+
     - name: default
       urls:
         - https://ec-cube
-        - http://mailcatcher:1080
+        - http://mailpit:8025
 
   parameters:
     failOnError: true
@@ -54,6 +80,23 @@ jobs:
 ${ZA_FORCE_ADMIN_CONFIG}
 ${ZA_BEFORE_SCRIPT_CONFIG}
 
+  # 2 段階認証のコードを送信の直前に計算する (zap/scripts/totp.js)
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: totp
+      file: /zap/wrk/scripts/totp.js
+
+  # Idempotency-Key を送信のたびに新しい値にする (zap/scripts/idempotency_key.js)
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: idempotency_key
+      file: /zap/wrk/scripts/idempotency_key.js
+
+${ZA_FORM_ERRORS_CONFIG}
   - type: script
     parameters:
       action: add
@@ -66,6 +109,7 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       sequence: target
       user: ${ZA_USER}
       context: ${ZA_CONTEXT}
+${ZA_POLICY_CONFIG}
 
   - type: passiveScan-wait
 

@@ -1,0 +1,259 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "api_oauth.zst",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "Web API (eccube-api4) の認可コードフロー。管理画面へのログインは before_script (admin_login.zst) で行う",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "comment": "OAuth クライアントを登録する (識別子とシークレットは画面が出す値を使う)",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/api/oauth/new",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "name\u003d\"api_admin_client\\[_token\\]\"[^\u003e]*value\u003d\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "csrf-oauth",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "prefix": "name\u003d\"api_admin_client\\[identifier\\]\"[^\u003e]*value\u003d\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "api-client-id",
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "prefix": "name\u003d\"api_admin_client\\[secret\\]\"[^\u003e]*value\u003d\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "api-client-secret",
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "url": "https://ec-cube/admin/api/oauth/new",
+      "data": "api_admin_client%5B_token%5D\u003d{{csrf-oauth}}\u0026api_admin_client%5Bname%5D\u003dzap\u0026api_admin_client%5Bidentifier%5D\u003d{{api-client-id}}\u0026api_admin_client%5Bsecret%5D\u003d{{api-client-secret}}\u0026api_admin_client%5Bscopes%5D%5B%5D\u003dread\u0026api_admin_client%5Bscopes%5D%5B%5D\u003dwrite\u0026api_admin_client%5Bredirect_uris%5D\u003dhttps%3A%2F%2Fexample.com%2Fcallback\u0026api_admin_client%5Bgrants%5D%5B%5D\u003dauthorization_code",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "同意画面で許可し、転送先 (Location) から認可コードを取り出す",
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/admin/authorize?response_type\u003dcode\u0026client_id\u003d{{api-client-id}}\u0026redirect_uri\u003dhttps://example.com/callback\u0026scope\u003dread write\u0026state\u003dzapstate"
+    },
+    {
+      "prefix": "name\u003d\"oauth_authorization\\[_token\\]\"[^\u003e]*value\u003d\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "csrf-authorize",
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "data": "oauth_authorization%5B_token%5D\u003d{{csrf-authorize}}\u0026oauth_authorization%5Bclient_id%5D\u003d{{api-client-id}}\u0026oauth_authorization%5Bredirect_uri%5D\u003dhttps%3A%2F%2Fexample.com%2Fcallback\u0026oauth_authorization%5Bstate%5D\u003dzapstate\u0026oauth_authorization%5Bscope%5D\u003dread+write\u0026oauth_authorization%5Bapprove%5D\u003d",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/admin/authorize?response_type\u003dcode\u0026client_id\u003d{{api-client-id}}\u0026redirect_uri\u003dhttps://example.com/callback\u0026scope\u003dread write\u0026state\u003dzapstate"
+    },
+    {
+      "prefix": "code\u003d",
+      "postfix": "\u0026state\u003d",
+      "location": "HEAD",
+      "variableName": "auth-code",
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "comment": "アクセストークンを取得し、GraphQL を呼ぶ",
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/token",
+      "data": "grant_type\u003dauthorization_code\u0026client_id\u003d{{api-client-id}}\u0026client_secret\u003d{{api-client-secret}}\u0026redirect_uri\u003dhttps%3A%2F%2Fexample.com%2Fcallback\u0026code\u003d{{auth-code}}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/x-www-form-urlencoded\r\nAccept: application/json\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "\"access_token\":\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "access-token",
+      "index": 15,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "url": "https://ec-cube/api",
+      "data": "{\"query\": \"{ products(page: 1, limit: 2) { nodes { id name } } }\"}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nAuthorization: Bearer {{access-token}}\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "MCP クライアントの動的登録 (認証なし)",
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/register",
+      "data": "{\"client_name\": \"zap\", \"redirect_uris\": [\"https://example.com/callback\"]}",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 201,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

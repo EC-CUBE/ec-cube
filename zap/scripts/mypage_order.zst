@@ -48,7 +48,7 @@
     },
     {
       "url": "https://ec-cube/mypage/login",
-      "data": "login_email=user%40example.com&login_pass=password1234&_csrf_token={{csrf5}}",
+      "data": "login_email=user%40example.com&login_pass=EccubeE2ePassword1&_csrf_token={{csrf5}}",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 106\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [

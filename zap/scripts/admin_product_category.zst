@@ -92,9 +92,9 @@
     {
       "url": "https://ec-cube/admin/product/category/1",
       "urlToken": "https://ec-cube/admin/product/category/1",
-      "data": "------WebKitFormBoundaryK7vy6VyVOel3JJAz\r\nContent-Disposition: form-data; name=\"admin_category[_token]\"\r\n\r\n{{csrf5}}\r\n------WebKitFormBoundaryK7vy6VyVOel3JJAz\r\nContent-Disposition: form-data; name=\"admin_category[name]\"\r\n\r\ntest\r\n------WebKitFormBoundaryK7vy6VyVOel3JJAz--\r\n",
+      "data": "------webkitformboundaryk7vy6vyvoel3jjaz\r\nContent-Disposition: form-data; name=\"admin_category[_token]\"\r\n\r\n{{csrf5}}\r\n------webkitformboundaryk7vy6vyvoel3jjaz\r\nContent-Disposition: form-data; name=\"admin_category[name]\"\r\n\r\ntest\r\n------webkitformboundaryk7vy6vyvoel3jjaz--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 307\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundaryK7vy6VyVOel3JJAz\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 307\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryk7vy6vyvoel3jjaz\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -135,7 +135,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "name=\"category_\\d+\\[_token\\]\" value=\"",
+      "prefix": "name=\"category_\\d+\\[_token\\]\"[^>]*value=\"",
       "postfix": "\" />",
       "location": "BODY",
       "variableName": "category-token",
@@ -194,9 +194,9 @@
     },
     {
       "url": "https://ec-cube/admin/product/category/1",
-      "data": "------WebKitFormBoundaryZwIlR69pBi98At8S\r\nContent-Disposition: form-data; name=\"category_{{category-id}}[_token]\"\r\n\r\n{{category-token}}\n------WebKitFormBoundaryZwIlR69pBi98At8S\r\nContent-Disposition: form-data; name=\"category_{{category-id}}[name]\"\r\n\r\ntest\r\n------WebKitFormBoundaryZwIlR69pBi98At8S--\r\n",
+      "data": "------webkitformboundaryzwilr69pbi98at8s\r\nContent-Disposition: form-data; name=\"category_{{category-id}}[_token]\"\r\n\r\n{{category-token}}\r\n------webkitformboundaryzwilr69pbi98at8s\r\nContent-Disposition: form-data; name=\"category_{{category-id}}[name]\"\r\n\r\ntest\r\n------webkitformboundaryzwilr69pbi98at8s--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 299\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundaryZwIlR69pBi98At8S\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 299\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryzwilr69pbi98at8s\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -237,8 +237,69 @@
       "elementType": "ZestRequest"
     },
     {
-      "comment": "カテゴリ削除",
+      "comment": "カテゴリ編集 (編集画面)",
       "index": 17,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 18,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/admin/product/category/{{category-id}}/edit"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "admin_category__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf-edit",
+      "index": 19,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "data": "------webkitformboundaryzapaddedroute01\r\nContent-Disposition: form-data; name=\"admin_category[_token]\"\r\n\r\n{{csrf-edit}}\r\n------webkitformboundaryzapaddedroute01\r\nContent-Disposition: form-data; name=\"admin_category[name]\"\r\n\r\ntest\r\n------webkitformboundaryzapaddedroute01--\r\n",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryzapaddedroute01\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 20,
+      "enabled": true,
+      "elementType": "ZestRequest",
+      "urlToken": "https://ec-cube/admin/product/category/{{category-id}}/edit"
+    },
+    {
+      "comment": "カテゴリ削除",
+      "index": 21,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -260,13 +321,13 @@
       "followRedirects": false,
       "timestamp": 1655373638344,
       "cookies": [],
-      "index": 18,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "カテゴリCSVダウンロード",
-      "index": 19,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -288,7 +349,7 @@
       "followRedirects": false,
       "timestamp": 1655373651167,
       "cookies": [],
-      "index": 20,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestRequest"
     }

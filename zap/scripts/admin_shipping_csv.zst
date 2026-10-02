@@ -152,9 +152,9 @@
     },
     {
       "url": "https://ec-cube/admin/order/shipping_csv_upload",
-      "data": "------WebKitFormBoundary6YOajQkfvqsPTKAk\r\nContent-Disposition: form-data; name=\"admin_csv_import[_token]\"\r\n\r\n{{csrf1}}\n------WebKitFormBoundary6YOajQkfvqsPTKAk\r\nContent-Disposition: form-data; name=\"admin_csv_import[import_file]\"; filename=\"shipping.csv\"\r\nContent-Type: text/csv\r\n\r\no×ID,¨â¢í¹Ô,o×ú\n{{order-id}},abcdefg,2022-01-23\n\r\n------WebKitFormBoundary6YOajQkfvqsPTKAk--\r\n",
+      "data": "------webkitformboundary6yoajqkfvqsptkak\r\nContent-Disposition: form-data; name=\"admin_csv_import[_token]\"\r\n\r\n{{csrf1}}\r\n------webkitformboundary6yoajqkfvqsptkak\r\nContent-Disposition: form-data; name=\"admin_csv_import[import_file]\"; filename=\"shipping.csv\"\r\nContent-Type: text/csv\r\n\r\no×ID,¨â¢í¹Ô,o×ú\n{{order-id}},abcdefg,2022-01-23\n\r\n------webkitformboundary6yoajqkfvqsptkak--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 417\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----WebKitFormBoundary6YOajQkfvqsPTKAk\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 417\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundary6yoajqkfvqsptkak\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
