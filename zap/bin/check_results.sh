@@ -9,6 +9,8 @@
 #   - 自動化プランの失敗 (High のアラート、ジョブのエラー): 失敗
 #   - 再生の失敗: Smoke では失敗。Sequence では能動スキャンの攻撃が前のステップの状態を変えて
 #     再生が失敗することがあるため、警告に留める
+#   - 再生で入力エラーの画面が返ったリクエスト (Form error:、Smoke のみ出力): 再生の失敗として扱う。
+#     状態コードは 200 のため ZAP は成功とみなすが、後続の画面に攻撃が届かない
 # ログは options.properties の view.locale=ja_JP により日本語で出力される。
 #
 # 最後に 1 行、タブ区切りで RESULT <target> <policy> <成功|失敗> <再生の失敗>/<再生の総数> high=<件数> を出力する。
@@ -37,7 +39,7 @@ fi
 
 high=$(grep -o 'High risk alert count \[[0-9]*' "${LOG}" | grep -o '[0-9]*$' | head -1)
 total=$(grep -c '^Response:' "${LOG}")
-failures=$(grep -E 'passed = false|Assign: failed' "${LOG}")
+failures=$(grep -E 'passed = false|Assign: failed|^Form error:' "${LOG}")
 count=0
 if [[ -n ${failures} ]]; then
     count=$(wc -l <<< "${failures}")

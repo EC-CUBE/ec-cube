@@ -73,6 +73,18 @@ if [[ -n ${ZA_POLICY} ]]; then
     ZA_POLICY_CONFIG="      policy: ${ZA_POLICY}"
 fi
 
+# Smoke では、再生で入力エラーの画面が返ったリクエストを Form error: としてログに出す。
+# 再生と攻撃はどちらも能動スキャンとして送られ区別できないため、攻撃を送らない Smoke に限る
+if [[ ${ZA_POLICY} == Smoke ]]; then
+    ZA_FORM_ERRORS_CONFIG="
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: report_form_errors
+      file: /zap/wrk/scripts/report_form_errors.js"
+fi
+
 if [[ -n ${ZA_BEFORE_SCRIPT} ]]; then
     ZA_BEFORE_SCRIPT_CONFIG="
   - type: script

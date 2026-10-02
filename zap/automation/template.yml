@@ -80,6 +80,7 @@ jobs:
 ${ZA_FORCE_ADMIN_CONFIG}
 ${ZA_BEFORE_SCRIPT_CONFIG}
 
+${ZA_FORM_ERRORS_CONFIG}
   - type: script
     parameters:
       action: add
