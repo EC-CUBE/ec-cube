@@ -32,6 +32,7 @@ use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -611,6 +612,55 @@ class PluginService
         $this->pluginApiService->pluginUninstalled($plugin);
 
         return true;
+    }
+
+    /**
+     * composer で導入したプラグインを composer remove で削除する.
+     *
+     * composer remove は依存パッケージの vendor を非同期で削除するため, その最中に
+     * ec-cube/plugin-installer がプラグインをアンインストールすると, スキーマ更新が
+     * 削除済みのクラスを読み込んで失敗することがある (#7204).
+     * 依存パッケージが揃っているうちにアンインストールを済ませ, プラグインのレコードを消しておく.
+     * plugin-installer はレコードが無いプラグインのアンインストールを行わない.
+     *
+     * プラグインのディレクトリは composer remove が削除する. dropTableToExtra() が
+     * プラグインのディレクトリを参照するため, ここでは削除しない.
+     *
+     * @param string $packageNames format "foo/bar foo/baz"
+     *
+     * @throws PluginException
+     * @throws \Exception
+     */
+    public function removeByComposer(string $packageNames, ?OutputInterface $output = null): string
+    {
+        $Plugins = [];
+        foreach (explode(' ', trim($packageNames)) as $packageName) {
+            $Plugin = $this->pluginRepository->findByCode(basename($packageName));
+            if ($Plugin === null) {
+                continue;
+            }
+            // plugin-installer と同じ条件で, アンインストールできないものは composer remove の前に止める
+            if ($Plugin->isEnabled()) {
+                throw new PluginException('プラグインを無効化してください。'.$Plugin->getCode());
+            }
+            $dependents = $this->findDependentPlugin($Plugin->getCode(), true);
+            if ($dependents !== []) {
+                throw new PluginException('このプラグインに依存しているプラグインがあるため削除できません。'.$dependents[0]);
+            }
+            $Plugins[] = $Plugin;
+        }
+
+        foreach ($Plugins as $Plugin) {
+            $this->uninstall($Plugin, false);
+        }
+
+        $log = $this->composerService->execRemove($packageNames, $output);
+
+        foreach ($Plugins as $Plugin) {
+            $this->removeAssets($Plugin->getCode());
+        }
+
+        return $log;
     }
 
     /**
