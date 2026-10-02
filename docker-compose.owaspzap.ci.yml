@@ -5,6 +5,17 @@ services:
     environment:
       APP_ENV: "prod"
       APP_DEBUG: 0
+      # セキュリティ設定 (admin_security) への攻撃で .env の IP 制限や管理画面のパスが書き換わり、
+      # 以降のリクエストが締め出されないよう、既定値のまま環境変数で固定する。
+      # 環境変数で上書きされたキーは、画面から保存しても .env へ書き込まれない
+      ECCUBE_FRONT_ALLOW_HOSTS: "[]"
+      ECCUBE_FRONT_DENY_HOSTS: "[]"
+      ECCUBE_ADMIN_ALLOW_HOSTS: "[]"
+      ECCUBE_ADMIN_DENY_HOSTS: "[]"
+      ECCUBE_FORCE_SSL: "0"
+      # 画面では必須のため空にできない。すべてのホストに一致させ、未設定と同じ動作にする
+      TRUSTED_HOSTS: ".*"
+      ECCUBE_ADMIN_ROUTE: "admin"
 
   zap:
     image: ghcr.io/zaproxy/zaproxy:stable

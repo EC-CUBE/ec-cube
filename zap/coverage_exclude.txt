@@ -8,3 +8,5 @@
 ^/[^/]+/store/plugin	ストア・プラグイン管理
 # ページ管理に表示するためのダミーのルートで、空の応答を返すだけ
 ^/product_review/display$	商品レビューのページ管理用のダミー
+# 2 段階認証の設定・変更で付く cookie を ZAP が保持するため、認証済みになり表示されない (zap/scripts/totp.js)
+^/[^/]+/two_factor_auth$	2 段階認証のログイン後の認証

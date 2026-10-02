@@ -447,10 +447,16 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
+      "comment": "2 段階認証の設定。攻撃は誤ったコードの送信で受ける (設定が完了すると以降は設定済みとして転送され、フォームの処理に届かないため)",
+      "index": 26,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
       "url": "https://ec-cube/admin/two_factor_auth/set",
-      "data": "admin_two_factor_auth%5B_token%5D={{csrf8}}&admin_two_factor_auth%5Bauth_key%5D={{two_factor_auth_key}}&admin_two_factor_auth%5Bdevice_token%5D=123456",
+      "data": "admin_two_factor_auth%5B_token%5D={{csrf8}}&admin_two_factor_auth%5Bauth_key%5D={{two_factor_auth_key}}&admin_two_factor_auth%5Bdevice_token%5D=000000",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 177\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 177\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Expect-Form-Error: 1\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -464,7 +470,103 @@
       "followRedirects": false,
       "timestamp": 1656667715340,
       "cookies": [],
-      "index": 26,
+      "index": 27,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "正しいコードで設定を完了する。device_token の ZAP_TOTP は zap/scripts/totp.js が置き換える",
+      "index": 28,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/two_factor_auth/set",
+      "data": "admin_two_factor_auth%5B_token%5D={{csrf8}}&admin_two_factor_auth%5Bauth_key%5D={{two_factor_auth_key}}&admin_two_factor_auth%5Bdevice_token%5D=ZAP_TOTP",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 177\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656667715340,
+      "cookies": [],
+      "index": 29,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "2 段階認証の変更",
+      "index": 30,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/two_factor_auth/edit",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 31,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "name=\"admin_two_factor_auth\\[_token\\]\"[^>]*value=\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "csrf-2fa-edit",
+      "index": 32,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "prefix": "name=\"admin_two_factor_auth\\[auth_key\\]\"[^>]*value=\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "two-factor-auth-key",
+      "index": 33,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "url": "https://ec-cube/admin/two_factor_auth/edit",
+      "data": "admin_two_factor_auth%5B_token%5D={{csrf-2fa-edit}}&admin_two_factor_auth%5Bauth_key%5D={{two-factor-auth-key}}&admin_two_factor_auth%5Bdevice_token%5D=ZAP_TOTP",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 34,
       "enabled": true,
       "elementType": "ZestRequest"
     }

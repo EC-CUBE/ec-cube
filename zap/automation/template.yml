@@ -80,6 +80,22 @@ jobs:
 ${ZA_FORCE_ADMIN_CONFIG}
 ${ZA_BEFORE_SCRIPT_CONFIG}
 
+  # 2 段階認証のコードを送信の直前に計算する (zap/scripts/totp.js)
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: totp
+      file: /zap/wrk/scripts/totp.js
+
+  # Idempotency-Key を送信のたびに新しい値にする (zap/scripts/idempotency_key.js)
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: idempotency_key
+      file: /zap/wrk/scripts/idempotency_key.js
+
 ${ZA_FORM_ERRORS_CONFIG}
   - type: script
     parameters:

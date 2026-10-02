@@ -16,6 +16,11 @@ run sed -i \
     app/config/eccube/packages/eccube.yaml
 run rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 run sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+# eccube-api4 の動的クライアント登録 (/register) は IP ごとに 1 時間 20 件までのため、攻撃が 429 で止まる
+API_CONFIG=app/Plugin/Api44/Resource/config/services.yaml
+if run test -f "${API_CONFIG}"; then
+    run sed -i -e 's/limit: 20$/limit: 100000/' -e 's/limit: 200$/limit: 100000/' "${API_CONFIG}"
+fi
 run bin/console cache:clear > /dev/null
 run bin/console debug:container --parameter eccube_login_throttling_max_attempts
 run bin/console debug:container --parameter eccube_login_throttling_interval

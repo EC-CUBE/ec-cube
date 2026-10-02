@@ -32,6 +32,16 @@ GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net
 
 - 前提とするバンドル版プラグインは `plugins.txt` で管理します。4.4 対応版のリリースが無いため、各リポジトリの `4.4` ブランチから導入します。
 - EC-CUBE は `APP_ENV=prod` で起動します (`docker-compose.owaspzap.ci.yml`)。
+- セキュリティ設定 (IP 制限・SSL の強制・`TRUSTED_HOSTS`・管理画面のパス) は、既定値のまま環境変数で固定しています
+  (`docker-compose.owaspzap.ci.yml`)。環境変数で上書きされた項目は画面から保存しても `.env` に書き込まれないため、
+  `admin_security` への攻撃で管理画面から締め出されません。`TRUSTED_HOSTS` は画面で必須のため、すべてのホストに一致する `.*` にしています。
+- 2 段階認証のコードは `scripts/totp.js` (httpsender スクリプト) が送信の直前に計算します。シナリオでは `device_token` に
+  `ZAP_TOTP` を入れて送ります。ログイン後の認証の画面 (`/admin/two_factor_auth`) は、設定・変更で付く認証済みの cookie を
+  ZAP が保持して付け直すため表示されず、シナリオで通していません。
+- エージェントコマースの API (ACP / UCP のチェックアウト) は、同じ `Idempotency-Key` で内容の異なるリクエストを 422 で拒否します。
+  シナリオでは `Idempotency-Key: ZAP_RANDOM` を送り、`scripts/idempotency_key.js` (httpsender スクリプト) が送信のたびに新しい値へ置き換えます。
+  固定のキーのままだと、本文を書き換えた攻撃がすべて 422 で止まります。
+- eccube-api4 の動的クライアント登録 (`/register`) のレート制限 (IP ごとに 1 時間 20 件) は、`bin/prepare_ec-cube.sh` で緩めています。
 
 ### OFF にしているルール
 
