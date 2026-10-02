@@ -1,6 +1,8 @@
 #!/bin/bash
 #
-# ZAP のアドオンを更新・導入し、Smoke ポリシーを作る。
+# ZAP のアドオンを更新・導入し、EC-CUBE ポリシーと Smoke ポリシーを作る。
+# EC-CUBE は同梱の Sequence ポリシーから、検出の見込みが無く時間だけかかるルールを OFF にしたもの (zap/README.md 参照)。
+# 同梱のポリシーは読み取り専用のため、書き換えずに別のファイルとして作る。
 # Smoke は同梱の Sequence ポリシーの全ルールを OFF にしたもので、能動スキャンをせず zst の再生だけを確認する。
 #
 # docker compose は呼び出し元の環境変数 (COMPOSE_FILE / COMPOSE_PROJECT_NAME) で実行する。
@@ -32,3 +34,11 @@ docker compose exec -T zap sh -c "sed \
     -e 's#<enabled>true</enabled>#<enabled>false</enabled>#g' \
     -e '/<statsId>/d' -e '/<readonly>/d' -e '/<locked>/d' \
     /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/Smoke.policy"
+
+# EC-CUBE ポリシー。OFF にするルール: 40026 Cross Site Scripting (DOM Based)
+# <locked> は残す。locked のポリシーは列挙していないルールを無効にするが、外すと既定で有効になり、同梱の Sequence に無いルールまで動く
+docker compose exec -T zap sh -c "sed \
+    -e 's#<policy>Sequence</policy>#<policy>EC-CUBE</policy>#' \
+    -e '/<p40026>/,/<\/p40026>/s#<enabled>true</enabled>#<enabled>false</enabled><level>OFF</level>#' \
+    -e '/<statsId>/d' -e '/<readonly>/d' \
+    /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/EC-CUBE.policy"

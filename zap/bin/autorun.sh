@@ -32,9 +32,9 @@ OUT=$(realpath -m "${OUT}")
 cd "$(dirname "$0")/../.." || exit 1
 mkdir -p "${OUT}"
 
-# 省略時は sequence-activeScan の既定 (同梱の Sequence ポリシー) を使うため、Sequence は渡さない
-POLICY_ARG=
-[[ ${POLICY} != Sequence ]] && POLICY_ARG=${POLICY}
+# Sequence は、同梱の Sequence ポリシーから一部のルールを OFF にした EC-CUBE ポリシー (prepare_zap.sh が作る) で実行する
+POLICY_ARG=${POLICY}
+[[ ${POLICY} == Sequence ]] && POLICY_ARG=EC-CUBE
 zap/generate_automation_config.sh -t "${TARGET}" -o "${OUT}/plan.generated.yml" \
     ${BEFORE:+-b "${BEFORE}"} ${CONTEXT:+-c "${CONTEXT}"} ${POLICY_ARG:+-p "${POLICY_ARG}"} || exit 1
 
