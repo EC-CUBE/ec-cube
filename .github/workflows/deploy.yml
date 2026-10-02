@@ -60,6 +60,11 @@ jobs:
       ## 4.4 対応版のプラグインが未公開のため、パッケージからプラグインを外す (deny-test.yml と同じ)
       ## eccube:composer:require は platform.php を実行中の PHP バージョンに書き換えるため、
       ## 再有効化するときは composer.json の config.platform.php と同じ値に戻す
+      ## 再有効化の前に、配布物から認証キーを消すステップを Packaging の前に足すこと。
+      ## eccube:composer:require は認証キーを composer.json の repositories.eccube に書き込み、
+      ## composer.lock の各パッケージの transport-options にも残す。package.sh はどちらも同梱する。
+      ## composer.lock 側まで消すかは、lock から入れるときにキーが要るかを package-api の仕様で確かめて決める。
+      ## 消したあとは成果物を X-ECCUBE-KEY で grep し、残っていないことを確かめる
 #      - name: Install Plugins
 #        env:
 #          APP_ENV: 'prod'
