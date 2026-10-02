@@ -187,6 +187,13 @@ GitHub Actions では、`workflow_dispatch` の `patches` にパッチ名 (空�
   `VariantMultipartFormParameters.setParameter` の `IndexOutOfBoundsException` が出ます)。
   また ZAP は改行を CRLF として本文を分割するため、手で編集して LF だけになった箇所があると値の範囲がずれます。
   `zap/bin/lint_zst.sh` で確かめられます (CI でも実行します)。
+- POST の値は、現在の画面がブラウザから送るものに揃えてください。古い版で記録したシナリオは、後から増えた hidden の
+  項目が欠けることがあります。例えば商品登録の `admin_product[faqs_rendered]` が無いと、攻撃で入力エラーになったときに
+  画面の再表示が 500 になり (EC-CUBE/ec-cube#7192)、攻撃の応答が入力エラーの画面まで届きません。
+- 商品画像の一時ファイル (`html/upload/temp_image`) は、`delete_files.sh` が 60 分残します。他の `html/` 配下の新しいファイルは
+  十数秒以内に消すため、画像のアップロードを能動スキャンしている間に、次の商品登録のステップが使う一時ファイルが消えていました。
+  なお一時ファイルは最初に登録が成功した攻撃で移動するため、商品登録のステップへの以降の攻撃は画像の入力エラーになります。
+  登録の処理まで届く攻撃は、続く編集のステップで行われます。
 - `mode=confirm` / `mode=complete` のように POST の値だけが違う遷移は、ZAP が同じノードとして扱います。
   `mode2=dummy` のようなダミーのパラメータで区別してください。
 - 変更したら `Smoke` で再生を確かめてから、`Sequence` で実行してください。
