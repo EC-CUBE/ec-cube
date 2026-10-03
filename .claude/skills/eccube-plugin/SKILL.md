@@ -23,12 +23,12 @@ bin/console eccube:plugin:generate <name> <code> <ver>
 `app/Plugin/{code}/` に骨組み一式が生成される（`src/Eccube/Command/PluginGenerateCommand.php`）:
 `composer.json` ・ 管理画面の `Controller/Admin/ConfigController.php` ・ `Entity/Config.php`（`plg_{code}_config`）・
 `Repository/ConfigRepository.php` ・ `Form/Type/Admin/ConfigType.php` ・ `Resource/template/admin/config.twig` ・
-`TwigBlock.php` / `Nav.php` / `Event.php` ・ `Resource/locale/messages.ja.yaml` 等 ・
+`PluginManager.php` ・ `TwigBlock.php` / `Nav.php` / `Event.php` ・ `Resource/locale/messages.ja.yaml` 等 ・
 `.github/workflows/release.yml` ・ `.gitattributes`。
 
 - 引数は **`name`（表示名）/ `code`（PluginCode）/ `ver`（composer.json の version）** の順（位置引数）。
 - 生成物は **Config 画面・Entity 込みのフル構成**。**使わないファイルは削ってよい**（残すべき最小は下記）。
-- `code` は `^\w+$`（後述の制約）。`PluginManager.php` は生成されないので、ライフサイクル処理が要るときは下記に従い手で足す。
+- `code` は `^\w+$`（後述の制約）。生成される `PluginManager.php` は `enable()` で設定の初期レコード（id = 1）を作る。ライフサイクル処理はこのファイルに足し、初期レコードの作成は残す（消すと設定画面が `Config not found` で 500 になる）。
 
 > **開発時の置き場所（事故防止・重要）**: `app/Plugin/{code}/` 直下で直接開発すると、**プラグイン削除（uninstall）のテストをした瞬間にソースごと消える**。
 > 実開発では**別ディレクトリで開発し、シンボリックリンクで配置**するのが安全。コアの local path リポジトリ機能を使う:
@@ -80,7 +80,7 @@ app/Plugin/{PluginCode}/
 namespace Plugin\Example;
 
 use Eccube\Plugin\AbstractPluginManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 class PluginManager extends AbstractPluginManager
 {
@@ -93,7 +93,7 @@ class PluginManager extends AbstractPluginManager
 }
 ```
 
-- メソッドのシグネチャは **`(array $meta, ContainerInterface $container)`**。`$meta['code']` は composer.json の `extra.code`。
+- メソッドのシグネチャは **`(array $meta, ContainerInterface $container)`**（`Psr\Container\ContainerInterface`。Symfony の DI 版だと親と不一致で読み込み時に Fatal）。`$meta['code']` は composer.json の `extra.code`。
 - **install 直後はデフォルト無効（enabled=false）**。有効化は `eccube:plugin:enable` コマンドか管理画面で行う（無効化はコンソールコマンドが無く、管理画面から行う）。
 
 ## 拡張パターン（プラグインから何を足すか）
