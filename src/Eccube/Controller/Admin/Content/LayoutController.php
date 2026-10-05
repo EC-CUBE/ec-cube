@@ -32,6 +32,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -95,7 +96,7 @@ class LayoutController extends AbstractController
 
     /**
      * @param string|null $id
-     * @param string|null $previewPageId
+     * @param int|string|null $previewPageId
      *
      * @return RedirectResponse|array<string, mixed>
      *
@@ -154,7 +155,7 @@ class LayoutController extends AbstractController
             if ($this->isPreview) {
                 // プレビューする画面を取得
                 try {
-                    $Page = $this->pageRepository->find($previewPageId);
+                    $Page = null !== $previewPageId ? $this->pageRepository->find($previewPageId) : null;
                     if ($Page === null) {
                         throw new NoResultException();
                     }
@@ -221,15 +222,17 @@ class LayoutController extends AbstractController
 
     /**
      * @param string $id
-     *
-     * @return RedirectResponse|array<string, mixed>
      */
     #[Route(path: '/%eccube_admin_route%/content/layout/{id}/preview', name: 'admin_content_layout_preview', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function preview(Request $request, $id): RedirectResponse|array
+    public function preview(Request $request, $id): Response
     {
         $form = $request->get('admin_layout');
         $this->isPreview = true;
 
-        return $this->edit($request, $id, $form['Page']);
+        $previewPageId = is_array($form) ? IdUtil::toId($form['Page'] ?? null) : null;
+        $result = $this->edit($request, $id, $previewPageId);
+
+        // 入力エラーの場合は edit() と同じ画面を再表示する (preview には #[Template] が無い)
+        return is_array($result) ? $this->render('@admin/Content/layout.twig', $result) : $result;
     }
 }

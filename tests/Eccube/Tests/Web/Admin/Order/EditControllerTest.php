@@ -1164,8 +1164,42 @@ final class EditControllerTest extends AbstractEditControllerTestCase
         yield 'Customer out of range' => ['Customer', '2147483648'];
         yield 'ProductClass alpha' => ['ProductClass', 'abc'];
         yield 'ProductClass out of range' => ['ProductClass', '2147483648'];
+        yield 'ProductClass empty' => ['ProductClass', ''];
         yield 'Delivery alpha' => ['Delivery', 'abc'];
         yield 'Delivery out of range' => ['Delivery', '2147483648'];
         yield 'Payment out of range' => ['Payment', '2147483648'];
+    }
+
+    /**
+     * 新規の明細の明細種別・商品規格が不正でも、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideInvalidNewOrderItem')]
+    public function testNewWithInvalidOrderItem(string $field, string $value): void
+    {
+        $formData = $this->createFormData($this->Customer, $this->Product);
+        unset($formData['OrderStatus']);
+        foreach ($formData['OrderItems'] as $index => $orderItem) {
+            if ($orderItem['order_item_type'] == OrderItemType::PRODUCT) {
+                $formData['OrderItems'][$index][$field] = $value;
+            }
+        }
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_new'),
+            ['order' => $formData, 'mode' => 'register']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @return \Iterator<string, array{string, string}>
+     */
+    public static function provideInvalidNewOrderItem(): \Iterator
+    {
+        yield 'order_item_type alpha' => ['order_item_type', 'abc'];
+        yield 'order_item_type out of range' => ['order_item_type', '32768'];
+        yield 'ProductClass empty' => ['ProductClass', ''];
     }
 }

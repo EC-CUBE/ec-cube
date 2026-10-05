@@ -268,11 +268,21 @@ class OrderItemType extends AbstractType
             $OrderItem = $event->getData();
 
             $OrderItemType = $OrderItem->getOrderItemType();
+            if (null === $OrderItemType) {
+                // 明細種別が不正な場合は order_item_type の項目で入力エラーになる
+                return;
+            }
+
             switch ($OrderItemType->getId()) {
                 // 商品明細: 金額 -> 正, 個数 -> 正負
                 case OrderItemTypeMaster::PRODUCT:
                     $errors = $this->validator->validate($OrderItem->getPrice(), [new Assert\GreaterThanOrEqual(0)]);
                     $this->addErrorsIfExists($form['price'], $errors);
+                    // 商品規格の無い商品明細は受注の処理を続けられないため入力エラーにする. 変換に失敗した場合はエラー済み
+                    if (null === $OrderItem->getProductClass() && $form['ProductClass']->isSynchronized()) {
+                        $errors = $this->validator->validate(null, [new Assert\NotBlank()]);
+                        $this->addErrorsIfExists($form['ProductClass'], $errors);
+                    }
                     break;
 
                     // 値引き明細: 金額 -> 負, 個数 -> 正

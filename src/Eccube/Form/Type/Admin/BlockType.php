@@ -52,8 +52,6 @@ class BlockType extends AbstractType
             ->add('name', TextType::class, [
                 'empty_data' => '',
                 'required' => true,
-                // 未入力でも setter に null を渡さず、NotBlank で入力エラーにする
-                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
@@ -62,7 +60,6 @@ class BlockType extends AbstractType
             ->add('file_name', TextType::class, [
                 'empty_data' => '',
                 'required' => true,
-                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),

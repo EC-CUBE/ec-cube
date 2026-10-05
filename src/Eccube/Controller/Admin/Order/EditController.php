@@ -117,13 +117,19 @@ class EditController extends AbstractController
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
+        // 明細種別・商品規格が不正な明細は入力エラーになる. 受注の処理 (在庫差分の計算等) は行えないため、計算を省く
+        $hasInvalidOrderItem = false;
         foreach ($TargetOrder->getOrderItems() as $orderItem) {
+            if (null === $orderItem->getOrderItemType() || ($orderItem->isProduct() && null === $orderItem->getProductClass())) {
+                $hasInvalidOrderItem = true;
+                continue;
+            }
             if ($orderItem->getTaxDisplayType() == null) {
                 $orderItem->setTaxDisplayType($this->orderHelper->getTaxDisplayType($orderItem->getOrderItemType()));
             }
         }
 
-        if ($form->isSubmitted() && $form['OrderItems']->isValid()) {
+        if ($form->isSubmitted() && $form['OrderItems']->isValid() && !$hasInvalidOrderItem) {
             $event = new EventArgs(
                 [
                     'builder' => $builder,

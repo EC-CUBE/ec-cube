@@ -155,4 +155,34 @@ final class CategoryFaqControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    /**
+     * 表示順に整数でない値を送っても、入力エラーとして再表示する.
+     */
+    public function testAddFaqWithInvalidSortNo(): void
+    {
+        $Category = $this->getCategory();
+        $url = $this->generateUrl('admin_product_category_faq', ['id' => $Category->getId()]);
+        $token = $this->client->request(Request::METHOD_GET, $url)
+            ->filter('input[name="admin_category_faq[_token]"]')->attr('value');
+
+        $this->client->request(Request::METHOD_POST, $url, [
+            'admin_category_faq' => [
+                '_token' => $token,
+                'faqs_rendered' => '1',
+                'faqs' => [
+                    [
+                        'question' => 'カテゴリFAQ質問',
+                        'answer' => 'カテゴリFAQ回答',
+                        'sort_no' => 'abc',
+                        'visible' => '1',
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->entityManager->clear();
+        $this->assertCount(0, $this->entityManager->getRepository(Faq::class)->findBy(['Category' => $Category->getId()]));
+    }
 }

@@ -15,7 +15,10 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Faq;
+use Eccube\Util\IdUtil;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -77,6 +80,22 @@ class FaqType extends AbstractType
             ]);
 
         if ($options['sortable']) {
+            // hidden は送信値を文字列のまま渡すため、整数でない値は setSortNo() へ渡す前に入力エラーにする。
+            $builder->get('sort_no')->addModelTransformer(new CallbackTransformer(
+                static fn (mixed $sortNo): mixed => $sortNo,
+                static function (mixed $sortNo): ?int {
+                    if (null === $sortNo || '' === $sortNo) {
+                        return null;
+                    }
+                    $sortNo = IdUtil::toId($sortNo);
+                    if (null === $sortNo) {
+                        throw new TransformationFailedException();
+                    }
+
+                    return $sortNo;
+                }
+            ));
+
             // JS が無効で hidden が空のまま送信された場合のフォールバック。
             // コレクション内の位置をそのまま 1 始まりの表示順にする（NOT NULL 制約に落ちないようにする）。
             $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {

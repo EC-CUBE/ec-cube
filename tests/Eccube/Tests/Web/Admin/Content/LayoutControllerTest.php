@@ -259,4 +259,25 @@ final class LayoutControllerTest extends AbstractAdminWebTestCase
         yield 'out of range' => ['2147483648'];
         yield 'array' => [['1']];
     }
+
+    /**
+     * プレビューで入力エラーになった場合は、編集画面を再表示する.
+     */
+    public function testPreviewWithInvalidPage(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_layout_preview', ['id' => 1]),
+            [
+                'admin_layout' => [
+                    '_token' => 'dummy',
+                    'name' => 'テストレイアウト',
+                    'DeviceType' => DeviceType::DEVICE_TYPE_PC,
+                    'Page' => 'abc',
+                ],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }
