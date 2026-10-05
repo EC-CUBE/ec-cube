@@ -152,6 +152,8 @@ class RefundRequestService
         $this->cleanupTempDir($sessionId);
 
         $this->mailService->sendRefundRequestNotifyMail($RefundRequest);
+        // MailService は送信履歴を persist するだけなので、ここで保存する
+        $this->entityManager->flush();
 
         return $RefundRequest;
     }

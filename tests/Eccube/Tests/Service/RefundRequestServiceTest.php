@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\MailHistory;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
@@ -65,6 +66,30 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $this->assertSame('1', $result->getQuantity());
         $this->assertSame('商品に破損がありました', $result->getReason());
         $this->assertEmailCount(1);
+    }
+
+    public function testCreateRefundRequestSavesMailHistory(): void
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($Order->getProductOrderItems()[0]);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('1');
+        $RefundRequest->setReason('商品に破損がありました');
+
+        $this->refundRequestService->createRefundRequest($RefundRequest, [], self::SESSION_ID);
+
+        // persist のまま残っていないことを確かめるため、UnitOfWork を捨てて DB から読む
+        $orderId = $Order->getId();
+        $this->entityManager->clear();
+
+        $MailHistories = $this->entityManager->getRepository(MailHistory::class)->findBy(['Order' => $orderId]);
+        $this->assertCount(1, $MailHistories);
     }
 
     public function testCreateRefundRequestWithoutFiles(): void
