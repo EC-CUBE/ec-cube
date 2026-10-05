@@ -58,7 +58,7 @@ class DeliveryFee extends AbstractEntity
     /**
      * Set fee.
      */
-    public function setFee(string $fee): DeliveryFee
+    public function setFee(?string $fee): DeliveryFee
     {
         $this->fee = $fee;
 
