@@ -34,6 +34,10 @@ use JsonSchema\Validator;
  * UCP の schema は相対 $ref で多数のファイルに分割されているため、各ファイルを
  * その $id (https://ucp.dev/schemas/...) で SchemaStorage へ登録し、$ref を $id で解決する。
  * ACP は単一 bundle で内部 #/$defs/... を参照するため、bundle の $id で登録する。
+ *
+ * 連想配列を渡す assertValid* は json_encode を経由するため、空の PHP 配列は JSON の
+ * [] になる (schema が object を要求する空レジストリ {} を表現できない)。配信済みの
+ * 生 JSON 文字列をそのまま検証したい場合は assertValidUcpJson / assertInvalidUcpJson を使う。
  */
 trait SchemaValidatorTrait
 {
@@ -130,15 +134,7 @@ trait SchemaValidatorTrait
      */
     private function validateAgainst(SchemaStorage $storage, string $schemaRef, array $data, string $message): void
     {
-        $factory = new JsonSchemaFactory($storage);
-        $validator = new Validator($factory);
-        $decoded = json_decode((string) json_encode($data));
-        $validator->validate($decoded, (object) ['$ref' => $schemaRef]);
-
-        self::assertTrue(
-            $validator->isValid(),
-            $message.' Schema violations: '.json_encode($validator->getErrors())
-        );
+        $this->validateDecodedAgainst($storage, $schemaRef, json_decode((string) json_encode($data)), $message);
     }
 
     /**
@@ -148,9 +144,32 @@ trait SchemaValidatorTrait
      */
     private function assertInvalidAgainst(SchemaStorage $storage, string $schemaRef, array $data, string $message): void
     {
+        $this->assertInvalidDecodedAgainst($storage, $schemaRef, json_decode((string) json_encode($data)), $message);
+    }
+
+    /**
+     * json_decode 済みの値 (stdClass / 配列 / スカラ) を、$ref で指す schema 定義に対して検証する.
+     * 生 JSON を assoc なしで decode して渡せば、空オブジェクト {} と空配列 [] の区別が保たれる.
+     */
+    private function validateDecodedAgainst(SchemaStorage $storage, string $schemaRef, mixed $decoded, string $message): void
+    {
         $factory = new JsonSchemaFactory($storage);
         $validator = new Validator($factory);
-        $decoded = json_decode((string) json_encode($data));
+        $validator->validate($decoded, (object) ['$ref' => $schemaRef]);
+
+        self::assertTrue(
+            $validator->isValid(),
+            $message.' Schema violations: '.json_encode($validator->getErrors())
+        );
+    }
+
+    /**
+     * json_decode 済みの値が schema に適合しない (= 検証エラーになる) ことを表明する.
+     */
+    private function assertInvalidDecodedAgainst(SchemaStorage $storage, string $schemaRef, mixed $decoded, string $message): void
+    {
+        $factory = new JsonSchemaFactory($storage);
+        $validator = new Validator($factory);
         $validator->validate($decoded, (object) ['$ref' => $schemaRef]);
 
         self::assertFalse($validator->isValid(), $message);
@@ -172,6 +191,29 @@ trait SchemaValidatorTrait
     private function assertInvalidUcp(string $schemaRef, array $data, string $message): void
     {
         $this->assertInvalidAgainst($this->ucpSchemaStorage(), $schemaRef, $data, $message);
+    }
+
+    /**
+     * 生 JSON 文字列 (配信済みレスポンス本文など) を UCP schema 定義に対して検証する.
+     * assoc なしで decode するため、空オブジェクト {} が [] に化けない.
+     */
+    private function assertValidUcpJson(string $schemaRef, string $json, string $message): void
+    {
+        $this->validateDecodedAgainst($this->ucpSchemaStorage(), $schemaRef, $this->decodeJson($json), $message);
+    }
+
+    private function assertInvalidUcpJson(string $schemaRef, string $json, string $message): void
+    {
+        $this->assertInvalidDecodedAgainst($this->ucpSchemaStorage(), $schemaRef, $this->decodeJson($json), $message);
+    }
+
+    private function decodeJson(string $json): mixed
+    {
+        try {
+            return json_decode($json, false, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            self::fail('The document under test is not valid JSON: '.$e->getMessage());
+        }
     }
 
     /**
