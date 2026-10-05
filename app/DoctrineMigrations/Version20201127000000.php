@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
@@ -62,7 +63,7 @@ final class Version20201127000000 extends AbstractMigration
         $sortNo++;
         $this->addSql("INSERT INTO dtb_page_layout (page_id, layout_id, sort_no, discriminator_type) VALUES ($pageId, 2, $sortNo, 'pagelayout')");
 
-        if ($this->platform->getName() === 'postgresql') {
+        if ($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             $this->addSql("SELECT setval('dtb_page_id_seq', $pageId)");
         }
     }
