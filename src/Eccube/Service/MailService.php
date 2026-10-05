@@ -866,7 +866,8 @@ class MailService
     {
         log_info('返品申請通知メール送信開始', ['id' => $RefundRequest->getId()]);
 
-        $MailTemplate = $this->mailTemplateRepository->find($this->eccubeConfig['eccube_refund_request_notify_mail_template_id']);
+        // 4.3 以前にメールテンプレートを追加した環境では ID が異なるため、ファイル名で取得する
+        $MailTemplate = $this->mailTemplateRepository->findOneBy(['file_name' => 'Mail/refund_request_notify.twig']);
 
         $body = $this->twig->render($MailTemplate->getFileName(), [
             'RefundRequest' => $RefundRequest,

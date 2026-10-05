@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace DoctrineMigrations;
 
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Eccube\Entity\Master\RefundRequestStatus;
@@ -23,10 +24,11 @@ use Eccube\Entity\Master\RefundRequestStatus;
  * 返品申請機能の初期データを既存環境へ投入する.
  *
  * - mtb_refund_request_status（返品申請ステータス・マスタ）
- * - dtb_mail_template（管理者向け返品申請通知メール / id=10）
+ * - dtb_mail_template（管理者向け返品申請通知メール）
  * - dtb_csv（商品CSV出力項目 refund_allowed / id=217）
  *
  * テーブル自体は Entity 属性＋schema:update で反映されるため、ここでは INSERT のみを扱う。
+ * dtb_csv は ID を指定して INSERT するため、PostgreSQL ではシーケンスを MAX(id) に合わせる。
  */
 final class Version20260615000000 extends AbstractMigration
 {
@@ -58,15 +60,16 @@ final class Version20260615000000 extends AbstractMigration
         }
 
         // dtb_mail_template（管理者向け返品申請通知メール）
+        // 4.3 以前にメールテンプレートを追加した環境では id=10 が使用済みのため、ID は採番に任せる
         $mailExists = $this->connection->fetchOne(
-            'SELECT COUNT(*) FROM dtb_mail_template WHERE id = 10'
+            "SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'"
         );
         if ($mailExists == 0) {
             $name = $lang === 'en' ? 'Refund Request Notification' : '返品申請通知メール';
             $subject = $lang === 'en' ? 'A refund request has been submitted' : '返品申請を受け付けました';
             $this->addSql(
-                'INSERT INTO dtb_mail_template (id, creator_id, name, file_name, mail_subject, deletable, create_date, update_date, discriminator_type) '
-                ."VALUES (10, null, ?, 'Mail/refund_request_notify.twig', ?, false, '2017-03-07 10:14:52', '2017-03-07 10:14:52', 'mailtemplate')",
+                'INSERT INTO dtb_mail_template (creator_id, name, file_name, mail_subject, deletable, create_date, update_date, discriminator_type) '
+                ."VALUES (null, ?, 'Mail/refund_request_notify.twig', ?, false, '2017-03-07 10:14:52', '2017-03-07 10:14:52', 'mailtemplate')",
                 [$name, $subject]
             );
         }
@@ -83,12 +86,17 @@ final class Version20260615000000 extends AbstractMigration
                 [$dispName]
             );
         }
+
+        // ID 指定の INSERT ではシーケンスが進まないため、次の採番が重複しないよう合わせる
+        if ($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            $this->addSql("SELECT setval(pg_get_serial_sequence('dtb_csv', 'id'), (SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_csv), false)");
+        }
     }
 
     public function down(Schema $schema): void
     {
         $this->addSql("DELETE FROM dtb_csv WHERE id = 217 AND entity_name = 'Eccube\\\\Entity\\\\Product' AND field_name = 'refund_allowed'");
-        $this->addSql("DELETE FROM dtb_mail_template WHERE id = 10 AND file_name = 'Mail/refund_request_notify.twig'");
+        $this->addSql("DELETE FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
         $this->addSql("DELETE FROM mtb_refund_request_status WHERE id IN (1, 2, 3, 4, 5) AND discriminator_type = 'refundrequeststatus'");
     }
 }

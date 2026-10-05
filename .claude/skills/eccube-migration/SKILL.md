@@ -126,4 +126,5 @@ final class Version20240101000000 extends AbstractMigration
   → ✅ `doctrine:migrations:generate` で空の雛形を作り、必要な SQL（INSERT・型変更等）だけ手で書く。
 - ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性。
 - ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする。
+- ❌ ID 指定の INSERT だけ → ✅ PostgreSQL はシーケンスが進まず採番が重複する。`setval()` で MAX(id) に合わせる SQL も積む
 - ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装。
