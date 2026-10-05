@@ -62,6 +62,7 @@ class ProductType extends AbstractType
             ])
             // 基本情報
             ->add('name', TextType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
