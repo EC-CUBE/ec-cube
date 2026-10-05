@@ -258,4 +258,35 @@ final class TwoFactorAuthControllerTest extends AbstractAdminWebTestCase
             '"/setting" が拒否URLでも2段階認証の再設定画面はアクセス拒否されないべき'
         );
     }
+
+    /**
+     * base32 でない auth_key を送っても、入力エラーとして再表示する.
+     */
+    public function testSetupWithInvalidAuthKey(): void
+    {
+        if (!$this->twoFactorAuthService->isEnabled()) {
+            $this->markTestSkipped('2FAが無効のためスキップ');
+        }
+
+        $Member = $this->createMember();
+        $Member->setTwoFactorAuthEnabled(true);
+        $Member->setTwoFactorAuthKey(null);
+        $this->entityManager->persist($Member);
+        $this->entityManager->flush();
+        $this->loginTo($Member);
+
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_two_factor_auth_set'));
+        $token = $crawler->filter('input[name="admin_two_factor_auth[_token]"]')->attr('value');
+
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_two_factor_auth_set'), [
+            'admin_two_factor_auth' => [
+                'device_token' => '123456',
+                'auth_key' => 'invalid-key!',
+                '_token' => $token,
+            ],
+        ]);
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertNull($this->memberRepository->find($Member->getId())->getTwoFactorAuthKey());
+    }
 }

@@ -34,6 +34,7 @@ use Eccube\Entity\TaxRule;
 use Eccube\Repository\CustomerRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Service\TaxRuleService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -1069,5 +1070,102 @@ final class EditControllerTest extends AbstractEditControllerTestCase
             '別の操作で更新',
             (string) $this->client->getResponse()->getContent()
         );
+    }
+
+    /**
+     * 整数でない ID・範囲外の ID は DB へ問い合わせず、見つからない扱いにする.
+     */
+    #[DataProvider(methodName: 'provideInvalidId')]
+    public function testSearchCustomerByIdWithInvalidId(mixed $id): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_search_customer_by_id'),
+            ['id' => $id],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    #[DataProvider(methodName: 'provideInvalidId')]
+    public function testSearchProductWithInvalidCategoryId(mixed $id): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_search_product'),
+            ['id' => '', 'category_id' => $id],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @return \Iterator<string, array{mixed}>
+     */
+    public static function provideInvalidId(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'out of range' => ['2147483648'];
+        yield 'array' => [['1']];
+    }
+
+    /**
+     * エンティティを指す項目に整数でない値・範囲外の値を送っても、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideInvalidEntityValue')]
+    public function testEditWithInvalidEntityValue(string $field, string $value): void
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $formData = $this->createFormDataForEdit($Order);
+        $this->fillTaxType($formData, $Order);
+
+        switch ($field) {
+            case 'ProductClass':
+                foreach ($formData['OrderItems'] as $index => $orderItem) {
+                    if ($orderItem['order_item_type'] == OrderItemType::PRODUCT) {
+                        $formData['OrderItems'][$index]['ProductClass'] = $value;
+                        // 税率を空にして、PRE_SUBMIT の税率の補完も通す
+                        $formData['OrderItems'][$index]['tax_rate'] = '';
+                    }
+                }
+                break;
+            case 'Delivery':
+                $formData['Shipping']['Delivery'] = $value;
+                break;
+            default:
+                $formData[$field] = $value;
+        }
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_edit', ['id' => $Order->getId()]),
+            ['order' => $formData, 'mode' => 'register']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @return \Iterator<string, array{string, string}>
+     */
+    public static function provideInvalidEntityValue(): \Iterator
+    {
+        yield 'Customer alpha' => ['Customer', 'abc'];
+        yield 'Customer out of range' => ['Customer', '2147483648'];
+        yield 'ProductClass alpha' => ['ProductClass', 'abc'];
+        yield 'ProductClass out of range' => ['ProductClass', '2147483648'];
+        yield 'Delivery alpha' => ['Delivery', 'abc'];
+        yield 'Delivery out of range' => ['Delivery', '2147483648'];
+        yield 'Payment out of range' => ['Payment', '2147483648'];
     }
 }

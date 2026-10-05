@@ -33,6 +33,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Repository\TradeLawRepository;
 use Eccube\Tests\Fixture\Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
@@ -1452,5 +1453,50 @@ final class ShoppingControllerTest extends AbstractShoppingControllerTestCase
             $this->entityManager->persist($PaymentOption);
             $this->entityManager->flush($PaymentOption);
         }
+    }
+
+    /**
+     * 配送方法に整数でない値・範囲外の値を送っても、入力エラーとして扱う.
+     */
+    #[DataProvider(methodName: 'provideInvalidDelivery')]
+    public function testConfirmWithInvalidDelivery(string $delivery): void
+    {
+        $Customer = $this->createCustomer();
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+
+        $this->scenarioComplete($Customer, $this->generateUrl('shopping_confirm'), [
+            ['Delivery' => $delivery, 'DeliveryTime' => ''],
+        ]);
+
+        $this->assertLessThan(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+    }
+
+    #[DataProvider(methodName: 'provideInvalidDelivery')]
+    public function testRedirectToWithInvalidDelivery(string $delivery): void
+    {
+        $Customer = $this->createCustomer();
+        $this->scenarioCartIn($Customer);
+        $this->scenarioConfirm($Customer);
+
+        $this->scenarioRedirectTo($Customer, [
+            '_shopping_order' => [
+                'Shippings' => [['Delivery' => $delivery, 'DeliveryTime' => '']],
+                'Payment' => 3,
+                'redirect_to' => $this->generateUrl('shopping'),
+                '_token' => 'dummy',
+            ],
+        ]);
+
+        $this->assertLessThan(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidDelivery(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'out of range' => ['2147483648'];
     }
 }

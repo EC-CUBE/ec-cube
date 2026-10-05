@@ -171,4 +171,50 @@ final class TagControllerTest extends AbstractAdminWebTestCase
         yield [false, false];
         yield [true, true];
     }
+
+    /**
+     * ID・表示順が整数でない場合は 400 にする.
+     *
+     * @param array<mixed> $sortNos
+     */
+    #[DataProvider(methodName: 'provideInvalidSortNos')]
+    public function testMoveSortNoWithInvalidValue(array $sortNos): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag_sort_no_move'),
+            $sortNos,
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{array<mixed>}>
+     */
+    public static function provideInvalidSortNos(): \Iterator
+    {
+        yield 'alpha id' => [['abc' => '1']];
+        yield 'out of range id' => [['2147483648' => '1']];
+        yield 'alpha sort_no' => [['1' => 'abc']];
+        yield 'array sort_no' => [['1' => ['1']]];
+    }
+
+    /**
+     * 存在しない ID は無視する.
+     */
+    public function testMoveSortNoWithNotFoundId(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag_sort_no_move'),
+            ['2147483647' => '1'],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

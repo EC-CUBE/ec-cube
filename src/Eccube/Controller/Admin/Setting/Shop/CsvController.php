@@ -20,10 +20,12 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Repository\CsvRepository;
 use Eccube\Repository\Master\CsvTypeRepository;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -112,24 +114,26 @@ class CsvController extends AbstractController
         // csv_output/csv_not_outputのチェックに引っかかるため, tokenチェックは個別に行う
         if ('POST' === $request->getMethod() && $this->isTokenValid()) {
             $data = $request->get('form');
-            if (isset($data['csv_not_output'])) {
-                $Csvs = $data['csv_not_output'];
-                $sortNo = 1;
-                foreach ($Csvs as $csv) {
-                    $c = $this->csvRepository->find($csv);
-                    $c->setSortNo($sortNo);
-                    $c->setEnabled(false);
-                    $sortNo++;
-                }
+
+            // 選択中の CSV 種別の項目だけを更新対象にする
+            $CsvsById = [];
+            foreach (array_merge($CsvNotOutput, $CsvOutput) as $Csv) {
+                $CsvsById[$Csv->getId()] = $Csv;
             }
 
-            if (isset($data['csv_output'])) {
-                $Csvs = $data['csv_output'];
+            foreach (['csv_not_output' => false, 'csv_output' => true] as $key => $enabled) {
+                if (!isset($data[$key]) || !is_array($data[$key])) {
+                    continue;
+                }
                 $sortNo = 1;
-                foreach ($Csvs as $csv) {
-                    $c = $this->csvRepository->find($csv);
+                foreach ($data[$key] as $csv) {
+                    $id = IdUtil::toId($csv);
+                    if (null === $id || !isset($CsvsById[$id])) {
+                        throw new BadRequestHttpException();
+                    }
+                    $c = $CsvsById[$id];
                     $c->setSortNo($sortNo);
-                    $c->setEnabled(true);
+                    $c->setEnabled($enabled);
                     $sortNo++;
                 }
             }

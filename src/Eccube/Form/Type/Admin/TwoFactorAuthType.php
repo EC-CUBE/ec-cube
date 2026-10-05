@@ -48,6 +48,8 @@ class TwoFactorAuthType extends AbstractType
                     'required' => true,
                     'constraints' => [
                         new Assert\NotBlank(),
+                        // createSecret() が生成する base32 の文字列
+                        new Assert\Regex(pattern: '/\A[A-Z2-7]+=*\z/'),
                     ],
                 ]);
     }

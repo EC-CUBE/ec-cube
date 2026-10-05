@@ -274,11 +274,14 @@ class CategoryController extends AbstractController
         }
 
         if ($this->isTokenValid()) {
-            $sortNos = $request->request->all();
+            $sortNos = $this->getSortNosFromRequest($request);
             foreach ($sortNos as $categoryId => $sortNo) {
-                /** @var Category $Category */
+                /** @var Category|null $Category */
                 $Category = $this->categoryRepository
                     ->find($categoryId);
+                if (!$Category) {
+                    continue;
+                }
                 $Category->setSortNo($sortNo);
                 $this->entityManager->persist($Category);
             }

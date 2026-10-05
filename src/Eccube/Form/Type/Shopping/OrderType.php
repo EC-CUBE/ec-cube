@@ -23,6 +23,7 @@ use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\OrderRepository;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Request\Context;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -123,8 +124,8 @@ class OrderType extends AbstractType
             $Deliveries = [];
             if (!empty($data['Shippings'])) {
                 foreach ($data['Shippings'] as $Shipping) {
-                    if (!empty($Shipping['Delivery'])) {
-                        $Delivery = $this->deliveryRepository->find($Shipping['Delivery']);
+                    if (is_array($Shipping) && isset($Shipping['Delivery']) && null !== $deliveryId = IdUtil::toId($Shipping['Delivery'])) {
+                        $Delivery = $this->deliveryRepository->find($deliveryId);
                         if ($Delivery) {
                             $Deliveries[] = $Delivery;
                         }

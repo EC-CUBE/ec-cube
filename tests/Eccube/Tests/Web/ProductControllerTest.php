@@ -26,8 +26,10 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -500,5 +502,30 @@ final class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect(
             $this->generateUrl('mypage_login')
         ));
+    }
+
+    /**
+     * 商品規格に整数でない値・範囲外の値を送っても、入力エラーとして扱う.
+     */
+    #[DataProvider(methodName: 'provideInvalidProductClass')]
+    public function testAddCartWithInvalidProductClass(string $productClass): void
+    {
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('product_add_cart', ['id' => 1]), [
+            'product_id' => '1',
+            'ProductClass' => $productClass,
+            'quantity' => '1',
+            '_token' => 'dummy',
+        ]);
+
+        $this->assertLessThan(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidProductClass(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'out of range' => ['2147483648'];
     }
 }

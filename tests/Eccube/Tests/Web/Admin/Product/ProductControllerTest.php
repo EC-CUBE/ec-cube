@@ -1628,4 +1628,153 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         // バリデーションエラーのため再描画され、リダイレクトしない
         $this->assertFalse($this->client->getResponse()->isRedirection());
     }
+
+    /**
+     * 整数でない ID・範囲外の ID は無視し、正しい ID だけを更新する.
+     */
+    public function testProductBulkProductStatusWithInvalidIds(): void
+    {
+        $Product = $this->createProduct();
+        $ProductStatus = $this->productStatusRepository->find(ProductStatus::DISPLAY_HIDE);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_bulk_product_status', ['id' => ProductStatus::DISPLAY_HIDE]),
+            ['ids' => ['abc', '2147483648', ['1'], (string) $Product->getId()]]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->entityManager->refresh($Product);
+        $this->assertSame($ProductStatus, $Product->getStatus());
+    }
+
+    /**
+     * 定義されていないソートキーは、既定の並び順で検索する.
+     */
+    public function testSearchWithUnknownSortKey(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product'),
+            ['admin_search_product' => [
+                '_token' => 'dummy',
+                'sortkey' => 'unknown',
+                'sorttype' => 'a',
+            ]]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * 規格なし商品の規格分類に整数でない値・範囲外の値を送っても、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideInvalidClassCategory')]
+    public function testNewWithInvalidClassCategory(string $value): void
+    {
+        $formData = $this->createFormData();
+        $formData['class']['ClassCategory1'] = $value;
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_new'),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertLessThan(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return array<string, array{string}>
+     */
+    public static function provideInvalidClassCategory(): array
+    {
+        return [
+            'alpha' => ['abc'],
+            'out of range' => ['2147483648'],
+        ];
+    }
+
+    /**
+     * null バイトを含むファイル名・ディレクトリを指すファイル名は、入力エラーにする.
+     */
+    #[DataProvider(methodName: 'provideInvalidImagePath')]
+    public function testEditWithInvalidImagePath(string $field, string $fileName): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData[$field][] = $fileName;
+
+        $crawler = $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringContainsString('画像のパスが不正です。', $crawler->html());
+    }
+
+    /**
+     * @return array<string, array{string, string}>
+     */
+    public static function provideInvalidImagePath(): array
+    {
+        return [
+            'add_images null byte' => ['add_images', "new_image.png\0.png"],
+            'delete_images null byte' => ['delete_images', "sand-1.png\0.png"],
+            'add_images directory' => ['add_images', '.'],
+        ];
+    }
+
+    /**
+     * 同じ一時画像を重複して送っても、1 件だけ登録する.
+     */
+    public function testEditWithDuplicateAddImages(): void
+    {
+        $path = __DIR__.'/../../../../../../html/upload';
+        $fs = new Filesystem();
+        $fs->remove($path.'/temp_image/new_image.png');
+        $fs->remove($path.'/save_image/new_image.png');
+        $fs->copy($path.'/save_image/sand-1.png', $path.'/temp_image/new_image.png');
+
+        $Product = $this->createProduct(null, 0);
+        $imageCount = $Product->getProductImage()->count();
+        $formData = $this->createFormData();
+        $formData['add_images'] = ['new_image.png', 'new_image.png'];
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertFileExists($path.'/save_image/new_image.png');
+        $this->entityManager->clear();
+        $Product = $this->productRepository->find($Product->getId());
+        $this->assertInstanceOf(Product::class, $Product);
+        $this->assertCount($imageCount + 1, $Product->getProductImage());
+
+        $fs->remove($path.'/save_image/new_image.png');
+    }
+
+    /**
+     * faqs_rendered を含まない送信が入力エラーになっても、画面を再表示できる.
+     */
+    public function testEditWithoutFaqsRenderedAndInvalidInput(): void
+    {
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        unset($formData['faqs_rendered']);
+        $formData['class']['price02'] = 'abc';
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

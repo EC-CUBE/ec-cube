@@ -27,6 +27,7 @@ use Eccube\Repository\Master\OrderItemTypeRepository;
 use Eccube\Repository\OrderItemRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Repository\TaxRuleRepository;
+use Eccube\Util\IdUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -181,10 +182,13 @@ class OrderItemType extends AbstractType
                 $orderItemTypeId = $OrderItem['order_item_type'];
 
                 if ($orderItemTypeId == OrderItemTypeMaster::PRODUCT) {
-                    /** @var ProductClass $ProductClass */
-                    $ProductClass = $this->productClassRepository->find($OrderItem['ProductClass']);
-                    $Product = $ProductClass->getProduct();
-                    $TaxRule = $this->taxRuleRepository->getByRule($Product, $ProductClass);
+                    $productClassId = IdUtil::toId($OrderItem['ProductClass'] ?? null);
+                    /** @var ProductClass|null $ProductClass */
+                    $ProductClass = null !== $productClassId ? $this->productClassRepository->find($productClassId) : null;
+                    // 不正な商品規格は ProductClass の項目で入力エラーになる. 税率は既定のルールで補完しておく
+                    $TaxRule = null !== $ProductClass
+                        ? $this->taxRuleRepository->getByRule($ProductClass->getProduct(), $ProductClass)
+                        : $this->taxRuleRepository->getByRule();
 
                     if (!isset($OrderItem['tax_type']) || StringUtil::isBlank($OrderItem['tax_type'])) {
                         $OrderItem['tax_type'] = TaxType::TAXATION;
@@ -210,10 +214,18 @@ class OrderItemType extends AbstractType
             $OrderItem = $event->getData();
 
             $OrderItemType = $OrderItem->getOrderItemType();
+            if (null === $OrderItemType) {
+                // 明細種別が不正な場合は order_item_type の項目で入力エラーになる
+                return;
+            }
 
             switch ($OrderItemType->getId()) {
                 case OrderItemTypeMaster::PRODUCT:
                     $ProductClass = $OrderItem->getProductClass();
+                    if (null === $ProductClass) {
+                        // 商品規格が不正な場合は ProductClass の項目で入力エラーになる
+                        break;
+                    }
                     $Product = $ProductClass->getProduct();
                     $OrderItem->setProduct($Product);
                     if (null === $OrderItem->getPrice()) {

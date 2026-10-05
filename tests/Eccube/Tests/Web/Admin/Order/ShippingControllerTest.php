@@ -20,6 +20,7 @@ use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\Shipping;
 use Eccube\Repository\ShippingRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Bundle\FrameworkBundle\Test\MailerAssertionsTrait;
 use Symfony\Component\HttpFoundation\Request;
@@ -353,5 +354,45 @@ final class ShippingControllerTest extends AbstractEditControllerTestCase
         $Order = $this->entityManager->find(Order::class, $Order->getId());
         $this->assertSame('100.00', $Order->getProductOrderItems()[0]->getTax());
         $this->assertSame('200.00', $Order->getProductOrderItems()[1]->getTax());
+    }
+
+    /**
+     * エンティティを指す項目に整数でない値・範囲外の値を送っても、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideInvalidEntityValue')]
+    public function testEditWithInvalidEntityValue(string $field, string $value): void
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        /** @var Shipping $Shipping */
+        $Shipping = $Order->getShippings()->first();
+
+        $shippingFormData = $this->createShippingFormDataForEdit($Shipping);
+        if ('ProductClass' === $field) {
+            $shippingFormData['OrderItems'][0]['ProductClass'] = $value;
+            $shippingFormData['OrderItems'][0]['tax_rate'] = '';
+        } else {
+            $shippingFormData[$field] = $value;
+        }
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_shipping_edit', ['id' => $Order->getId()]),
+            [
+                'form' => ['shippings' => [$shippingFormData], '_token' => 'dummy', 'add_shipping' => ''],
+                'mode' => 'register',
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @return \Iterator<string, array{string, string}>
+     */
+    public static function provideInvalidEntityValue(): \Iterator
+    {
+        yield 'Delivery alpha' => ['Delivery', 'abc'];
+        yield 'Delivery out of range' => ['Delivery', '2147483648'];
+        yield 'ProductClass alpha' => ['ProductClass', 'abc'];
     }
 }

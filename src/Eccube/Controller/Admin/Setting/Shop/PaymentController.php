@@ -119,7 +119,9 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && !str_contains((string) $file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            // ディレクトリを指す値 (/ や . 等) を rename しないよう、一時ディレクトリ直下のファイルに限る
+            if (is_string($file) && '' !== $file && $file === basename($file) && !str_contains($file, '..')
+                && is_file($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -326,11 +328,14 @@ class PaymentController extends AbstractController
         }
 
         if ($this->isTokenValid()) {
-            $sortNos = $request->request->all();
+            $sortNos = $this->getSortNosFromRequest($request);
             foreach ($sortNos as $paymentId => $sortNo) {
-                /** @var Payment $Payment */
+                /** @var Payment|null $Payment */
                 $Payment = $this->paymentRepository
                     ->find($paymentId);
+                if (!$Payment) {
+                    continue;
+                }
                 $Payment->setSortNo($sortNo);
                 $this->entityManager->persist($Payment);
             }

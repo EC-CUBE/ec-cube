@@ -137,4 +137,22 @@ final class CategoryFaqControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->clear();
         $this->assertNotInstanceOf(Faq::class, $this->entityManager->getRepository(Faq::class)->find($faqId));
     }
+
+    /**
+     * faqs_rendered を含まない送信が入力エラーになっても、画面を再表示できる.
+     */
+    public function testWithoutFaqsRenderedAndInvalidInput(): void
+    {
+        $Category = $this->getCategory();
+        $url = $this->generateUrl('admin_product_category_faq', ['id' => $Category->getId()]);
+        $token = $this->client->request(Request::METHOD_GET, $url)
+            ->filter('input[name="admin_category_faq[_token]"]')->attr('value');
+
+        // 定義されていない項目を送り、入力エラーにする
+        $this->client->request(Request::METHOD_POST, $url, [
+            'admin_category_faq' => ['_token' => $token, 'unknown' => 'x'],
+        ]);
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

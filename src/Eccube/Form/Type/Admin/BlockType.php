@@ -51,6 +51,8 @@ class BlockType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
+                // 未入力でも setter に null を渡さず、NotBlank で入力エラーにする
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
@@ -58,6 +60,7 @@ class BlockType extends AbstractType
             ])
             ->add('file_name', TextType::class, [
                 'required' => true,
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
@@ -77,12 +80,16 @@ class BlockType extends AbstractType
                 'class' => DeviceType::class,
                 'choice_label' => 'id',
             ])
-            ->add('id', HiddenType::class)
+            ->add('id', HiddenType::class, [
+                // 送信された値で主キーを書き換えないよう、エンティティには対応付けない
+                'mapped' => false,
+            ])
             ->addEventListener(FormEvents::POST_SUBMIT, function ($event): void {
                 $form = $event->getForm();
                 $file_name = $form['file_name']->getData();
                 $DeviceType = $form['DeviceType']->getData();
-                $block_id = $form['id']->getData();
+                $Block = $form->getData();
+                $block_id = $Block instanceof Block ? $Block->getId() : null;
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('b')

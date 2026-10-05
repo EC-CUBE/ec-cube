@@ -27,6 +27,7 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Util\CacheUtil;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -196,7 +197,7 @@ class LayoutController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $id = $request->get('id');
+        $id = IdUtil::toId($request->get('id'));
 
         if (is_null($id)) {
             throw new BadRequestHttpException();

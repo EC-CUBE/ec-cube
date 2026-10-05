@@ -70,5 +70,13 @@ final class EmailValidatorTest extends AbstractTypeTestCase
         yield ['tes..t@example.com', false, true];
         yield ['test@@example.com', false, false];
         yield ['test@test@example.com', false, false];
+        // ドメイン部は送信時 (Symfony Mime) と同じ基準で検証する
+        yield ["test@example.com'", false, false];
+        yield ['test@example/com', false, false];
+        yield ['test@-example.com', false, false];
+        yield ['test@example.com-', false, false];
+        // キャリアメールのローカル部は引き続き許容する
+        yield ['te..st.@docomo.ne.jp', false, true];
+        yield ["a'b..c.@ezweb.ne.jp", false, true];
     }
 }

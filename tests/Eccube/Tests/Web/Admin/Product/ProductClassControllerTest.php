@@ -26,9 +26,11 @@ use Eccube\Entity\TaxRule;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\ProductRepository;
 use Eccube\Repository\TaxRuleRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ProductClassControllerTest
@@ -749,5 +751,34 @@ final class ProductClassControllerTest extends AbstractProductCommonTestCase
         );
 
         $this->assertCount(1, $ProductClasses, '規格の数が1個であること');
+    }
+
+    /**
+     * 規格分類に整数でない値・範囲外の値を送っても、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideInvalidClassCategory')]
+    public function testProductClassEditWithInvalidClassCategory(string $value): void
+    {
+        $crawler = $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_product_product_class', ['id' => 1])
+        );
+        $form = $crawler->selectButton('登録')->form();
+        $values = $form->getPhpValues();
+        $values['product_class_matrix']['product_classes'][0]['checked'] = '1';
+        $values['product_class_matrix']['product_classes'][0]['ClassCategory1'] = $value;
+
+        $this->client->request(Request::METHOD_POST, $form->getUri(), $values);
+
+        $this->assertLessThan(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidClassCategory(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'out of range' => ['2147483648'];
     }
 }

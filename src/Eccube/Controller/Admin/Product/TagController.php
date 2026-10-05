@@ -152,11 +152,14 @@ class TagController extends AbstractController
     public function moveSortNo(Request $request): Response
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
-            $sortNos = $request->request->all();
+            $sortNos = $this->getSortNosFromRequest($request);
             foreach ($sortNos as $tagId => $sortNo) {
-                /** @var Tag $Tag */
+                /** @var Tag|null $Tag */
                 $Tag = $this->tagRepository
                     ->find($tagId);
+                if (!$Tag) {
+                    continue;
+                }
                 $Tag->setSortNo($sortNo);
                 $this->entityManager->persist($Tag);
             }

@@ -45,6 +45,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
+use Eccube\Util\IdUtil;
 use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -457,9 +458,9 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');
 
+            $customerId = IdUtil::toId($request->get('id'));
             /** @var Customer|null $Customer */
-            $Customer = $this->customerRepository
-                ->find($request->get('id'));
+            $Customer = null !== $customerId ? $this->customerRepository->find($customerId) : null;
 
             $event = new EventArgs(
                 [
@@ -533,11 +534,12 @@ class EditController extends AbstractController
             if ('POST' === $request->getMethod()) {
                 $page_no = 1;
 
+                $id = $request->get('id');
                 $searchData = [
-                    'id' => $request->get('id'),
+                    'id' => is_scalar($id) ? $id : null,
                 ];
 
-                if ($categoryId = $request->get('category_id')) {
+                if ($categoryId = IdUtil::toId($request->get('category_id'))) {
                     $Category = $this->categoryRepository->find($categoryId);
                     $searchData['category_id'] = $Category;
                 }
