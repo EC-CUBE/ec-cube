@@ -17,6 +17,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Form\Type\Admin\OrderType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -210,5 +211,30 @@ final class OrderTypeTest extends AbstractTypeTestCase
         $this->formData['use_point'] = '1234567890123';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form['use_point']->isValid());
+    }
+
+    /**
+     * 編集時に受注ステータスへ不正な値・空の値を送っても, 受注のステータスを null にしない.
+     */
+    #[DataProvider(methodName: 'provideInvalidOrderStatus')]
+    public function testEditWithInvalidOrderStatusKeepsStatus(string $orderStatus): void
+    {
+        $Order = $this->createOrder($this->createCustomer());
+        $OrderStatus = $Order->getOrderStatus();
+
+        $form = $this->formFactory->create(OrderType::class, $Order, ['csrf_protection' => false]);
+        $form->submit(['OrderStatus' => $orderStatus], false);
+
+        $this->assertFalse($form['OrderStatus']->isValid());
+        $this->assertSame($OrderStatus, $Order->getOrderStatus());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidOrderStatus(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'empty' => [''];
     }
 }
