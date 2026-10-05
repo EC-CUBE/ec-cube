@@ -784,3 +784,5 @@ features:
     summary: このページ。利用者から見た機能を機能 ID で一覧し、結合試験項目書の観点表から参照される。
     dirs: [docs/features]
     since: 4.4.0
+    prs:
+      4.4.0: [7228]
