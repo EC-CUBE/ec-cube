@@ -342,16 +342,19 @@ class ProductController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        $source = (string) $request->query->get('source');
+        // realpath() は null バイトを含む文字列で ValueError を投げるため先に弾く
+        if (str_contains($source, '..') || str_contains($source, "\0")) {
+            throw new NotFoundHttpException();
+        }
+
         $dirs = [
             $this->eccubeConfig['eccube_save_image_dir'],
             $this->eccubeConfig['eccube_temp_image_dir'],
         ];
 
         foreach ($dirs as $dir) {
-            if (str_contains((string) $request->query->get('source'), '..')) {
-                throw new NotFoundHttpException();
-            }
-            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $image = \realpath($dir.'/'.$source);
             $dir = \realpath($dir);
 
             if (\is_file($image) && \str_starts_with($image, $dir)) {

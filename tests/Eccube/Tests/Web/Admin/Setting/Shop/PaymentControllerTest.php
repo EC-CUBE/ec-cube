@@ -389,4 +389,30 @@ final class PaymentControllerTest extends AbstractAdminWebTestCase
 
         $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
+
+    /**
+     * null バイトや .. を含む画像名は 404 にする.
+     */
+    #[DataProvider(methodName: 'provideInvalidImageSource')]
+    public function testImageLoadWithInvalidSource(string $source): void
+    {
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_payment_image_load', ['source' => $source]),
+            [],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidImageSource(): \Iterator
+    {
+        yield 'null byte' => ["sand-1.png\0.png"];
+        yield 'parent directory' => ['../save_image/sand-1.png'];
+    }
 }
