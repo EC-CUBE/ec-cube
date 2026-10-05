@@ -2,6 +2,7 @@ name: Docs Check
 
 # コード近接ドキュメント（README.html / README.md）の鮮度チェック（Issue #6906 §8.2）。
 # section 属性の欠落・相対リンク切れを検出する。README/ドキュメント変更時のみ実行。
+# 機能の一覧（docs/features、Issue #7225）の検証と、README.html が features.yaml の生成物と一致するかも見る。
 
 on:
   push:
@@ -9,13 +10,17 @@ on:
       - '**/README.html'
       - '**/README.md'
       - '.github/bin/check-readme-docs.php'
+      - '.github/bin/feature-list.php'
       - '.github/workflows/docs-check.yml'
+      - 'docs/features/**'
   pull_request:
     paths:
       - '**/README.html'
       - '**/README.md'
       - '.github/bin/check-readme-docs.php'
+      - '.github/bin/feature-list.php'
       - '.github/workflows/docs-check.yml'
+      - 'docs/features/**'
 
 permissions:
   contents: read
@@ -33,6 +38,14 @@ jobs:
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
         with:
           php-version: '8.5'
+          extensions: redis
 
       - name: Check README.html / README.md (section attributes & relative links)
         run: php .github/bin/check-readme-docs.php
+
+      ## feature-list.php は symfony/yaml を使うため vendor を用意する
+      - name: Initialize Composer
+        uses: ./.github/actions/composer
+
+      - name: Check feature list (docs/features/features.yaml と README.html の一致)
+        run: php .github/bin/feature-list.php --check
