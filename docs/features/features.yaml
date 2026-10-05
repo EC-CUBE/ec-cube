@@ -6,11 +6,15 @@
 #   php .github/bin/feature-list.php            # README.html を生成
 #   php .github/bin/feature-list.php --check    # 検証のみ（CI の docs-check と同じ）
 #
+# グループ（groups）
+#   機能 ID の百の位でグループを分ける。FR-1 は FR-101〜FR-199 の「商品を探す」。
+#   FR=フロント（購入者） / AD=管理画面（店舗運営者） / DV=開発者・運用者（CLI・API・拡張）。
+#   グループを増やすときは、その接頭辞の空いている百の位（最大 9）を使う。
+#
 # 列の意味
-#   id      機能 ID。FR=フロント（購入者） / AD=管理画面（店舗運営者） / DV=開発者・運用者（CLI・API・拡張）。
-#           接頭辞ごとの 3 桁連番。採番したら変えない。機能を廃止しても行は消さず removed を付ける（欠番にする）。
-#           新しい行は、その接頭辞の最大の番号 +1 を振る（並び順は group でまとめてよく、番号順でなくてよい）。
-#   group   HTML で見出しにまとめる単位（管理画面ならメニュー名）
+#   id      機能 ID。接頭辞-グループ番号（1 桁）+ グループ内の連番（2 桁）。例: AD-201。
+#           新しい行は、そのグループの最大の番号 +1 を振る（グループの末尾に足す）。
+#           採番したら変えない。機能を廃止しても行は消さず removed を付ける（欠番にする）。
 #   name    利用者から見た機能の名前
 #   summary 1〜2 行の概要
 #   dirs    関連するディレクトリまたはファイル（リポジトリルートからの相対パス）。
@@ -21,56 +25,73 @@
 #
 # 4.4 より前からある機能は since と prs を空にしている（Issue #7225 の進め方 2）。
 
+groups:
+  # フロント（購入者）
+  FR-1: 商品を探す
+  FR-2: 購入する
+  FR-3: 会員
+  FR-4: 案内・問い合わせ
+  FR-5: 表示・共通
+  # 管理画面（店舗運営者）
+  AD-1: ログイン・ホーム
+  AD-2: 商品管理
+  AD-3: 受注管理
+  AD-4: 会員管理
+  AD-5: コンテンツ管理
+  AD-6: 店舗設定
+  AD-7: システム設定
+  AD-8: オーナーズストア
+  # 開発者・運用者（CLI・API・拡張）
+  DV-1: インストール・動作環境
+  DV-2: 運用（CLI）
+  DV-3: API
+  DV-4: 拡張
+  DV-5: 開発者向けドキュメント
+
 features:
-  # ---------------------------------------------------------------- フロント（購入者）
-  - id: FR-001
-    group: 商品を探す
+  # ================================================================ フロント（購入者）
+  # ---------------------------------------------------------------- FR-1xx 商品を探す
+  - id: FR-101
     name: トップページ
     summary: 店舗のトップページ。レイアウト管理で配置したブロックを表示する。
     dirs: [src/Eccube/Controller/TopController.php]
 
-  - id: FR-002
-    group: 商品を探す
+  - id: FR-102
     name: 商品一覧・商品検索
     summary: カテゴリ・キーワードで商品を絞り込み、並び替え・表示件数を切り替えて一覧する。
     dirs: [src/Eccube/Controller/ProductController.php, src/Eccube/Controller/Block/SearchProductController.php]
 
-  - id: FR-003
-    group: 商品を探す
+  - id: FR-103
     name: 商品詳細
     summary: 商品の画像・説明・規格・価格・在庫状況を表示し、カートへ入れる。
     dirs: [src/Eccube/Controller/ProductController.php]
     prs:
       4.4.0: [7178]
 
-  - id: FR-004
-    group: 商品を探す
+  - id: FR-104
     name: お気に入り
     summary: 会員が商品詳細から商品をお気に入りに登録し、マイページで一覧・削除する。
     dirs: [src/Eccube/Controller/ProductController.php, src/Eccube/Controller/Mypage/MypageController.php]
 
-  - id: FR-005
-    group: 商品を探す
+  - id: FR-105
     name: ブロック表示
     summary: 新着商品・カート・商品検索・営業日カレンダーなどのブロックを各ページに表示する。
     dirs: [src/Eccube/Controller/Block]
 
-  - id: FR-006
-    group: 購入する
+  # ---------------------------------------------------------------- FR-2xx 購入する
+  - id: FR-201
     name: カート
     summary: 商品の数量変更・削除を行い、販売種別ごとに購入手続きへ進む。
     dirs: [src/Eccube/Controller/CartController.php, src/Eccube/Service/Cart]
 
-  - id: FR-007
-    group: 購入する
+  - id: FR-202
     name: 購入手続き
     summary: 会員・ゲストがお届け先・配送方法・支払方法を選んで注文を確定する。金額計算は受注処理パイプラインが担う。
     dirs: [src/Eccube/Controller/ShoppingController.php, src/Eccube/Controller/NonMemberShoppingController.php, src/Eccube/Service/PurchaseFlow]
     prs:
       4.4.0: [6878, 7162]
 
-  - id: FR-008
-    group: 購入する
+  - id: FR-203
     name: 配送方法・支払方法の保存と復元
     summary: 会員が前回使った配送方法・支払方法を保存し、次回の購入手続きで「この設定を使用する」から復元する。
     dirs: [src/Eccube/Controller/ShoppingController.php]
@@ -78,72 +99,63 @@ features:
     prs:
       4.4.0: [6833]
 
-  - id: FR-009
-    group: 購入する
+  - id: FR-204
     name: お届け先の変更
     summary: 購入手続きでお届け先を選び直す。登録済みの住所をその画面で編集・削除できる。
     dirs: [src/Eccube/Controller/ShoppingController.php]
     prs:
       4.4.0: [6951]
 
-  - id: FR-010
-    group: 購入する
+  - id: FR-205
     name: 複数配送
     summary: 1 回の注文で商品ごとに異なるお届け先を指定する。
     dirs: [src/Eccube/Controller/ShippingMultipleController.php]
 
-  - id: FR-011
-    group: 会員
+  # ---------------------------------------------------------------- FR-3xx 会員
+  - id: FR-301
     name: 会員登録
     summary: 仮登録メールの URL から本登録する。
     dirs: [src/Eccube/Controller/EntryController.php]
     prs:
       4.4.0: [6881]
 
-  - id: FR-012
-    group: 会員
+  - id: FR-302
     name: ログイン
     summary: 会員がマイページ・購入手続きへログインする。
     dirs: [src/Eccube/Controller/Mypage/MypageController.php, src/Eccube/Security]
 
-  - id: FR-013
-    group: 会員
+  - id: FR-303
     name: パスワード要件
     summary: 会員・管理者のパスワードの長さ・使える文字・漏洩パスワードの拒否。NIST SP 800-63B-4 に準拠する。
     dirs: [src/Eccube/Form, app/config/eccube/packages/eccube.yaml]
     prs:
       4.4.0: [6858]
 
-  - id: FR-014
-    group: 会員
+  - id: FR-304
     name: パスワード再設定
     summary: メールで届く URL からパスワードを再設定する。
     dirs: [src/Eccube/Controller/ForgotController.php]
 
-  - id: FR-015
-    group: 会員
+  - id: FR-305
     name: 会員情報の変更
     summary: マイページで会員情報を変更する。
     dirs: [src/Eccube/Controller/Mypage/ChangeController.php]
     prs:
       4.4.0: [6881]
 
-  - id: FR-016
-    group: 会員
+  - id: FR-306
     name: 注文履歴
     summary: マイページで過去の注文と配送状況（お問い合わせ番号）を確認し、同じ商品を再注文する。
     dirs: [src/Eccube/Controller/Mypage/MypageController.php]
     prs:
       4.4.0: [6826]
 
-  - id: FR-017
-    group: 会員
+  - id: FR-307
     name: お届け先の登録
     summary: マイページでお届け先を登録・編集・削除する。
     dirs: [src/Eccube/Controller/Mypage/DeliveryController.php]
 
-  - id: FR-018
-    group: 会員
+  - id: FR-308
     name: 返品申請
     summary: マイページの注文履歴から商品ごとに返品を申請し、写真を添付する。申請の状況と履歴を確認する。
     dirs: [src/Eccube/Controller/Mypage/RefundRequestController.php, src/Eccube/Service/RefundRequestService.php]
@@ -151,22 +163,20 @@ features:
     prs:
       4.4.0: [6838]
 
-  - id: FR-019
-    group: 会員
+  - id: FR-309
     name: 退会
     summary: マイページから退会する。
     dirs: [src/Eccube/Controller/Mypage/WithdrawController.php]
 
-  - id: FR-020
-    group: 案内・問い合わせ
+  # ---------------------------------------------------------------- FR-4xx 案内・問い合わせ
+  - id: FR-401
     name: お問い合わせ
     summary: 問い合わせフォームから店舗へ送信し、確認メールを受け取る。
     dirs: [src/Eccube/Controller/ContactController.php]
     prs:
       4.4.0: [6881]
 
-  - id: FR-021
-    group: 案内・問い合わせ
+  - id: FR-402
     name: FAQ
     summary: 管理画面で登録したよくある質問をブロックで表示する。
     dirs: [src/Eccube/Controller/Block/FaqController.php, src/Eccube/Service/FaqStructuredDataService.php]
@@ -174,20 +184,17 @@ features:
     prs:
       4.4.0: [6980]
 
-  - id: FR-022
-    group: 案内・問い合わせ
+  - id: FR-403
     name: 店舗の案内ページ
     summary: 当サイトについて・ご利用ガイド・プライバシーポリシー・利用規約・特定商取引法に基づく表記を表示する。
     dirs: [src/Eccube/Controller/HelpController.php, src/Eccube/Controller/TradeLawController.php]
 
-  - id: FR-023
-    group: 案内・問い合わせ
+  - id: FR-404
     name: ユーザー定義ページ
     summary: ページ管理で作成したページを /user_data 配下に表示する。
     dirs: [src/Eccube/Controller/UserDataController.php]
 
-  - id: FR-024
-    group: 案内・問い合わせ
+  - id: FR-405
     name: Cookie 同意
     summary: Cookie の利用目的ごとに同意を取得し、同意内容の変更と Cookie ポリシーの表示を行う。
     dirs: [src/Eccube/Controller/CookieConsentController.php, src/Eccube/Service/CookieConsentService.php]
@@ -195,22 +202,20 @@ features:
     prs:
       4.4.0: [6844]
 
-  - id: FR-025
-    group: 検索エンジン・表示
+  # ---------------------------------------------------------------- FR-5xx 表示・共通
+  - id: FR-501
     name: サイトマップ XML
     summary: 商品・カテゴリ・ページのサイトマップを XML で出力する。
     dirs: [src/Eccube/Controller/SitemapController.php]
 
-  - id: FR-026
-    group: 検索エンジン・表示
+  - id: FR-502
     name: 構造化データ（JSON-LD）
     summary: 店舗（Organization・WebSite）・商品・FAQ の構造化データをページに出力する。
     dirs: [src/Eccube/Service/SiteStructuredDataService.php, src/Eccube/Service/ProductStructuredDataService.php]
     prs:
       4.4.0: [6139, 6883]
 
-  - id: FR-027
-    group: 検索エンジン・表示
+  - id: FR-503
     name: 管理画面ログイン中の注意帯
     summary: 同じブラウザで管理画面にログインしているとき、フロントの上部に注意帯を表示する。メンテナンス・デバッグの帯と並べて表示する。
     dirs: [src/Eccube/EventListener]
@@ -218,75 +223,67 @@ features:
     prs:
       4.4.0: [6687]
 
-  - id: FR-028
-    group: 検索エンジン・表示
+  - id: FR-504
     name: 送信回数の制限（スロットリング）
     summary: 会員・管理者のログイン失敗と、購入確認・注文確定の連続送信を回数で制限する。回数の記録は DB に保存する。
     dirs: [app/config/eccube/packages/eccube_rate_limiter.yaml, src/Eccube/EventListener/RateLimiterListener.php, src/Eccube/Entity/RateLimiter.php]
     prs:
       4.4.0: [6880]
 
-  # ---------------------------------------------------------------- 管理画面（店舗運営者）
-  - id: AD-001
-    group: ログイン・ホーム
+  # ================================================================ 管理画面（店舗運営者）
+  # ---------------------------------------------------------------- AD-1xx ログイン・ホーム
+  - id: AD-101
     name: 管理画面ログイン
     summary: メンバーが管理画面へログインする。パスワードを変更する。
     dirs: [src/Eccube/Controller/Admin/AdminController.php, src/Eccube/Security]
 
-  - id: AD-002
-    group: ログイン・ホーム
+  - id: AD-102
     name: 2 段階認証
     summary: メンバーが認証アプリで 2 段階認証を設定・再設定する。
     dirs: [src/Eccube/Controller/Admin/Setting/System/TwoFactorAuthController.php, src/Eccube/Service/TwoFactorAuthService.php]
     prs:
       4.4.0: [6893]
 
-  - id: AD-003
-    group: ログイン・ホーム
+  - id: AD-103
     name: ホーム
     summary: 売上状況・受注状況・在庫切れ商品・会員数を表示する。
     dirs: [src/Eccube/Controller/Admin/AdminController.php]
 
-  - id: AD-004
-    group: 商品管理
+  # ---------------------------------------------------------------- AD-2xx 商品管理
+  - id: AD-201
     name: 商品一覧
     summary: 商品を検索し、公開状態の一括変更・複製・削除・CSV ダウンロードを行う。
     dirs: [src/Eccube/Controller/Admin/Product/ProductController.php]
 
-  - id: AD-005
-    group: 商品管理
+  - id: AD-202
     name: 商品登録
     summary: 商品の基本情報・画像・カテゴリ・タグ・受注管理用メモを登録する。
     dirs: [src/Eccube/Controller/Admin/Product/ProductController.php]
     prs:
       4.4.0: [6840]
 
-  - id: AD-006
-    group: 商品管理
+  - id: AD-203
     name: 商品規格・在庫
     summary: 商品に規格を組み合わせて価格・在庫を登録する。在庫は ProductStock で持ち、在庫有無を ProductClass に持つ。
     dirs: [src/Eccube/Controller/Admin/Product/ProductClassController.php, src/Eccube/Service/ProductStockSynchronizer.php]
     prs:
       4.4.0: [7178]
 
-  - id: AD-007
-    group: 商品管理
+  - id: AD-204
     name: 規格管理
     summary: 規格（サイズ・カラー等）と規格分類を登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Product/ClassNameController.php, src/Eccube/Controller/Admin/Product/ClassCategoryController.php]
     prs:
       4.4.0: [7153]
 
-  - id: AD-008
-    group: 商品管理
+  - id: AD-205
     name: カテゴリ管理
     summary: カテゴリを階層で登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Product/CategoryController.php]
     prs:
       4.4.0: [7153]
 
-  - id: AD-009
-    group: 商品管理
+  - id: AD-206
     name: カテゴリ別 FAQ
     summary: カテゴリごとに表示する FAQ を選ぶ。
     dirs: [src/Eccube/Controller/Admin/Product/CategoryFaqController.php]
@@ -294,72 +291,63 @@ features:
     prs:
       4.4.0: [6980]
 
-  - id: AD-010
-    group: 商品管理
+  - id: AD-207
     name: タグ管理
     summary: 商品タグを登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Product/TagController.php]
     prs:
       4.4.0: [7153]
 
-  - id: AD-011
-    group: 商品管理
+  - id: AD-208
     name: 商品 CSV 登録
     summary: CSV から商品を一括で登録・更新する。
     dirs: [src/Eccube/Controller/Admin/Product/CsvImportController.php, src/Eccube/Service/CsvImportService.php]
     prs:
       4.4.0: [6840]
 
-  - id: AD-012
-    group: 商品管理
+  - id: AD-209
     name: 規格・カテゴリ CSV 登録
     summary: CSV から規格・規格分類・カテゴリを一括で登録・更新する。
     dirs: [src/Eccube/Controller/Admin/Product/CsvImportController.php]
 
-  - id: AD-013
-    group: 受注管理
+  # ---------------------------------------------------------------- AD-3xx 受注管理
+  - id: AD-301
     name: 受注一覧
     summary: 受注を検索し、対応状況の一括変更・メール一括送信・CSV ダウンロードを行う。
     dirs: [src/Eccube/Controller/Admin/Order]
 
-  - id: AD-014
-    group: 受注管理
+  - id: AD-302
     name: 受注登録・編集
     summary: 受注の明細・お届け先・支払方法・入金日を登録・編集し、商品の受注管理用メモを確認する。
     dirs: [src/Eccube/Controller/Admin/Order, src/Eccube/Service/PurchaseFlow]
     prs:
       4.4.0: [6840, 6878, 6948]
 
-  - id: AD-015
-    group: 受注管理
+  - id: AD-303
     name: 出荷登録・編集
     summary: 出荷ごとにお問い合わせ番号・出荷日を登録し、出荷済みにする。
     dirs: [src/Eccube/Controller/Admin/Order]
     prs:
       4.4.0: [6948]
 
-  - id: AD-016
-    group: 受注管理
+  - id: AD-304
     name: 出荷 CSV 登録
     summary: CSV から出荷情報を一括で登録する。
     dirs: [src/Eccube/Controller/Admin/Order]
 
-  - id: AD-017
-    group: 受注管理
+  - id: AD-305
     name: 受注メール送信
     summary: 受注に対してメールテンプレートを選んでメールを送り、送信履歴を残す。
     dirs: [src/Eccube/Controller/Admin/Order, src/Eccube/Service/MailService.php]
 
-  - id: AD-018
-    group: 受注管理
+  - id: AD-306
     name: 納品書 PDF 出力
     summary: 受注から納品書 PDF を出力する。店舗情報のどの項目を載せるかは基本設定で選ぶ。
     dirs: [src/Eccube/Service/OrderPdfService.php, src/Eccube/Service/Pdf]
     prs:
       4.4.0: [6953, 7084]
 
-  - id: AD-019
-    group: 受注管理
+  - id: AD-307
     name: 返品申請管理
     summary: 購入者の返品申請を一覧・確認し、処理中・承認・却下・追加情報依頼などの対応状況を更新する。購入者へ通知メールを送る。
     dirs: [src/Eccube/Controller/Admin/Order, src/Eccube/Service/RefundRequestService.php]
@@ -367,26 +355,24 @@ features:
     prs:
       4.4.0: [6838]
 
-  - id: AD-020
-    group: 会員管理
+  # ---------------------------------------------------------------- AD-4xx 会員管理
+  - id: AD-401
     name: 会員一覧
     summary: 会員を検索し、CSV ダウンロード・仮会員への再送・削除を行う。
     dirs: [src/Eccube/Controller/Admin/Customer/CustomerController.php]
 
-  - id: AD-021
-    group: 会員管理
+  - id: AD-402
     name: 会員登録・編集
     summary: 会員情報とお届け先を登録・編集し、購入履歴を確認する。
     dirs: [src/Eccube/Controller/Admin/Customer/CustomerEditController.php, src/Eccube/Controller/Admin/Customer/CustomerDeliveryEditController.php]
 
-  - id: AD-022
-    group: コンテンツ管理
+  # ---------------------------------------------------------------- AD-5xx コンテンツ管理
+  - id: AD-501
     name: 新着情報管理
     summary: 新着情報を登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Content/NewsController.php]
 
-  - id: AD-023
-    group: コンテンツ管理
+  - id: AD-502
     name: FAQ 管理
     summary: よくある質問を登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Content/FaqController.php]
@@ -394,62 +380,54 @@ features:
     prs:
       4.4.0: [6980]
 
-  - id: AD-024
-    group: コンテンツ管理
+  - id: AD-503
     name: ファイル管理
     summary: html/user_data 配下へファイルをアップロード・削除する。
     dirs: [src/Eccube/Controller/Admin/Content/FileController.php]
     prs:
       4.4.0: [7119]
 
-  - id: AD-025
-    group: コンテンツ管理
+  - id: AD-504
     name: レイアウト管理
     summary: レイアウトを作成し、ブロックの配置を決める。
     dirs: [src/Eccube/Controller/Admin/Content/LayoutController.php]
     prs:
       4.4.0: [7153]
 
-  - id: AD-026
-    group: コンテンツ管理
+  - id: AD-505
     name: ページ管理
     summary: ページのメタ情報・テンプレート・レイアウトを登録・編集する。
     dirs: [src/Eccube/Controller/Admin/Content/PageController.php, src/Eccube/Service/Content]
     prs:
       4.4.0: [7119, 7153]
 
-  - id: AD-027
-    group: コンテンツ管理
+  - id: AD-506
     name: CSS・JavaScript 管理
     summary: customize.css / customize.js を編集する。
     dirs: [src/Eccube/Controller/Admin/Content/CssController.php, src/Eccube/Controller/Admin/Content/JsController.php]
     prs:
       4.4.0: [7119, 7153]
 
-  - id: AD-028
-    group: コンテンツ管理
+  - id: AD-507
     name: ブロック管理
     summary: ブロックのテンプレートを登録・編集する。
     dirs: [src/Eccube/Controller/Admin/Content/BlockController.php, src/Eccube/Service/Content]
     prs:
       4.4.0: [7119, 7153]
 
-  - id: AD-029
-    group: コンテンツ管理
+  - id: AD-508
     name: キャッシュ管理
     summary: 実行時のキャッシュを削除する。
     dirs: [src/Eccube/Controller/Admin/Content/CacheController.php]
     prs:
       4.4.0: [7100]
 
-  - id: AD-030
-    group: コンテンツ管理
+  - id: AD-509
     name: メンテナンス管理
     summary: メンテナンスモードを切り替え、フロントにメンテナンス画面を表示する。
     dirs: [src/Eccube/Controller/Admin/Content/MaintenanceController.php]
 
-  - id: AD-031
-    group: コンテンツ管理
+  - id: AD-510
     name: エージェントコマース設定
     summary: AI エージェント経由の購入（ACP・UCP）の状態を確認し、商品フィードの送信・カタログキャッシュの再生成を行う。
     dirs: [src/Eccube/Controller/Admin/AgentCommerce/AgentCommerceController.php, src/Eccube/Service/AgentCommerce]
@@ -457,163 +435,56 @@ features:
     prs:
       4.4.0: [6815]
 
-  - id: AD-032
-    group: 店舗設定
+  # ---------------------------------------------------------------- AD-6xx 店舗設定
+  - id: AD-601
     name: 基本設定
     summary: 店名・住所・連絡先・税・ポイント・在庫などの店舗設定を登録する。納品書 PDF に載せる項目を選ぶ。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/ShopController.php]
     prs:
       4.4.0: [6953]
 
-  - id: AD-033
-    group: 店舗設定
+  - id: AD-602
     name: 特定商取引法設定
     summary: 特定商取引法に基づく表記を登録し、購入確認画面への表示を選ぶ。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/TradeLawController.php]
 
-  - id: AD-034
-    group: 店舗設定
+  - id: AD-603
     name: 利用規約設定
     summary: 会員登録時に表示する利用規約のページを編集する（ページ管理の利用規約ページを開く）。
     dirs: [src/Eccube/Controller/Admin/Content/PageController.php]
 
-  - id: AD-035
-    group: 店舗設定
+  - id: AD-604
     name: 支払方法設定
     summary: 支払方法・手数料・利用条件を登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/PaymentController.php]
     prs:
       4.4.0: [7153]
 
-  - id: AD-036
-    group: 店舗設定
+  - id: AD-605
     name: 配送方法設定
     summary: 配送方法・お届け時間・都道府県別の送料・利用できる支払方法を登録する。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/DeliveryController.php]
     prs:
       4.4.0: [7153]
 
-  - id: AD-037
-    group: 店舗設定
+  - id: AD-606
     name: 税率設定
     summary: 税率と適用日時・端数処理を登録する。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/TaxRuleController.php, src/Eccube/Service/TaxRuleService.php]
 
-  - id: AD-038
-    group: 店舗設定
+  - id: AD-607
     name: メール設定
     summary: 送信するメールのテンプレートを編集する。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/MailController.php]
     prs:
       4.4.0: [7119, 7153]
 
-  - id: AD-039
-    group: 店舗設定
+  - id: AD-608
     name: CSV 出力項目設定
     summary: 各 CSV に出力する項目と並び順を選ぶ。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/CsvController.php, src/Eccube/Service/CsvExportService.php]
 
-  - id: AD-040
-    group: 店舗設定
-    name: 受注対応状況設定
-    summary: 受注の対応状況の名称・色・マイページでの表示名を設定する。
-    dirs: [src/Eccube/Controller/Admin/Setting/Shop/OrderStatusController.php]
-
-  - id: AD-041
-    group: 店舗設定
-    name: 定休日カレンダー設定
-    summary: 定休日を登録し、カレンダーブロックへ表示する。
-    dirs: [src/Eccube/Controller/Admin/Setting/Shop/CalendarController.php]
-
-  - id: AD-042
-    group: システム設定
-    name: メンバー管理
-    summary: 管理画面のメンバーを登録・編集・並び替えする。メンバーの 2 段階認証をリセットする。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/MemberController.php]
-    prs:
-      4.4.0: [6546]
-
-  - id: AD-043
-    group: システム設定
-    name: 権限管理
-    summary: 権限ごとにアクセスを拒否する URL を設定する。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/AuthorityController.php]
-
-  - id: AD-044
-    group: システム設定
-    name: セキュリティ管理
-    summary: 管理画面の URL・接続を許可・拒否する IP・SSL 強制などを設定する。.env が反映されない環境では警告して保存を止める。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/SecurityController.php, src/Eccube/Service/EnvFileService.php]
-    prs:
-      4.4.0: [6959, 7119]
-
-  - id: AD-045
-    group: システム設定
-    name: ログイン履歴
-    summary: 管理画面へのログインの成否を検索・表示する。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/LoginHistoryController.php]
-
-  - id: AD-046
-    group: システム設定
-    name: ログ表示
-    summary: アプリケーションのログを画面で表示する。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/LogController.php]
-
-  - id: AD-047
-    group: システム設定
-    name: マスタデータ管理
-    summary: 都道府県・職業などのマスタデータを編集する。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/MasterdataController.php]
-
-  - id: AD-048
-    group: システム設定
-    name: システム情報
-    summary: EC-CUBE・PHP・DB・Web サーバーのバージョンと PHP の設定を表示する。
-    dirs: [src/Eccube/Controller/Admin/Setting/System/SystemController.php]
-
-  - id: AD-049
-    group: オーナーズストア
-    name: プラグインの検索・購入
-    summary: オーナーズストアのプラグインを検索し、インストールする。
-    dirs: [src/Eccube/Controller/Admin/Store/OwnerStoreController.php]
-    prs:
-      4.4.0: [7119]
-
-  - id: AD-050
-    group: オーナーズストア
-    name: プラグイン一覧
-    summary: インストール済みのプラグインを有効化・無効化・アップデート・削除し、設定画面へ進む。
-    dirs: [src/Eccube/Controller/Admin/Store/PluginController.php, src/Eccube/Plugin]
-    prs:
-      4.4.0: [7119]
-
-  - id: AD-051
-    group: オーナーズストア
-    name: テンプレート管理
-    summary: デザインテンプレートを追加・切り替え・ダウンロード・削除する。
-    dirs: [src/Eccube/Controller/Admin/Store/TemplateController.php]
-    prs:
-      4.4.0: [6959, 7119]
-
-  - id: AD-052
-    group: オーナーズストア
-    name: 認証キー設定
-    summary: オーナーズストアの認証キーを登録する。新しく発行する前に注意を表示する。
-    dirs: [src/Eccube/Controller/Admin/Store/OwnerStoreController.php]
-    prs:
-      4.4.0: [6958]
-
-  - id: AD-053
-    group: システム設定
-    name: 読み取り専用モード
-    summary: ECCUBE_RESTRICT_FILE_UPLOAD=1 で、ファイルへ書き込む画面を読み取り専用にし、代わりの CLI コマンドを案内する。
-    dirs: [app/config/eccube/packages/eccube.yaml, src/Eccube/EventListener/RestrictFileUploadListener.php]
-    since: 4.4.0
-    prs:
-      4.4.0: [7119]
-
-  - id: AD-054
-    group: 店舗設定
+  - id: AD-609
     name: CSV の数式対策
     summary: 基本設定で有効にすると、CSV のダウンロードで = + - @ などで始まる値の先頭に ' を付け、表計算ソフトが数式として実行しないようにする。取り込みでは付けた ' を外す。
     dirs: [src/Eccube/Service/CsvExportService.php, src/Eccube/Service/CsvImportService.php]
@@ -621,47 +492,130 @@ features:
     prs:
       4.4.0: [6871]
 
-  # ---------------------------------------------------------------- 開発者・運用者（CLI・API・拡張）
-  - id: DV-001
-    group: インストール・動作環境
+  - id: AD-610
+    name: 受注対応状況設定
+    summary: 受注の対応状況の名称・色・マイページでの表示名を設定する。
+    dirs: [src/Eccube/Controller/Admin/Setting/Shop/OrderStatusController.php]
+
+  - id: AD-611
+    name: 定休日カレンダー設定
+    summary: 定休日を登録し、カレンダーブロックへ表示する。
+    dirs: [src/Eccube/Controller/Admin/Setting/Shop/CalendarController.php]
+
+  # ---------------------------------------------------------------- AD-7xx システム設定
+  - id: AD-701
+    name: メンバー管理
+    summary: 管理画面のメンバーを登録・編集・並び替えする。メンバーの 2 段階認証をリセットする。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/MemberController.php]
+    prs:
+      4.4.0: [6546]
+
+  - id: AD-702
+    name: 権限管理
+    summary: 権限ごとにアクセスを拒否する URL を設定する。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/AuthorityController.php]
+
+  - id: AD-703
+    name: セキュリティ管理
+    summary: 管理画面の URL・接続を許可・拒否する IP・SSL 強制などを設定する。.env が反映されない環境では警告して保存を止める。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/SecurityController.php, src/Eccube/Service/EnvFileService.php]
+    prs:
+      4.4.0: [6959, 7119]
+
+  - id: AD-704
+    name: ログイン履歴
+    summary: 管理画面へのログインの成否を検索・表示する。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/LoginHistoryController.php]
+
+  - id: AD-705
+    name: ログ表示
+    summary: アプリケーションのログを画面で表示する。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/LogController.php]
+
+  - id: AD-706
+    name: マスタデータ管理
+    summary: 都道府県・職業などのマスタデータを編集する。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/MasterdataController.php]
+
+  - id: AD-707
+    name: システム情報
+    summary: EC-CUBE・PHP・DB・Web サーバーのバージョンと PHP の設定を表示する。
+    dirs: [src/Eccube/Controller/Admin/Setting/System/SystemController.php]
+
+  - id: AD-708
+    name: 読み取り専用モード
+    summary: ECCUBE_RESTRICT_FILE_UPLOAD=1 で、ファイルへ書き込む画面を読み取り専用にし、代わりの CLI コマンドを案内する。
+    dirs: [app/config/eccube/packages/eccube.yaml, src/Eccube/EventListener/RestrictFileUploadListener.php]
+    since: 4.4.0
+    prs:
+      4.4.0: [7119]
+
+  # ---------------------------------------------------------------- AD-8xx オーナーズストア
+  - id: AD-801
+    name: プラグインの検索・購入
+    summary: オーナーズストアのプラグインを検索し、インストールする。
+    dirs: [src/Eccube/Controller/Admin/Store/OwnerStoreController.php]
+    prs:
+      4.4.0: [7119]
+
+  - id: AD-802
+    name: プラグイン一覧
+    summary: インストール済みのプラグインを有効化・無効化・アップデート・削除し、設定画面へ進む。
+    dirs: [src/Eccube/Controller/Admin/Store/PluginController.php, src/Eccube/Plugin]
+    prs:
+      4.4.0: [7119]
+
+  - id: AD-803
+    name: テンプレート管理
+    summary: デザインテンプレートを追加・切り替え・ダウンロード・削除する。
+    dirs: [src/Eccube/Controller/Admin/Store/TemplateController.php]
+    prs:
+      4.4.0: [6959, 7119]
+
+  - id: AD-804
+    name: 認証キー設定
+    summary: オーナーズストアの認証キーを登録する。新しく発行する前に注意を表示する。
+    dirs: [src/Eccube/Controller/Admin/Store/OwnerStoreController.php]
+    prs:
+      4.4.0: [6958]
+
+  # ================================================================ 開発者・運用者（CLI・API・拡張）
+  # ---------------------------------------------------------------- DV-1xx インストール・動作環境
+  - id: DV-101
     name: Web インストーラー
     summary: ブラウザから動作要件の確認・DB 設定・管理者登録を行ってインストールする。
     dirs: [src/Eccube/Controller/Install]
     prs:
       4.4.0: [6949, 7052, 7154]
 
-  - id: DV-002
-    group: インストール・動作環境
+  - id: DV-102
     name: CLI インストール
     summary: eccube:install でコマンドラインからインストールする。
     dirs: [src/Eccube/Command]
 
-  - id: DV-003
-    group: インストール・動作環境
+  - id: DV-103
     name: 動作要件
     summary: 対応する PHP・データベース・PHP 拡張モジュールのバージョン。
     dirs: [composer.json, index.php]
     prs:
       4.4.0: [6801, 6810, 6855, 6928, 7081]
 
-  - id: DV-004
-    group: インストール・動作環境
+  - id: DV-104
     name: 環境変数の読み込み
     summary: .env・.env.local・.env.local.php を symfony/dotenv で読み込む。
     dirs: [index.php, bin/console]
     prs:
       4.4.0: [6932]
 
-  - id: DV-005
-    group: インストール・動作環境
+  - id: DV-105
     name: Docker イメージ
     summary: 公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。
     dirs: [Dockerfile, docker-compose.yml]
     prs:
       4.4.0: [6813, 6985]
 
-  - id: DV-006
-    group: 運用（CLI）
+  # ---------------------------------------------------------------- DV-2xx 運用（CLI）
+  - id: DV-201
     name: キャッシュの生成
     summary: eccube:cache:build で var/build を CLI から生成する。実行時に書き込むキャッシュは var/runtime に分ける。
     dirs: [src/Eccube/Command]
@@ -669,8 +623,7 @@ features:
     prs:
       4.4.0: [7100]
 
-  - id: DV-007
-    group: 運用（CLI）
+  - id: DV-202
     name: Web サーバーと CLI の権限分離
     summary: Web サーバーと CLI を別ユーザーで動かし、書き込める場所を分ける構成。eccube:doctor:permissions で権限を診断する。
     dirs: [src/Eccube/Service/Permission, docker-compose.permission-lanes.yml]
@@ -678,8 +631,7 @@ features:
     prs:
       4.4.0: [7098, 7100, 7124]
 
-  - id: DV-008
-    group: 運用（CLI）
+  - id: DV-203
     name: ページ・ブロック・メールテンプレートの CLI 操作
     summary: eccube:page:* / eccube:block:* / eccube:mail-template:* / eccube:asset:* で管理画面と同じ検証を通して登録・削除する。
     dirs: [src/Eccube/Command, src/Eccube/Service/Content]
@@ -687,8 +639,7 @@ features:
     prs:
       4.4.0: [7105]
 
-  - id: DV-009
-    group: 運用（CLI）
+  - id: DV-204
     name: user_data・.env の CLI 操作
     summary: eccube:user-data:* で html/user_data のファイルを、eccube:env:* で .env を操作する。
     dirs: [src/Eccube/Command]
@@ -696,8 +647,7 @@ features:
     prs:
       4.4.0: [7114]
 
-  - id: DV-010
-    group: 運用（CLI）
+  - id: DV-205
     name: 署名鍵の CLI 操作
     summary: eccube:keystore:* で署名鍵を一覧・表示・事前生成する。
     dirs: [src/Eccube/Command]
@@ -705,8 +655,7 @@ features:
     prs:
       4.4.0: [7117]
 
-  - id: DV-011
-    group: 運用（CLI）
+  - id: DV-206
     name: コンテンツ定義の書き出し・取り込み
     summary: eccube:contents:export / import で、DB にあるページ・ブロック・メールテンプレート・レイアウトの定義を yaml で入出力する。
     dirs: [src/Eccube/Command, src/Eccube/Service/Content]
@@ -714,30 +663,27 @@ features:
     prs:
       4.4.0: [7121]
 
-  - id: DV-012
-    group: 運用（CLI）
+  - id: DV-207
     name: プラグインの CLI 操作
     summary: eccube:plugin:* と eccube:composer:* でプラグインをインストール・有効化・無効化・削除する。
     dirs: [src/Eccube/Command, src/Eccube/Service/Composer]
     prs:
       4.4.0: [7098]
 
-  - id: DV-013
-    group: 運用（CLI）
+  - id: DV-208
     name: 定期実行するバッチ
     summary: 古いカートの削除（eccube:delete-carts）と、返品申請の一時ファイルの削除（eccube:refund-request:cleanup-temp-files）を行う。
     dirs: [src/Eccube/Command]
     prs:
       4.4.0: [6838]
 
-  - id: DV-014
-    group: 運用（CLI）
+  - id: DV-209
     name: ダミーデータの生成
     summary: eccube:fixtures:generate で商品・会員・受注のダミーデータを作る。
     dirs: [src/Eccube/Command]
 
-  - id: DV-015
-    group: API
+  # ---------------------------------------------------------------- DV-3xx API
+  - id: DV-301
     name: MCP サーバー
     summary: 商品・在庫・受注・会員・プラグインの管理データを、AI クライアントから読み取り専用で参照する MCP サーバー。認可は API プラグインの OAuth2 scope に委ねる。
     dirs: [src/Eccube/Service/Mcp, app/config/eccube/packages/mcp.yaml, docs/mcp]
@@ -745,8 +691,7 @@ features:
     prs:
       4.4.0: [6832, 7120]
 
-  - id: DV-016
-    group: API
+  - id: DV-302
     name: エージェントコマース（ACP）
     summary: Agentic Commerce Protocol の discovery・商品フィード・チェックアウトセッションで、AI エージェントからの購入を受け付ける。
     dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce]
@@ -754,8 +699,7 @@ features:
     prs:
       4.4.0: [6802, 6815, 6825, 6843, 6872, 7032]
 
-  - id: DV-017
-    group: API
+  - id: DV-303
     name: エージェントコマース（UCP）
     summary: Universal Commerce Protocol の discovery・カタログ検索・チェックアウトセッションで、AI エージェントからの購入を受け付ける。
     dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce]
@@ -763,70 +707,63 @@ features:
     prs:
       4.4.0: [6802, 6815, 6825, 6837, 6872, 7032, 7127]
 
-  - id: DV-018
-    group: 拡張
+  # ---------------------------------------------------------------- DV-4xx 拡張
+  - id: DV-401
     name: プラグイン機構
     summary: app/Plugin に置いたプラグインのライフサイクル（インストール・有効化・無効化・アップデート・削除）と拡張ポイント。
     dirs: [src/Eccube/Plugin, app/Plugin]
     prs:
       4.4.0: [6894, 6937]
 
-  - id: DV-019
-    group: 拡張
+  - id: DV-402
     name: プラグインの雛形生成
     summary: eccube:plugin:generate でプラグインの雛形を作る。
     dirs: [src/Eccube/Command]
     prs:
       4.4.0: [6706]
 
-  - id: DV-020
-    group: 拡張
+  - id: DV-403
     name: app/Customize によるカスタマイズ
     summary: エンティティのトレイト拡張・フォーム拡張・サービスの上書きを、コアを改変せずに行う。
     dirs: [app/Customize, src/Eccube/Entity]
     prs:
       4.4.0: [6895]
 
-  - id: DV-021
-    group: 拡張
+  - id: DV-404
     name: エンティティプロキシとスキーマ更新
     summary: eccube:generate:proxies でトレイトを合成したエンティティを生成し、eccube:schema:update で DB に反映する。
     dirs: [src/Eccube/Command, src/Eccube/Doctrine]
 
-  - id: DV-022
-    group: 拡張
+  - id: DV-405
     name: DB マイグレーション
     summary: doctrine:migrations:migrate で、スキーマ更新では扱えないデータ投入・型変更を適用する。
     dirs: [app/DoctrineMigrations]
     prs:
       4.4.0: [6855]
 
-  - id: DV-023
-    group: 拡張
+  - id: DV-406
     name: イベントによる拡張
     summary: テンプレートイベント・コントローラーイベント・Doctrine イベントで処理を差し込む。
     dirs: [src/Eccube/EventListener]
     prs:
       4.4.0: [6894]
 
-  - id: DV-024
-    group: 拡張
+  - id: DV-407
     name: ブロックの描画（ESI・fragments）
     summary: ブロックは inline で描画する。ESI・fragments は既定で無効。
     dirs: [app/config/eccube/packages/framework.yaml]
     prs:
       4.4.0: [7071]
 
-  - id: DV-025
-    group: 拡張
+  - id: DV-408
     name: フロントエンドのビルド
     summary: Sass と JavaScript を esbuild でビルドする。管理画面の並び替えは SortableJS を使う。
     dirs: [esbuild.config.mjs, package.json]
     prs:
       4.4.0: [6869, 7013, 7153]
 
-  - id: DV-026
-    group: 開発者向けドキュメント
+  # ---------------------------------------------------------------- DV-5xx 開発者向けドキュメント
+  - id: DV-501
     name: AI コーディングエージェント向けの規約
     summary: AGENTS.md と .claude/skills の Skill で、AI エージェントが従う規約をレイヤ別にまとめる。
     dirs: [AGENTS.md, .claude/skills]
@@ -834,8 +771,7 @@ features:
     prs:
       4.4.0: [6817, 6853, 7007]
 
-  - id: DV-027
-    group: 開発者向けドキュメント
+  - id: DV-502
     name: コード近接の仕様書
     summary: 機能ディレクトリごとの README.html と仕様書ポータル。eccube:docs:export で集約して出力する。
     dirs: [README.html, src/Eccube/Service/Docs]
@@ -843,8 +779,7 @@ features:
     prs:
       4.4.0: [6909, 6961]
 
-  - id: DV-028
-    group: 開発者向けドキュメント
+  - id: DV-503
     name: 機能の一覧
     summary: このページ。利用者から見た機能を機能 ID で一覧し、結合試験項目書の観点表から参照される。
     dirs: [docs/features]

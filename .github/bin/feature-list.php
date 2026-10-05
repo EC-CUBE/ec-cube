@@ -15,7 +15,7 @@
  * 利用者から見た機能の一覧（Issue #7225）の検証と README.html の生成.
  *
  * 正本は docs/features/features.yaml。README.html はこのスクリプトの生成物で、直接編集しない。
- *   - 機能 ID の形式・重複、必須列、未知の列、バージョン表記、関連ディレクトリの実在を検証する
+ *   - 機能 ID の形式・重複・グループの定義、必須列、未知の列、バージョン表記、関連ディレクトリの実在を検証する
  *   - 検証に通ったら docs/features/README.html を生成する
  *
  * 使い方: php .github/bin/feature-list.php [--check]
@@ -45,7 +45,7 @@ $prefixes = [
     'AD' => ['section' => 'admin', 'title' => '管理画面（店舗運営者）'],
     'DV' => ['section' => 'developer', 'title' => '開発者・運用者（CLI・API・拡張）'],
 ];
-$allowedKeys = ['id', 'group', 'name', 'summary', 'dirs', 'since', 'prs', 'removed'];
+$allowedKeys = ['id', 'name', 'summary', 'dirs', 'since', 'prs', 'removed'];
 $versionPattern = '/\A\d+\.\d+\.\d+\z/';
 
 $problems = [];
@@ -61,6 +61,21 @@ $features = \is_array($data) ? ($data['features'] ?? null) : null;
 if (!\is_array($features) || !array_is_list($features)) {
     fwrite(STDERR, "$sourcePath: features に機能の配列がありません\n");
     exit(1);
+}
+
+// グループは機能 ID の百の位で決まる（FR-1 = FR-101〜FR-199）
+$groups = $data['groups'] ?? null;
+if (!\is_array($groups) || [] === $groups) {
+    fwrite(STDERR, "$sourcePath: groups にグループの定義がありません\n");
+    exit(1);
+}
+foreach ($groups as $key => $title) {
+    if (!preg_match('/\A(FR|AD|DV)-[1-9]\z/', (string) $key)) {
+        $problems[] = "groups: キー {$key} は FR-1 / AD-1 / DV-1 の形式で書いてください";
+    }
+    if (!\is_string($title) || '' === trim($title)) {
+        $problems[] = "groups: {$key} にグループ名を書いてください";
+    }
 }
 
 $seen = [];
@@ -79,15 +94,17 @@ foreach ($features as $i => $f) {
         $problems[] = "$at: 未知の列 {$key}（使える列: ".implode(', ', $allowedKeys).'）';
     }
 
-    if (!\is_string($id) || !preg_match('/\A(FR|AD|DV)-\d{3}\z/', $id)) {
-        $problems[] = "$at: id は FR-001 / AD-001 / DV-001 の形式で書いてください";
+    if (!\is_string($id) || !preg_match('/\A(FR|AD|DV)-[1-9]\d{2}\z/', $id) || str_ends_with($id, '00')) {
+        $problems[] = "$at: id は FR-101 の形式（接頭辞-グループ番号 1 桁 + 連番 01〜99）で書いてください";
+    } elseif (!isset($groups[substr($id, 0, 4)])) {
+        $problems[] = "$at: グループ ".substr($id, 0, 4).' が groups にありません';
     } elseif (isset($seen[$id])) {
         $problems[] = "$at: id が重複しています（廃止した機能の id も再利用しません）";
     } else {
         $seen[$id] = true;
     }
 
-    foreach (['group', 'name', 'summary'] as $key) {
+    foreach (['name', 'summary'] as $key) {
         if (!\is_string($f[$key] ?? null) || '' === trim($f[$key])) {
             $problems[] = "$at: $key は必須です";
         }
@@ -169,10 +186,11 @@ $renderPrs = static function (array $prs) use ($h): string {
     return implode('<br>', $lines);
 };
 
-// 接頭辞ごとに、group の初出順でまとめる
+// 接頭辞ごと・グループごとに、機能 ID の順でまとめる
+usort($features, static fn (array $a, array $b): int => strcmp($a['id'], $b['id']));
 $sections = [];
 foreach ($features as $f) {
-    $sections[substr($f['id'], 0, 2)][$f['group']][] = $f;
+    $sections[substr($f['id'], 0, 2)][substr($f['id'], 0, 4)][] = $f;
 }
 
 $out = [];
@@ -182,8 +200,9 @@ foreach ($prefixes as $prefix => $meta) {
     }
     $out[] = '<section data-section="'.$meta['section'].'" data-customer="true">';
     $out[] = ' <h2>'.$h($meta['title']).'</h2>';
+    ksort($sections[$prefix]);
     foreach ($sections[$prefix] as $group => $rows) {
-        $out[] = ' <h3>'.$h($group).'</h3>';
+        $out[] = ' <h3>'.$h($groups[$group]).' <span class="badge">'.$h($group).'xx</span></h3>';
         $out[] = ' <table>';
         $out[] = '  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="pr">本体 PR</th><th class="ver">導入バージョン</th></tr>';
         foreach ($rows as $f) {
@@ -246,7 +265,7 @@ $html = <<<HTML
  結合試験項目書（EC-CUBE/eccube-specification）の観点表は、この機能 ID を参照して試験観点と手順を持ちます。
  網羅性は、この一覧と観点表を機能 ID で突き合わせ、片方にしかない行を探して確認します。</p>
  <ul>
-  <li><strong>機能 ID</strong> — <code>FR</code>＝フロント（購入者）、<code>AD</code>＝管理画面（店舗運営者）、<code>DV</code>＝開発者・運用者（CLI・API・拡張）。採番したら変えず、廃止した機能も欠番として残します。</li>
+  <li><strong>機能 ID</strong> — <code>FR</code>＝フロント（購入者）、<code>AD</code>＝管理画面（店舗運営者）、<code>DV</code>＝開発者・運用者（CLI・API・拡張）。百の位がグループです（例: <code>AD-2xx</code>＝商品管理）。採番したら変えず、廃止した機能も欠番として残します。</li>
   <li><strong>本体 PR</strong> — 機能を追加・変更した PR をリリースのバージョンごとに並べます。不具合修正だけの PR は載せません。</li>
   <li><strong>導入バージョン</strong> — 4.4 より前からある機能は空欄です。</li>
  </ul>

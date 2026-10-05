@@ -15,7 +15,8 @@ php .github/bin/feature-list.php           # README.html を生成
 php .github/bin/feature-list.php --check   # 検証のみ（CI の docs-check と同じ）
 ```
 
-- 新しい機能は、接頭辞（`FR` フロント / `AD` 管理画面 / `DV` 開発者・運用者）ごとの最大の番号 +1 で行を足し、`since` と `prs` を書く
+- 機能 ID は `接頭辞-グループ番号 1 桁 + 連番 2 桁`（例: `AD-201`）。百の位がグループで、`features.yaml` 先頭の `groups` に定義する（`FR` フロント / `AD` 管理画面 / `DV` 開発者・運用者）
+- 新しい機能は、そのグループの最大の番号 +1 で行を足し、`since` と `prs` を書く
 - 既存の機能を変えたら、その行の `prs` に、リリースするバージョンをキーにして PR 番号を足す
 - 機能を廃止しても行は消さず `removed` を付ける。機能 ID は再利用しない
 - 不具合修正だけの PR は `prs` に書かない
