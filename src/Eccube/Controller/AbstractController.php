@@ -237,11 +237,13 @@ class AbstractController extends Controller
     /**
      * 並び順の変更で送信される「ID => 表示順」を検証して返す.
      *
+     * @param int $maxSortNo 表示順の上限. sort_no カラムの型に合わせる (smallint の場合は IdUtil::SMALLINT_MAX)
+     *
      * @return array<int, int>
      *
-     * @throws BadRequestHttpException ID または表示順が整数でない場合
+     * @throws BadRequestHttpException ID または表示順が整数でない、または範囲外の場合
      */
-    protected function getSortNosFromRequest(Request $request): array
+    protected function getSortNosFromRequest(Request $request, int $maxSortNo = IdUtil::INTEGER_MAX): array
     {
         $sortNos = [];
         foreach ($request->request->all() as $id => $sortNo) {
@@ -249,7 +251,7 @@ class AbstractController extends Controller
                 continue;
             }
             $id = IdUtil::toId($id);
-            $sortNo = IdUtil::toId($sortNo);
+            $sortNo = IdUtil::toId($sortNo, $maxSortNo);
             if (null === $id || null === $sortNo) {
                 throw new BadRequestHttpException();
             }

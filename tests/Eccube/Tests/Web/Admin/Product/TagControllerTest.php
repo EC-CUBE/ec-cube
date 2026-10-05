@@ -217,4 +217,20 @@ final class TagControllerTest extends AbstractAdminWebTestCase
 
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
+
+    /**
+     * sort_no は smallint のため、範囲外の表示順は 400 にする.
+     */
+    public function testMoveSortNoWithOutOfRangeSortNo(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_tag_sort_no_move'),
+            ['1' => '32768'],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
 }

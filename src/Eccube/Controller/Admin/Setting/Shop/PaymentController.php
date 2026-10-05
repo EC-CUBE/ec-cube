@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\Payment\Method\Cash;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -328,7 +329,8 @@ class PaymentController extends AbstractController
         }
 
         if ($this->isTokenValid()) {
-            $sortNos = $this->getSortNosFromRequest($request);
+            // sort_no は smallint
+            $sortNos = $this->getSortNosFromRequest($request, IdUtil::SMALLINT_MAX);
             foreach ($sortNos as $paymentId => $sortNo) {
                 /** @var Payment|null $Payment */
                 $Payment = $this->paymentRepository

@@ -19,6 +19,7 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\ProductTag;
 use Eccube\Repository\TagRepository;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -152,7 +153,8 @@ class TagController extends AbstractController
     public function moveSortNo(Request $request): Response
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
-            $sortNos = $this->getSortNosFromRequest($request);
+            // sort_no は smallint
+            $sortNos = $this->getSortNosFromRequest($request, IdUtil::SMALLINT_MAX);
             foreach ($sortNos as $tagId => $sortNo) {
                 /** @var Tag|null $Tag */
                 $Tag = $this->tagRepository
