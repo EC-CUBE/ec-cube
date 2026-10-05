@@ -51,7 +51,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 - **テンプレートと粒度**の基準はパイロット [`src/Eccube/Service/PurchaseFlow/README.html`](./src/Eccube/Service/PurchaseFlow/README.html)（＋ 同ディレクトリの `README.md`）。新規配置時はこれを金型にする。
   - `README.html` は自己完結 HTML。共通 CSS を将来当てられるよう過度なインライン装飾を避け、`data-customer="true"`＝顧客提出にも載る章 / `"false"`＝開発者向け（拡張・内部注意点）で振り分ける。
   - Skill が無いディレクトリ（例 `Doctrine/` `DependencyInjection/` `Attribute/` `Service/AgentCommerce/`）は `README.md` の SKILL 行を省き `README.html` のみを指す。
-- **機能の一覧**（Issue #7225）: 利用者から見た機能を機能 ID で一覧した [`docs/features/features.yaml`](./docs/features/features.yaml) を正本とし、結合試験項目書（EC-CUBE/eccube-specification）の観点表がこの機能 ID を参照する。**機能を追加・変更する PR では同じ PR で `features.yaml` を更新し**、`php .github/bin/feature-list.php` で `docs/features/README.html` を作り直す（一致しないと CI `docs-check` が落ちる）。機能 ID は `FR`（フロント）/ `AD`（管理画面）/ `DV`（開発者・運用者）＋ 3 桁（百の位がグループ、下 2 桁がグループ内の連番。例 `AD-201`）で、採番後は変えず、廃止しても `removed` を付けて欠番に残す。不具合修正だけの PR は載せない。
+- **機能の一覧**（Issue #7225）: 利用者から見た機能を機能 ID で一覧した [`docs/features/features.yaml`](./docs/features/features.yaml) を正本とし、結合試験項目書（EC-CUBE/eccube-specification）の観点表がこの機能 ID を参照する。**機能を追加・変更する PR では同じ PR で `features.yaml` を更新し**、`php .github/bin/feature-list.php` で `docs/features/README.html` を作り直す（一致しないと CI `docs-check` が落ちる）。機能 ID は `FR`（フロント）/ `AD`（管理画面）/ `DV`（開発者・運用者）＋ グループ番号 2 桁 ＋ グループ内の連番 2 桁（例 `AD-20-01`。グループは 10 刻みで、間に足せる）で、採番後は変えず、廃止しても `removed` を付けて欠番に残す。不具合修正だけの PR は載せない。
 - **集約出力・鮮度維持**: `bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約出力できる（`--filter=customer` は `data-customer="true"` の章だけ抽出）。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。静的サイト化・本番公開先（doc4 への統合を含む）は **Issue #6906** で検討（未確定）。
 
 ## プロジェクト概要
