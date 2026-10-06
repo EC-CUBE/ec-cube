@@ -173,19 +173,6 @@ $renderDirs = static function (array $dirs) use ($root, $toRoot, $h): string {
     return implode('<br>', $links);
 };
 
-$renderPrs = static function (array $prs) use ($h): string {
-    $lines = [];
-    foreach ($prs as $version => $numbers) {
-        $links = array_map(
-            static fn (int $n): string => '<a href="https://github.com/EC-CUBE/ec-cube/pull/'.$n.'">#'.$n.'</a>',
-            $numbers
-        );
-        $lines[] = $h((string) $version).': '.implode(', ', $links);
-    }
-
-    return implode('<br>', $lines);
-};
-
 // 接頭辞ごと・グループごとに、機能 ID の順でまとめる
 usort($features, static fn (array $a, array $b): int => strcmp($a['id'], $b['id']));
 $sections = [];
@@ -204,7 +191,7 @@ foreach ($prefixes as $prefix => $meta) {
     foreach ($sections[$prefix] as $group => $rows) {
         $out[] = ' <h3>'.$h($groups[$group]).' <span class="badge">'.$h($group).'-xx</span></h3>';
         $out[] = ' <table>';
-        $out[] = '  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="pr">本体 PR</th><th class="ver">導入バージョン</th></tr>';
+        $out[] = '  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>';
         foreach ($rows as $f) {
             $name = $h($f['name']);
             $class = '';
@@ -217,7 +204,6 @@ foreach ($prefixes as $prefix => $meta) {
                 .'<td>'.$name.'</td>'
                 .'<td>'.$h($f['summary']).'</td>'
                 .'<td>'.$renderDirs($f['dirs'] ?? []).'</td>'
-                .'<td>'.$renderPrs($f['prs'] ?? []).'</td>'
                 .'<td>'.$h($f['since'] ?? '').'</td>'
                 .'</tr>';
         }
@@ -243,7 +229,6 @@ $html = <<<HTML
  th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
  th{background:#f4f4f4}
  th.id{width:6rem}
- th.pr{width:9rem}
  th.ver{width:6rem}
  tr:target{background:#fff8e1}
  tr.removed td{color:#888}
@@ -266,7 +251,7 @@ $html = <<<HTML
  網羅性は、この一覧と観点表を機能 ID で突き合わせ、片方にしかない行を探して確認します。</p>
  <ul>
   <li><strong>機能 ID</strong> — <code>FR</code>＝フロント（購入者）、<code>AD</code>＝管理画面（店舗運営者）、<code>DV</code>＝開発者・運用者（CLI・API・拡張）。<code>AD-20-01</code> の中央の 2 桁がグループです（例: <code>AD-20</code>＝商品管理）。採番したら変えず、廃止した機能も欠番として残します。</li>
-  <li><strong>本体 PR</strong> — その機能の仕様を変えることが主な目的の PR を、リリースのバージョンごとに並べます。不具合修正だけの PR と、別の機能を追加した PR の波及（CSV の列が増える等）は載せません。</li>
+  <li><strong>本体 PR</strong> — 機能を追加・変更した PR は、このページには載せず <code>features.yaml</code> の <code>prs</code> にリリースのバージョンごとに持ちます（リリースごとの試験観点との照合に使います）。</li>
   <li><strong>導入バージョン</strong> — 4.4 より前からある機能は空欄です。</li>
  </ul>
  <div class="note">このページは <code>docs/features/features.yaml</code> から生成しています。機能を追加・変更する PR では <code>features.yaml</code> を更新し、

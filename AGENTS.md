@@ -22,7 +22,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 | `.claude/skills/<name>/SKILL.md` | レイヤ別の詳細規約（末端）。`.codex/skills`・`.agents/skills` は symlink 共有 | Skill 対応ツール（詳細は「Skill の配置と各ツールの読み込み」節） |
 | `<機能ディレクトリ>/README.html` | コード近接の**人間向けの仕様書**（挙動・なぜ・図表）。`data-section`/`data-customer` で章立て（顧客提出フィルタ用） | 人間（開発者・新規参加者・顧客） |
 | `<機能ディレクトリ>/README.md` | コード近接の**短い索引**。GitHub のディレクトリビューで自動表示され、`README.html`（人間向け仕様）と `SKILL.md`（AI 向け規約）への道標を兼ねる | GitHub 閲覧者・AI エージェント |
-| `docs/features/features.yaml` | **利用者から見た機能の一覧**の正本（機能 ID / 機能 / 概要 / 関連ディレクトリ / 本体 PR / 導入バージョン）。`docs/features/features.html` は生成物 | 人間（試験設計者・開発者）・CI |
+| `docs/features/features.yaml` | **利用者から見た機能の一覧**の正本（機能 ID / 機能 / 概要 / 関連ディレクトリ / 本体 PR / 導入バージョン）。`docs/features/features.html` は生成物（本体 PR は表示しない） | 人間（試験設計者・開発者）・CI |
 
 ### 定義ファイルを増やすときの原則
 
