@@ -27,7 +27,13 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
 $root = \dirname(__DIR__, 2);
-$check = \in_array('--check', array_slice($argv, 1), true);
+$args = array_slice($argv, 1);
+// 打ち間違い（--chek 等）で検証のつもりが features.html を上書きしないよう、未知の引数はエラーにする
+foreach (array_diff($args, ['--check']) as $arg) {
+    fwrite(STDERR, "未知の引数です: {$arg}（使い方: php .github/bin/feature-list.php [--check]）\n");
+    exit(1);
+}
+$check = \in_array('--check', $args, true);
 
 $sourcePath = $root.'/docs/features/features.yaml';
 $outputPath = $root.'/docs/features/features.html';

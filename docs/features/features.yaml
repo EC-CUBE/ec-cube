@@ -26,7 +26,7 @@
 #           波及（CSV の列や画面の項目が増える等）は追加元の機能の行にだけ書き、必要なら summary に波及先を書く。
 #   removed 機能を廃止したバージョン（任意）
 #
-# 4.4 より前からある機能は since と prs を空にしている（Issue #7225 の進め方 2）。
+# 4.4 より前からある機能は since を空にし、prs には 4.4 で仕様を変えた PR だけを書いている（Issue #7225 の進め方 2）。
 
 groups:
   # フロント（購入者）
@@ -68,8 +68,6 @@ features:
     name: 商品詳細
     summary: 商品の画像・説明・規格・価格・在庫状況を表示し、カートへ入れる。
     dirs: [src/Eccube/Controller/ProductController.php]
-    prs:
-      4.4.0: [7178]
 
   - id: FR-10-04
     name: お気に入り
@@ -176,8 +174,6 @@ features:
     name: お問い合わせ
     summary: 問い合わせフォームから店舗へ送信し、確認メールを受け取る。
     dirs: [src/Eccube/Controller/ContactController.php]
-    prs:
-      4.4.0: [6881]
 
   - id: FR-40-02
     name: FAQ
@@ -276,15 +272,11 @@ features:
     name: 規格管理
     summary: 規格（サイズ・カラー等）と規格分類を登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Product/ClassNameController.php, src/Eccube/Controller/Admin/Product/ClassCategoryController.php]
-    prs:
-      4.4.0: [7153]
 
   - id: AD-20-05
     name: カテゴリ管理
     summary: カテゴリを階層で登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Product/CategoryController.php]
-    prs:
-      4.4.0: [7153]
 
   - id: AD-20-06
     name: カテゴリ別 FAQ
@@ -298,8 +290,6 @@ features:
     name: タグ管理
     summary: 商品タグを登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Product/TagController.php]
-    prs:
-      4.4.0: [7153]
 
   - id: AD-20-08
     name: 商品 CSV 登録
@@ -385,36 +375,26 @@ features:
     name: ファイル管理
     summary: html/user_data 配下へファイルをアップロード・削除する。
     dirs: [src/Eccube/Controller/Admin/Content/FileController.php]
-    prs:
-      4.4.0: [7119]
 
   - id: AD-50-04
     name: レイアウト管理
     summary: レイアウトを作成し、ブロックの配置を決める。
     dirs: [src/Eccube/Controller/Admin/Content/LayoutController.php]
-    prs:
-      4.4.0: [7153]
 
   - id: AD-50-05
     name: ページ管理
     summary: ページのメタ情報・テンプレート・レイアウトを登録・編集する。
     dirs: [src/Eccube/Controller/Admin/Content/PageController.php, src/Eccube/Service/Content]
-    prs:
-      4.4.0: [7119, 7153]
 
   - id: AD-50-06
     name: CSS・JavaScript 管理
     summary: customize.css / customize.js を編集する。
     dirs: [src/Eccube/Controller/Admin/Content/CssController.php, src/Eccube/Controller/Admin/Content/JsController.php]
-    prs:
-      4.4.0: [7119, 7153]
 
   - id: AD-50-07
     name: ブロック管理
     summary: ブロックのテンプレートを登録・編集する。
     dirs: [src/Eccube/Controller/Admin/Content/BlockController.php, src/Eccube/Service/Content]
-    prs:
-      4.4.0: [7119, 7153]
 
   - id: AD-50-08
     name: キャッシュ管理
@@ -458,15 +438,11 @@ features:
     name: 支払方法設定
     summary: 支払方法・手数料・利用条件を登録・並び替えする。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/PaymentController.php]
-    prs:
-      4.4.0: [7153]
 
   - id: AD-60-05
     name: 配送方法設定
     summary: 配送方法・お届け時間・都道府県別の送料・利用できる支払方法を登録する。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/DeliveryController.php]
-    prs:
-      4.4.0: [7153]
 
   - id: AD-60-06
     name: 税率設定
@@ -477,8 +453,6 @@ features:
     name: メール設定
     summary: 送信するメールのテンプレートを編集する。
     dirs: [src/Eccube/Controller/Admin/Setting/Shop/MailController.php]
-    prs:
-      4.4.0: [7119, 7153]
 
   - id: AD-60-08
     name: CSV 出力項目設定
@@ -521,7 +495,7 @@ features:
     summary: 管理画面の URL・接続を許可・拒否する IP・SSL 強制などを設定する。.env が反映されない環境では警告して保存を止める。
     dirs: [src/Eccube/Controller/Admin/Setting/System/SecurityController.php, src/Eccube/Service/EnvFileService.php]
     prs:
-      4.4.0: [6959, 7119]
+      4.4.0: [6959]
 
   - id: AD-70-04
     name: ログイン履歴
@@ -556,22 +530,18 @@ features:
     name: プラグインの検索・購入
     summary: オーナーズストアのプラグインを検索し、インストールする。
     dirs: [src/Eccube/Controller/Admin/Store/OwnerStoreController.php]
-    prs:
-      4.4.0: [7119]
 
   - id: AD-80-02
     name: プラグイン一覧
     summary: インストール済みのプラグインを有効化・無効化・アップデート・削除し、設定画面へ進む。
     dirs: [src/Eccube/Controller/Admin/Store/PluginController.php, src/Eccube/Plugin]
-    prs:
-      4.4.0: [7119]
 
   - id: AD-80-03
     name: テンプレート管理
     summary: デザインテンプレートを追加・切り替え・ダウンロード・削除する。
     dirs: [src/Eccube/Controller/Admin/Store/TemplateController.php]
     prs:
-      4.4.0: [6959, 7119]
+      4.4.0: [6959]
 
   - id: AD-80-04
     name: 認証キー設定
@@ -668,8 +638,6 @@ features:
     name: プラグインの CLI 操作
     summary: eccube:plugin:* と eccube:composer:* でプラグインをインストール・有効化・無効化・削除する。
     dirs: [src/Eccube/Command, src/Eccube/Service/Composer]
-    prs:
-      4.4.0: [7098]
 
   - id: DV-20-08
     name: 定期実行するバッチ
@@ -720,8 +688,6 @@ features:
     name: プラグインの雛形生成
     summary: eccube:plugin:generate でプラグインの雛形を作る。
     dirs: [src/Eccube/Command]
-    prs:
-      4.4.0: [6706]
 
   - id: DV-40-03
     name: app/Customize によるカスタマイズ
