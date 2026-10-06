@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EC-CUBE 機能の一覧</title>
+<!-- このファイルは .github/bin/feature-list.php が docs/features/features.yaml から生成します。直接編集しないでください。-->
+<style>
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:1200px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:.5rem 0 1.5rem}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ th.id{width:6rem}
+ th.ver{width:6rem}
+ tr:target{background:#fff8e1}
+ tr.removed td{color:#888}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+<h1>EC-CUBE 機能の一覧</h1>
+<p class="nav">
+ 仕様書ポータル: <a href="../../README.html">README.html</a>
+ ／ 正本: <a href="./features.yaml">features.yaml</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+</p>
+<section data-section="overview" data-customer="true">
+ <h2>このページについて</h2>
+ <p>利用者（購入者・店舗運営者・開発者）から見た EC-CUBE の機能を、<strong>機能 ID</strong> で一覧したものです。
+ 結合試験項目書（EC-CUBE/eccube-specification）の観点表は、この機能 ID を参照して試験観点と手順を持ちます。
+ 網羅性は、この一覧と観点表を機能 ID で突き合わせ、片方にしかない行を探して確認します。</p>
+ <ul>
+  <li><strong>機能 ID</strong> — <code>FR</code>＝フロント（購入者）、<code>AD</code>＝管理画面（店舗運営者）、<code>DV</code>＝開発者・運用者（CLI・API・拡張）。<code>AD-20-01</code> の中央の 2 桁がグループです（例: <code>AD-20</code>＝商品管理）。採番したら変えず、廃止した機能も欠番として残します。</li>
+  <li><strong>本体 PR</strong> — 機能を追加・変更した PR は、このページには載せず <code>features.yaml</code> の <code>prs</code> にリリースのバージョンごとに持ちます（リリースごとの試験観点との照合に使います）。</li>
+  <li><strong>導入バージョン</strong> — 4.4 より前からある機能は空欄です。</li>
+ </ul>
+ <div class="note">このページは <code>docs/features/features.yaml</code> から生成しています。機能を追加・変更する PR では <code>features.yaml</code> を更新し、
+ <code>php .github/bin/feature-list.php</code> でこのページを作り直してください。</div>
+</section>
+<section data-section="front" data-customer="true">
+ <h2>フロント（購入者）</h2>
+ <h3>商品を探す <span class="badge">FR-10-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="FR-10-01"><td><a href="#FR-10-01"><code>FR-10-01</code></a></td><td>トップページ</td><td>店舗のトップページ。レイアウト管理で配置したブロックを表示する。</td><td><a href="../../src/Eccube/Controller/TopController.php"><code>src/Eccube/Controller/TopController.php</code></a></td><td></td></tr>
+  <tr id="FR-10-02"><td><a href="#FR-10-02"><code>FR-10-02</code></a></td><td>商品一覧・商品検索</td><td>カテゴリ・キーワードで商品を絞り込み、並び替え・表示件数を切り替えて一覧する。</td><td><a href="../../src/Eccube/Controller/ProductController.php"><code>src/Eccube/Controller/ProductController.php</code></a><br><a href="../../src/Eccube/Controller/Block/SearchProductController.php"><code>src/Eccube/Controller/Block/SearchProductController.php</code></a></td><td></td></tr>
+  <tr id="FR-10-03"><td><a href="#FR-10-03"><code>FR-10-03</code></a></td><td>商品詳細</td><td>商品の画像・説明・規格・価格・在庫状況を表示し、カートへ入れる。</td><td><a href="../../src/Eccube/Controller/ProductController.php"><code>src/Eccube/Controller/ProductController.php</code></a></td><td></td></tr>
+  <tr id="FR-10-04"><td><a href="#FR-10-04"><code>FR-10-04</code></a></td><td>お気に入り</td><td>会員が商品詳細から商品をお気に入りに登録し、マイページで一覧・削除する。</td><td><a href="../../src/Eccube/Controller/ProductController.php"><code>src/Eccube/Controller/ProductController.php</code></a><br><a href="../../src/Eccube/Controller/Mypage/MypageController.php"><code>src/Eccube/Controller/Mypage/MypageController.php</code></a></td><td></td></tr>
+  <tr id="FR-10-05"><td><a href="#FR-10-05"><code>FR-10-05</code></a></td><td>ブロック表示</td><td>新着商品・カート・商品検索・営業日カレンダーなどのブロックを各ページに表示する。</td><td><a href="../../src/Eccube/Controller/Block"><code>src/Eccube/Controller/Block</code></a></td><td></td></tr>
+ </table>
+ <h3>購入する <span class="badge">FR-20-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="FR-20-01"><td><a href="#FR-20-01"><code>FR-20-01</code></a></td><td>カート</td><td>商品の数量変更・削除を行い、販売種別ごとに購入手続きへ進む。</td><td><a href="../../src/Eccube/Controller/CartController.php"><code>src/Eccube/Controller/CartController.php</code></a><br><a href="../../src/Eccube/Service/Cart"><code>src/Eccube/Service/Cart</code></a></td><td></td></tr>
+  <tr id="FR-20-02"><td><a href="#FR-20-02"><code>FR-20-02</code></a></td><td>購入手続き</td><td>会員・ゲストがお届け先・配送方法・支払方法を選んで注文を確定する。金額計算は受注処理パイプラインが担う。</td><td><a href="../../src/Eccube/Controller/ShoppingController.php"><code>src/Eccube/Controller/ShoppingController.php</code></a><br><a href="../../src/Eccube/Controller/NonMemberShoppingController.php"><code>src/Eccube/Controller/NonMemberShoppingController.php</code></a><br><a href="../../src/Eccube/Service/PurchaseFlow/README.html"><code>src/Eccube/Service/PurchaseFlow</code></a></td><td></td></tr>
+  <tr id="FR-20-03"><td><a href="#FR-20-03"><code>FR-20-03</code></a></td><td>配送方法・支払方法の保存と復元</td><td>会員が前回使った配送方法・支払方法を保存し、次回の購入手続きで「この設定を使用する」から復元する。</td><td><a href="../../src/Eccube/Controller/ShoppingController.php"><code>src/Eccube/Controller/ShoppingController.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="FR-20-04"><td><a href="#FR-20-04"><code>FR-20-04</code></a></td><td>お届け先の変更</td><td>購入手続きでお届け先を選び直す。登録済みの住所をその画面で編集・削除できる。</td><td><a href="../../src/Eccube/Controller/ShoppingController.php"><code>src/Eccube/Controller/ShoppingController.php</code></a></td><td></td></tr>
+  <tr id="FR-20-05"><td><a href="#FR-20-05"><code>FR-20-05</code></a></td><td>複数配送</td><td>1 回の注文で商品ごとに異なるお届け先を指定する。</td><td><a href="../../src/Eccube/Controller/ShippingMultipleController.php"><code>src/Eccube/Controller/ShippingMultipleController.php</code></a></td><td></td></tr>
+  <tr id="FR-20-06"><td><a href="#FR-20-06"><code>FR-20-06</code></a></td><td>ポイント</td><td>会員が購入手続きで保有ポイントを使う。注文の加算ポイントは受注を発送済みにしたときに付与し、返品で取り消す。保有ポイントはマイページに表示する。付与率・換算率は基本設定で、会員・受注のポイントは管理画面で編集する。</td><td><a href="../../src/Eccube/Service/PointHelper.php"><code>src/Eccube/Service/PointHelper.php</code></a><br><a href="../../src/Eccube/Service/PurchaseFlow/Processor/PointProcessor.php"><code>src/Eccube/Service/PurchaseFlow/Processor/PointProcessor.php</code></a><br><a href="../../src/Eccube/Service/PurchaseFlow/Processor/AddPointProcessor.php"><code>src/Eccube/Service/PurchaseFlow/Processor/AddPointProcessor.php</code></a><br><a href="../../src/Eccube/Service/OrderStateMachine.php"><code>src/Eccube/Service/OrderStateMachine.php</code></a></td><td></td></tr>
+ </table>
+ <h3>会員 <span class="badge">FR-30-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="FR-30-01"><td><a href="#FR-30-01"><code>FR-30-01</code></a></td><td>会員登録</td><td>仮登録メールの URL から本登録する。</td><td><a href="../../src/Eccube/Controller/EntryController.php"><code>src/Eccube/Controller/EntryController.php</code></a></td><td></td></tr>
+  <tr id="FR-30-02"><td><a href="#FR-30-02"><code>FR-30-02</code></a></td><td>ログイン</td><td>会員がマイページ・購入手続きへログインする。</td><td><a href="../../src/Eccube/Controller/Mypage/MypageController.php"><code>src/Eccube/Controller/Mypage/MypageController.php</code></a><br><a href="../../src/Eccube/Security/README.html"><code>src/Eccube/Security</code></a></td><td></td></tr>
+  <tr id="FR-30-03"><td><a href="#FR-30-03"><code>FR-30-03</code></a></td><td>パスワード要件</td><td>会員・管理者のパスワードの長さ・使える文字・漏洩パスワードの拒否。NIST SP 800-63B-4 に準拠する。</td><td><a href="../../src/Eccube/Form/README.html"><code>src/Eccube/Form</code></a><br><a href="../../app/config/eccube/packages/eccube.yaml"><code>app/config/eccube/packages/eccube.yaml</code></a></td><td></td></tr>
+  <tr id="FR-30-04"><td><a href="#FR-30-04"><code>FR-30-04</code></a></td><td>パスワード再設定</td><td>メールで届く URL からパスワードを再設定する。</td><td><a href="../../src/Eccube/Controller/ForgotController.php"><code>src/Eccube/Controller/ForgotController.php</code></a></td><td></td></tr>
+  <tr id="FR-30-05"><td><a href="#FR-30-05"><code>FR-30-05</code></a></td><td>会員情報の変更</td><td>マイページで会員情報を変更する。</td><td><a href="../../src/Eccube/Controller/Mypage/ChangeController.php"><code>src/Eccube/Controller/Mypage/ChangeController.php</code></a></td><td></td></tr>
+  <tr id="FR-30-06"><td><a href="#FR-30-06"><code>FR-30-06</code></a></td><td>注文履歴</td><td>マイページで過去の注文と配送状況（お問い合わせ番号）を確認し、同じ商品を再注文する。</td><td><a href="../../src/Eccube/Controller/Mypage/MypageController.php"><code>src/Eccube/Controller/Mypage/MypageController.php</code></a></td><td></td></tr>
+  <tr id="FR-30-07"><td><a href="#FR-30-07"><code>FR-30-07</code></a></td><td>お届け先の登録</td><td>マイページでお届け先を登録・編集・削除する。</td><td><a href="../../src/Eccube/Controller/Mypage/DeliveryController.php"><code>src/Eccube/Controller/Mypage/DeliveryController.php</code></a></td><td></td></tr>
+  <tr id="FR-30-08"><td><a href="#FR-30-08"><code>FR-30-08</code></a></td><td>返品申請</td><td>マイページの注文履歴から商品ごとに返品を申請し、写真を添付する。申請の状況と履歴を確認する。</td><td><a href="../../src/Eccube/Controller/Mypage/RefundRequestController.php"><code>src/Eccube/Controller/Mypage/RefundRequestController.php</code></a><br><a href="../../src/Eccube/Service/RefundRequestService.php"><code>src/Eccube/Service/RefundRequestService.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="FR-30-09"><td><a href="#FR-30-09"><code>FR-30-09</code></a></td><td>退会</td><td>マイページから退会する。</td><td><a href="../../src/Eccube/Controller/Mypage/WithdrawController.php"><code>src/Eccube/Controller/Mypage/WithdrawController.php</code></a></td><td></td></tr>
+ </table>
+ <h3>案内・問い合わせ <span class="badge">FR-40-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="FR-40-01"><td><a href="#FR-40-01"><code>FR-40-01</code></a></td><td>お問い合わせ</td><td>問い合わせフォームから店舗へ送信し、確認メールを受け取る。</td><td><a href="../../src/Eccube/Controller/ContactController.php"><code>src/Eccube/Controller/ContactController.php</code></a></td><td></td></tr>
+  <tr id="FR-40-02"><td><a href="#FR-40-02"><code>FR-40-02</code></a></td><td>FAQ</td><td>管理画面で登録したよくある質問をブロックで表示する。</td><td><a href="../../src/Eccube/Controller/Block/FaqController.php"><code>src/Eccube/Controller/Block/FaqController.php</code></a><br><a href="../../src/Eccube/Service/FaqStructuredDataService.php"><code>src/Eccube/Service/FaqStructuredDataService.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="FR-40-03"><td><a href="#FR-40-03"><code>FR-40-03</code></a></td><td>店舗の案内ページ</td><td>当サイトについて・ご利用ガイド・プライバシーポリシー・利用規約・特定商取引法に基づく表記を表示する。</td><td><a href="../../src/Eccube/Controller/HelpController.php"><code>src/Eccube/Controller/HelpController.php</code></a><br><a href="../../src/Eccube/Controller/TradeLawController.php"><code>src/Eccube/Controller/TradeLawController.php</code></a></td><td></td></tr>
+  <tr id="FR-40-04"><td><a href="#FR-40-04"><code>FR-40-04</code></a></td><td>ユーザー定義ページ</td><td>ページ管理で作成したページを /user_data 配下に表示する。</td><td><a href="../../src/Eccube/Controller/UserDataController.php"><code>src/Eccube/Controller/UserDataController.php</code></a></td><td></td></tr>
+  <tr id="FR-40-05"><td><a href="#FR-40-05"><code>FR-40-05</code></a></td><td>Cookie 同意</td><td>Cookie の利用目的ごとに同意を取得し、同意内容の変更と Cookie ポリシーの表示を行う。</td><td><a href="../../src/Eccube/Controller/CookieConsentController.php"><code>src/Eccube/Controller/CookieConsentController.php</code></a><br><a href="../../src/Eccube/Service/CookieConsentService.php"><code>src/Eccube/Service/CookieConsentService.php</code></a></td><td>4.4.0</td></tr>
+ </table>
+ <h3>表示・共通 <span class="badge">FR-50-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="FR-50-01"><td><a href="#FR-50-01"><code>FR-50-01</code></a></td><td>サイトマップ XML</td><td>商品・カテゴリ・ページのサイトマップを XML で出力する。</td><td><a href="../../src/Eccube/Controller/SitemapController.php"><code>src/Eccube/Controller/SitemapController.php</code></a></td><td></td></tr>
+  <tr id="FR-50-02"><td><a href="#FR-50-02"><code>FR-50-02</code></a></td><td>構造化データ（JSON-LD）</td><td>店舗（Organization・WebSite）・商品・FAQ の構造化データをページに出力する。</td><td><a href="../../src/Eccube/Service/SiteStructuredDataService.php"><code>src/Eccube/Service/SiteStructuredDataService.php</code></a><br><a href="../../src/Eccube/Service/ProductStructuredDataService.php"><code>src/Eccube/Service/ProductStructuredDataService.php</code></a></td><td></td></tr>
+  <tr id="FR-50-03"><td><a href="#FR-50-03"><code>FR-50-03</code></a></td><td>管理画面ログイン中の注意帯</td><td>同じブラウザで管理画面にログインしているとき、フロントの上部に注意帯を表示する。メンテナンス・デバッグの帯と並べて表示する。</td><td><a href="../../src/Eccube/EventListener/README.html"><code>src/Eccube/EventListener</code></a></td><td>4.4.0</td></tr>
+  <tr id="FR-50-04"><td><a href="#FR-50-04"><code>FR-50-04</code></a></td><td>送信回数の制限（スロットリング）</td><td>会員・管理者のログイン失敗と、購入確認・注文確定の連続送信を回数で制限する。回数の記録は DB に保存する。</td><td><a href="../../app/config/eccube/packages/eccube_rate_limiter.yaml"><code>app/config/eccube/packages/eccube_rate_limiter.yaml</code></a><br><a href="../../src/Eccube/EventListener/RateLimiterListener.php"><code>src/Eccube/EventListener/RateLimiterListener.php</code></a><br><a href="../../src/Eccube/Entity/RateLimiter.php"><code>src/Eccube/Entity/RateLimiter.php</code></a></td><td></td></tr>
+ </table>
+</section>
+<section data-section="admin" data-customer="true">
+ <h2>管理画面（店舗運営者）</h2>
+ <h3>ログイン・ホーム <span class="badge">AD-10-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-10-01"><td><a href="#AD-10-01"><code>AD-10-01</code></a></td><td>管理画面ログイン</td><td>メンバーが管理画面へログインする。パスワードを変更する。</td><td><a href="../../src/Eccube/Controller/Admin/AdminController.php"><code>src/Eccube/Controller/Admin/AdminController.php</code></a><br><a href="../../src/Eccube/Security/README.html"><code>src/Eccube/Security</code></a></td><td></td></tr>
+  <tr id="AD-10-02"><td><a href="#AD-10-02"><code>AD-10-02</code></a></td><td>2 段階認証</td><td>メンバーが認証アプリで 2 段階認証を設定・再設定する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/TwoFactorAuthController.php"><code>src/Eccube/Controller/Admin/Setting/System/TwoFactorAuthController.php</code></a><br><a href="../../src/Eccube/Service/TwoFactorAuthService.php"><code>src/Eccube/Service/TwoFactorAuthService.php</code></a></td><td></td></tr>
+  <tr id="AD-10-03"><td><a href="#AD-10-03"><code>AD-10-03</code></a></td><td>ホーム</td><td>売上状況・受注状況・在庫切れ商品・会員数を表示する。</td><td><a href="../../src/Eccube/Controller/Admin/AdminController.php"><code>src/Eccube/Controller/Admin/AdminController.php</code></a></td><td></td></tr>
+ </table>
+ <h3>商品管理 <span class="badge">AD-20-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-20-01"><td><a href="#AD-20-01"><code>AD-20-01</code></a></td><td>商品一覧</td><td>商品を検索し、公開状態の一括変更・複製・削除・CSV ダウンロードを行う。</td><td><a href="../../src/Eccube/Controller/Admin/Product/ProductController.php"><code>src/Eccube/Controller/Admin/Product/ProductController.php</code></a></td><td></td></tr>
+  <tr id="AD-20-02"><td><a href="#AD-20-02"><code>AD-20-02</code></a></td><td>商品登録</td><td>商品の基本情報・画像・カテゴリ・タグ・受注管理用メモを登録する。受注管理用メモは商品 CSV の登録・出力と受注 CSV にも項目がある。</td><td><a href="../../src/Eccube/Controller/Admin/Product/ProductController.php"><code>src/Eccube/Controller/Admin/Product/ProductController.php</code></a></td><td></td></tr>
+  <tr id="AD-20-03"><td><a href="#AD-20-03"><code>AD-20-03</code></a></td><td>商品規格・在庫</td><td>商品に規格を組み合わせて価格・在庫を登録する。在庫は ProductStock で持ち、在庫有無を ProductClass に持つ。</td><td><a href="../../src/Eccube/Controller/Admin/Product/ProductClassController.php"><code>src/Eccube/Controller/Admin/Product/ProductClassController.php</code></a><br><a href="../../src/Eccube/Service/ProductStockSynchronizer.php"><code>src/Eccube/Service/ProductStockSynchronizer.php</code></a></td><td></td></tr>
+  <tr id="AD-20-04"><td><a href="#AD-20-04"><code>AD-20-04</code></a></td><td>規格管理</td><td>規格（サイズ・カラー等）と規格分類を登録・並び替えする。</td><td><a href="../../src/Eccube/Controller/Admin/Product/ClassNameController.php"><code>src/Eccube/Controller/Admin/Product/ClassNameController.php</code></a><br><a href="../../src/Eccube/Controller/Admin/Product/ClassCategoryController.php"><code>src/Eccube/Controller/Admin/Product/ClassCategoryController.php</code></a></td><td></td></tr>
+  <tr id="AD-20-05"><td><a href="#AD-20-05"><code>AD-20-05</code></a></td><td>カテゴリ管理</td><td>カテゴリを階層で登録・並び替えする。</td><td><a href="../../src/Eccube/Controller/Admin/Product/CategoryController.php"><code>src/Eccube/Controller/Admin/Product/CategoryController.php</code></a></td><td></td></tr>
+  <tr id="AD-20-06"><td><a href="#AD-20-06"><code>AD-20-06</code></a></td><td>カテゴリ別 FAQ</td><td>カテゴリごとに表示する FAQ を選ぶ。</td><td><a href="../../src/Eccube/Controller/Admin/Product/CategoryFaqController.php"><code>src/Eccube/Controller/Admin/Product/CategoryFaqController.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="AD-20-07"><td><a href="#AD-20-07"><code>AD-20-07</code></a></td><td>タグ管理</td><td>商品タグを登録・並び替えする。</td><td><a href="../../src/Eccube/Controller/Admin/Product/TagController.php"><code>src/Eccube/Controller/Admin/Product/TagController.php</code></a></td><td></td></tr>
+  <tr id="AD-20-08"><td><a href="#AD-20-08"><code>AD-20-08</code></a></td><td>商品 CSV 登録</td><td>CSV から商品を一括で登録・更新する。</td><td><a href="../../src/Eccube/Controller/Admin/Product/CsvImportController.php"><code>src/Eccube/Controller/Admin/Product/CsvImportController.php</code></a><br><a href="../../src/Eccube/Service/CsvImportService.php"><code>src/Eccube/Service/CsvImportService.php</code></a></td><td></td></tr>
+  <tr id="AD-20-09"><td><a href="#AD-20-09"><code>AD-20-09</code></a></td><td>規格・カテゴリ CSV 登録</td><td>CSV から規格・規格分類・カテゴリを一括で登録・更新する。</td><td><a href="../../src/Eccube/Controller/Admin/Product/CsvImportController.php"><code>src/Eccube/Controller/Admin/Product/CsvImportController.php</code></a></td><td></td></tr>
+ </table>
+ <h3>受注管理 <span class="badge">AD-30-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-30-01"><td><a href="#AD-30-01"><code>AD-30-01</code></a></td><td>受注一覧</td><td>受注を検索し、対応状況の一括変更・メール一括送信・CSV ダウンロードを行う。</td><td><a href="../../src/Eccube/Controller/Admin/Order/README.html"><code>src/Eccube/Controller/Admin/Order</code></a></td><td></td></tr>
+  <tr id="AD-30-02"><td><a href="#AD-30-02"><code>AD-30-02</code></a></td><td>受注登録・編集</td><td>受注の明細・お届け先・支払方法・入金日を登録・編集し、商品の受注管理用メモを確認する。</td><td><a href="../../src/Eccube/Controller/Admin/Order/README.html"><code>src/Eccube/Controller/Admin/Order</code></a><br><a href="../../src/Eccube/Service/PurchaseFlow/README.html"><code>src/Eccube/Service/PurchaseFlow</code></a></td><td></td></tr>
+  <tr id="AD-30-03"><td><a href="#AD-30-03"><code>AD-30-03</code></a></td><td>出荷登録・編集</td><td>出荷ごとにお問い合わせ番号・出荷日を登録し、出荷済みにする。</td><td><a href="../../src/Eccube/Controller/Admin/Order/README.html"><code>src/Eccube/Controller/Admin/Order</code></a></td><td></td></tr>
+  <tr id="AD-30-04"><td><a href="#AD-30-04"><code>AD-30-04</code></a></td><td>出荷 CSV 登録</td><td>CSV から出荷情報を一括で登録する。</td><td><a href="../../src/Eccube/Controller/Admin/Order/README.html"><code>src/Eccube/Controller/Admin/Order</code></a></td><td></td></tr>
+  <tr id="AD-30-05"><td><a href="#AD-30-05"><code>AD-30-05</code></a></td><td>受注メール送信</td><td>受注に対してメールテンプレートを選んでメールを送り、送信履歴を残す。</td><td><a href="../../src/Eccube/Controller/Admin/Order/README.html"><code>src/Eccube/Controller/Admin/Order</code></a><br><a href="../../src/Eccube/Service/MailService.php"><code>src/Eccube/Service/MailService.php</code></a></td><td></td></tr>
+  <tr id="AD-30-06"><td><a href="#AD-30-06"><code>AD-30-06</code></a></td><td>納品書 PDF 出力</td><td>受注から納品書 PDF を出力する。店舗情報のどの項目を載せるかは基本設定で選ぶ。</td><td><a href="../../src/Eccube/Service/OrderPdfService.php"><code>src/Eccube/Service/OrderPdfService.php</code></a><br><a href="../../src/Eccube/Service/Pdf"><code>src/Eccube/Service/Pdf</code></a></td><td></td></tr>
+  <tr id="AD-30-07"><td><a href="#AD-30-07"><code>AD-30-07</code></a></td><td>返品申請管理</td><td>購入者の返品申請を一覧・確認し、処理中・承認・却下・追加情報依頼などの対応状況を更新する。購入者へ通知メールを送る。</td><td><a href="../../src/Eccube/Controller/Admin/Order/README.html"><code>src/Eccube/Controller/Admin/Order</code></a><br><a href="../../src/Eccube/Service/RefundRequestService.php"><code>src/Eccube/Service/RefundRequestService.php</code></a></td><td>4.4.0</td></tr>
+ </table>
+ <h3>会員管理 <span class="badge">AD-40-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-40-01"><td><a href="#AD-40-01"><code>AD-40-01</code></a></td><td>会員一覧</td><td>会員を検索し、CSV ダウンロード・仮会員への再送・削除を行う。</td><td><a href="../../src/Eccube/Controller/Admin/Customer/CustomerController.php"><code>src/Eccube/Controller/Admin/Customer/CustomerController.php</code></a></td><td></td></tr>
+  <tr id="AD-40-02"><td><a href="#AD-40-02"><code>AD-40-02</code></a></td><td>会員登録・編集</td><td>会員情報とお届け先を登録・編集し、購入履歴を確認する。</td><td><a href="../../src/Eccube/Controller/Admin/Customer/CustomerEditController.php"><code>src/Eccube/Controller/Admin/Customer/CustomerEditController.php</code></a><br><a href="../../src/Eccube/Controller/Admin/Customer/CustomerDeliveryEditController.php"><code>src/Eccube/Controller/Admin/Customer/CustomerDeliveryEditController.php</code></a></td><td></td></tr>
+ </table>
+ <h3>コンテンツ管理 <span class="badge">AD-50-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-50-01"><td><a href="#AD-50-01"><code>AD-50-01</code></a></td><td>新着情報管理</td><td>新着情報を登録・並び替えする。</td><td><a href="../../src/Eccube/Controller/Admin/Content/NewsController.php"><code>src/Eccube/Controller/Admin/Content/NewsController.php</code></a></td><td></td></tr>
+  <tr id="AD-50-02"><td><a href="#AD-50-02"><code>AD-50-02</code></a></td><td>FAQ 管理</td><td>よくある質問を登録・並び替えする。</td><td><a href="../../src/Eccube/Controller/Admin/Content/FaqController.php"><code>src/Eccube/Controller/Admin/Content/FaqController.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="AD-50-03"><td><a href="#AD-50-03"><code>AD-50-03</code></a></td><td>ファイル管理</td><td>html/user_data 配下へファイルをアップロード・削除する。</td><td><a href="../../src/Eccube/Controller/Admin/Content/FileController.php"><code>src/Eccube/Controller/Admin/Content/FileController.php</code></a></td><td></td></tr>
+  <tr id="AD-50-04"><td><a href="#AD-50-04"><code>AD-50-04</code></a></td><td>レイアウト管理</td><td>レイアウトを作成し、ブロックの配置を決める。</td><td><a href="../../src/Eccube/Controller/Admin/Content/LayoutController.php"><code>src/Eccube/Controller/Admin/Content/LayoutController.php</code></a></td><td></td></tr>
+  <tr id="AD-50-05"><td><a href="#AD-50-05"><code>AD-50-05</code></a></td><td>ページ管理</td><td>ページのメタ情報・テンプレート・レイアウトを登録・編集する。</td><td><a href="../../src/Eccube/Controller/Admin/Content/PageController.php"><code>src/Eccube/Controller/Admin/Content/PageController.php</code></a><br><a href="../../src/Eccube/Service/Content"><code>src/Eccube/Service/Content</code></a></td><td></td></tr>
+  <tr id="AD-50-06"><td><a href="#AD-50-06"><code>AD-50-06</code></a></td><td>CSS・JavaScript 管理</td><td>customize.css / customize.js を編集する。</td><td><a href="../../src/Eccube/Controller/Admin/Content/CssController.php"><code>src/Eccube/Controller/Admin/Content/CssController.php</code></a><br><a href="../../src/Eccube/Controller/Admin/Content/JsController.php"><code>src/Eccube/Controller/Admin/Content/JsController.php</code></a></td><td></td></tr>
+  <tr id="AD-50-07"><td><a href="#AD-50-07"><code>AD-50-07</code></a></td><td>ブロック管理</td><td>ブロックのテンプレートを登録・編集する。</td><td><a href="../../src/Eccube/Controller/Admin/Content/BlockController.php"><code>src/Eccube/Controller/Admin/Content/BlockController.php</code></a><br><a href="../../src/Eccube/Service/Content"><code>src/Eccube/Service/Content</code></a></td><td></td></tr>
+  <tr id="AD-50-08"><td><a href="#AD-50-08"><code>AD-50-08</code></a></td><td>キャッシュ管理</td><td>実行時のキャッシュを削除する。</td><td><a href="../../src/Eccube/Controller/Admin/Content/CacheController.php"><code>src/Eccube/Controller/Admin/Content/CacheController.php</code></a></td><td></td></tr>
+  <tr id="AD-50-09"><td><a href="#AD-50-09"><code>AD-50-09</code></a></td><td>メンテナンス管理</td><td>メンテナンスモードを切り替え、フロントにメンテナンス画面を表示する。</td><td><a href="../../src/Eccube/Controller/Admin/Content/MaintenanceController.php"><code>src/Eccube/Controller/Admin/Content/MaintenanceController.php</code></a></td><td></td></tr>
+  <tr id="AD-50-10"><td><a href="#AD-50-10"><code>AD-50-10</code></a></td><td>エージェントコマース設定</td><td>AI エージェント経由の購入（ACP・UCP）の状態を確認し、商品フィードの送信・カタログキャッシュの再生成を行う。</td><td><a href="../../src/Eccube/Controller/Admin/AgentCommerce/AgentCommerceController.php"><code>src/Eccube/Controller/Admin/AgentCommerce/AgentCommerceController.php</code></a><br><a href="../../src/Eccube/Service/AgentCommerce/README.html"><code>src/Eccube/Service/AgentCommerce</code></a></td><td>4.4.0</td></tr>
+ </table>
+ <h3>店舗設定 <span class="badge">AD-60-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-60-01"><td><a href="#AD-60-01"><code>AD-60-01</code></a></td><td>基本設定</td><td>店名・住所・連絡先・税・ポイント・在庫などの店舗設定を登録する。納品書 PDF に載せる項目を選ぶ。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/ShopController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/ShopController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-02"><td><a href="#AD-60-02"><code>AD-60-02</code></a></td><td>特定商取引法設定</td><td>特定商取引法に基づく表記を登録し、購入確認画面への表示を選ぶ。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/TradeLawController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/TradeLawController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-03"><td><a href="#AD-60-03"><code>AD-60-03</code></a></td><td>利用規約設定</td><td>会員登録時に表示する利用規約のページを編集する（ページ管理の利用規約ページを開く）。</td><td><a href="../../src/Eccube/Controller/Admin/Content/PageController.php"><code>src/Eccube/Controller/Admin/Content/PageController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-04"><td><a href="#AD-60-04"><code>AD-60-04</code></a></td><td>支払方法設定</td><td>支払方法・手数料・利用条件を登録・並び替えする。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/PaymentController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/PaymentController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-05"><td><a href="#AD-60-05"><code>AD-60-05</code></a></td><td>配送方法設定</td><td>配送方法・お届け時間・都道府県別の送料・利用できる支払方法を登録する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/DeliveryController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/DeliveryController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-06"><td><a href="#AD-60-06"><code>AD-60-06</code></a></td><td>税率設定</td><td>税率と適用日時・端数処理を登録する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/TaxRuleController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/TaxRuleController.php</code></a><br><a href="../../src/Eccube/Service/TaxRuleService.php"><code>src/Eccube/Service/TaxRuleService.php</code></a></td><td></td></tr>
+  <tr id="AD-60-07"><td><a href="#AD-60-07"><code>AD-60-07</code></a></td><td>メール設定</td><td>送信するメールのテンプレートを編集する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/MailController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/MailController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-08"><td><a href="#AD-60-08"><code>AD-60-08</code></a></td><td>CSV 出力項目設定</td><td>各 CSV に出力する項目と並び順を選ぶ。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/CsvController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/CsvController.php</code></a><br><a href="../../src/Eccube/Service/CsvExportService.php"><code>src/Eccube/Service/CsvExportService.php</code></a></td><td></td></tr>
+  <tr id="AD-60-09"><td><a href="#AD-60-09"><code>AD-60-09</code></a></td><td>CSV の数式対策</td><td>基本設定で有効にすると、CSV のダウンロードで = + - @ などで始まる値の先頭に &apos; を付け、表計算ソフトが数式として実行しないようにする。取り込みでは付けた &apos; を外す。</td><td><a href="../../src/Eccube/Service/CsvExportService.php"><code>src/Eccube/Service/CsvExportService.php</code></a><br><a href="../../src/Eccube/Service/CsvImportService.php"><code>src/Eccube/Service/CsvImportService.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="AD-60-10"><td><a href="#AD-60-10"><code>AD-60-10</code></a></td><td>受注対応状況設定</td><td>受注の対応状況の名称・色・マイページでの表示名を設定する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/OrderStatusController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/OrderStatusController.php</code></a></td><td></td></tr>
+  <tr id="AD-60-11"><td><a href="#AD-60-11"><code>AD-60-11</code></a></td><td>定休日カレンダー設定</td><td>定休日を登録し、カレンダーブロックへ表示する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/Shop/CalendarController.php"><code>src/Eccube/Controller/Admin/Setting/Shop/CalendarController.php</code></a></td><td></td></tr>
+ </table>
+ <h3>システム設定 <span class="badge">AD-70-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-70-01"><td><a href="#AD-70-01"><code>AD-70-01</code></a></td><td>メンバー管理</td><td>管理画面のメンバーを登録・編集・並び替えする。メンバーの 2 段階認証をリセットする。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/MemberController.php"><code>src/Eccube/Controller/Admin/Setting/System/MemberController.php</code></a></td><td></td></tr>
+  <tr id="AD-70-02"><td><a href="#AD-70-02"><code>AD-70-02</code></a></td><td>権限管理</td><td>権限ごとにアクセスを拒否する URL を設定する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/AuthorityController.php"><code>src/Eccube/Controller/Admin/Setting/System/AuthorityController.php</code></a></td><td></td></tr>
+  <tr id="AD-70-03"><td><a href="#AD-70-03"><code>AD-70-03</code></a></td><td>セキュリティ管理</td><td>管理画面の URL・接続を許可・拒否する IP・SSL 強制などを設定する。.env が反映されない環境では警告して保存を止める。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/SecurityController.php"><code>src/Eccube/Controller/Admin/Setting/System/SecurityController.php</code></a><br><a href="../../src/Eccube/Service/EnvFileService.php"><code>src/Eccube/Service/EnvFileService.php</code></a></td><td></td></tr>
+  <tr id="AD-70-04"><td><a href="#AD-70-04"><code>AD-70-04</code></a></td><td>ログイン履歴</td><td>管理画面へのログインの成否を検索・表示する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/LoginHistoryController.php"><code>src/Eccube/Controller/Admin/Setting/System/LoginHistoryController.php</code></a></td><td></td></tr>
+  <tr id="AD-70-05"><td><a href="#AD-70-05"><code>AD-70-05</code></a></td><td>ログ表示</td><td>アプリケーションのログを画面で表示する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/LogController.php"><code>src/Eccube/Controller/Admin/Setting/System/LogController.php</code></a></td><td></td></tr>
+  <tr id="AD-70-06"><td><a href="#AD-70-06"><code>AD-70-06</code></a></td><td>マスタデータ管理</td><td>都道府県・職業などのマスタデータを編集する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/MasterdataController.php"><code>src/Eccube/Controller/Admin/Setting/System/MasterdataController.php</code></a></td><td></td></tr>
+  <tr id="AD-70-07"><td><a href="#AD-70-07"><code>AD-70-07</code></a></td><td>システム情報</td><td>EC-CUBE・PHP・DB・Web サーバーのバージョンと PHP の設定を表示する。</td><td><a href="../../src/Eccube/Controller/Admin/Setting/System/SystemController.php"><code>src/Eccube/Controller/Admin/Setting/System/SystemController.php</code></a></td><td></td></tr>
+  <tr id="AD-70-08"><td><a href="#AD-70-08"><code>AD-70-08</code></a></td><td>読み取り専用モード</td><td>ECCUBE_RESTRICT_FILE_UPLOAD=1 で、ファイルへ書き込む画面を読み取り専用にし、代わりの CLI コマンドを案内する。</td><td><a href="../../app/config/eccube/packages/eccube.yaml"><code>app/config/eccube/packages/eccube.yaml</code></a><br><a href="../../src/Eccube/EventListener/RestrictFileUploadListener.php"><code>src/Eccube/EventListener/RestrictFileUploadListener.php</code></a></td><td>4.4.0</td></tr>
+ </table>
+ <h3>オーナーズストア <span class="badge">AD-80-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="AD-80-01"><td><a href="#AD-80-01"><code>AD-80-01</code></a></td><td>プラグインの検索・購入</td><td>オーナーズストアのプラグインを検索し、インストールする。</td><td><a href="../../src/Eccube/Controller/Admin/Store/OwnerStoreController.php"><code>src/Eccube/Controller/Admin/Store/OwnerStoreController.php</code></a></td><td></td></tr>
+  <tr id="AD-80-02"><td><a href="#AD-80-02"><code>AD-80-02</code></a></td><td>プラグイン一覧</td><td>インストール済みのプラグインを有効化・無効化・アップデート・削除し、設定画面へ進む。</td><td><a href="../../src/Eccube/Controller/Admin/Store/PluginController.php"><code>src/Eccube/Controller/Admin/Store/PluginController.php</code></a><br><a href="../../src/Eccube/Plugin/README.html"><code>src/Eccube/Plugin</code></a></td><td></td></tr>
+  <tr id="AD-80-03"><td><a href="#AD-80-03"><code>AD-80-03</code></a></td><td>テンプレート管理</td><td>デザインテンプレートを追加・切り替え・ダウンロード・削除する。</td><td><a href="../../src/Eccube/Controller/Admin/Store/TemplateController.php"><code>src/Eccube/Controller/Admin/Store/TemplateController.php</code></a></td><td></td></tr>
+  <tr id="AD-80-04"><td><a href="#AD-80-04"><code>AD-80-04</code></a></td><td>認証キー設定</td><td>オーナーズストアの認証キーを登録する。新しく発行する前に注意を表示する。</td><td><a href="../../src/Eccube/Controller/Admin/Store/OwnerStoreController.php"><code>src/Eccube/Controller/Admin/Store/OwnerStoreController.php</code></a></td><td></td></tr>
+ </table>
+</section>
+<section data-section="developer" data-customer="true">
+ <h2>開発者・運用者（CLI・API・拡張）</h2>
+ <h3>インストール・動作環境 <span class="badge">DV-10-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="DV-10-01"><td><a href="#DV-10-01"><code>DV-10-01</code></a></td><td>Web インストーラー</td><td>ブラウザから動作要件の確認・DB 設定・管理者登録を行ってインストールする。完了画面から同梱のプラグインを有効化する。</td><td><a href="../../src/Eccube/Controller/Install"><code>src/Eccube/Controller/Install</code></a><br><a href="../../src/Eccube/Controller/InstallPluginController.php"><code>src/Eccube/Controller/InstallPluginController.php</code></a></td><td></td></tr>
+  <tr id="DV-10-02"><td><a href="#DV-10-02"><code>DV-10-02</code></a></td><td>CLI インストール</td><td>eccube:install でコマンドラインからインストールする。初期データ（マスタ・管理者）は eccube:fixtures:load で投入する（eccube:install から呼ばれる）。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td></td></tr>
+  <tr id="DV-10-03"><td><a href="#DV-10-03"><code>DV-10-03</code></a></td><td>動作要件</td><td>対応する PHP・データベース・PHP 拡張モジュールのバージョン。</td><td><a href="../../composer.json"><code>composer.json</code></a><br><a href="../../index.php"><code>index.php</code></a></td><td></td></tr>
+  <tr id="DV-10-04"><td><a href="#DV-10-04"><code>DV-10-04</code></a></td><td>環境変数の読み込み</td><td>.env・.env.local・.env.local.php を symfony/dotenv で読み込む。</td><td><a href="../../index.php"><code>index.php</code></a><br><a href="../../bin/console"><code>bin/console</code></a></td><td></td></tr>
+  <tr id="DV-10-05"><td><a href="#DV-10-05"><code>DV-10-05</code></a></td><td>Docker イメージ</td><td>公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。</td><td><a href="../../Dockerfile"><code>Dockerfile</code></a><br><a href="../../docker-compose.yml"><code>docker-compose.yml</code></a></td><td></td></tr>
+ </table>
+ <h3>運用（CLI） <span class="badge">DV-20-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="DV-20-01"><td><a href="#DV-20-01"><code>DV-20-01</code></a></td><td>キャッシュの生成</td><td>eccube:cache:build で var/build を CLI から生成する。実行時に書き込むキャッシュは var/runtime に分ける。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-20-02"><td><a href="#DV-20-02"><code>DV-20-02</code></a></td><td>Web サーバーと CLI の権限分離</td><td>Web サーバーと CLI を別ユーザーで動かし、書き込める場所を分ける構成。eccube:doctor:permissions で権限を診断する。</td><td><a href="../../src/Eccube/Service/Permission"><code>src/Eccube/Service/Permission</code></a><br><a href="../../docker-compose.permission-lanes.yml"><code>docker-compose.permission-lanes.yml</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-20-03"><td><a href="#DV-20-03"><code>DV-20-03</code></a></td><td>ページ・ブロック・メールテンプレートの CLI 操作</td><td>eccube:page:* / eccube:block:* / eccube:mail-template:* / eccube:asset:* で管理画面と同じ検証を通して登録・削除する。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a><br><a href="../../src/Eccube/Service/Content"><code>src/Eccube/Service/Content</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-20-04"><td><a href="#DV-20-04"><code>DV-20-04</code></a></td><td>user_data・.env の CLI 操作</td><td>eccube:user-data:* で html/user_data のファイルを、eccube:env:* で .env を操作する。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-20-05"><td><a href="#DV-20-05"><code>DV-20-05</code></a></td><td>署名鍵の CLI 操作</td><td>eccube:keystore:* で署名鍵を一覧・表示・事前生成する。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-20-06"><td><a href="#DV-20-06"><code>DV-20-06</code></a></td><td>コンテンツ定義の書き出し・取り込み</td><td>eccube:contents:export / import で、DB にあるページ・ブロック・メールテンプレート・レイアウトの定義を yaml で入出力する。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a><br><a href="../../src/Eccube/Service/Content"><code>src/Eccube/Service/Content</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-20-07"><td><a href="#DV-20-07"><code>DV-20-07</code></a></td><td>プラグインの CLI 操作</td><td>eccube:plugin:* と eccube:composer:* でプラグインをインストール・有効化・無効化・削除する。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a><br><a href="../../src/Eccube/Service/Composer"><code>src/Eccube/Service/Composer</code></a></td><td></td></tr>
+  <tr id="DV-20-08"><td><a href="#DV-20-08"><code>DV-20-08</code></a></td><td>定期実行するバッチ</td><td>古いカートの削除（eccube:delete-carts）と、返品申請の一時ファイルの削除（eccube:refund-request:cleanup-temp-files）を行う。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td></td></tr>
+  <tr id="DV-20-09"><td><a href="#DV-20-09"><code>DV-20-09</code></a></td><td>ダミーデータの生成</td><td>eccube:fixtures:generate で商品・会員・受注のダミーデータを作る。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td></td></tr>
+ </table>
+ <h3>API <span class="badge">DV-30-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="DV-30-01"><td><a href="#DV-30-01"><code>DV-30-01</code></a></td><td>MCP サーバー</td><td>商品・在庫・受注・会員・プラグインの管理データを、AI クライアントから読み取り専用で参照する MCP サーバー。認可は API プラグインの OAuth2 scope に委ねる。</td><td><a href="../../src/Eccube/Service/Mcp"><code>src/Eccube/Service/Mcp</code></a><br><a href="../../app/config/eccube/packages/mcp.yaml"><code>app/config/eccube/packages/mcp.yaml</code></a><br><a href="../../docs/mcp"><code>docs/mcp</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-30-02"><td><a href="#DV-30-02"><code>DV-30-02</code></a></td><td>エージェントコマース（ACP）</td><td>Agentic Commerce Protocol の discovery・商品フィード・チェックアウトセッションで、AI エージェントからの購入を受け付ける。商品フィードは eccube:acp-feed:push で CLI からも送信する。</td><td><a href="../../src/Eccube/Service/AgentCommerce/README.html"><code>src/Eccube/Service/AgentCommerce</code></a><br><a href="../../src/Eccube/Controller/AgentCommerce"><code>src/Eccube/Controller/AgentCommerce</code></a><br><a href="../../src/Eccube/Command/AgentCommerce/AcpFeedPushCommand.php"><code>src/Eccube/Command/AgentCommerce/AcpFeedPushCommand.php</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-30-03"><td><a href="#DV-30-03"><code>DV-30-03</code></a></td><td>エージェントコマース（UCP）</td><td>Universal Commerce Protocol の discovery・カタログ検索・チェックアウトセッションで、AI エージェントからの購入を受け付ける。カタログのキャッシュは eccube:ucp-catalog:cache:warmup / clear で CLI からも生成・削除する。</td><td><a href="../../src/Eccube/Service/AgentCommerce/README.html"><code>src/Eccube/Service/AgentCommerce</code></a><br><a href="../../src/Eccube/Controller/AgentCommerce"><code>src/Eccube/Controller/AgentCommerce</code></a><br><a href="../../src/Eccube/Command/AgentCommerce"><code>src/Eccube/Command/AgentCommerce</code></a></td><td>4.4.0</td></tr>
+ </table>
+ <h3>拡張 <span class="badge">DV-40-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="DV-40-01"><td><a href="#DV-40-01"><code>DV-40-01</code></a></td><td>プラグイン機構</td><td>app/Plugin に置いたプラグインのライフサイクル（インストール・有効化・無効化・アップデート・削除）と拡張ポイント。</td><td><a href="../../src/Eccube/Plugin/README.html"><code>src/Eccube/Plugin</code></a><br><a href="../../app/Plugin/README.html"><code>app/Plugin</code></a></td><td></td></tr>
+  <tr id="DV-40-02"><td><a href="#DV-40-02"><code>DV-40-02</code></a></td><td>プラグインの雛形生成</td><td>eccube:plugin:generate でプラグインの雛形を作る。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td></td></tr>
+  <tr id="DV-40-03"><td><a href="#DV-40-03"><code>DV-40-03</code></a></td><td>app/Customize によるカスタマイズ</td><td>エンティティのトレイト拡張・フォーム拡張・サービスの上書きを、コアを改変せずに行う。</td><td><a href="../../app/Customize/README.html"><code>app/Customize</code></a><br><a href="../../src/Eccube/Entity/README.html"><code>src/Eccube/Entity</code></a></td><td></td></tr>
+  <tr id="DV-40-04"><td><a href="#DV-40-04"><code>DV-40-04</code></a></td><td>エンティティプロキシとスキーマ更新</td><td>eccube:generate:proxies でトレイトを合成したエンティティを生成し、eccube:schema:update で DB に反映する。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a><br><a href="../../src/Eccube/Doctrine/README.html"><code>src/Eccube/Doctrine</code></a></td><td></td></tr>
+  <tr id="DV-40-05"><td><a href="#DV-40-05"><code>DV-40-05</code></a></td><td>DB マイグレーション</td><td>doctrine:migrations:migrate で、スキーマ更新では扱えないデータ投入・型変更を適用する。</td><td><a href="../../app/DoctrineMigrations/README.html"><code>app/DoctrineMigrations</code></a></td><td></td></tr>
+  <tr id="DV-40-06"><td><a href="#DV-40-06"><code>DV-40-06</code></a></td><td>イベントによる拡張</td><td>テンプレートイベント・コントローラーイベント・Doctrine イベントで処理を差し込む。</td><td><a href="../../src/Eccube/EventListener/README.html"><code>src/Eccube/EventListener</code></a></td><td></td></tr>
+  <tr id="DV-40-07"><td><a href="#DV-40-07"><code>DV-40-07</code></a></td><td>ブロックの描画（ESI・fragments）</td><td>ブロックは inline で描画する。ESI・fragments は既定で無効。</td><td><a href="../../app/config/eccube/packages/framework.yaml"><code>app/config/eccube/packages/framework.yaml</code></a></td><td></td></tr>
+  <tr id="DV-40-08"><td><a href="#DV-40-08"><code>DV-40-08</code></a></td><td>フロントエンドのビルド</td><td>Sass と JavaScript を esbuild でビルドする。管理画面の並び替えは SortableJS を使う。</td><td><a href="../../esbuild.config.mjs"><code>esbuild.config.mjs</code></a><br><a href="../../package.json"><code>package.json</code></a></td><td></td></tr>
+ </table>
+ <h3>開発者向けドキュメント <span class="badge">DV-50-xx</span></h3>
+ <table>
+  <tr><th class="id">機能 ID</th><th>機能</th><th>概要</th><th>関連ディレクトリ</th><th class="ver">導入バージョン</th></tr>
+  <tr id="DV-50-01"><td><a href="#DV-50-01"><code>DV-50-01</code></a></td><td>AI コーディングエージェント向けの規約</td><td>AGENTS.md と .claude/skills の Skill で、AI エージェントが従う規約をレイヤ別にまとめる。</td><td><a href="../../AGENTS.md"><code>AGENTS.md</code></a><br><a href="../../.claude/skills"><code>.claude/skills</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-50-02"><td><a href="#DV-50-02"><code>DV-50-02</code></a></td><td>コード近接の仕様書</td><td>機能ディレクトリごとの README.html と仕様書ポータル。eccube:docs:export で集約して出力する。</td><td><a href="../../README.html"><code>README.html</code></a><br><a href="../../src/Eccube/Service/Docs"><code>src/Eccube/Service/Docs</code></a></td><td>4.4.0</td></tr>
+  <tr id="DV-50-03"><td><a href="#DV-50-03"><code>DV-50-03</code></a></td><td>機能の一覧</td><td>このページ。利用者から見た機能を機能 ID で一覧し、結合試験項目書の観点表から参照される。</td><td><a href="../../docs/features/features.yaml"><code>docs/features/features.yaml</code></a><br><a href="../../.github/bin/feature-list.php"><code>.github/bin/feature-list.php</code></a></td><td>4.4.0</td></tr>
+ </table>
+</section>
+</body>
+</html>

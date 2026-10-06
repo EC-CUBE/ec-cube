@@ -22,6 +22,7 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 | `.claude/skills/<name>/SKILL.md` | レイヤ別の詳細規約（末端）。`.codex/skills`・`.agents/skills` は symlink 共有 | Skill 対応ツール（詳細は「Skill の配置と各ツールの読み込み」節） |
 | `<機能ディレクトリ>/README.html` | コード近接の**人間向けの仕様書**（挙動・なぜ・図表）。`data-section`/`data-customer` で章立て（顧客提出フィルタ用） | 人間（開発者・新規参加者・顧客） |
 | `<機能ディレクトリ>/README.md` | コード近接の**短い索引**。GitHub のディレクトリビューで自動表示され、`README.html`（人間向け仕様）と `SKILL.md`（AI 向け規約）への道標を兼ねる | GitHub 閲覧者・AI エージェント |
+| `docs/features/features.yaml` | **利用者から見た機能の一覧**の正本（機能 ID / 機能 / 概要 / 関連ディレクトリ / 本体 PR / 導入バージョン）。`docs/features/features.html` は生成物（本体 PR は表示しない） | 人間（試験設計者・開発者）・CI |
 
 ### 定義ファイルを増やすときの原則
 
@@ -43,14 +44,15 @@ AI エージェント向けの情報は、この `AGENTS.md` を**正典（ハ�
 | `.claude/skills/<name>/SKILL.md` | AI エージェント | **実装の書き方ルール**（規約・DO/DON'T）。仕様説明は `README.html` に委ね相互リンク |
 
 - **棲み分け**: `README.html`＝「機能の仕様（人間向け）」、`SKILL.md`＝「コードの書き方（AI 向け）」。読者と目的が異なるため両立する。
-- **入口（TOP ページ）**: リポジトリルートの [`README.html`](./README.html) が全 `README.html` へのポータル（目次）。ビルド不要でブラウザで開ける。新しい `README.html` を配置したら、この目次にも 1 行追加する（漏れは CI `docs-check` が検出）。
+- **入口（TOP ページ）**: リポジトリルートの [`README.html`](./README.html) が全 `README.html` へのポータル（目次）。ビルド不要でブラウザで開ける。新しい `README.html`（または `docs/` 配下の HTML 文書）を配置したら、この目次にも 1 行追加する（漏れは CI `docs-check` が検出）。
 - **参照トポロジ**（既存の一方向ルールを維持）: `README.md`（索引）→ `README.html`（仕様）／ `SKILL.md`（規約）→ `AGENTS.md`（正典）。
   上流（`AGENTS.md`）から個別 README への下向き内容参照は足さない。
 - **ドメイン詳細は複製しない**: 受注 ER・ステートマシン・計算仕様など doc4 に既出のものは `README.html` から `https://doc4.ec-cube.net/` へリンクする。
 - **テンプレートと粒度**の基準はパイロット [`src/Eccube/Service/PurchaseFlow/README.html`](./src/Eccube/Service/PurchaseFlow/README.html)（＋ 同ディレクトリの `README.md`）。新規配置時はこれを金型にする。
   - `README.html` は自己完結 HTML。共通 CSS を将来当てられるよう過度なインライン装飾を避け、`data-customer="true"`＝顧客提出にも載る章 / `"false"`＝開発者向け（拡張・内部注意点）で振り分ける。
   - Skill が無いディレクトリ（例 `Doctrine/` `DependencyInjection/` `Attribute/` `Service/AgentCommerce/`）は `README.md` の SKILL 行を省き `README.html` のみを指す。
-- **集約出力・鮮度維持**: `bin/console eccube:docs:export [--filter=customer]` で全 `README.html` を集約出力できる（`--filter=customer` は `data-customer="true"` の章だけ抽出）。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。静的サイト化・本番公開先（doc4 への統合を含む）は **Issue #6906** で検討（未確定）。
+- **機能の一覧**（Issue #7225）: 利用者から見た機能を機能 ID で一覧した [`docs/features/features.yaml`](./docs/features/features.yaml) を正本とし、結合試験項目書（EC-CUBE/eccube-specification）の観点表がこの機能 ID を参照する。**機能を追加・変更する PR では同じ PR で `features.yaml` を更新し**、`php .github/bin/feature-list.php` で `docs/features/features.html` を作り直す（一致しないと CI `docs-check` が落ちる）。機能 ID は `FR`（フロント）/ `AD`（管理画面）/ `DV`（開発者・運用者）＋ グループ番号 2 桁 ＋ グループ内の連番 2 桁（例 `AD-20-01`。グループは 10 刻みで、間に足せる）で、採番後は変えず、廃止しても `removed` を付けて欠番に残す。`prs` には、その行の機能の仕様を変えることが主な目的の PR だけを載せる（不具合修正だけの PR や、別の機能を追加した PR の波及は載せない）。
+- **集約出力・鮮度維持**: `bin/console eccube:docs:export [--filter=customer]` で全 `README.html` と `docs/` 配下の HTML 文書（機能の一覧など）を集約出力できる（`--filter=customer` は `data-customer="true"` の章だけ抽出）。鮮度は PR テンプレートのチェック項目と CI（`docs-check`）で維持する。静的サイト化・本番公開先（doc4 への統合を含む）は **Issue #6906** で検討（未確定）。
 
 ## プロジェクト概要
 
