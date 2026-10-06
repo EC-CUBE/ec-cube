@@ -697,7 +697,7 @@ features:
     dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce]
     since: 4.4.0
     prs:
-      4.4.0: [6802, 6815, 6825, 6843, 6872, 7032]
+      4.4.0: [6802, 6815, 6825, 6843, 6872]
 
   - id: DV-30-03
     name: エージェントコマース（UCP）
@@ -705,7 +705,7 @@ features:
     dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce]
     since: 4.4.0
     prs:
-      4.4.0: [6802, 6815, 6825, 6837, 6872, 7032, 7127]
+      4.4.0: [6802, 6815, 6825, 6837, 6872]
 
   # ---------------------------------------------------------------- DV-40-xx 拡張
   - id: DV-40-01
