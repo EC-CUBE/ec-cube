@@ -37,7 +37,7 @@
 - [ ] コードレビュー
 - [ ] E2E/Unit テスト確認(テストの追加・変更が必要かどうか)
 - [ ] コード変更に対応する `README.html`/`README.md`（コード近接の仕様書・索引）の更新漏れがないか
-- [ ] 機能を追加・変更した場合、`docs/features/features.yaml`（機能の一覧）を更新し `docs/features/README.html` を作り直したか
+- [ ] 機能を追加・変更した場合、`docs/features/features.yaml`（機能の一覧）を更新し `docs/features/features.html` を作り直したか
 - [ ] 互換性が保持されているか
 - [ ] セキュリティ上の問題がないか
   - [ ] 権限を超えた操作が可能にならないか

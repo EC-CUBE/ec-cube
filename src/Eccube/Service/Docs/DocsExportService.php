@@ -15,12 +15,14 @@ namespace Eccube\Service\Docs;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * コード近接の仕様書（README.html）を集約・出力するサービス（Issue #6906 §8.2）.
  *
- * リポジトリ内の全 README.html を走査し、そのまま（開発者向けフル版）または
- * data-customer="true" の章だけを残した顧客提出向けフィルタ版として出力ディレクトリへ書き出す。
+ * リポジトリ内の全 README.html と、docs/ 配下の HTML 文書（例: docs/features/features.html）を走査し、
+ * そのまま（開発者向けフル版）または data-customer="true" の章だけを残した顧客提出向けフィルタ版として
+ * 出力ディレクトリへ書き出す。
  * 出力 HTML はブラウザの「印刷 → PDF」で顧客提出用 PDF に変換できる。
  *
  * 静的サイトジェネレータ（Astro Starlight / VitePress / Antora 等）の入力にもこの出力を用いる想定。
@@ -36,12 +38,15 @@ class DocsExportService
     /** 走査から除外するディレクトリ名. */
     private const EXCLUDED_DIRS = ['vendor', 'node_modules', 'var', '.git'];
 
+    /** README.html 以外の HTML 文書も出力するディレクトリ（$sourceDir からの相対パス）. */
+    private const DOCUMENT_DIR = 'docs/';
+
     public function __construct(private readonly Filesystem $filesystem = new Filesystem())
     {
     }
 
     /**
-     * $sourceDir 配下の全 README.html を $outputDir へ出力する.
+     * $sourceDir 配下の全 README.html と docs/ 配下の HTML 文書を $outputDir へ出力する.
      *
      * @param string $filter self::FILTER_ALL | self::FILTER_CUSTOMER
      *
@@ -57,9 +62,9 @@ class DocsExportService
 
         $finder = (new Finder())
             ->files()
-            ->name('README.html')
             ->exclude(self::EXCLUDED_DIRS)
-            ->in($sourceDir);
+            ->in($sourceDir)
+            ->filter(static fn (\SplFileInfo $file): bool => self::isDocument($file));
 
         $written = [];
         foreach ($finder as $file) {
@@ -75,6 +80,21 @@ class DocsExportService
         sort($written);
 
         return $written;
+    }
+
+    /**
+     * 出力対象か。README.html はどこにあっても、それ以外の HTML は docs/ 配下にあるものだけを対象にする.
+     */
+    private static function isDocument(\SplFileInfo $file): bool
+    {
+        if ('README.html' === $file->getFilename()) {
+            return true;
+        }
+        if (!$file instanceof SplFileInfo || 'html' !== $file->getExtension()) {
+            return false;
+        }
+
+        return str_starts_with(str_replace('\\', '/', $file->getRelativePathname()), self::DOCUMENT_DIR);
     }
 
     /**

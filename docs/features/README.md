@@ -3,15 +3,15 @@
 利用者（購入者・店舗運営者・開発者）から見た EC-CUBE の機能を、機能 ID で一覧したもの（Issue #7225）。
 結合試験項目書（EC-CUBE/eccube-specification）の観点表は、この機能 ID を参照する。
 
-- 📖 一覧（人間向け）: [README.html](./README.html)
-- 🗂 正本: [features.yaml](./features.yaml)（`README.html` は生成物なので直接編集しない）
+- 📖 一覧（人間向け）: [features.html](./features.html)
+- 🗂 正本: [features.yaml](./features.yaml)（`features.html` は生成物なので直接編集しない）
 
 ## 更新のしかた
 
-機能を追加・変更する PR では、同じ PR で `features.yaml` を更新し、`README.html` を作り直す。
+機能を追加・変更する PR では、同じ PR で `features.yaml` を更新し、`features.html` を作り直す。
 
 ```bash
-php .github/bin/feature-list.php           # README.html を生成
+php .github/bin/feature-list.php           # features.html を生成
 php .github/bin/feature-list.php --check   # 検証のみ（CI の docs-check と同じ）
 ```
 

@@ -1,9 +1,9 @@
 # 利用者から見た機能の一覧（Issue #7225）
 #
-# このファイルが正本です。README.html は生成物なので直接編集しないでください。
-# 編集したら次のコマンドで README.html を作り直し、両方をコミットします。
+# このファイルが正本です。features.html は生成物なので直接編集しないでください。
+# 編集したら次のコマンドで features.html を作り直し、両方をコミットします。
 #
-#   php .github/bin/feature-list.php            # README.html を生成
+#   php .github/bin/feature-list.php            # features.html を生成
 #   php .github/bin/feature-list.php --check    # 検証のみ（CI の docs-check と同じ）
 #
 # グループ（groups）
@@ -782,7 +782,7 @@ features:
   - id: DV-50-03
     name: 機能の一覧
     summary: このページ。利用者から見た機能を機能 ID で一覧し、結合試験項目書の観点表から参照される。
-    dirs: [docs/features]
+    dirs: [docs/features/features.yaml, .github/bin/feature-list.php]
     since: 4.4.0
     prs:
       4.4.0: [7228]

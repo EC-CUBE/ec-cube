@@ -12,14 +12,14 @@
  */
 
 /*
- * 利用者から見た機能の一覧（Issue #7225）の検証と README.html の生成.
+ * 利用者から見た機能の一覧（Issue #7225）の検証と features.html の生成.
  *
- * 正本は docs/features/features.yaml。README.html はこのスクリプトの生成物で、直接編集しない。
+ * 正本は docs/features/features.yaml。features.html はこのスクリプトの生成物で、直接編集しない。
  *   - 機能 ID の形式・重複・グループの定義、必須列、未知の列、バージョン表記、関連ディレクトリの実在を検証する
- *   - 検証に通ったら docs/features/README.html を生成する
+ *   - 検証に通ったら docs/features/features.html を生成する
  *
  * 使い方: php .github/bin/feature-list.php [--check]
- *   --check  生成せず、検証と「README.html が features.yaml から生成した内容と一致するか」だけを見る（CI 用）
+ *   --check  生成せず、検証と「features.html が features.yaml から生成した内容と一致するか」だけを見る（CI 用）
  * 終了コード: 問題なし=0 / 問題あり=1
  */
 
@@ -30,8 +30,8 @@ $root = \dirname(__DIR__, 2);
 $check = \in_array('--check', array_slice($argv, 1), true);
 
 $sourcePath = $root.'/docs/features/features.yaml';
-$outputPath = $root.'/docs/features/README.html';
-// README.html から見たリポジトリルート
+$outputPath = $root.'/docs/features/features.html';
+// features.html から見たリポジトリルート
 $toRoot = '../../';
 
 if (!is_file($root.'/vendor/autoload.php')) {

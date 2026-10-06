@@ -63,7 +63,7 @@
   <tr><td><code>eccube:page|block|mail-template:list|show|apply|remove</code></td><td>ページ・ブロック・メールテンプレートを CLI から操作する（管理画面と同じ FormType で検証）。</td></tr>
   <tr><td><code>eccube:asset:*</code> / <code>eccube:user-data:*</code> / <code>eccube:env:*</code> / <code>eccube:keystore:*</code></td><td>CSS/JS・<code>html/user_data</code>・<code>.env</code>・署名鍵を CLI から操作する。</td></tr>
   <tr><td><code>eccube:contents:export|import</code></td><td>ページ・ブロック・メールテンプレート・レイアウトの定義（DB 側）を <code>app/contents/*.yaml</code> と入出力する。</td></tr>
-  <tr><td><code>eccube:docs:export</code></td><td>リポジトリ内の全 <code>README.html</code>（このファイル群）を集約出力。<code>--filter=customer</code> で <code>&lt;section data-customer="true"&gt;</code> の章だけを残した顧客提出向け版を書き出す。</td></tr>
+  <tr><td><code>eccube:docs:export</code></td><td>リポジトリ内の全 <code>README.html</code>（このファイル群）と <code>docs/</code> 配下の HTML 文書（機能の一覧など）を集約出力。<code>--filter=customer</code> で <code>&lt;section data-customer="true"&gt;</code> の章だけを残した顧客提出向け版を書き出す。</td></tr>
  </table>
  <div class="note"><strong><code>eccube:schema:update</code> は Doctrine の <code>doctrine:schema:update</code> を alias で上書きしている</strong>（<code>#[AsCommand(name: 'eccube:schema:update', aliases: ['doctrine:schema:update'])]</code>、<code>OrmUpdateCommand</code> を継承）。
  素の Doctrine コマンドと違い、<strong>プラグインのプロキシを一時生成してから差分を取る</strong>ため、トレイト拡張分も含めてスキーマ更新できる（<code>--no-proxy</code> で素の挙動に戻る）。<code>UpdateSchemaDoctrineCommand</code> の <code>#[AsCommand]</code> と <code>execute()</code>。</div>

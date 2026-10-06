@@ -1,8 +1,8 @@
 name: Docs Check
 
 # コード近接ドキュメント（README.html / README.md）の鮮度チェック（Issue #6906 §8.2）。
-# section 属性の欠落・相対リンク切れを検出する。README/ドキュメント変更時のみ実行。
-# 機能の一覧（docs/features、Issue #7225）の検証と、README.html が features.yaml の生成物と一致するかも見る。
+# section 属性の欠落・相対リンク切れを検出する（eccube:docs:export の対象になる docs/ 配下の HTML も含む）。README/ドキュメント変更時のみ実行。
+# 機能の一覧（docs/features、Issue #7225）の検証と、features.html が features.yaml の生成物と一致するかも見る。
 
 on:
   push:
@@ -12,6 +12,7 @@ on:
       - '.github/bin/check-readme-docs.php'
       - '.github/bin/feature-list.php'
       - '.github/workflows/docs-check.yml'
+      - 'docs/**/*.html'
       - 'docs/features/**'
   pull_request:
     paths:
@@ -20,6 +21,7 @@ on:
       - '.github/bin/check-readme-docs.php'
       - '.github/bin/feature-list.php'
       - '.github/workflows/docs-check.yml'
+      - 'docs/**/*.html'
       - 'docs/features/**'
 
 permissions:
@@ -47,5 +49,5 @@ jobs:
       - name: Initialize Composer
         uses: ./.github/actions/composer
 
-      - name: Check feature list (docs/features/features.yaml と README.html の一致)
+      - name: Check feature list (docs/features/features.yaml と features.html の一致)
         run: php .github/bin/feature-list.php --check

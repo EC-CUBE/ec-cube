@@ -32,7 +32,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * 出力 HTML はブラウザの「印刷 → PDF」で顧客提出用 PDF に変換できる。
  */
 #[AsCommand(name: 'eccube:docs:export', description: 'Export colocated README.html specs, optionally filtered for customer delivery', help: <<<'TXT'
-全 README.html を集約して出力します。--filter=customer で data-customer="true" の章だけを抽出します。
+全 README.html と docs/ 配下の HTML 文書を集約して出力します。--filter=customer で data-customer="true" の章だけを抽出します。
 TXT)]
 class DocsExportCommand extends Command
 {
@@ -49,7 +49,7 @@ class DocsExportCommand extends Command
     {
         $this
             ->addOption('filter', null, InputOption::VALUE_REQUIRED, sprintf('Section filter: "%s" or "%s"', DocsExportService::FILTER_ALL, DocsExportService::FILTER_CUSTOMER), DocsExportService::FILTER_ALL)
-            ->addOption('source', null, InputOption::VALUE_REQUIRED, 'Directory to scan for README.html (defaults to the project root)')
+            ->addOption('source', null, InputOption::VALUE_REQUIRED, 'Directory to scan for README.html and HTML documents under docs/ (defaults to the project root)')
             ->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'Output directory (defaults to <project>/var/docs/<filter>)');
     }
 
@@ -70,7 +70,7 @@ class DocsExportCommand extends Command
             return Command::FAILURE;
         }
 
-        $io->success(sprintf('Exported %d README.html file(s) to "%s" (filter: %s).', \count($written), $outputDir, $filter));
+        $io->success(sprintf('Exported %d document(s) to "%s" (filter: %s).', \count($written), $outputDir, $filter));
 
         return Command::SUCCESS;
     }
