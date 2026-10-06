@@ -112,6 +112,11 @@ features:
     summary: 1 回の注文で商品ごとに異なるお届け先を指定する。
     dirs: [src/Eccube/Controller/ShippingMultipleController.php]
 
+  - id: FR-20-06
+    name: ポイント
+    summary: 会員が購入手続きで保有ポイントを使う。注文の加算ポイントは受注を発送済みにしたときに付与し、返品で取り消す。保有ポイントはマイページに表示する。付与率・換算率は基本設定で、会員・受注のポイントは管理画面で編集する。
+    dirs: [src/Eccube/Service/PointHelper.php, src/Eccube/Service/PurchaseFlow/Processor/PointProcessor.php, src/Eccube/Service/PurchaseFlow/Processor/AddPointProcessor.php, src/Eccube/Service/OrderStateMachine.php]
+
   # ---------------------------------------------------------------- FR-30-xx 会員
   - id: FR-30-01
     name: 会員登録
@@ -554,14 +559,14 @@ features:
   # ---------------------------------------------------------------- DV-10-xx インストール・動作環境
   - id: DV-10-01
     name: Web インストーラー
-    summary: ブラウザから動作要件の確認・DB 設定・管理者登録を行ってインストールする。
-    dirs: [src/Eccube/Controller/Install]
+    summary: ブラウザから動作要件の確認・DB 設定・管理者登録を行ってインストールする。完了画面から同梱のプラグインを有効化する。
+    dirs: [src/Eccube/Controller/Install, src/Eccube/Controller/InstallPluginController.php]
     prs:
       4.4.0: [6949, 7052, 7154]
 
   - id: DV-10-02
     name: CLI インストール
-    summary: eccube:install でコマンドラインからインストールする。
+    summary: eccube:install でコマンドラインからインストールする。初期データ（マスタ・管理者）は eccube:fixtures:load で投入する（eccube:install から呼ばれる）。
     dirs: [src/Eccube/Command]
 
   - id: DV-10-03
@@ -662,16 +667,16 @@ features:
 
   - id: DV-30-02
     name: エージェントコマース（ACP）
-    summary: Agentic Commerce Protocol の discovery・商品フィード・チェックアウトセッションで、AI エージェントからの購入を受け付ける。
-    dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce]
+    summary: Agentic Commerce Protocol の discovery・商品フィード・チェックアウトセッションで、AI エージェントからの購入を受け付ける。商品フィードは eccube:acp-feed:push で CLI からも送信する。
+    dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce, src/Eccube/Command/AgentCommerce/AcpFeedPushCommand.php]
     since: 4.4.0
     prs:
       4.4.0: [6802, 6815, 6825, 6843, 6872]
 
   - id: DV-30-03
     name: エージェントコマース（UCP）
-    summary: Universal Commerce Protocol の discovery・カタログ検索・チェックアウトセッションで、AI エージェントからの購入を受け付ける。
-    dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce]
+    summary: Universal Commerce Protocol の discovery・カタログ検索・チェックアウトセッションで、AI エージェントからの購入を受け付ける。カタログのキャッシュは eccube:ucp-catalog:cache:warmup / clear で CLI からも生成・削除する。
+    dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce, src/Eccube/Command/AgentCommerce]
     since: 4.4.0
     prs:
       4.4.0: [6802, 6815, 6825, 6837, 6872]
