@@ -21,6 +21,8 @@
 #           README.html があるディレクトリはそこへリンクする。
 #   since   導入バージョン。4.4 より前からある機能は書かない。
 #   prs     機能を追加・変更した本体 PR を、リリースのバージョンごとに並べる。不具合修正だけの PR は書かない。
+#           その行の機能の仕様を変えることが主な目的の PR だけを書く。別の機能を追加した PR の
+#           波及（CSV の列や画面の項目が増える等）は追加元の機能の行にだけ書き、必要なら summary に波及先を書く。
 #   removed 機能を廃止したバージョン（任意）
 #
 # 4.4 より前からある機能は since と prs を空にしている（Issue #7225 の進め方 2）。
@@ -257,7 +259,7 @@ features:
 
   - id: AD-20-02
     name: 商品登録
-    summary: 商品の基本情報・画像・カテゴリ・タグ・受注管理用メモを登録する。
+    summary: 商品の基本情報・画像・カテゴリ・タグ・受注管理用メモを登録する。受注管理用メモは商品 CSV の登録・出力と受注 CSV にも項目がある。
     dirs: [src/Eccube/Controller/Admin/Product/ProductController.php]
     prs:
       4.4.0: [6840]
@@ -302,8 +304,6 @@ features:
     name: 商品 CSV 登録
     summary: CSV から商品を一括で登録・更新する。
     dirs: [src/Eccube/Controller/Admin/Product/CsvImportController.php, src/Eccube/Service/CsvImportService.php]
-    prs:
-      4.4.0: [6840]
 
   - id: AD-20-09
     name: 規格・カテゴリ CSV 登録

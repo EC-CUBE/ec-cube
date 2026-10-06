@@ -266,7 +266,7 @@ $html = <<<HTML
  網羅性は、この一覧と観点表を機能 ID で突き合わせ、片方にしかない行を探して確認します。</p>
  <ul>
   <li><strong>機能 ID</strong> — <code>FR</code>＝フロント（購入者）、<code>AD</code>＝管理画面（店舗運営者）、<code>DV</code>＝開発者・運用者（CLI・API・拡張）。<code>AD-20-01</code> の中央の 2 桁がグループです（例: <code>AD-20</code>＝商品管理）。採番したら変えず、廃止した機能も欠番として残します。</li>
-  <li><strong>本体 PR</strong> — 機能を追加・変更した PR をリリースのバージョンごとに並べます。不具合修正だけの PR は載せません。</li>
+  <li><strong>本体 PR</strong> — その機能の仕様を変えることが主な目的の PR を、リリースのバージョンごとに並べます。不具合修正だけの PR と、別の機能を追加した PR の波及（CSV の列が増える等）は載せません。</li>
   <li><strong>導入バージョン</strong> — 4.4 より前からある機能は空欄です。</li>
  </ul>
  <div class="note">このページは <code>docs/features/features.yaml</code> から生成しています。機能を追加・変更する PR では <code>features.yaml</code> を更新し、
