@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AgentCommerce Catalog — 仕様</title>
+<style>
+ /* 最小限のスタイル。§8.2 の静的サイト側で共通 CSS を上書きできるよう、
+    装飾はクラス指定に寄せ、過度なインライン装飾は避ける。 */
+ body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.7;max-width:960px;margin:0 auto;padding:2rem;color:#222}
+ h1,h2{border-bottom:1px solid #ddd;padding-bottom:.3rem}
+ h1{margin-bottom:.2rem}
+ .nav{font-size:.9rem;color:#555;margin:.2rem 0 1.5rem}
+ table{border-collapse:collapse;width:100%;margin:1rem 0}
+ th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left;vertical-align:top}
+ th{background:#f4f4f4}
+ code{background:#f4f4f4;padding:.1rem .3rem;border-radius:3px;font-size:.92em}
+ .flow{background:#f9f9f9;border:1px solid #ddd;padding:1rem;white-space:pre;overflow-x:auto;font-family:ui-monospace,monospace;font-size:.88rem;line-height:1.5}
+ .note{background:#fff8e1;border-left:4px solid #f0c040;padding:.6rem 1rem;margin:1rem 0}
+ .dev-only{font-size:.75rem;color:#888;font-weight:normal;margin-left:.5rem}
+ .badge{display:inline-block;background:#eef;border:1px solid #ccd;border-radius:3px;padding:0 .4rem;font-size:.8rem}
+</style>
+</head>
+<body>
+
+<h1>AgentCommerce Catalog — カタログ提供</h1>
+<p class="nav">
+ 親: <a href="../README.html">AgentCommerce README</a>
+ ／ 索引: <a href="./README.md">README.md</a>
+ ／ 同梱リソースの出所: <a href="../../../Resource/AgentCommerce/README.md">Resource/AgentCommerce/README.md</a>
+</p>
+
+<section data-section="overview" data-customer="true">
+ <h2>概要</h2>
+ <p>EC-CUBE の <code>Product</code> / <code>ProductClass</code> を<strong>プロトコル非依存の中立 DTO</strong> に写し、
+ そこから ACP Feed（push 型）と UCP Catalog（POST RPC）の両方へ出力するサブドメインです。
+ addressable unit のマッピングは <strong>親 <code>Product</code> = <code>AgentCatalogItemDto</code> / variant <code>ProductClass</code> = <code>AgentCatalogVariantDto</code></strong>。</p>
+ <p>出力対象は公開中商品（<code>ProductStatus::DISPLAY_SHOW</code>）かつ visible な <code>ProductClass</code> に限ります。
+ 金額は店頭と同じ税込価格を <code>MinorUnitConverter</code> で minor-unit 整数へ変換します（確定金額は CheckoutSession で再計算）。</p>
+</section>
+
+<section data-section="dto" data-customer="true">
+ <h2>中立 DTO / enum</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>AgentCatalogItemDto</code></td><td>カタログ商品（親 = <code>Product</code>）。<code>variants[]</code> に variant DTO を持つ。</td></tr>
+  <tr><td><code>AgentCatalogVariantDto</code></td><td>バリエーション（addressable unit = <code>ProductClass</code>）。金額は minor-unit 整数。</td></tr>
+  <tr><td><code>AgentCatalogOptionDto</code></td><td>variant option。EC-CUBE の規格分類（<code>ClassName</code> 名 / <code>ClassCategory</code> 名）に対応。</td></tr>
+  <tr><td><code>AgentCatalogMediaDto</code></td><td>メディア（画像等）。type / 絶対 URL。</td></tr>
+  <tr><td><code>AgentCatalogDescriptionDto</code></td><td>商品説明。plain / html / markdown を任意保持（html は描画側でサニタイズ前提）。</td></tr>
+  <tr><td><code>AgentCatalogBarcodeDto</code></td><td>バーコード（GTIN/JAN 等）。標準では常に空（EC-CUBE に GTIN 項目が無いため Customize seam）。</td></tr>
+  <tr><td><code>AvailabilityStatus</code></td><td>在庫状況 enum。標準出力は <code>IN_STOCK</code> / <code>OUT_OF_STOCK</code> の 2 値のみ（他は仕様準拠で定義のみ）。</td></tr>
+ </table>
+</section>
+
+<section data-section="mapping" data-customer="true">
+ <h2>マッピングと供給</h2>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><code>CatalogMapper</code></td><td><code>Product</code>/<code>ProductClass</code> → <code>AgentCatalogItemDto</code> への写像。出力対象判定と availability 判定の中核（対応表は同クラス docblock）。</td></tr>
+  <tr><td><code>CatalogProvider</code>（<code>CatalogProviderInterface</code>）</td><td>公開中 <code>Product</code> を id 昇順で逐次供給。大規模カタログでメモリ枯渇しないよう EntityManager を一定間隔で clear。</td></tr>
+  <tr><td><code>ProductReferenceResolver</code>（<code>ProductReferenceResolverInterface</code>）</td><td>エージェントの参照子（sku=<code>ProductClass.code</code> / product_class_id / barcode）を <code>ProductClass</code> へ解決。</td></tr>
+ </table>
+</section>
+
+<section data-section="protocol-output" data-customer="false">
+ <h2>プロトコル別の出力<span class="dev-only">開発者向け</span></h2>
+ <p><code>Acp/</code> と <code>Ucp/</code> に、中立 DTO を各プロトコルの本文へ写すシリアライザ等を置きます。</p>
+ <table>
+  <tr><th>クラス</th><th>役割</th></tr>
+  <tr><td><span class="badge">ACP</span> <code>AcpFeedGenerator</code></td><td>全置換成果物（<code>products.jsonl</code> / <code>metadata.json</code>）をストリーム生成（全件をメモリに蓄積しない）。</td></tr>
+  <tr><td><span class="badge">ACP</span> <code>AcpFeedProductSerializer</code></td><td>DTO → ACP Feed Product 連想配列（<code>schema.feed.json</code> の <code>$defs/Product</code> に適合。null/空は出さない）。</td></tr>
+  <tr><td><span class="badge">ACP</span> <code>AcpFeedValidator</code></td><td>vendored <code>schema.feed.json</code> に対し push 前検証（不正データ送出を防ぐ必須ゲート）。</td></tr>
+  <tr><td><span class="badge">ACP</span> <code>AcpFeedClient</code>（<code>AcpFeedClientInterface</code>）</td><td>OpenAI ホストの Feed API へ outbound push。Bearer は env bind、ログ/例外に出さない。</td></tr>
+  <tr><td><span class="badge">UCP</span> <code>UcpCatalogResponseBuilder</code></td><td>search / lookup / product の各レスポンス本文（<code>ucp</code> ラッパー付き）を組み立て。</td></tr>
+  <tr><td><span class="badge">UCP</span> <code>UcpCatalogProductSerializer</code></td><td>DTO → UCP Catalog Product/Variant 連想配列（<code>price_range</code> は variants から算出）。</td></tr>
+  <tr><td><span class="badge">UCP</span> <code>UcpCatalogCache</code></td><td>UCP Catalog レスポンスの FS キャッシュ（POST RPC のためボディ hash をキー、LockFactory でスタンピード防止）。</td></tr>
+ </table>
+ <p><code>Exception/</code> に ACP Feed 用の例外（<code>AcpFeedException</code> 基底 / <code>AcpFeedTransportException</code>（HTTP 4xx/5xx）/ <code>AcpFeedValidationException</code>（schema 不適合））を置きます。</p>
+ <div class="note">ACP Feed は <strong>push モデル</strong>（Agent=OpenAI がホスト、加盟店がクライアント）で、outbound Bearer で認証する。inbound OAuth2（eccube-api4）とは無関係な点に注意。</div>
+</section>
+
+<section data-section="notes" data-customer="false">
+ <h2>注意点<span class="dev-only">開発者向け</span></h2>
+ <ul>
+  <li><strong>画像 URL は <code>RequestContext</code> 由来</strong>。商品画像はルーティング対象でない静的ファイルのため、<code>CatalogMapper</code> は scheme/host/port/baseUrl を <code>RequestContext</code> から組み立てて絶対 URL 化する。<strong>Feed 生成を CLI/cron で回すと Request が無い</strong>ため、<code>router.request_context.*</code>（scheme/host/base_url）を設定しないと既定値のホストで URL が出る。リバースプロキシ配下では <code>TRUSTED_PROXIES</code> と <code>X-Forwarded-*</code> に依存する。</li>
+  <li><strong><code>list_price</code> は割引時のみ</strong>。<code>list_price</code>（pre-discount 参照価格）は <code>price01 &gt; price02</code>（実際に割引がある場合）のみ出力する。店頭 <code>detail.twig</code> は price01 設定時に常に通常価格を表示するのと<strong>セマンティクスが異なる</strong>ので、店頭表示と機械的に一致させないこと。</li>
+ </ul>
+</section>
+
+</body>
+</html>

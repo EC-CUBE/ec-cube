@@ -8,6 +8,8 @@ node_modules
 !/var/.htaccess
 /app/Plugin/*
 !/app/Plugin/.gitkeep
+!/app/Plugin/README.html
+!/app/Plugin/README.md
 /app/PluginData/*
 !/app/PluginData/.gitkeep
 /app/keystore/*
