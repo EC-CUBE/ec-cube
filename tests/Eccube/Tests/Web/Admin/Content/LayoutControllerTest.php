@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\Admin\Content;
 
+use Eccube\Entity\Block;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -24,6 +25,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -203,5 +205,79 @@ final class LayoutControllerTest extends AbstractAdminWebTestCase
         );
         $crawler = $this->client->followRedirect();
         $this->assertMatchesRegularExpression('/削除できませんでした/u', $crawler->filter('div.alert-warning')->text());
+    }
+
+    public function testViewBlock(): void
+    {
+        $Block = $this->entityManager->getRepository(Block::class)->findOneBy([]);
+        $this->assertInstanceOf(Block::class, $Block);
+
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_content_layout_view_block', ['id' => $Block->getId()]),
+            [],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    public function testViewBlockNotFound(): void
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_content_layout_view_block', ['id' => '2147483647']),
+            [],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    #[DataProvider(methodName: 'provideInvalidBlockId')]
+    public function testViewBlockWithInvalidId(mixed $id): void
+    {
+        $this->client->request(
+            'GET',
+            $this->generateUrl('admin_content_layout_view_block'),
+            ['id' => $id],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{mixed}>
+     */
+    public static function provideInvalidBlockId(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'out of range' => ['2147483648'];
+        yield 'array' => [['1']];
+    }
+
+    /**
+     * プレビューで入力エラーになった場合は、編集画面を再表示する.
+     */
+    public function testPreviewWithInvalidPage(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_layout_preview', ['id' => 1]),
+            [
+                'admin_layout' => [
+                    '_token' => 'dummy',
+                    'name' => 'テストレイアウト',
+                    'DeviceType' => DeviceType::DEVICE_TYPE_PC,
+                    'Page' => 'abc',
+                ],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 }

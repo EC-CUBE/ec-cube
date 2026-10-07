@@ -223,7 +223,8 @@ class ProductType extends AbstractType
     private function validateFilePath(FormInterface $form, array $dirs): void
     {
         foreach ($form->getData() as $fileName) {
-            if (str_contains((string) $fileName, '..')) {
+            // realpath() は null バイトを含む文字列で ValueError を投げるため先に弾く
+            if (!is_string($fileName) || str_contains($fileName, '..') || str_contains($fileName, "\0")) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));
                 break;
             }
@@ -231,7 +232,9 @@ class ProductType extends AbstractType
                 $filePath = realpath($dir.'/'.$fileName);
                 $topDirPath = realpath($dir);
 
-                return str_starts_with($filePath, (string) $topDirPath) && $filePath !== $topDirPath;
+                return false !== $filePath && false !== $topDirPath
+                    && str_starts_with($filePath, $topDirPath.DIRECTORY_SEPARATOR)
+                    && is_file($filePath);
             });
             if (!$fileInDir) {
                 $form->getRoot()['product_image']->addError(new FormError(trans('admin.product.image__invalid_path')));

@@ -1917,7 +1917,15 @@ class CsvImportController extends AbstractCsvImportController
             return $this->json(['success' => true, 'file_name' => $fileName, 'max_file_no' => $fileNo]);
         }
 
-        return $this->json(['success' => false, 'message' => $form->getErrors(true, true)]);
+        // FormError をそのまま直列化すると、送信値 (不正な UTF-8 を含み得る) まで展開されて JSON の生成に失敗するため、メッセージだけを返す
+        $messages = [];
+        foreach ($form->getErrors(true, true) as $error) {
+            $messages[] = ['message' => $error->getMessage()];
+        }
+
+        return $this->json(['success' => false, 'message' => $messages], 200, [], [
+            'json_encode_options' => JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_INVALID_UTF8_SUBSTITUTE,
+        ]);
     }
 
     #[Route(path: '/%eccube_admin_route%/product/csv_split_import', name: 'admin_product_csv_split_import', methods: ['POST'])]

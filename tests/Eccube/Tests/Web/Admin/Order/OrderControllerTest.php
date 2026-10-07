@@ -575,4 +575,84 @@ final class OrderControllerTest extends AbstractAdminWebTestCase
         $this->actual = $crawler->filter('#search_form #search_total_count')->text();
         $this->verify();
     }
+
+    #[DataProvider(methodName: 'provideInvalidOrderStatus')]
+    public function testUpdateOrderStatusWithInvalidValue(mixed $orderStatus): void
+    {
+        $Order = $this->orderRepository->findOneBy([]);
+        $this->assertInstanceOf(Order::class, $Order);
+        $Shipping = $Order->getShippings()->first();
+        $this->client->request(
+            Request::METHOD_PUT,
+            $this->generateUrl('admin_shipping_update_order_status', ['id' => $Shipping->getId()]),
+            [
+                'order_status' => $orderStatus,
+                Constant::TOKEN_NAME => 'dummy',
+            ],
+            [],
+            [
+                'HTTP_X-Requested-With' => 'XMLHttpRequest',
+                'CONTENT_TYPE' => 'application/json',
+            ]
+        );
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{mixed}>
+     */
+    public static function provideInvalidOrderStatus(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'smallint out of range' => ['32768'];
+        yield 'array' => [['1']];
+    }
+
+    /**
+     * 定義されていないソートキーは、既定の並び順で検索する.
+     */
+    public function testSearchWithUnknownSortKey(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order'),
+            ['admin_search_order' => [
+                '_token' => 'dummy',
+                'sortkey' => 'unknown',
+                'sorttype' => 'a',
+            ]]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * 出荷 ID に整数でない値・範囲外の値を含む場合は、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideInvalidPdfIds')]
+    public function testExportPdfDownloadWithInvalidIds(string $ids): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_order_pdf_download'),
+            ['order_pdf' => [
+                '_token' => 'dummy',
+                'ids' => $ids,
+                'issue_date' => '2026-01-01',
+                'title' => 'お買上げ明細書(納品書)',
+            ]]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertStringContainsString('text/html', (string) $this->client->getResponse()->headers->get('Content-Type'));
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidPdfIds(): \Iterator
+    {
+        yield 'alpha' => ['1,abc'];
+        yield 'out of range' => ['2147483648'];
+    }
 }

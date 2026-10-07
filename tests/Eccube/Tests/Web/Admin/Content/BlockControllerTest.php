@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 final class BlockControllerTest extends AbstractAdminWebTestCase
@@ -84,5 +85,64 @@ final class BlockControllerTest extends AbstractAdminWebTestCase
         $actual = $this->client->getResponse()->isRedirect($redirectUrl);
 
         $this->assertTrue($actual);
+    }
+
+    /**
+     * 必須項目を送らない場合は、入力エラーとして再表示する.
+     */
+    #[DataProvider(methodName: 'provideMissingField')]
+    public function testEditWithMissingField(string $field): void
+    {
+        $formData = [
+            'name' => 'newblock',
+            'file_name' => 'file_name',
+            'block_html' => '<p>test</p>',
+            'DeviceType' => DeviceType::DEVICE_TYPE_MB,
+            'id' => 1,
+            '_token' => 'dummy',
+        ];
+        unset($formData[$field]);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_block_edit', ['id' => 1]),
+            ['block' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideMissingField(): \Iterator
+    {
+        yield 'name' => ['name'];
+        yield 'file_name' => ['file_name'];
+    }
+
+    /**
+     * 送信された id でブロックの主キーを書き換えない.
+     */
+    public function testEditWithInvalidId(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_content_block_edit', ['id' => 1]),
+            [
+                'block' => [
+                    'name' => 'newblock',
+                    'file_name' => 'file_name',
+                    'block_html' => '<p>test</p>',
+                    'DeviceType' => DeviceType::DEVICE_TYPE_MB,
+                    'id' => 'abc',
+                    '_token' => 'dummy',
+                ],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect(
+            $this->generateUrl('admin_content_block_edit', ['id' => 1])
+        ));
     }
 }

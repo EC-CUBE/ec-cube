@@ -42,6 +42,7 @@ use Eccube\Repository\TaxRuleRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\FormUtil;
+use Eccube\Util\IdUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -341,16 +342,19 @@ class ProductController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        $source = (string) $request->query->get('source');
+        // realpath() は null バイトを含む文字列で ValueError を投げるため先に弾く
+        if (str_contains($source, '..') || str_contains($source, "\0")) {
+            throw new NotFoundHttpException();
+        }
+
         $dirs = [
             $this->eccubeConfig['eccube_save_image_dir'],
             $this->eccubeConfig['eccube_temp_image_dir'],
         ];
 
         foreach ($dirs as $dir) {
-            if (str_contains((string) $request->query->get('source'), '..')) {
-                throw new NotFoundHttpException();
-            }
-            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $image = \realpath($dir.'/'.$source);
             $dir = \realpath($dir);
 
             if (\is_file($image) && \str_starts_with($image, $dir)) {
@@ -553,8 +557,12 @@ class ProductController extends AbstractController
                 }
 
                 // 画像の登録
-                $add_images = $form->get('add_images')->getData();
+                $add_images = array_unique($form->get('add_images')->getData());
                 foreach ($add_images as $add_image) {
+                    // 検証後に一時画像が移動・削除されている場合は登録しない
+                    if (!is_file($this->eccubeConfig['eccube_temp_image_dir'].'/'.$add_image)) {
+                        continue;
+                    }
                     $ProductImage = new ProductImage();
                     $ProductImage
                         ->setFileName($add_image)
@@ -594,19 +602,18 @@ class ProductController extends AbstractController
 
                 $this->entityManager->flush();
 
-                /**
-                 * @var array<string, Product>|Product[]|null $admin_product
-                 */
                 $admin_product = $request->request->all()['admin_product'] ?? null;
                 if (is_array($admin_product) && array_key_exists('product_image', $admin_product)) {
-                    /**
-                     * @var array<int, ProductImage>|ProductImage[] $product_image
-                     */
+                    // 並び順 => ファイル名
                     $product_image = $admin_product['product_image'];
-                    foreach ($product_image as $sortNo => $filename) {
+                    foreach ((array) $product_image as $sortNo => $filename) {
+                        $sortNo = IdUtil::toId($sortNo);
+                        if (null === $sortNo || !is_string($filename)) {
+                            continue;
+                        }
                         $ProductImage = $this->productImageRepository
                             ->findOneBy([
-                                'file_name' => pathinfo((string) $filename, PATHINFO_BASENAME),
+                                'file_name' => pathinfo($filename, PATHINFO_BASENAME),
                                 'Product' => $Product,
                             ]);
                         if ($ProductImage !== null) {
@@ -1039,8 +1046,14 @@ class ProductController extends AbstractController
     {
         $this->isTokenValid();
 
+        $ids = $request->get('ids');
+        $ids = array_values(array_unique(array_filter(
+            array_map(IdUtil::toId(...), is_array($ids) ? $ids : [$ids]),
+            fn (?int $id): bool => null !== $id
+        )));
+
         /** @var Product[] $Products */
-        $Products = $this->productRepository->findBy(['id' => $request->get('ids')]);
+        $Products = [] !== $ids ? $this->productRepository->findBy(['id' => $ids]) : [];
         $count = 0;
         foreach ($Products as $Product) {
             try {

@@ -19,10 +19,13 @@ use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\MasterdataEditType;
 use Eccube\Form\Type\Admin\MasterdataType;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MasterdataController extends AbstractController
@@ -135,10 +138,26 @@ class MasterdataController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form2->handleRequest($request);
 
+            // 編集対象はマスタデータのエンティティに限る
+            $masterdataName = $form2['masterdata_name']->getData();
+            $entityName = is_string($masterdataName) ? $this->findMasterdataEntityName(str_replace('-', '\\', $masterdataName)) : null;
+            if (null === $entityName) {
+                throw new BadRequestHttpException();
+            }
+
+            // ID の上限はマスタの型に合わせる
+            $maxId = IdUtil::maxForType($this->entityManager->getClassMetadata($entityName)->getTypeOfField('id')) ?? IdUtil::INTEGER_MAX;
+            foreach ($form2['data'] as $row) {
+                $id = $row['id']->getData();
+                if (null !== $id && null === IdUtil::toId($id, $maxId)) {
+                    $row['id']->addError(new FormError(
+                        $this->translator->trans('This value should be between {{ min }} and {{ max }}.', ['{{ min }}' => 0, '{{ max }}' => $maxId], 'validators')
+                    ));
+                }
+            }
+
             if ($form2->isValid()) {
                 $data = $form2->getData();
-                /** @var class-string $entityName */
-                $entityName = str_replace('-', '\\', $data['masterdata_name']);
                 $sortNo = 0;
                 $ids = array_filter(array_map(
                     fn ($v) => $v['id'],
@@ -155,7 +174,7 @@ class MasterdataController extends AbstractController
                         $entity->setName($value['name']);
                         $entity->setSortNo($sortNo++);
                         $this->entityManager->persist($entity);
-                    } elseif (!in_array($key, $ids)) {
+                    } elseif (!in_array($key, $ids) && null !== IdUtil::toId($key, $maxId)) {
                         // remove
                         $delKey = $this->entityManager->getRepository($entityName)->find($key);
                         if ($delKey) {
@@ -208,5 +227,31 @@ class MasterdataController extends AbstractController
             'form' => $form->createView(),
             'form2' => $form2->createView(),
         ];
+    }
+
+    /**
+     * マスタデータ (Master を含み id・name・sort_no を持つ具象エンティティ) であれば、そのクラス名を返す.
+     *
+     * 一覧 (MasterdataType) で除外している受注ステータス等も、従来どおり編集の対象に含める.
+     *
+     * @return class-string|null
+     */
+    private function findMasterdataEntityName(string $entityName): ?string
+    {
+        foreach ($this->entityManager->getMetadataFactory()->getAllMetadata() as $meta) {
+            if ($meta->getName() !== $entityName) {
+                continue;
+            }
+
+            return !$meta->getReflectionClass()->isAbstract()
+                && str_contains($meta->rootEntityName, 'Master')
+                && $meta->hasField('id')
+                && $meta->hasField('name')
+                && $meta->hasField('sort_no')
+                ? $meta->getName()
+                : null;
+        }
+
+        return null;
     }
 }

@@ -27,7 +27,7 @@ use Eccube\Form\Type\PostalType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\DeliveryTimeRepository;
-use Eccube\Util\StringUtil;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -247,8 +247,8 @@ class ShippingType extends AbstractType
                 }
 
                 $Delivery = null;
-                if (StringUtil::isNotBlank($data['Delivery'])) {
-                    $Delivery = $this->deliveryRepository->find($data['Delivery']);
+                if (isset($data['Delivery']) && null !== $deliveryId = IdUtil::toId($data['Delivery'])) {
+                    $Delivery = $this->deliveryRepository->find($deliveryId);
                 }
 
                 // お届け時間を配送業者で絞り込み

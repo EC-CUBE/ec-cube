@@ -16,6 +16,7 @@ namespace Eccube\Form\Type\Admin;
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Shipping;
+use Eccube\Util\IdUtil;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -148,6 +149,15 @@ class OrderPdfType extends AbstractType
                     return;
                 }
                 $ids = explode(',', $data['ids']);
+                foreach ($ids as $id) {
+                    if (null === IdUtil::toId($id)) {
+                        $form['ids']->addError(
+                            new FormError(trans('admin.order.delivery_note_parameter_error'))
+                        );
+
+                        return;
+                    }
+                }
 
                 $qb = $this->entityManager->createQueryBuilder();
                 $qb->select('count(s.id)')

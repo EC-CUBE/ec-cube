@@ -1381,4 +1381,27 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
             ->name('*.csv')
             ->files();
     }
+
+    /**
+     * 入力エラーに不正な UTF-8 を含む値があっても、エラーメッセージを JSON で返す.
+     */
+    public function testSplitCsvWithInvalidUtf8(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_csv_split'),
+            ['admin_csv_import' => ['_token' => 'dummy', "invalid\xff" => '1']],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->isSuccessful());
+        $json = \json_decode((string) $response->getContent(), true);
+        $this->assertFalse($json['success']);
+        $this->assertNotEmpty($json['message']);
+        foreach ($json['message'] as $error) {
+            $this->assertIsString($error['message']);
+        }
+    }
 }

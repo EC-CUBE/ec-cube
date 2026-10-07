@@ -298,4 +298,121 @@ final class PaymentControllerTest extends AbstractAdminWebTestCase
     }
 
     //    TO DO : implement
+
+    /**
+     * ID・表示順が整数でない場合は 400 にする.
+     *
+     * @param array<mixed> $sortNos
+     */
+    #[DataProvider(methodName: 'provideInvalidSortNos')]
+    public function testMoveSortNoWithInvalidValue(array $sortNos): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
+            $sortNos,
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{array<mixed>}>
+     */
+    public static function provideInvalidSortNos(): \Iterator
+    {
+        yield 'alpha id' => [['abc' => '1']];
+        yield 'out of range id' => [['2147483648' => '1']];
+        yield 'alpha sort_no' => [['1' => 'abc']];
+        yield 'array sort_no' => [['1' => ['1']]];
+    }
+
+    /**
+     * 存在しない ID は無視する.
+     */
+    public function testMoveSortNoWithNotFoundId(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
+            ['2147483647' => '1'],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
+
+    /**
+     * ディレクトリを指す値を送っても、一時画像のディレクトリを移動しない.
+     */
+    #[DataProvider(methodName: 'provideDirectoryPaymentImage')]
+    public function testEditWithDirectoryPaymentImage(string $paymentImage): void
+    {
+        $formData = $this->createFormData();
+        $formData['payment_image'] = $paymentImage;
+        $Payment = $this->paymentRepository->find(1);
+        $this->assertInstanceOf(Payment::class, $Payment);
+
+        $this->client->request(Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_payment_edit', ['id' => $Payment->getId()]),
+            ['payment_register' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+        $this->assertDirectoryExists(__DIR__.'/../../../../../../../html/upload/temp_image');
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideDirectoryPaymentImage(): \Iterator
+    {
+        yield 'root' => ['/'];
+        yield 'current' => ['.'];
+    }
+
+    /**
+     * sort_no は smallint のため、範囲外の表示順は 400 にする.
+     */
+    public function testMoveSortNoWithOutOfRangeSortNo(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_payment_sort_no_move'),
+            ['1' => '32768'],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * null バイトや .. を含む画像名は 404 にする.
+     */
+    #[DataProvider(methodName: 'provideInvalidImageSource')]
+    public function testImageLoadWithInvalidSource(string $source): void
+    {
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_payment_image_load', ['source' => $source]),
+            [],
+            [],
+            ['HTTP_X-Requested-With' => 'XMLHttpRequest']
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidImageSource(): \Iterator
+    {
+        yield 'null byte' => ["sand-1.png\0.png"];
+        yield 'parent directory' => ['../save_image/sand-1.png'];
+    }
 }

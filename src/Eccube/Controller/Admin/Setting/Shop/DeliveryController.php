@@ -338,9 +338,12 @@ class DeliveryController extends AbstractController
         }
 
         if ($this->isTokenValid()) {
-            $sortNos = $request->request->all();
+            $sortNos = $this->getSortNosFromRequest($request);
             foreach ($sortNos as $deliveryId => $sortNo) {
                 $Delivery = $this->deliveryRepository->find($deliveryId);
+                if (!$Delivery) {
+                    continue;
+                }
                 $Delivery->setSortNo($sortNo);
                 $this->entityManager->persist($Delivery);
             }

@@ -17,6 +17,7 @@ use Eccube\Common\EccubeConfig;
 use Eccube\Entity\Member;
 use RobThree\Auth\Providers\Qr\QRServerProvider;
 use RobThree\Auth\TwoFactorAuth;
+use RobThree\Auth\TwoFactorAuthException;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -121,7 +122,12 @@ class TwoFactorAuthService
 
     public function verifyCode(string $authKey, string $token): bool
     {
-        return $this->tfa->verifyCode($authKey, $token, 2);
+        try {
+            return $this->tfa->verifyCode($authKey, $token, 2);
+        } catch (TwoFactorAuthException) {
+            // 鍵が base32 でない場合は認証失敗として扱う
+            return false;
+        }
     }
 
     public function createSecret(): string

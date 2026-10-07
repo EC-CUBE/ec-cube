@@ -40,6 +40,7 @@ use Eccube\Service\OrderPdfService;
 use Eccube\Service\OrderStateMachine;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Util\FormUtil;
+use Eccube\Util\IdUtil;
 use Eccube\Util\StringUtil;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -373,7 +374,8 @@ class OrderController extends AbstractController
         }
 
         $Order = $Shipping->getOrder();
-        $OrderStatus = $this->entityManager->find(OrderStatus::class, $request->get('order_status'));
+        $orderStatusId = IdUtil::toId($request->get('order_status'), IdUtil::SMALLINT_MAX);
+        $OrderStatus = null !== $orderStatusId ? $this->entityManager->find(OrderStatus::class, $orderStatusId) : null;
 
         if (!$OrderStatus) {
             return $this->json(['status' => 'NG'], 400);
