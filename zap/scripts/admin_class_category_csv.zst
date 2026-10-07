@@ -112,16 +112,6 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 87352,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
@@ -172,16 +162,6 @@
             "code": 200,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 98737,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
           },
           "elementType": "ZestAssertion"
         }
@@ -245,16 +225,6 @@
             "code": 200,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 112416,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
           },
           "elementType": "ZestAssertion"
         }

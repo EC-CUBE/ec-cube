@@ -1,6 +1,24 @@
 services:
+  # docker-compose.yml が APP_ENV: dev を直書きしているため、ここで prod に上書きする
+  # (シェルの環境変数では上書きされない)
+  ec-cube:
+    environment:
+      APP_ENV: "prod"
+      APP_DEBUG: 0
+      # セキュリティ設定 (admin_security) への攻撃で .env の IP 制限や管理画面のパスが書き換わり、
+      # 以降のリクエストが締め出されないよう、既定値のまま環境変数で固定する。
+      # 環境変数で上書きされたキーは、画面から保存しても .env へ書き込まれない
+      ECCUBE_FRONT_ALLOW_HOSTS: "[]"
+      ECCUBE_FRONT_DENY_HOSTS: "[]"
+      ECCUBE_ADMIN_ALLOW_HOSTS: "[]"
+      ECCUBE_ADMIN_DENY_HOSTS: "[]"
+      ECCUBE_FORCE_SSL: "0"
+      # 画面では必須のため空にできない。すべてのホストに一致させ、未設定と同じ動作にする
+      TRUSTED_HOSTS: ".*"
+      ECCUBE_ADMIN_ROUTE: "admin"
+
   zap:
-    image: ghcr.io/ec-cube/zaproxy:0.1.2
+    image: ghcr.io/zaproxy/zaproxy:stable
     
     # コンテナを待機させる
     entrypoint: ["sh", "-c"]
@@ -12,7 +30,6 @@ services:
 
     volumes:
       - ./zap:/zap/wrk/
-      - ./zap/policies:/zap/policies:ro
     depends_on:
       - ec-cube
     networks:

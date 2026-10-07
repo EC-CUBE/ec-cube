@@ -45,9 +45,6 @@ use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
  */
 abstract class EccubeTestCase extends WebTestCase
 {
-    /** MailCatcher の URL. */
-    public const MAILCATCHER_URL = 'http://127.0.0.1:1080/';
-
     protected $actual;
     protected $expected;
 

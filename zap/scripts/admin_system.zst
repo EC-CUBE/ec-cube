@@ -36,13 +36,22 @@
       "elementType": "ZestRequest"
     },
     {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
       "fieldDefinition": {
         "formIndex": 0,
         "fieldName": "form__token",
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf1",
-      "index": 2,
+      "index": 3,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -64,7 +73,7 @@
       "followRedirects": false,
       "timestamp": 1656669841365,
       "cookies": [],
-      "index": 3,
+      "index": 4,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -86,7 +95,7 @@
       "followRedirects": false,
       "timestamp": 1656669841390,
       "cookies": [],
-      "index": 4,
+      "index": 5,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -108,7 +117,7 @@
       "followRedirects": false,
       "timestamp": 1656669862493,
       "cookies": [],
-      "index": 5,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -120,7 +129,7 @@
       "assertions": [
         {
           "rootExpression": {
-            "code": 200,
+            "code": 403,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },
@@ -130,7 +139,29 @@
       "followRedirects": false,
       "timestamp": 1656669862553,
       "cookies": [],
-      "index": 6,
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/disable_maintenance/manual",
+      "data": "",
+      "method": "POST",
+      "headers": "X-Requested-With: XMLHttpRequest\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nOrigin: https://ec-cube\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656669841365,
+      "cookies": [],
+      "index": 8,
       "enabled": true,
       "elementType": "ZestRequest"
     }

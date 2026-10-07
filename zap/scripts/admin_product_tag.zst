@@ -101,7 +101,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "name=\"tag_\\d+\\[_token\\]\" value=\"",
+      "prefix": "name=\"tag_\\d+\\[_token\\]\"[^>]*value=\"",
       "postfix": "\" />",
       "location": "BODY",
       "variableName": "tag-token",

@@ -1,0 +1,22 @@
+お届け先の登録上限と削除を無効にする。上限到達や削除済みで 404 になるのを防ぐ
+
+--- a/src/Eccube/Controller/Mypage/DeliveryController.php
++++ b/src/Eccube/Controller/Mypage/DeliveryController.php
+@@ -80,7 +80,7 @@
+             $addressCurrNum = count($Customer->getCustomerAddresses());
+             $addressMax = $this->eccubeConfig['eccube_deliv_addr_max'];
+             if ($addressCurrNum >= $addressMax) {
+-                throw new NotFoundHttpException();
++                // ZAP: throw new NotFoundHttpException();
+             }
+             $CustomerAddress = new CustomerAddress();
+             $CustomerAddress->setCustomer($Customer);
+@@ -189,7 +189,7 @@
+ 
+         log_info('お届け先削除開始', [$CustomerAddress->getId()]);
+ 
+-        $this->customerAddressRepository->delete($CustomerAddress);
++        // ZAP: $this->customerAddressRepository->delete($CustomerAddress);
+ 
+         $event = new EventArgs(
+             [

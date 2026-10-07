@@ -1,3 +1,9 @@
 /owasp_zap_root_ca.cer
+/zap_root_ca.cer
+/zap_root_ca.key
 /sessions
 !/sessions/.gitkeep
+/local/repos
+/local/out
+/automation/*.yml
+!/automation/template.yml
