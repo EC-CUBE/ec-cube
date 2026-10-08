@@ -23,6 +23,7 @@ use Eccube\Common\Constant;
 use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
+use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
@@ -770,6 +771,127 @@ EOD;
         $config = $this->service->readConfig($pluginDir);
 
         $this->assertSame(0, $config['source']);
+    }
+
+    /**
+     * composer remove より前にアンインストールを済ませる (#7204).
+     *
+     * composer remove の最中に plugin-installer がアンインストールすると, 非同期で削除された
+     * 依存パッケージのクラスを読み込んで失敗することがある. composer remove の時点で
+     * プラグインのレコードが消えていれば, plugin-installer はアンインストールを行わない.
+     */
+    public function testRemoveByComposerUninstallsBeforeComposerRemove(): void
+    {
+        $code = $this->installDummyPlugin();
+        $pluginDir = $this->service->calcPluginDir($code);
+        $assetsDir = $this->eccubeConfig['plugin_html_realdir'].$code;
+        (new Filesystem())->mkdir($assetsDir);
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturnCallback(function () use ($code, $pluginDir): string {
+                $this->assertNotInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code), 'composer remove の前にレコードを消す');
+                $this->assertDirectoryExists($pluginDir, 'ディレクトリは composer remove が消すので残す');
+
+                return 'removed';
+            });
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+        $this->assertDirectoryDoesNotExist($assetsDir);
+    }
+
+    /**
+     * PluginManager::uninstall() の出力は応答に混ぜず, ログとして返す.
+     *
+     * Web では応答が JSON のため, 出力が混ざると画面が削除の完了を判定できなくなる.
+     */
+    public function testRemoveByComposerCollectsUninstallOutputIntoLog(): void
+    {
+        $code = $this->installDummyPlugin(true);
+        $Plugin = $this->pluginRepository->findByCode($code);
+        // PluginManager::uninstall() は一度有効化したプラグインでのみ呼ばれる
+        ob_start();
+        $this->service->enable($Plugin);
+        $this->service->disable($Plugin);
+        ob_end_clean();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->method('execRemove')->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->expectOutputString('');
+        $this->assertSame('Uninstalledremoved', $this->service->removeByComposer('ec-cube/'.$code));
+    }
+
+    public function testRemoveByComposerRejectsEnabledPlugin(): void
+    {
+        $code = $this->installDummyPlugin();
+        $Plugin = $this->pluginRepository->findByCode($code);
+        $Plugin->setEnabled(true);
+        $this->entityManager->flush();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->never())->method('execRemove');
+        $this->replaceComposerService($composerService);
+
+        try {
+            $this->service->removeByComposer('ec-cube/'.$code);
+            $this->fail('有効なプラグインは削除できない');
+        } catch (PluginException) {
+        }
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
+    public function testRemoveByComposerPassesThroughNonPluginPackage(): void
+    {
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('vendor/library')
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('vendor/library'));
+    }
+
+    private function installDummyPlugin(bool $withManager = false): string
+    {
+        $code = 'dummy'.sha1((string) mt_rand());
+        $tmpfile = $this->createTempDir().'/plugin.tar';
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('composer.json', json_encode([
+            'version' => '1.0.0',
+            'description' => $code,
+            'extra' => ['code' => $code],
+        ]));
+        if ($withManager) {
+            $tar->addFromString('PluginManager.php', <<<EOD
+<?php
+namespace Plugin\\{$code};
+
+use Eccube\\Plugin\\AbstractPluginManager;
+use Psr\\Container\\ContainerInterface;
+
+class PluginManager extends AbstractPluginManager
+{
+    public function uninstall(array \$meta, ContainerInterface \$container): void
+    {
+        echo 'Uninstalled';
+    }
+}
+EOD);
+        }
+        $this->service->install($tmpfile);
+
+        return $code;
+    }
+
+    private function replaceComposerService(ComposerServiceInterface $composerService): void
+    {
+        (new \ReflectionProperty(PluginService::class, 'composerService'))->setValue($this->service, $composerService);
     }
 
     /**
