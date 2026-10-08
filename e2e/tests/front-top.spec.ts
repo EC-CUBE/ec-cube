@@ -59,6 +59,25 @@ test.describe('Front Top Page (EF01)', () => {
     // If no news exists, skip gracefully (test still passes)
   });
 
+  test('EF0101-UC01-T03 TOPページ メインビジュアルのスライダー', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('load');
+
+    // slick が初期化されている（jQuery の削除 API に依存すると初期化前に TypeError で止まる）
+    const slider = page.locator('.main_visual');
+    await expect(slider).toHaveClass(/slick-initialized/);
+
+    // 画像枚数分のドットが生成され、先頭のスライドが表示されている
+    const dots = slider.locator('.slick-dots li');
+    const dotCount = await dots.count();
+    expect(dotCount).toBeGreaterThan(1);
+    await expect(slider.locator('.slick-current')).toHaveAttribute('data-slick-index', '0');
+
+    // 末尾のドットをクリックするとそのスライドへ切り替わる
+    await dots.last().locator('button').click();
+    await expect(slider.locator('.slick-current')).toHaveAttribute('data-slick-index', String(dotCount - 1));
+  });
+
   test('EF0101-UC02-T01 TOPページ カテゴリ検索', async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('load');
