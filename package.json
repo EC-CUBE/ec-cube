@@ -49,10 +49,10 @@
     "cross-env": "^10.1.0",
     "esbuild": "^0.28.2",
     "husky": "^9.1.7",
-    "lint-staged": "^17.5.1",
+    "lint-staged": "^17.6.0",
     "normalize.css": "^8.0.1",
-    "postcss": "^8.5.28",
+    "postcss": "^8.5.29",
     "postcss-sort-media-queries": "^6.7.1",
-    "sass-embedded": "^1.105.0"
+    "sass-embedded": "^1.105.1"
   }
 }
