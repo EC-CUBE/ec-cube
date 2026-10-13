@@ -1956,7 +1956,7 @@ install.database_configuration: Database Configuration
 install.database_initalization: Database Initialization
 install.install_completed: Installation Completed
 install.start_eccube_installation: "<p>The installation of EC-CUBE will be started.</p><p>Please have your database information (database name etc) at hand.</p>"
-install.cooperation_of_providing_information: 'To improve EC-CUBE and debugging, please provide your site information. We will not use the provided information other than these purposes.<br><span class="small">（Site Info: Store URL, PHP Version, DB Version）</span>'
+install.cooperation_of_providing_information: 'To improve EC-CUBE and debugging, please provide your site information. We will not use the provided information other than these purposes.<br><span class="small">(Site Info: Store URL, PHP Version, DB Version)</span>'
 install.accept_infomation_provision: Accept to Submit
 install.permission_is_valid: The access permission is working properly
 install.permission_is_invalid: Please change the access permission of the following directories.
