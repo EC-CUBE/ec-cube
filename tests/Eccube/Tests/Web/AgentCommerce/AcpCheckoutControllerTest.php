@@ -322,7 +322,7 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
         $this->assertSame('true', $this->client->getResponse()->headers->get('Idempotent-Replayed'), 'リプレイは Idempotent-Replayed: true を付す');
         // リプレイのボディは JSON カラムから復元され、MySQL の JSON 型はオブジェクトのキーを並べ替えて保存するため、キー順を揃えて比べる。
-        // 連想配列で比べるため、空オブジェクト {} と空配列 [] の違い（リプレイでは capabilities が [] になる）は検出しない。
+        // 連想配列で比べるため、空オブジェクト {} と空配列 [] の違いは検出しない。
         $this->assertSame($this->sortKeysRecursively($first), $this->sortKeysRecursively($second), 'リプレイは初回と同じ内容のボディを返す');
 
         $other = $this->postJson($uri, []);
