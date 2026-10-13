@@ -106,8 +106,8 @@ class AgentCheckoutCompletionService
             return new AgentCheckoutCompletionResult($this->requireStatus(CheckoutSessionStatus::COMPLETED), $session->getOrder());
         }
 
-        // 終端ステータスは確定不能 (プロトコル系エラー)。
-        if (in_array($statusId, [CheckoutSessionStatus::CANCELED, CheckoutSessionStatus::EXPIRED], true)) {
+        // 終端ステータスは確定不能 (プロトコル系エラー)。completed は上で冪等に返すため、ここに来るのは canceled/expired。
+        if ($session->getStatus()?->isTerminal() === true) {
             throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, 'The checkout session is in a terminal state and cannot be completed.');
         }
 

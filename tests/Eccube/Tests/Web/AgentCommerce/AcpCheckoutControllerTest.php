@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -269,6 +271,60 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         $result = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
         $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '完了済セッションの cancel は 405');
         $this->assertSame('not_allowed', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $this->fetchStatusId($created['id']), '拒否後も DB 上は completed のまま');
+    }
+
+    /**
+     * 期限切れのセッションは終端のため cancel できず、expired のまま残る (#7229).
+     */
+    public function testCancelExpiredSessionReturns405AndKeepsStatus(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $this->forceStatus($created['id'], CheckoutSessionStatus::EXPIRED);
+
+        $result = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '期限切れセッションの cancel は 405');
+        $this->assertSame('not_allowed', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::EXPIRED, $this->fetchStatusId($created['id']), 'expired を canceled に書き換えない');
+    }
+
+    /**
+     * 取消済のセッションへの再 cancel は 405 で、canceled のまま残る (#7229).
+     */
+    public function testCancelCanceledSessionReturns405AndKeepsStatus(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '1 回目の cancel は 200');
+
+        $result = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '取消済セッションの再 cancel は 405');
+        $this->assertSame('not_allowed', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($created['id']), '拒否後も DB 上は canceled のまま');
+    }
+
+    /**
+     * 回収処理 (#7221) が未実装で expired へ遷移させる経路が無いため、DB 上のステータスを直接書き換える.
+     */
+    private function forceStatus(string $sessionId, int $statusId): void
+    {
+        /** @var CheckoutSession $session */
+        $session = $this->entityManager->getRepository(CheckoutSession::class)->findOneBy(['session_id' => $sessionId]);
+        $session->setStatus($this->entityManager->find(CheckoutSessionStatus::class, $statusId));
+        $this->entityManager->flush();
+    }
+
+    /**
+     * ORM の identity map を経由せず、DB に保存されたステータス id を読む.
+     */
+    private function fetchStatusId(string $sessionId): int
+    {
+        return (int) $this->entityManager->getConnection()->fetchOne(
+            'SELECT checkout_session_status_id FROM dtb_checkout_session WHERE session_id = ?',
+            [$sessionId],
+        );
     }
 
     public function testMissingBearerReturns401(): void

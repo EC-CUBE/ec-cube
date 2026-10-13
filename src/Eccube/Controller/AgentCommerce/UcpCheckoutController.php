@@ -53,7 +53,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * - GET    /ucp/checkout-sessions/{id}       (get)           -> 200
  * - PUT    /ucp/checkout-sessions/{id}       (update)        -> 200 (全置換)
  * - POST   /ucp/checkout-sessions/{id}/complete             -> 200 (order)
- * - POST   /ucp/checkout-sessions/{id}/cancel               -> 200 (canceled)
+ * - POST   /ucp/checkout-sessions/{id}/cancel               -> 200 (canceled) / 422 (終端)
  *
  * 設計:
  * - セッションレスなエージェント向けに {@link CheckoutSession} で Cart/Order を束ねる。
@@ -195,8 +195,10 @@ class UcpCheckoutController extends AbstractController
         $session = $this->findSession($sessionId);
 
         return $this->withIdempotency($request, function () use ($session): array {
-            if ($session->getStatus()?->getId() === CheckoutSessionStatus::COMPLETED) {
-                return $this->protocolError(422, 'invalid_session_state', 'A completed checkout session cannot be canceled.');
+            if ($session->getStatus()?->isTerminal() === true) {
+                // 終端 (完了/取消/期限切れ) のセッションは取消不可。
+                // expired を canceled に書き換えると、期限切れと明示的な取消の区別が失われる。
+                return $this->protocolError(422, 'invalid_session_state', 'A completed, canceled, or expired checkout session cannot be canceled.');
             }
 
             $session->setStatus($this->findStatus(CheckoutSessionStatus::CANCELED));
