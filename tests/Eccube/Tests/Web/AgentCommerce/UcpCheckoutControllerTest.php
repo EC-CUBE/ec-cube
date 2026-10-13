@@ -309,7 +309,8 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
 
         $second = $this->postJson($uri, [], 'POST', ['HTTP_Idempotency-Key' => 'idem-ucp-cancel']);
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
-        $this->assertSame($first, $second, 'リプレイは初回と同じボディを返す');
+        // リプレイのボディは JSON カラムから復元され、MySQL の JSON 型はオブジェクトのキーを並べ替えて保存するため、キー順を揃えて比べる。
+        $this->assertSame($this->sortKeysRecursively($first), $this->sortKeysRecursively($second), 'リプレイは初回と同じボディを返す');
 
         $other = $this->postJson($uri, []);
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), 'キー無しの cancel は終端として 422');
@@ -337,6 +338,27 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
             'SELECT checkout_session_status_id FROM dtb_checkout_session WHERE session_id = ?',
             [$sessionId],
         );
+    }
+
+    /**
+     * 連想配列のキーを再帰的に昇順へ並べる (リストは要素の順序を保つ).
+     *
+     * @param array<mixed> $value
+     *
+     * @return array<mixed>
+     */
+    private function sortKeysRecursively(array $value): array
+    {
+        foreach ($value as $key => $child) {
+            if (is_array($child)) {
+                $value[$key] = $this->sortKeysRecursively($child);
+            }
+        }
+        if (!array_is_list($value)) {
+            ksort($value);
+        }
+
+        return $value;
     }
 
     public function testDisabledFlagReturns404(): void

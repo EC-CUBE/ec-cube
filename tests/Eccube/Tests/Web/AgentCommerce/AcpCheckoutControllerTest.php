@@ -321,7 +321,9 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         $second = $this->postJson($uri, [], ['HTTP_Idempotency-Key' => 'idem-acp-cancel']);
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
         $this->assertSame('true', $this->client->getResponse()->headers->get('Idempotent-Replayed'), 'リプレイは Idempotent-Replayed: true を付す');
-        $this->assertSame($first, $second, 'リプレイは初回と同じボディを返す');
+        // リプレイのボディは JSON カラムから復元され、MySQL の JSON 型はオブジェクトのキーを並べ替えて保存するため、キー順を揃えて比べる。
+        // 連想配列で比べるため、空オブジェクト {} と空配列 [] の違い（リプレイでは capabilities が [] になる）は検出しない。
+        $this->assertSame($this->sortKeysRecursively($first), $this->sortKeysRecursively($second), 'リプレイは初回と同じ内容のボディを返す');
 
         $other = $this->postJson($uri, []);
         $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '別キーの cancel は終端として 405');
@@ -349,6 +351,27 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
             'SELECT checkout_session_status_id FROM dtb_checkout_session WHERE session_id = ?',
             [$sessionId],
         );
+    }
+
+    /**
+     * 連想配列のキーを再帰的に昇順へ並べる (リストは要素の順序を保つ).
+     *
+     * @param array<mixed> $value
+     *
+     * @return array<mixed>
+     */
+    private function sortKeysRecursively(array $value): array
+    {
+        foreach ($value as $key => $child) {
+            if (is_array($child)) {
+                $value[$key] = $this->sortKeysRecursively($child);
+            }
+        }
+        if (!array_is_list($value)) {
+            ksort($value);
+        }
+
+        return $value;
     }
 
     public function testMissingBearerReturns401(): void
