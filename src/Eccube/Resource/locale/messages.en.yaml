@@ -1970,10 +1970,10 @@ install.member_name: Administrator
 install.member_department:
 install.shop_name: Store Name
 install.mail_address: Email (To receive orders etc.)
-install.login_id: "ID for Admin Console (alphanumeric %min% - %max% chars）"
-install.login_password: "Admin Console Password (alphanumeric %min% - %max% chars）"
+install.login_id: "ID for Admin Console (alphanumeric and symbols, %min% - %max% characters)"
+install.login_password: "Admin Console Password (%min% - %max% characters)"
 install.security_configuration: Security Settings
-install.directory_name: "Admin Console Directory Name (alphanumeric %min% - %max% chars）"
+install.directory_name: "Admin Console Directory Name (alphanumeric and underscore, %min% - %max% characters)"
 install.directory_name_notice: To ensure the security, please enter a directory name hard to guess.
 install.https_only: Restricting the access to the site to via SSL(https) only.
 install.https_only_notice: Only the https access is allowed to set SSL restrictions.
