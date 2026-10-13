@@ -37,6 +37,7 @@ class DeliveryTimeType extends AbstractType
     {
         $builder
             ->add('delivery_time', TextType::class, [
+                'empty_data' => '',
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'common.select',

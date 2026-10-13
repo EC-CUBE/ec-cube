@@ -13,7 +13,6 @@
 
 namespace Eccube\Service;
 
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 /**
@@ -64,41 +63,18 @@ class ProductStockSynchronizer
         }
 
         $this->connection->transactional(function (Connection $conn) use (&$result): void {
-            $missing = $conn->fetchAllAssociative(
-                'SELECT pc.id, pc.stock, pc.stock_unlimited FROM dtb_product_class pc
+            $result['created'] = (int) $conn->fetchOne(
+                'SELECT COUNT(*) FROM dtb_product_class pc
                   WHERE NOT EXISTS (SELECT 1 FROM dtb_product_stock ps WHERE ps.product_class_id = pc.id)'
             );
-            foreach ($missing as $row) {
-                $this->insertProductStock($conn, (int) $row['id'], $this->legacyStock($row));
-                $result['created']++;
-            }
-
-            $duplicated = $conn->fetchAllAssociative(
-                'SELECT pc.id, pc.stock, pc.stock_unlimited FROM dtb_product_class pc
-                  WHERE (SELECT COUNT(*) FROM dtb_product_stock ps WHERE ps.product_class_id = pc.id) > 1'
+            $result['deduplicated'] = (int) $conn->fetchOne(
+                'SELECT COUNT(*) FROM (SELECT product_class_id FROM dtb_product_stock
+                  WHERE product_class_id IS NOT NULL GROUP BY product_class_id HAVING COUNT(*) > 1) duplicated'
             );
-            foreach ($duplicated as $row) {
-                $conn->executeStatement('DELETE FROM dtb_product_stock WHERE product_class_id = ?', [(int) $row['id']]);
-                $this->insertProductStock($conn, (int) $row['id'], $this->legacyStock($row));
-                $result['deduplicated']++;
-            }
+            $result['mismatched'] = $this->logLegacyStockMismatches();
 
-            $mismatched = $conn->fetchAllAssociative(
-                'SELECT pc.id, pc.stock AS product_class_stock, ps.stock AS product_stock_stock
-                   FROM dtb_product_class pc
-                   JOIN dtb_product_stock ps ON ps.product_class_id = pc.id
-                  WHERE pc.stock_unlimited = ?
-                    AND (pc.stock <> ps.stock OR (pc.stock IS NULL AND ps.stock IS NOT NULL) OR (pc.stock IS NOT NULL AND ps.stock IS NULL))',
-                [false],
-                ['boolean']
-            );
-            foreach ($mismatched as $row) {
-                log_warning('[ProductStockSynchronizer] dtb_product_class.stock と dtb_product_stock.stock がずれているため dtb_product_stock を正とします', [
-                    'product_class_id' => (int) $row['id'],
-                    'dtb_product_class.stock' => $row['product_class_stock'],
-                    'dtb_product_stock.stock' => $row['product_stock_stock'],
-                ]);
-                $result['mismatched']++;
+            foreach ($this->getSyncFromLegacyStockColumnSql() as $sql) {
+                $conn->executeStatement($sql);
             }
         });
 
@@ -107,6 +83,79 @@ class ProductStockSynchronizer
         }
 
         return $result;
+    }
+
+    /**
+     * 旧列 dtb_product_class.stock から dtb_product_stock を補完する SQL を返す.
+     *
+     * データを読まずに SQL だけで完結させる. マイグレーションの --dry-run / --write-sql でも同じ処理を出力するため.
+     * 旧列が存在することを前提とする.
+     *
+     * @return list<string>
+     */
+    public function getSyncFromLegacyStockColumnSql(): array
+    {
+        // 在庫無制限時は null
+        $legacyStock = 'CASE WHEN pc.stock_unlimited THEN NULL ELSE pc.stock END';
+
+        return [
+            // 重複行を旧列の値にそろえる
+            // (MySQL は更新対象のテーブルをサブクエリで直接参照できないため, 集計した派生テーブルを経由する)
+            'UPDATE dtb_product_stock
+                SET stock = (SELECT '.$legacyStock.' FROM dtb_product_class pc WHERE pc.id = dtb_product_stock.product_class_id),
+                    update_date = CURRENT_TIMESTAMP
+              WHERE product_class_id IN (
+                    SELECT product_class_id FROM (
+                        SELECT product_class_id FROM dtb_product_stock
+                         WHERE product_class_id IS NOT NULL GROUP BY product_class_id HAVING COUNT(*) > 1
+                    ) duplicated
+              )',
+            // 重複行を 1 行にまとめる
+            'DELETE FROM dtb_product_stock
+              WHERE product_class_id IS NOT NULL
+                AND id NOT IN (
+                    SELECT id FROM (
+                        SELECT MIN(id) AS id FROM dtb_product_stock
+                         WHERE product_class_id IS NOT NULL GROUP BY product_class_id
+                    ) kept
+                )',
+            // 行の無い規格は旧列の値で作成する
+            'INSERT INTO dtb_product_stock (product_class_id, creator_id, stock, create_date, update_date, discriminator_type)
+             SELECT pc.id, NULL, '.$legacyStock.', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, \'productstock\'
+               FROM dtb_product_class pc
+              WHERE NOT EXISTS (SELECT 1 FROM dtb_product_stock ps WHERE ps.product_class_id = pc.id)',
+        ];
+    }
+
+    /**
+     * 旧列 dtb_product_class.stock と dtb_product_stock.stock のずれをログに残す. DB は変更しない.
+     *
+     * 重複行のある規格は, 補完で旧列の値にそろえるため対象外とする.
+     * 旧列が存在することを前提とする.
+     *
+     * @return int ずれている規格の数
+     */
+    public function logLegacyStockMismatches(): int
+    {
+        $mismatched = $this->connection->fetchAllAssociative(
+            'SELECT pc.id, pc.stock AS product_class_stock, ps.stock AS product_stock_stock
+               FROM dtb_product_class pc
+               JOIN dtb_product_stock ps ON ps.product_class_id = pc.id
+              WHERE pc.stock_unlimited = ?
+                AND (SELECT COUNT(*) FROM dtb_product_stock ps2 WHERE ps2.product_class_id = pc.id) = 1
+                AND (pc.stock <> ps.stock OR (pc.stock IS NULL AND ps.stock IS NOT NULL) OR (pc.stock IS NOT NULL AND ps.stock IS NULL))',
+            [false],
+            ['boolean']
+        );
+        foreach ($mismatched as $row) {
+            log_warning('[ProductStockSynchronizer] dtb_product_class.stock と dtb_product_stock.stock がずれているため dtb_product_stock を正とします', [
+                'product_class_id' => (int) $row['id'],
+                'dtb_product_class.stock' => $row['product_class_stock'],
+                'dtb_product_stock.stock' => $row['product_stock_stock'],
+            ]);
+        }
+
+        return count($mismatched);
     }
 
     /**
@@ -122,33 +171,20 @@ class ProductStockSynchronizer
             return 0;
         }
 
+        return (int) $this->connection->executeStatement($this->getRecalculateInStockSql());
+    }
+
+    /**
+     * dtb_product_class.in_stock を再計算する SQL を返す. 値が変わる行だけを更新する.
+     *
+     * in_stock 列が存在することを前提とする.
+     */
+    public function getRecalculateInStockSql(): string
+    {
         // 在庫無制限, または在庫数が 1 以上
-        $inStock = '(pc.stock_unlimited OR EXISTS (SELECT 1 FROM dtb_product_stock ps WHERE ps.product_class_id = pc.id AND ps.stock >= 1))';
+        $inStock = '(dtb_product_class.stock_unlimited OR EXISTS (SELECT 1 FROM dtb_product_stock ps WHERE ps.product_class_id = dtb_product_class.id AND ps.stock >= 1))';
 
-        // 値が変わる行だけを更新する
-        $rows = $this->connection->fetchAllAssociative(
-            'SELECT pc.id, '.$inStock.' AS in_stock FROM dtb_product_class pc WHERE pc.in_stock <> '.$inStock
-        );
-
-        $idsByValue = [0 => [], 1 => []];
-        foreach ($rows as $row) {
-            // ドライバにより true / 1 / 't' のいずれかで返る
-            $value = in_array($row['in_stock'], [true, 1, '1', 't', 'true'], true) ? 1 : 0;
-            $idsByValue[$value][] = (int) $row['id'];
-        }
-
-        $updated = 0;
-        foreach ($idsByValue as $value => $ids) {
-            foreach (array_chunk($ids, 500) as $chunk) {
-                $updated += (int) $this->connection->executeStatement(
-                    'UPDATE dtb_product_class SET in_stock = ? WHERE id IN (?)',
-                    [(bool) $value, $chunk],
-                    ['boolean', ArrayParameterType::INTEGER]
-                );
-            }
-        }
-
-        return $updated;
+        return 'UPDATE dtb_product_class SET in_stock = '.$inStock.' WHERE in_stock <> '.$inStock;
     }
 
     /**
@@ -167,34 +203,5 @@ class ProductStockSynchronizer
         }
 
         return $columns;
-    }
-
-    /**
-     * @param array<string, mixed> $row
-     */
-    private function legacyStock(array $row): ?string
-    {
-        if (in_array($row['stock_unlimited'], [true, 1, '1', 't', 'true'], true)) {
-            // 在庫無制限時はnullを設定
-            return null;
-        }
-
-        return $row['stock'] === null ? null : (string) $row['stock'];
-    }
-
-    private function insertProductStock(Connection $conn, int $productClassId, ?string $stock): void
-    {
-        $now = new \DateTime();
-        $conn->insert('dtb_product_stock', [
-            'product_class_id' => $productClassId,
-            'creator_id' => null,
-            'stock' => $stock,
-            'create_date' => $now,
-            'update_date' => $now,
-            'discriminator_type' => 'productstock',
-        ], [
-            'create_date' => 'datetimetz',
-            'update_date' => 'datetimetz',
-        ]);
     }
 }

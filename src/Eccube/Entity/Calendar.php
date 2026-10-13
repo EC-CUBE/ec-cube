@@ -68,7 +68,7 @@ class Calendar extends AbstractEntity
     /**
      * Set title.
      */
-    public function setTitle(string $title): Calendar
+    public function setTitle(?string $title): Calendar
     {
         $this->title = $title;
 
@@ -78,7 +78,7 @@ class Calendar extends AbstractEntity
     /**
      * Get title.
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -86,7 +86,7 @@ class Calendar extends AbstractEntity
     /**
      * Set holiday.
      */
-    public function setHoliday(\DateTime $holiday): Calendar
+    public function setHoliday(?\DateTime $holiday): Calendar
     {
         $this->holiday = $holiday;
 
