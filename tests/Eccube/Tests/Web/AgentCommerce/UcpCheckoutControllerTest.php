@@ -294,6 +294,30 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
     }
 
     /**
+     * 同じ Idempotency-Key での cancel の再送は初回の 200 をリプレイし、キー無しなら終端として 422 になる (#7229).
+     */
+    public function testCancelReplayWithSameIdempotencyKeyReturnsOriginal200(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+        $sessionId = $created['id'];
+        $uri = '/ucp/checkout-sessions/'.$sessionId.'/cancel';
+
+        $first = $this->postJson($uri, [], 'POST', ['HTTP_Idempotency-Key' => 'idem-ucp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '初回の cancel は 200');
+        $this->assertSame('canceled', $first['status']);
+
+        $second = $this->postJson($uri, [], 'POST', ['HTTP_Idempotency-Key' => 'idem-ucp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
+        $this->assertSame($first, $second, 'リプレイは初回と同じボディを返す');
+
+        $other = $this->postJson($uri, []);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), 'キー無しの cancel は終端として 422');
+        $this->assertSame('invalid_session_state', $other['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($sessionId), 'DB 上は canceled のまま');
+    }
+
+    /**
      * 回収処理 (#7221) が未実装で expired へ遷移させる経路が無いため、DB 上のステータスを直接書き換える.
      */
     private function forceStatus(string $sessionId, int $statusId): void

@@ -215,6 +215,23 @@ final class AcpCheckoutConformanceTest extends EccubeTestCase
     }
 
     /**
+     * MUST: a completed or canceled session cannot be canceled (405).
+     *
+     * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol ACP openapi.agentic_checkout.yaml (cancel 405)
+     */
+    public function testCancelCanceledReturns405(): void
+    {
+        $pc = $this->productClass();
+        $created = $this->post('/acp/checkout_sessions', $this->payload((int) $pc->getId()));
+        $this->post('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), 'the first cancel succeeds');
+
+        // post() は毎回別の Idempotency-Key を付けるため、2 回目はリプレイにならない。
+        $this->post('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), 'MUST: a canceled session cannot be canceled');
+    }
+
+    /**
      * Inbound markdown content MUST NOT contain raw HTML (servers MUST reject).
      *
      * @see https://github.com/agentic-commerce-protocol/agentic-commerce-protocol ACP rfc.agentic_checkout.md §5.1

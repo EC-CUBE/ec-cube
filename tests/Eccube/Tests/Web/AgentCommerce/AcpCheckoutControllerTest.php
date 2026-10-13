@@ -306,6 +306,30 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
     }
 
     /**
+     * 同じ Idempotency-Key での cancel の再送は初回の 200 をリプレイし、別キーなら終端として 405 になる (#7229).
+     */
+    public function testCancelReplayWithSameIdempotencyKeyReturnsOriginal200(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $uri = '/acp/checkout_sessions/'.$created['id'].'/cancel';
+
+        $first = $this->postJson($uri, [], ['HTTP_Idempotency-Key' => 'idem-acp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '初回の cancel は 200');
+        $this->assertSame('canceled', $first['status']);
+
+        $second = $this->postJson($uri, [], ['HTTP_Idempotency-Key' => 'idem-acp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
+        $this->assertSame('true', $this->client->getResponse()->headers->get('Idempotent-Replayed'), 'リプレイは Idempotent-Replayed: true を付す');
+        $this->assertSame($first, $second, 'リプレイは初回と同じボディを返す');
+
+        $other = $this->postJson($uri, []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '別キーの cancel は終端として 405');
+        $this->assertSame('not_allowed', $other['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($created['id']), '拒否後も DB 上は canceled のまま');
+    }
+
+    /**
      * 回収処理 (#7221) が未実装で expired へ遷移させる経路が無いため、DB 上のステータスを直接書き換える.
      */
     private function forceStatus(string $sessionId, int $statusId): void
