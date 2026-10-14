@@ -309,7 +309,7 @@ class AgentCheckoutCompletionService
         $statusId = $outcome->retryable ? CheckoutSessionStatus::READY : CheckoutSessionStatus::CANCELED;
         $session->setStatus($this->requireStatus($statusId));
 
-        $message = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, $this->errorMessageFor($outcome));
+        $message = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, $this->errorMessageFor($outcome), AgentCheckoutMessageCode::PAYMENT_FAILED);
 
         return new AgentCheckoutCompletionResult($session->getStatus() ?? $this->requireStatus($statusId), null, [$message]);
     }

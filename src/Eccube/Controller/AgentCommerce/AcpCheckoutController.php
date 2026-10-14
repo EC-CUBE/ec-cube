@@ -28,6 +28,7 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageCode;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
@@ -35,6 +36,7 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
+use Eccube\Service\AgentCommerce\JsonObjectFieldNormalizer;
 use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,6 +70,13 @@ use Symfony\Component\Routing\Attribute\Route;
  */
 class AcpCheckoutController extends AbstractController
 {
+    /**
+     * 空でも JSON object ({}) で配信しなければならないフィールド (ドット区切り).
+     *
+     * @var list<string>
+     */
+    private const JSON_OBJECT_FIELDS = ['capabilities'];
+
     public function __construct(
         private readonly BaseInfoRepository $baseInfoRepository,
         private readonly CheckoutSessionRepository $checkoutSessionRepository,
@@ -227,6 +236,7 @@ class AcpCheckoutController extends AbstractController
                 new AgentCheckoutMessage(
                     AgentCheckoutMessageLevel::ERROR,
                     'Shipping address is required to calculate shipping and complete checkout.',
+                    AgentCheckoutMessageCode::ADDRESS_REQUIRED,
                 ),
             ]);
 
@@ -289,7 +299,9 @@ class AcpCheckoutController extends AbstractController
             );
         }
 
-        $response = new JsonResponse($result['body'], $result['status']);
+        // capabilities は空でも object ({}) 必須 (CheckoutSessionBase.capabilities)。リプレイ本文は DB の
+        // json 列 (assoc decode) から戻るため mapper の stdClass が [] に退行する。配信直前に揃える。
+        $response = new JsonResponse(JsonObjectFieldNormalizer::normalize($result['body'], self::JSON_OBJECT_FIELDS), $result['status']);
         if ($result['replayed']) {
             // リプレイされたレスポンスである旨を広告する (SHOULD)。
             $response->headers->set('Idempotent-Replayed', 'true');
