@@ -26,8 +26,9 @@ use Mcp\Capability\Attribute\McpTool;
  * 商品在庫取得ツール (`get_product_stock`)。
  *
  * 必要 scope: `mcp:product:read`。 商品単位 (規格なし) と商品規格単位 (`ProductClass`) の両方に対応。
- * 出力は ProductClass の allow_list (`stock`、 `stock_unlimited` 等) に従う。
- * `stock_unlimited = true` の規格は `stock` が null になる場合がある (在庫無制限の表現)。
+ * 出力は ProductClass の allow_list (`in_stock`、 `stock_unlimited`、 `ProductStock` 等) に従う。
+ * 在庫数の正典は `ProductStock.stock` で、 `in_stock` は在庫無制限または在庫数が 1 以上であることを表す。
+ * `stock_unlimited = true` の規格は `ProductStock.stock` が null になる場合がある (在庫無制限の表現)。
  */
 final readonly class GetProductStockTool
 {
@@ -47,7 +48,7 @@ final readonly class GetProductStockTool
      */
     #[McpTool(
         name: 'get_product_stock',
-        description: 'EC-CUBE の商品 (および商品規格) 単位の在庫数を取得する。 stock_unlimited フラグの規格は stock が null。 読み取り専用。 必要 scope: mcp:product:read。',
+        description: 'EC-CUBE の商品 (および商品規格) 単位の在庫数を取得する。 規格の在庫数は ProductStock.stock、 在庫の有無は in_stock。 stock_unlimited フラグの規格は ProductStock.stock が null になる場合がある。 読み取り専用。 必要 scope: mcp:product:read。',
     )]
     public function get(int $productId): array
     {
