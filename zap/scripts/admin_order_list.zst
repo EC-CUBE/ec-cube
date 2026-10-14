@@ -395,34 +395,6 @@
       "index": 27,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
-    {
-      "comment": "受注一括削除",
-      "index": 28,
-      "enabled": true,
-      "elementType": "ZestComment"
-    },
-    {
-      "url": "https://ec-cube/admin/order/bulk_delete",
-      "data": "_token={{eccube-csrf-token}}&ids%5B%5D={{order-id}}",
-      "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 302,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 0,
-      "cookies": [],
-      "index": 29,
-      "enabled": true,
-      "elementType": "ZestRequest"
     }
   ],
   "authentication": [],
