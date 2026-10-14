@@ -2,14 +2,15 @@
 #
 # レーンを起動し、スキャンできる状態にする。複数のレーンは並列に準備する。
 #
-# usage: setup.sh [-r] <レーン番号>...
+# usage: setup.sh [-r] [-n] <レーン番号>...
 #   -r  既存のコンテナとボリュームを削除して作り直す
+#   -n  スキャン用のパッチ (zap/patches) を当てない
 #   例: zap/local/setup.sh 1 2 3 4
 #
 # 1. コンテナを起動する (EC-CUBE は APP_ENV=prod)
 # 2. バンドル版プラグインを導入する (zap/plugins.txt、clone 先は zap/local/repos)
 # 3. ログインのスロットリングとレートリミッタを緩める
-# 4. ZAP のアドオンを導入し、Smoke ポリシーを作る
+# 4. スキャン用のパッチを当て (-n で省略)、ZAP のアドオンを導入し、Smoke ポリシーを作る
 # 5. この時点の DB を eccubedb_clean として保存する (restore.sh でターゲットごとに戻す)
 # 6. スキャン中に作られたデータとファイルの定期削除を起動する
 #
@@ -17,10 +18,17 @@
 
 set -uo pipefail
 
-RECREATE=
-if [[ ${1:-} == -r ]]; then RECREATE=1; shift; fi
+RECREATE= NO_PATCH=
+while getopts rn OPT; do
+    case ${OPT} in
+        r) RECREATE=1 ;;
+        n) NO_PATCH=1 ;;
+        *) exit 2 ;;
+    esac
+done
+shift $((OPTIND - 1))
 if [[ $# == 0 ]]; then
-    echo "usage: $0 [-r] <レーン番号>..." >&2
+    echo "usage: $0 [-r] [-n] <レーン番号>..." >&2
     exit 2
 fi
 
@@ -40,6 +48,9 @@ setup_lane() {
     docker compose up -d --wait
     zap/bin/install_plugins.sh "${ZAP_LOCAL}/repos"
     zap/bin/prepare_ec-cube.sh
+    if [[ -z ${NO_PATCH} ]]; then
+        zap/bin/apply_patches.sh
+    fi
     zap/bin/prepare_zap.sh
     "${ZAP_LOCAL}/snapshot.sh"
     zap/bin/start_cleanup.sh

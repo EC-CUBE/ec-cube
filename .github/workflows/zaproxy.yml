@@ -23,9 +23,9 @@ on:
         type: string
         default: '.*'
       patches:
-        description: 'スキャン用のパッチ (zap/patches/ のファイル名から .patch を除いたものを空白区切り。all ですべて。空なら当てない)'
+        description: 'スキャン用のパッチ (zap/patches/ のファイル名から .patch を除いたものを空白区切り。all (既定) ですべて。空なら当てない)'
         type: string
-        default: ''
+        default: 'all'
 
 permissions:
   contents: read

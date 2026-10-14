@@ -90,6 +90,15 @@
       "elementType": "ZestRequest"
     },
     {
+      "prefix": "data-customer=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "customer-id",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
       "url": "https://ec-cube/admin/order/search/customer/html/page/1",
       "data": "",
       "method": "GET",
@@ -107,18 +116,9 @@
       "followRedirects": false,
       "timestamp": 1655449200970,
       "cookies": [],
-      "index": 7,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "prefix": "data-customer=\"",
-      "postfix": "\">",
-      "location": "BODY",
-      "variableName": "customer-id",
       "index": 8,
       "enabled": true,
-      "elementType": "ZestAssignStringDelimiters"
+      "elementType": "ZestRequest"
     },
     {
       "url": "https://ec-cube/admin/order/search/customer/id",

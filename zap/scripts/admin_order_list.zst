@@ -191,6 +191,15 @@
       "elementType": "ZestRequest"
     },
     {
+      "prefix": "id=\"check_\\d+\" data-id=\"",
+      "postfix": "\" name=\"ids\\[\\]\"",
+      "location": "BODY",
+      "variableName": "order-id",
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
       "url": "https://ec-cube/admin/order/page/1",
       "data": "",
       "method": "GET",
@@ -208,18 +217,9 @@
       "followRedirects": false,
       "timestamp": 1655432942882,
       "cookies": [],
-      "index": 14,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "prefix": "id=\"check_\\d+\" data-id=\"",
-      "postfix": "\" name=\"ids\\[\\]\"",
-      "location": "BODY",
-      "variableName": "order-id",
       "index": 15,
       "enabled": true,
-      "elementType": "ZestAssignRegexDelimiters"
+      "elementType": "ZestRequest"
     },
     {
       "comment": "受注CSVダウンロード",
