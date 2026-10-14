@@ -59,6 +59,13 @@ final class EcJwkFactory
     /**
      * 公開鍵から JWK の座標 (x, y; base64url) を抽出する.
      *
+     * phpseclib3 の toString('JWK') は ext-sodium が無い環境では padding 付き
+     * (末尾 "=") の base64url を返す (Strings::base64url_encode のフォールバック先
+     * paragonie Base64UrlSafe::encode が padding を付けるため). RFC 7515 §2 の
+     * base64url は padding 省略が必須なので, 環境差に関わらず必ず正規化する.
+     * kid (RFC 7638) も x/y の文字列から算出するため, 正規化しないと同じ鍵の kid が
+     * sodium の有無で変わってしまう.
+     *
      * @return array{x: string, y: string}
      */
     private static function extractCoordinates(PublicKey $publicKey): array
@@ -91,7 +98,15 @@ final class EcJwkFactory
             throw new \RuntimeException('EC 公開鍵から JWK 座標を取得できませんでした.');
         }
 
-        return ['x' => $x, 'y' => $y];
+        return ['x' => self::normalizeBase64url($x), 'y' => self::normalizeBase64url($y)];
+    }
+
+    /**
+     * base64 / base64url を RFC 7515 §2 の base64url (URL-safe alphabet, padding なし) に正規化する.
+     */
+    private static function normalizeBase64url(string $value): string
+    {
+        return rtrim(strtr($value, '+/', '-_'), '=');
     }
 
     /**
