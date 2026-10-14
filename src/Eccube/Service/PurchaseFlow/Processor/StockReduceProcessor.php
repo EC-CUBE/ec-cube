@@ -89,7 +89,6 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                     throw new ShoppingException(trans('purchase_flow.over_stock', ['%name%' => $ProductClass->formattedProductName()]));
                 }
                 $productStock->setStock($stock);
-                $ProductClass->setStock($stock);
             }
         }
     }

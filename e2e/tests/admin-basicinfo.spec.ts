@@ -185,6 +185,34 @@ test.describe('Admin Basic Info (EA07)', () => {
     await expect(page.locator(paymentSelector(1))).toContainText('郵便振替');
   });
 
+  test('basicinfo_支払方法ドラッグ&ドロップ入れ替え - EA0704-UC02-T02', async ({ page }) => {
+    await page.goto(`/${adminRoute}/setting/shop/payment`);
+    await page.waitForLoadState('load');
+    await expect(page.locator('.c-pageTitle')).toContainText('支払方法一覧');
+
+    const items = page.locator('.c-contentsArea__primaryCol .list-group-flush li.sortable-item');
+    const ids = async () => items.evaluateAll(els => els.map(el => (el as HTMLElement).dataset.id));
+    const before = await ids();
+    expect(before.length).toBeGreaterThanOrEqual(2);
+
+    // Helper: SortableJS の onUpdate (AJAX で sort_no を保存) の完了を待つ.
+    // 保存中は .modal-backdrop が出るので, 消えるまで待ってから再読込する.
+    async function dragAndWait(from: number, to: number) {
+      await items.nth(from).dragTo(items.nth(to));
+      await page.waitForFunction(() => !document.querySelector('.modal-backdrop'), {}, { timeout: 10_000 });
+      await page.goto(`/${adminRoute}/setting/shop/payment`);
+      await page.waitForLoadState('load');
+    }
+
+    // 1 件目を 2 件目の位置へドラッグすると順序が入れ替わり, 再読込後も保持される
+    await dragAndWait(0, 1);
+    expect(await ids()).toEqual([before[1], before[0], ...before.slice(2)]);
+
+    // 元に戻す
+    await dragAndWait(1, 0);
+    expect(await ids()).toEqual(before);
+  });
+
   test('basicinfo_delivery_crud - EA0707-UC01/UC02/EA0706-UC03', async ({ page }) => {
     const deliveryName = 'test_delivery_' + Date.now();
     const deliveryNameEdited = deliveryName + '_edited';

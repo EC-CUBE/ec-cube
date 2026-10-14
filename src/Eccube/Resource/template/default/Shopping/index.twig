@@ -32,7 +32,12 @@ file that was distributed with this source code.
             var $redirectCallback = function() {
                 loadingOverlay();
                 $('#shopping_order_redirect_to').val($(this).attr('data-path'));
-                $('#shopping-form').attr('action', '{{ url("shopping_redirect_to") }}').submit();
+                // data-fragment があれば送信先 URL に付ける.
+                // リダイレクト応答の Location に fragment が無い場合, ブラウザは送信先 URL の fragment を引き継ぐため,
+                // サーバ側で fragment を扱わずに再表示後のスクロール位置を指定できる.
+                var fragment = $(this).attr('data-fragment');
+                var action = '{{ url("shopping_redirect_to") }}' + (fragment ? '#' + fragment : '');
+                $('#shopping-form').attr('action', action).submit();
                 setTimeout(function () {
                     loadingOverlay("hide");
                 }, 2000);
@@ -419,7 +424,7 @@ file that was distributed with this source code.
                         <button type="button" class="ec-inlineBtn" data-trigger="click" data-path="{{ path('shopping_shipping_multiple') }}">{{ 'front.shopping.to_multiple'|trans }}</button>
                     </div>
                 </div>
-                <div class="ec-orderPayment">
+                <div class="ec-orderPayment" id="payment-method">
                     <div class="ec-rectHeading">
                         <h2>{{ 'front.shopping.payment_info'|trans }}</h2>
                     </div>
@@ -427,7 +432,7 @@ file that was distributed with this source code.
                         {% for key, child in form.Payment %}
                             <div style="display: block;">
                                 {% set Payment = form.Payment.vars.choices[key].data %}
-                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change' }}) }}
+                                {{ form_widget(child, { 'attr': { 'data-trigger': 'change', 'data-fragment': 'payment-method' }}) }}
                                 {% if Payment.payment_image is not null %}
                                     <p><img src="{{ asset(Payment.payment_image, 'save_image') }}"></p>
                                 {% endif %}

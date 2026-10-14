@@ -73,12 +73,17 @@ file that was distributed with this source code.
                 redrawDisableAllows();
             };
             // Drag and Drop
-            $('.sortable-container').sortable({
-                items: '> .sortable-item',
-                cursor: 'move',
-                update: function(e, ui) {
-                    moveSortNo();
-                }
+            document.querySelectorAll('.sortable-container').forEach(function(container) {
+                Sortable.create(container, {
+                    draggable: '.sortable-item',
+                    // 行内の入力欄・ボタンからはドラッグを開始しない (クリックは阻害しない)
+                    filter: 'input, textarea, select, button',
+                    preventOnFilter: false,
+                    animation: 150,
+                    onUpdate: function() {
+                        moveSortNo();
+                    }
+                });
             });
             // Up
             $('.sortable-item').on('click', 'a.action-up', function(e) {

@@ -17,7 +17,6 @@ use Eccube\Entity\ItemHolderInterface;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
-use Eccube\Entity\ProductStock;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\PurchaseFlow\InvalidItemException;
 use Eccube\Service\PurchaseFlow\ItemHolderValidator;
@@ -159,14 +158,8 @@ class StockDiffProcessor extends ItemHolderValidator implements PurchaseProcesso
             }
 
             $stock = $ProductClass->getStock() !== null ? bcsub((string) $ProductClass->getStock(), $quantity) : null;
-            $ProductStock = $ProductClass->getProductStock();
-            if (!$ProductStock) {
-                $ProductStock = new ProductStock();
-                $ProductStock->setProductClass($ProductClass);
-                $ProductClass->setProductStock($ProductStock);
-            }
+            // 在庫数は ProductStock に保持される (ProductStock が無ければ作成される)
             $ProductClass->setStock($stock);
-            $ProductStock->setStock($stock);
         }
     }
 

@@ -27,7 +27,6 @@ use Eccube\Entity\Product;
 use Eccube\Entity\ProductCategory;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductImage;
-use Eccube\Entity\ProductStock;
 use Eccube\Entity\ProductTag;
 use Eccube\Form\Type\Admin\CsvImportType;
 use Eccube\Repository\BaseInfoRepository;
@@ -1410,19 +1409,13 @@ class CsvImportController extends AbstractCsvImportController
         }
 
         $Product->addProductClass($ProductClass);
-        $ProductStock = new ProductStock();
-        $ProductClass->setProductStock($ProductStock);
-        $ProductStock->setProductClass($ProductClass);
 
-        if (!$ProductClass->isStockUnlimited()) {
-            $ProductStock->setStock($ProductClass->getStock());
-        } else {
-            // 在庫無制限時はnullを設定
-            $ProductStock->setStock();
-        }
+        // 在庫数は ProductStock に保持され, 無ければ作成される
+        // 在庫無制限時はnullを設定
+        $ProductClass->setStock($ProductClass->isStockUnlimited() ? null : $ProductClass->getStock());
 
         $this->entityManager->persist($ProductClass);
-        $this->entityManager->persist($ProductStock);
+        $this->entityManager->persist($ProductClass->getProductStock());
 
         return $ProductClass;
     }
@@ -1580,21 +1573,9 @@ class CsvImportController extends AbstractCsvImportController
             }
         }
 
-        $ProductStock = $ProductClass->getProductStock();
-
-        // 在庫テーブルに存在しない場合、新規作成
-        if (!$ProductStock instanceof ProductStock) {
-            $ProductStock = new ProductStock();
-            $ProductClass->setProductStock($ProductStock);
-            $ProductStock->setProductClass($ProductClass);
-        }
-
-        if (!$ProductClass->isStockUnlimited()) {
-            $ProductStock->setStock($ProductClass->getStock());
-        } else {
-            // 在庫無制限時はnullを設定
-            $ProductStock->setStock();
-        }
+        // 在庫数は ProductStock に保持され, 在庫テーブルに存在しない場合は新規作成される
+        // 在庫無制限時はnullを設定
+        $ProductClass->setStock($ProductClass->isStockUnlimited() ? null : $ProductClass->getStock());
 
         if (isset($row[$headerByKey['product_class_visible_flg']])
             && StringUtil::isNotBlank($row[$headerByKey['product_class_visible_flg']])) {

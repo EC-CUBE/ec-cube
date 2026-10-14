@@ -21,7 +21,6 @@ use Eccube\Controller\AbstractController;
 use Eccube\Entity\ClassName;
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
-use Eccube\Entity\ProductStock;
 use Eccube\Form\Type\Admin\ProductClassMatrixType;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
@@ -312,6 +311,8 @@ class ProductClassController extends AbstractController
 
                 // 過去の登録情報があればその情報を復旧する.
                 if ($ExistsProductClass) {
+                    // 入力された在庫数は $pc 側の ProductStock に保持されているため, 復旧先へ引き継ぐ
+                    $stock = $pc->getStock();
                     $ExistsProductClass->copyProperties($pc, [
                         'id',
                         'price01_inc_tax',
@@ -320,13 +321,20 @@ class ProductClassController extends AbstractController
                         'update_date',
                         'Creator',
                         'ProductStock',
+                        'in_stock',
                     ]);
                     $pc = $ExistsProductClass;
+                    $pc->setStock($stock);
                 }
             }
 
             // 更新時, チェックを外した場合はPOST内容を破棄してvisibleのみ更新する.
             if ($pc->getId() && !$pc->isVisible()) {
+                // フォームで入力された在庫数は ProductStock に書き込まれているため, あわせて破棄する
+                $ProductStock = $pc->getProductStock();
+                if ($ProductStock !== null && $this->entityManager->contains($ProductStock)) {
+                    $this->entityManager->refresh($ProductStock);
+                }
                 $this->entityManager->refresh($pc);
                 $pc->setVisible(false);
                 continue;
@@ -335,14 +343,9 @@ class ProductClassController extends AbstractController
             $pc->setProduct($Product);
             $this->entityManager->persist($pc);
 
-            // 在庫の更新
-            $ProductStock = $pc->getProductStock();
-            if (!$ProductStock) {
-                $ProductStock = new ProductStock();
-                $ProductStock->setProductClass($pc);
-                $this->entityManager->persist($ProductStock);
-            }
-            $ProductStock->setStock($pc->isStockUnlimited() ? null : $pc->getStock());
+            // 在庫の更新 (在庫数は ProductStock に保持され, 無ければ作成される)
+            $pc->setStock($pc->isStockUnlimited() ? null : $pc->getStock());
+            $this->entityManager->persist($pc->getProductStock());
 
             if ($this->baseInfoRepository->get()->isOptionProductTaxRule()) {
                 $rate = $pc->getTaxRate();

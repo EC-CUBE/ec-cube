@@ -26,9 +26,11 @@ file that was distributed with this source code.
 
 {% block stylesheet %}
     <style>
-        .ui-resizable-se {
-            right: -3px;
-            bottom: -3px;
+        /* エディタの高さをドラッグで変更できるようにする (CSS の resize は overflow: visible では効かない) */
+        #editor {
+            resize: vertical;
+            overflow: hidden;
+            min-height: 200px;
         }
     </style>
 {% endblock %}
@@ -47,11 +49,10 @@ file that was distributed with this source code.
             showInvisibles: true
         });
 
-        $("#editor").resizable({
-            resize: function (event, ui) {
-                editor.resize();
-            }
-        });
+        // 高さの変更を ace に伝える
+        new ResizeObserver(function () {
+            editor.resize();
+        }).observe(document.getElementById('editor'));
 
         $('#content_page_form').on('submit', function(elem) {
             $('#main_edit_tpl_data').val(editor.getValue());
