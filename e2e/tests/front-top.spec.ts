@@ -71,6 +71,13 @@ test.describe('Front Top Page (EF01)', () => {
     const dots = slider.locator('.slick-dots li');
     const dotCount = await dots.count();
     expect(dotCount).toBeGreaterThan(1);
+    // 自動再生 (既定 3 秒間隔) で末尾に達しても通ってしまうため、止めてからクリックの切り替えを確かめる。
+    // 読み込みに 3 秒以上かかると pause の時点で先頭にいないことがあるので、先頭へ戻してから始める
+    await page.evaluate(() => {
+      const $slider = (window as any).$('.main_visual');
+      $slider.slick('slickPause');
+      $slider.slick('slickGoTo', 0, true);
+    });
     await expect(slider.locator('.slick-current')).toHaveAttribute('data-slick-index', '0');
 
     // 末尾のドットをクリックするとそのスライドへ切り替わる
