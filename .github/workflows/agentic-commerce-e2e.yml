@@ -69,13 +69,6 @@ jobs:
             database_server_version: 8
             database_charset: utf8mb4
 
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
-
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
@@ -207,13 +200,16 @@ jobs:
           ## pool を消さないと acp.json ゲートが stale(false) のまま 404 になる。
           bin/console cache:pool:clear --all
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
           APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           ## EC-CUBE は public-dir="." のため front controller はルートの index.php。
@@ -281,13 +277,6 @@ jobs:
             database_url: postgres://postgres:password@127.0.0.1:5432/eccube_db
             database_server_version: 18
             database_charset: utf8
-
-    services:
-      mailcatcher:
-        image: schickling/mailcatcher
-        ports:
-          - 1080:1080
-          - 1025:1025
 
     steps:
       - name: Checkout
@@ -379,13 +368,16 @@ jobs:
             --scope=acp:checkout --scope=ucp:checkout \
             agentE2e agente2eclient agente2esecret
 
+      - name: Start Mailpit (SMTP sink)
+        uses: ./.github/actions/mailpit
+
       - name: Start PHP Development Server
         env:
           APP_ENV: 'prod'
           DATABASE_URL: ${{ matrix.database_url }}
           DATABASE_SERVER_VERSION: ${{ matrix.database_server_version }}
           DATABASE_CHARSET: ${{ matrix.database_charset }}
-          MAILER_URL: 'smtp://127.0.0.1:1025'
+          MAILER_DSN: 'smtp://127.0.0.1:1025'
           ECCUBE_AUTH_MAGIC: ${{ env.ECCUBE_AUTH_MAGIC }}
         run: |
           ## front controller の index.php を直接 router にして確実に kernel へ通す (Job A と同方針)
