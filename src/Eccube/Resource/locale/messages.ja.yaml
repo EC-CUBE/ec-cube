@@ -1298,10 +1298,6 @@ admin.setting.shop.opening_hours.friday: 金曜日
 admin.setting.shop.opening_hours.saturday: 土曜日
 admin.setting.shop.opening_hours.sunday: 日曜日
 admin.setting.shop.opening_hours.public_holidays: 祝日
-admin.setting.shop.opening_hours.error.day_required: 曜日を1つ以上選択してください。
-admin.setting.shop.opening_hours.error.opens_required: 開店時刻を入力してください。
-admin.setting.shop.opening_hours.error.closes_required: 閉店時刻を入力してください。
-admin.setting.shop.opening_hours.error.opens_before_closes: 開店時刻は閉店時刻より前にしてください。
 admin.setting.shop.opening_hours.error.overlap: 同じ曜日で営業時間が重複しています。
 admin.setting.shop.shop.option_delivery_fee: 送料設定
 admin.setting.shop.shop.option_delivery_fee_free_amount: 送料無料条件（金額）
