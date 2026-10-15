@@ -983,6 +983,25 @@ EOD;
         yield 'composer で導入した有効なプラグイン' => [true, true];
     }
 
+    /**
+     * プラグインの composer.json を読めない場合は, 事前にアンインストールせず composer remove に任せる.
+     */
+    public function testRemoveByComposerLeavesPluginWithoutComposerJson(): void
+    {
+        $code = $this->installDummyPlugin();
+        (new Filesystem())->remove($this->service->calcPluginDir($code).'/composer.json');
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
