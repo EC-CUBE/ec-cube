@@ -158,10 +158,9 @@ final class PageControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * ユーザーが新しく作るページには名前空間付きのファイル名を付けられない.
+     * ユーザーが新しく作るページには "@" で始まるファイル名を付けられない (4.3 と同じ).
      *
-     * フロントは @user_data/ を前置してテンプレートを探すため, @Boomerang/xxx で保存すると
-     * "@user_data/@Boomerang/xxx.twig" を解決できず 500 になる.
+     * ファイル名の正規表現が "@" を許すのは, プラグインが登録した既定ページの名前空間を通すため.
      */
     public function testRoutingAdminContentPageNewRejectsPluginNamespace(): void
     {
@@ -169,6 +168,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         $faker = $this->getFaker();
 
         $name = $faker->word();
+        $code = 'Boomerang'.bin2hex(random_bytes(4));
         $crawler = $client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_content_page_new'),
@@ -176,7 +176,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
                 'main_edit' => [
                     'name' => $name,
                     'url' => $name,
-                    'file_name' => '@Boomerang/'.$name,
+                    'file_name' => '@'.$code.'/'.$name,
                     'tpl_data' => 'body',
                     '_token' => 'dummy',
                 ],
@@ -189,9 +189,8 @@ final class PageControllerTest extends AbstractAdminWebTestCase
             $crawler->filter('.invalid-feedback')->text()
         );
         $this->assertNotInstanceOf(Page::class, $this->entityManager->getRepository(Page::class)->findOneBy(['url' => $name]));
-        $this->assertFileDoesNotExist(
-            static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig'
-        );
+        $this->assertDirectoryDoesNotExist(static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/'.$code);
+        $this->assertDirectoryDoesNotExist(static::getContainer()->getParameter('eccube_theme_user_data_dir').'/@'.$code);
     }
 
     /**
@@ -323,10 +322,12 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         $client = $this->client;
         $name = $this->getFaker()->word();
         // プラグインが dtb_page へ登録する既定ページ. url はプラグインのルーティング名
-        $Page = $this->createPluginNamespacePage('@Boomerang/'.$name, 'logout', Page::EDIT_TYPE_DEFAULT);
+        $code = 'Boomerang'.bin2hex(random_bytes(4));
+        $Page = $this->createPluginNamespacePage('@'.$code.'/'.$name, 'logout', Page::EDIT_TYPE_DEFAULT);
 
         $source = '{% extends \'default_frame.twig\' %}';
-        $writtenPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig';
+        $namespaceDir = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/'.$code;
+        $writtenPath = $namespaceDir.'/'.$name.'.twig';
         (new Filesystem())->dumpFile($writtenPath, $source);
 
         try {
@@ -350,9 +351,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
                 '配置先を app/template/plugin として表示する'
             );
         } finally {
-            if (file_exists($writtenPath)) {
-                unlink($writtenPath);
-            }
+            (new Filesystem())->remove($namespaceDir);
         }
     }
 
