@@ -347,7 +347,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
      * ファイル名の検証は "." を許さないため, 名前空間を許可しても
      * 上位ディレクトリへ抜けるファイル名は受け付けない.
      */
-    public function testRoutingAdminContentPageRejectsPathTraversal()
+    public function testRoutingAdminContentPageRejectsPathTraversal(): void
     {
         $client = $this->client;
         $faker = $this->getFaker();
