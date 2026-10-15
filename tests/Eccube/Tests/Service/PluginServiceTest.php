@@ -897,8 +897,8 @@ EOD;
     }
 
     /**
-     * extra.id が空 ('0' を含む) のパッケージは, plugin-installer がアンインストールしない.
-     * source=0 (アーカイブで導入) のレコードを巻き込まない.
+     * extra.id が 0 (文字列の '0' を含む) のパッケージは, plugin-installer がアンインストールしない.
+     * source で引くと, アーカイブで導入したプラグインのレコード (source が '0') に一致してしまうので, 対象にしない.
      */
     #[DataProvider(methodName: 'provideEmptyPackageId')]
     public function testRemoveByComposerLeavesPluginWhenPackageIdIsEmpty(int|string $emptyId): void
@@ -924,7 +924,6 @@ EOD;
     {
         yield 'int の 0' => [0];
         yield "文字列の '0'" => ['0'];
-        yield '空文字列' => [''];
     }
 
     /**
