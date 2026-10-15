@@ -1581,8 +1581,9 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('#shop_master_OpeningHours_0_closes').fill('00:00');
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
-      await expect(page.locator('.alert-success')).toHaveCount(0);
+      // エラーの文言で送信後のページを待ってから、成功メッセージが無いことを確かめる
       await expect(page.locator('#opening-hours-group')).toContainText('開店と閉店に同じ時刻は指定できません');
+      await expect(page.locator('.alert-success')).toHaveCount(0);
 
       // --- 閉店が開店より前（金曜 18:00〜翌 03:00）は保存できる ---
       await page.locator('#shop_master_OpeningHours_0_opens').fill('18:00');
@@ -1599,8 +1600,9 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('#shop_master_OpeningHours_1_closes').fill('10:00');
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
-      await expect(page.locator('.alert-success')).toHaveCount(0);
+      // エラーの文言で送信後のページを待ってから、成功メッセージが無いことを確かめる
       await expect(page.locator('#opening-hours-group')).toContainText('営業時間が重複しています');
+      await expect(page.locator('.alert-success')).toHaveCount(0);
 
       // --- JSON-LD には入力どおり（opens 18:00 / closes 03:00）に出力される ---
       await page.goto('/');
@@ -1640,8 +1642,9 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('#opening-hours-group .opening-hours-item').nth(1).locator('.delete-opening-hour').click();
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
-      await expect(page.locator('.alert-success')).toHaveCount(0);
+      // エラーの文言で送信後のページを待ってから、成功メッセージが無いことを確かめる
       await expect(page.locator('#opening-hours-group')).toContainText('営業時間が重複しています');
+      await expect(page.locator('.alert-success')).toHaveCount(0);
       await expect(page.locator('#opening-hours-group .opening-hours-item')).toHaveCount(2);
 
       // --- 再表示後に行を追加すると、既存の番号（0, 2）と衝突しない番号が振られる ---
