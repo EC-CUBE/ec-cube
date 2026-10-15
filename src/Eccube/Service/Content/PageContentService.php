@@ -86,21 +86,13 @@ class PageContentService
     }
 
     /**
-     * プラグインの名前空間 (@PluginCode/...) を指す既定ページか.
+     * ページのファイル名が, プラグインの名前空間 (@PluginCode/...) を指すか.
      *
      * プラグインが用意したテンプレートは twig の名前空間で解決されるため,
      * プラグインが登録する既定ページの dtb_page.file_name には "@PluginCode/xxx" の形で入る.
      *
      * ユーザーが作成したページは "@" で始まっても対象外とする. フロント (UserDataController) は
      * "@user_data/" を前置して描画するため, "@Foo/x" は app/template/user_data/@Foo/x.twig を指す.
-     */
-    public function isPluginNamespacePage(Page $Page): bool
-    {
-        return $this->isNamespacedFileName($Page, (string) $Page->getFileName());
-    }
-
-    /**
-     * ページのファイル名が twig の名前空間を指すか (isPluginNamespacePage() 参照).
      */
     private function isNamespacedFileName(Page $Page, string $fileName): bool
     {
@@ -227,7 +219,7 @@ class PageContentService
      * 先頭の "@" は twig の名前空間の記法でディレクトリ名には含まれない
      * (@PluginCode は app/template/plugin/PluginCode を指す) ため取り除く.
      * 取り除かないと登録済みのパスと一致せず, 書き出しても画面へ反映されない.
-     * ユーザーが作成したページの "@" はディレクトリ名の一部なので残す (isPluginNamespacePage() 参照).
+     * ユーザーが作成したページの "@" はディレクトリ名の一部なので残す (isNamespacedFileName() 参照).
      */
     private function buildFilePath(Page $Page, string $templateDir, string $fileName): string
     {

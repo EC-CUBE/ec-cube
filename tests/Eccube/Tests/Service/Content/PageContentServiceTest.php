@@ -389,7 +389,6 @@ final class PageContentServiceTest extends EccubeTestCase
     {
         $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_DEFAULT);
 
-        $this->assertTrue($this->pageContentService->isPluginNamespacePage($Page));
         $this->assertSame(
             $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin',
             $this->pageContentService->getTemplateDir($Page)
@@ -417,14 +416,12 @@ final class PageContentServiceTest extends EccubeTestCase
     public function testGetTemplateDirForNormalPageIsUnchanged(): void
     {
         $UserPage = (new Page())->setFileName('user_data/example')->setEditType(Page::EDIT_TYPE_USER);
-        $this->assertFalse($this->pageContentService->isPluginNamespacePage($UserPage));
         $this->assertSame(
             $this->eccubeConfig->get('eccube_theme_user_data_dir'),
             $this->pageContentService->getTemplateDir($UserPage)
         );
 
         $DefaultPage = (new Page())->setFileName('Product/list')->setEditType(Page::EDIT_TYPE_DEFAULT);
-        $this->assertFalse($this->pageContentService->isPluginNamespacePage($DefaultPage));
         $this->assertSame(
             $this->eccubeConfig->get('eccube_theme_front_dir').'/Product/list.twig',
             $this->pageContentService->getFilePath($DefaultPage)
@@ -440,7 +437,6 @@ final class PageContentServiceTest extends EccubeTestCase
     {
         $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_USER);
 
-        $this->assertFalse($this->pageContentService->isPluginNamespacePage($Page));
         $this->assertSame(
             $this->eccubeConfig->get('eccube_theme_user_data_dir').'/@Boomerang/example.twig',
             $this->pageContentService->getFilePath($Page)
