@@ -20,6 +20,7 @@ use Eccube\Entity\OpeningHours;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ShopMasterTypeTest extends AbstractTypeTestCase
 {
@@ -241,6 +242,8 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         ];
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+        $this->assertCount(0, $this->form->get('OpeningHours')->get('0')->get('closes')->getErrors());
+        $this->assertOverlapErrorOn('1');
     }
 
     /**
@@ -254,7 +257,7 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         ];
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-        $this->assertCount(1, $this->form->get('OpeningHours')->get('1')->get('closes')->getErrors());
+        $this->assertOverlapErrorOn('1');
     }
 
     /**
@@ -502,5 +505,19 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($form->isValid());
         $this->assertFalse($BaseInfo->isOrderPdfVisibleShopName());
         $this->assertTrue($BaseInfo->isOrderPdfVisibleBusinessHour());
+    }
+
+    /**
+     * 営業時間の指定した行の閉店時刻に、重複のエラーが 1 件だけ付いていることを確かめる.
+     * 単体バリデーション（開店と閉店の関係など）のエラーと区別するため、文言まで照合する.
+     */
+    private function assertOverlapErrorOn(string $key): void
+    {
+        $errors = $this->form->get('OpeningHours')->get($key)->get('closes')->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertSame(
+            static::getContainer()->get(TranslatorInterface::class)->trans('admin.setting.shop.opening_hours.error.overlap'),
+            $errors[0]->getMessage()
+        );
     }
 }
