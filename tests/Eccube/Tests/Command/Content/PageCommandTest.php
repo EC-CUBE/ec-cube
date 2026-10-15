@@ -25,6 +25,7 @@ use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class PageCommandTest extends EccubeTestCase
 {
@@ -246,6 +247,40 @@ final class PageCommandTest extends EccubeTestCase
             $this->assertStringContainsString('cache:pool:clear', $tester->getDisplay());
         } finally {
             chmod($poolDir, $originalMode);
+        }
+    }
+
+    /**
+     * 名前空間付きのページで上書き用ディレクトリを新たに作った場合は, 本処理を完了させたうえで
+     * 終了コード 3 と eccube:cache:build の案内を返す. ディレクトリが既にあれば 0 を返す.
+     */
+    public function testApplyReturnsManualActionRequiredWhenNamespaceDirIsCreated(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->assertDirectoryDoesNotExist($namespaceDir);
+
+        // プラグインが dtb_page へ登録する既定ページ
+        $Page = (new Page())
+            ->setName('プラグインのページ')
+            ->setUrl((string) $this->route)
+            ->setFileName('@'.$code.'/'.$this->route)
+            ->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
+
+        try {
+            $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
+            $tester->execute(['--route' => $this->route, '--body' => 'first']);
+
+            $this->assertSame(3, $tester->getStatusCode());
+            $this->assertFileExists($namespaceDir.'/'.$this->route.'.twig', '本処理は完了している');
+            $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+
+            $tester->execute(['--route' => $this->route, '--body' => 'second']);
+            $this->assertSame(0, $tester->getStatusCode(), '初回だけに絞る');
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
         }
     }
 

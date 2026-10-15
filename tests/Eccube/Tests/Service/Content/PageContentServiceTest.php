@@ -455,6 +455,44 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
+     * twig の名前空間に app/template/plugin/[code] が登録されるのは, コンテナのコンパイル時に
+     * そのディレクトリが有った場合だけ. 初めて書き出してディレクトリを作ったときは,
+     * コンテナを作り直さないとフロントへ反映されないことを呼び出し側へ伝える.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testSaveRequiresContainerRebuildOnlyWhenNamespaceDirIsCreated(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->assertDirectoryDoesNotExist($namespaceDir);
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+
+        try {
+            $first = $this->apply(['body' => 'first']);
+            $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $first->writtenPaths);
+            $this->assertTrue($first->containerRebuildRequired, 'ディレクトリを新たに作った場合は再構築が要る');
+
+            $second = $this->apply(['body' => 'second']);
+            $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $second->writtenPaths);
+            $this->assertFalse($second->containerRebuildRequired, 'ディレクトリが既にあれば再構築は要らない');
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
+    /**
+     * 名前空間を持たないページは, 書き出してもコンテナの再構築を求めない.
+     */
+    public function testSaveDoesNotRequireContainerRebuildForNormalPage(): void
+    {
+        $result = $this->apply(['name' => 'テストページ', 'body' => 'body']);
+
+        $this->assertNotSame([], $result->writtenPaths);
+        $this->assertFalse($result->containerRebuildRequired);
+    }
+
+    /**
      * app/template へ上書きしておらず, コアのテンプレートを解決できる既定ページ.
      */
     private function findDefaultPageWithoutOverride(): Page
@@ -470,6 +508,22 @@ final class PageContentServiceTest extends EccubeTestCase
         }
 
         self::fail('app/template へ上書きしていない既定ページが見つかりません.');
+    }
+
+    /**
+     * プラグインが dtb_page へ登録する既定ページ (ファイル名が twig の名前空間を指す) を作る.
+     */
+    private function createPluginNamespacePage(string $fileName): Page
+    {
+        $Page = (new Page())
+            ->setName('プラグインのページ')
+            ->setUrl((string) $this->route)
+            ->setFileName($fileName)
+            ->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
+
+        return $Page;
     }
 
     /**

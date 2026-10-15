@@ -120,6 +120,25 @@ class PageContentService
             : (string) $this->eccubeConfig->get('eccube_theme_front_dir');
     }
 
+    /**
+     * 名前空間付きのファイル名について, twig の名前空間として登録される上書き用ディレクトリを返す.
+     *
+     * "@PluginCode/xxx" なら app/template/plugin/PluginCode. 名前空間を持たない場合は null.
+     */
+    private function resolvePluginNamespaceDir(string $fileName): ?string
+    {
+        if (!str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
+            return null;
+        }
+
+        $namespace = strstr(substr($fileName, strlen(self::TWIG_NAMESPACE_PREFIX)), '/', true);
+        if (false === $namespace || '' === $namespace) {
+            return null;
+        }
+
+        return $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$namespace;
+    }
+
     public function getFilePath(Page $Page): string
     {
         return $this->buildFilePath($this->getTemplateDir($Page), (string) $Page->getFileName());
@@ -264,6 +283,10 @@ class PageContentService
      *
      * 本文が現在の内容と同じ場合はファイルを書き出さない (ContentResult::$writtenPaths も空になる).
      *
+     * 名前空間付きのページで上書き用ディレクトリ (app/template/plugin/[code]) を新たに作った場合は,
+     * ContentResult::$containerRebuildRequired を true にする. 呼び出し側でコンテナを作り直さないと
+     * 書き出したテンプレートがフロントへ反映されない.
+     *
      * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
     public function save(Page $Page, string $body, ?Layout $PcLayout, ?Layout $SpLayout, ?string $previousFileName): ContentResult
@@ -281,7 +304,14 @@ class PageContentService
             // 比較相手の findTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
             // 上書きしていないページのメタ情報だけを更新しても app/template にファイルが増えない.
             $writtenPaths = [];
+            $containerRebuildRequired = false;
             if (self::shouldWriteTemplate($this->findTemplate($Page), $body)) {
+                // twig の名前空間 (@PluginCode) に app/template/plugin/[code] が登録されるのは,
+                // コンテナのコンパイル時にそのディレクトリが有った場合だけ
+                // (EccubeExtension::configureTwigPaths()). 初めて書き出すときはディレクトリごと作るため,
+                // コンテナを作り直すまでフロントはプラグイン同梱のテンプレートを表示し続ける.
+                $namespaceDir = $this->resolvePluginNamespaceDir((string) $Page->getFileName());
+                $containerRebuildRequired = null !== $namespaceDir && !is_dir($namespaceDir);
                 try {
                     $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
                 } catch (IOException $e) {
@@ -314,7 +344,8 @@ class PageContentService
                 $Page->getId(),
                 (string) $Page->getUrl(),
                 $writtenPaths,
-                $removedPaths
+                $removedPaths,
+                containerRebuildRequired: $containerRebuildRequired
             );
         });
     }

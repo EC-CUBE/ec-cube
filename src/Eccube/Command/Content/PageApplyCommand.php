@@ -140,6 +140,13 @@ final class PageApplyCommand extends Command
             return Command::SUCCESS;
         }
 
-        return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
+        $cleared = $this->clearContentCache($io);
+        if ($result->containerRebuildRequired) {
+            $this->reportContainerRebuildRequired($io);
+
+            return self::EXIT_MANUAL_ACTION_REQUIRED;
+        }
+
+        return $cleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

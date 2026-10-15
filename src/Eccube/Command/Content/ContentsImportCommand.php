@@ -184,6 +184,17 @@ final class ContentsImportCommand extends Command
             $io->success('取り込みました.');
         }
 
-        return $this->clearContentCache($io) ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
+        $cleared = $this->clearContentCache($io);
+        $rebuildRequired = array_filter(
+            $results,
+            static fn (ContentsImportResult $r): bool => $r->containerRebuildRequired
+        );
+        if ([] !== $rebuildRequired) {
+            $this->reportContainerRebuildRequired($io);
+
+            return self::EXIT_MANUAL_ACTION_REQUIRED;
+        }
+
+        return $cleared ? 0 : self::EXIT_MANUAL_ACTION_REQUIRED;
     }
 }

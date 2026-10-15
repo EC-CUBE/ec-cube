@@ -231,7 +231,7 @@ class ContentsImporter
 
                 /** @var array{route: string} $payload */
                 $result = $this->pageContentService->apply($payload, $dryRun);
-                $results[] = ContentsImportResult::ok($section, $route, $result->status);
+                $results[] = ContentsImportResult::ok($section, $route, $result->status, $result->containerRebuildRequired);
             } catch (ContentValidationException|\InvalidArgumentException $e) {
                 $results[] = ContentsImportResult::failed($section, $route, $this->describe($e));
             }

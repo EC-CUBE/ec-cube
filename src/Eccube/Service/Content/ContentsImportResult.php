@@ -27,12 +27,16 @@ final readonly class ContentsImportResult
         public string $identifier,
         public ?ContentStatus $status,
         public ?string $error,
+        public bool $containerRebuildRequired = false,
     ) {
     }
 
-    public static function ok(string $section, string $identifier, ContentStatus $status): self
+    /**
+     * @param bool $containerRebuildRequired 反映にコンテナの再構築が必要か (ContentResult::$containerRebuildRequired)
+     */
+    public static function ok(string $section, string $identifier, ContentStatus $status, bool $containerRebuildRequired = false): self
     {
-        return new self($section, $identifier, $status, null);
+        return new self($section, $identifier, $status, null, $containerRebuildRequired);
     }
 
     public static function failed(string $section, string $identifier, string $error): self

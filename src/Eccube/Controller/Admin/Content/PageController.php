@@ -154,6 +154,11 @@ class PageController extends AbstractController
             // キャッシュの削除
             $this->cacheUtil->clearTwigCache();
             $this->cacheUtil->clearDoctrineCache();
+            if ($result->containerRebuildRequired) {
+                // twig の名前空間に上書き用ディレクトリを登録し直すため, コンテナを作り直す.
+                // 毎回行うと保存のたびに再構築が走るため, ディレクトリを新たに作った初回だけに絞る
+                $this->cacheUtil->clearCache();
+            }
 
             return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }

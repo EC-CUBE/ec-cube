@@ -238,6 +238,22 @@ trait ContentCommandTrait
         return $cleared;
     }
 
+    /**
+     * コンテナの再構築が必要なことを案内する.
+     *
+     * twig の名前空間 (@PluginCode) に登録されるディレクトリはコンテナのコンパイル時に決まる.
+     * 上書き用ディレクトリを新たに作った場合, テンプレートのキャッシュを消しても反映されない.
+     * コンテナの再構築は build ディレクトリへの書き込みを伴い, 権限を分離した構成では
+     * 実行ユーザーによって失敗するため, ここでは実行せず案内にとどめる.
+     */
+    protected function reportContainerRebuildRequired(SymfonyStyle $io): void
+    {
+        $io->warning([
+            'テンプレートの上書き用ディレクトリを新たに作成したため, コンテナを再構築するまで更新したテンプレートが反映されません.',
+            '書き込み権限のあるユーザーで bin/console eccube:cache:build を実行してください.',
+        ]);
+    }
+
     protected function renderResult(SymfonyStyle $io, OutputInterface $output, string $format, ContentResult $result, bool $dryRun): void
     {
         if ('json' === $format) {
