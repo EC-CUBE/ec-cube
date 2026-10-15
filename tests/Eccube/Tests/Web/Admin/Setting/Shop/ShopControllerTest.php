@@ -202,6 +202,46 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
         yield [false, false];
     }
 
+    /**
+     * 営業時間は画面の行の順に保存され、再表示でも同じ順に並ぶ.
+     * 中間行の削除で送信キーが歯抜けになっても、順序はキーではなく行の並びで決まる.
+     */
+    #[Group(name: 'cache-clear')]
+    public function testSubmitPersistsOpeningHoursInScreenOrder(): void
+    {
+        $formData = $this->createFormData();
+        $formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Wednesday'], 'opens' => '09:00', 'closes' => '18:00'],
+            2 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            5 => ['day_of_week' => ['Friday'], 'opens' => '10:00', 'closes' => '19:00'],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $actual = [];
+        foreach ($BaseInfo->getOpeningHours() as $OpeningHours) {
+            $actual[] = [$OpeningHours->getDayOfWeek(), $OpeningHours->getSortNo(), $OpeningHours->getCloses()?->format('H:i')];
+        }
+        $this->assertSame([
+            [['Wednesday'], 0, '18:00'],
+            [['Monday'], 1, '18:00'],
+            [['Friday'], 2, '19:00'],
+        ], $actual);
+
+        // 再表示でも同じ順に並ぶ
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop'));
+        $this->assertSame('Wednesday', $crawler->filter('#shop_master_OpeningHours_0_day_of_week input:checked')->attr('value'));
+        $this->assertSame('Monday', $crawler->filter('#shop_master_OpeningHours_1_day_of_week input:checked')->attr('value'));
+        $this->assertSame('Friday', $crawler->filter('#shop_master_OpeningHours_2_day_of_week input:checked')->attr('value'));
+    }
+
     public static function dataSubmitProvider(): \Iterator
     {
         yield [false, false];

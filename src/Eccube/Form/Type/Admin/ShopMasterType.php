@@ -285,6 +285,7 @@ class ShopMasterType extends AbstractType
         // 営業時間の重複はフォームの子キーに紐づけたいので、クラス制約の Callback ではなく
         // POST_SUBMIT で検証する（詳細は validateOpeningHoursOverlap() のコメント参照）。
         $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOpeningHoursOverlap(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->sortOpeningHours(...));
     }
 
     /**
@@ -322,6 +323,27 @@ class ShopMasterType extends AbstractType
                     ->addViolation();
 
                 return;
+            }
+        }
+    }
+
+    /**
+     * 営業時間の表示順（sort_no）を画面の行の順に 0 から振り直す.
+     *
+     * 送信キーは中間行の削除で歯抜けになるため、キーではなくフォームの子の並び順を使う.
+     */
+    public function sortOpeningHours(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        if (!$form->has('OpeningHours')) {
+            return;
+        }
+
+        $sortNo = 0;
+        foreach ($form->get('OpeningHours') as $child) {
+            $OpeningHours = $child->getData();
+            if ($OpeningHours instanceof OpeningHours) {
+                $OpeningHours->setSortNo($sortNo++);
             }
         }
     }

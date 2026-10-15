@@ -189,6 +189,32 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    /**
+     * 表示順（sort_no）は送信キーではなく画面の行の順に 0 から振られる.
+     */
+    public function testOpeningHoursSortNoFollowsScreenOrder(): void
+    {
+        $BaseInfo = new BaseInfo();
+        $form = $this->formFactory
+            ->createBuilder(ShopMasterType::class, $BaseInfo, ['csrf_protection' => false])
+            ->getForm();
+
+        $formData = $this->formData;
+        $formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            2 => ['day_of_week' => ['Tuesday'], 'opens' => '09:00', 'closes' => '18:00'],
+            5 => ['day_of_week' => ['Wednesday'], 'opens' => '09:00', 'closes' => '18:00'],
+        ];
+        $form->submit($formData);
+
+        $this->assertTrue($form->isValid());
+        $actual = [];
+        foreach ($BaseInfo->getOpeningHours() as $OpeningHours) {
+            $actual[$OpeningHours->getDayOfWeek()[0]] = $OpeningHours->getSortNo();
+        }
+        $this->assertSame(['Monday' => 0, 'Tuesday' => 1, 'Wednesday' => 2], $actual);
+    }
+
     public function testInValidOpeningHoursMissingDay(): void
     {
         $this->formData['OpeningHours'] = [
