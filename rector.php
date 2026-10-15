@@ -20,6 +20,7 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Cast\RecastingRemovalRector;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPublicMethodParameterRector;
 use Rector\Doctrine\Set\DoctrineSetList;
+use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\Php83\Rector\ClassConst\AddTypeToConstRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Renaming\Rector\MethodCall\RenameMethodRector;
@@ -67,6 +68,11 @@ return RectorConfig::configure()
                // (ローカル/CI 間でのルール適用揺らぎ対策)
                RecastingRemovalRector::class => [
                    __DIR__.'/src/Eccube/Service/Composer/OutputParser.php',
+               ],
+               // PluginService::$installedJsonPath はテストで一時ファイルへ差し替えるため, readonly にしない
+               // (実際の vendor/composer/installed.json をテストで書き換えないため)
+               ReadOnlyPropertyRector::class => [
+                   __DIR__.'/src/Eccube/Service/PluginService.php',
                ],
                // ContainerGetNameToTypeInTestsRector は $container->get('service.id') の文字列サービスIDを
                // get(Type::class) へ変換する。クラス名のエイリアスを持たない private サービス

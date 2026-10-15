@@ -56,6 +56,11 @@ class PluginService
     private readonly string $projectRoot;
 
     /**
+     * composer が導入済みのパッケージを記録するファイル
+     */
+    private string $installedJsonPath;
+
+    /**
      * PluginService constructor.
      */
     public function __construct(
@@ -71,6 +76,7 @@ class PluginService
         private readonly PluginContext $pluginContext,
     ) {
         $this->projectRoot = $this->eccubeConfig->get('kernel.project_dir');
+        $this->installedJsonPath = $this->projectRoot.'/vendor/composer/installed.json';
     }
 
     /**
@@ -684,44 +690,80 @@ class PluginService
     /**
      * composer で導入したプラグインのレコードを返す.
      *
-     * plugin-installer と同じく, プラグインの composer.json の extra.id がレコードの source と
-     * 一致するものだけを対象にする. アーカイブで導入したプラグイン (source=0) や,
-     * コードが同じだけの別のプラグインは, 事前にアンインストールせず composer remove に任せる.
-     * composer remove が削除するのはそのパッケージだけなので, composer.json の name が
-     * パッケージ名と一致することも確かめる.
+     * plugin-installer がアンインストールするものと同じプラグインを返す. plugin-installer は,
+     * composer が記録したパッケージ (vendor/composer/installed.json) の extra.id と source が
+     * 一致するレコードをアンインストールする. プラグインのディレクトリの composer.json は見ない.
+     * plugin-installer は更新時にもディレクトリの composer.json へ extra.id を書き込むが, その後に
+     * パッケージが展開されるため, 更新後はパッケージに含まれていた extra.id が残り, パッケージの値
+     * (= source) と異なることがある.
+     *
+     * アーカイブで導入したプラグインや, 別のパッケージ (installed.json に無いもの) は,
+     * 事前にアンインストールせず composer remove に任せる.
      */
     private function findPluginInstalledByComposer(string $packageName): ?Plugin
     {
-        $Plugin = $this->pluginRepository->findByCode(basename($packageName));
-        if ($Plugin === null) {
-            return null;
-        }
-
-        $pluginDir = $this->calcPluginDir($Plugin->getCode());
-        try {
-            $this->readConfig($pluginDir);
-        } catch (PluginException) {
-            return null;
-        }
-
-        // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
-        $json = json_decode((string) file_get_contents($pluginDir.DIRECTORY_SEPARATOR.'composer.json'), true);
-        $name = $json['name'] ?? null;
-        if (!is_string($name) || strtolower($name) !== strtolower($packageName)) {
+        $package = $this->findInstalledPackage($packageName);
+        if ($package === null || ($package['type'] ?? null) !== 'eccube-plugin') {
             return null;
         }
 
         // plugin-installer は extra.id が空 ('0' を含む) のときアンインストールしない
-        $id = $json['extra']['id'] ?? null;
+        $id = $package['extra']['id'] ?? null;
         if (!is_int($id) && !is_string($id)) {
             return null;
         }
         $id = (string) $id;
-        if ($id === '' || $id === '0' || $id !== $Plugin->getSource()) {
+        if ($id === '' || $id === '0') {
+            return null;
+        }
+
+        $Plugin = $this->pluginRepository->findOneBy(['source' => $id]);
+        if ($Plugin === null) {
+            return null;
+        }
+
+        // アンインストールにはプラグインの composer.json が要る. 読めなければ composer remove に任せる
+        try {
+            $this->readConfig($this->calcPluginDir($Plugin->getCode()));
+        } catch (PluginException) {
             return null;
         }
 
         return $Plugin;
+    }
+
+    /**
+     * composer が記録した導入済みのパッケージを返す.
+     *
+     * composer を実行すると書き換わるため, 呼ぶたびに読み直す.
+     *
+     * @return array<string, mixed>|null
+     */
+    private function findInstalledPackage(string $packageName): ?array
+    {
+        $json = @file_get_contents($this->installedJsonPath);
+        if ($json === false) {
+            return null;
+        }
+        $installed = json_decode($json, true);
+        if (!is_array($installed)) {
+            return null;
+        }
+        // composer 1 は配列, composer 2 は packages の下に並べる
+        $packages = $installed['packages'] ?? $installed;
+        if (!is_array($packages)) {
+            return null;
+        }
+
+        // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
+        foreach ($packages as $package) {
+            if (is_array($package) && is_string($package['name'] ?? null)
+                && strtolower($package['name']) === strtolower($packageName)) {
+                return $package;
+            }
+        }
+
+        return null;
     }
 
     /**

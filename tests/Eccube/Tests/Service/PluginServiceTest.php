@@ -42,6 +42,11 @@ final class PluginServiceTest extends AbstractServiceTestCase
     private ?PluginRepository $pluginRepository = null;
 
     /**
+     * vendor/composer/installed.json の代わりに使うファイル
+     */
+    private ?string $installedJsonPath = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -49,10 +54,18 @@ final class PluginServiceTest extends AbstractServiceTestCase
         parent::setUp();
         $this->service = static::getContainer()->get(PluginService::class);
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
+
+        // 実際の vendor/composer/installed.json を書き換えないよう, 一時ファイルに差し替える
+        $this->installedJsonPath = tempnam(sys_get_temp_dir(), 'installed').'.json';
+        file_put_contents($this->installedJsonPath, json_encode(['packages' => []]));
+        (new \ReflectionProperty(PluginService::class, 'installedJsonPath'))->setValue($this->service, $this->installedJsonPath);
     }
 
     protected function tearDown(): void
     {
+        if ($this->installedJsonPath !== null) {
+            (new Filesystem())->remove([$this->installedJsonPath, substr($this->installedJsonPath, 0, -strlen('.json'))]);
+        }
         $dirs = [];
         $finder = new Finder();
         $iterator = $finder
@@ -847,8 +860,8 @@ EOD;
     }
 
     /**
-     * plugin-installer と同じく, composer.json の extra.id がレコードの source と一致するプラグインだけを
-     * 事前にアンインストールする. それ以外は composer remove に任せ, レコードを残す.
+     * plugin-installer と同じく, installed.json に記録されたパッケージの extra.id がレコードの source と
+     * 一致するプラグインだけを事前にアンインストールする. それ以外は composer remove に任せ, レコードを残す.
      */
     #[DataProvider(methodName: 'providePluginNotInstalledByComposer')]
     public function testRemoveByComposerLeavesPluginNotInstalledByComposer(int $source, int $id): void
@@ -877,7 +890,7 @@ EOD;
     {
         yield 'アーカイブで導入した (source=0, extra.id なし)' => [0, 0];
         yield 'extra.id があるがアーカイブで導入した (source=0)' => [0, 1001];
-        yield 'extra.id と source が異なる' => [1001, 1002];
+        yield 'パッケージの extra.id と source が異なる' => [1001, 1002];
     }
 
     /**
@@ -1049,15 +1062,17 @@ EOD;
     }
 
     /**
-     * extra.id が文字列や数値でない場合は, 事前にアンインストールせず composer remove に任せる.
+     * パッケージの extra.id が文字列や数値でない場合は, 事前にアンインストールせず composer remove に任せる.
      */
     public function testRemoveByComposerLeavesPluginWithInvalidId(): void
     {
         $code = $this->installDummyPlugin();
-        $composerJsonPath = $this->service->calcPluginDir($code).'/composer.json';
-        $json = json_decode((string) file_get_contents($composerJsonPath), true);
-        $json['extra']['id'] = [$json['extra']['id']];
-        file_put_contents($composerJsonPath, json_encode($json));
+        $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
+        foreach ($installed['packages'] as &$package) {
+            $package['extra']['id'] = [$package['extra']['id']];
+        }
+        unset($package);
+        file_put_contents($this->installedJsonPath, json_encode($installed));
 
         $composerService = $this->createMock(ComposerServiceInterface::class);
         $composerService->expects($this->once())
@@ -1078,6 +1093,50 @@ EOD;
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
+    /**
+     * plugin-installer は更新時, パッケージを展開する前に extra.id を書き込むため, 更新後のプラグインの
+     * composer.json には, パッケージに含まれていた extra.id が残る (パッケージの値と異なることがある).
+     * plugin-installer と同じく installed.json の extra.id で判定し, 事前にアンインストールする.
+     */
+    public function testRemoveByComposerUninstallsPluginWhoseComposerJsonHasOtherId(): void
+    {
+        $code = $this->installDummyPlugin(source: 100, dirId: 101);
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturnCallback(function () use ($code): string {
+                $this->assertNotInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code), 'composer remove の前にレコードを消す');
+
+                return 'removed';
+            });
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+    }
+
+    /**
+     * プラグイン以外のパッケージは, extra.id があっても plugin-installer が扱わないので対象にしない.
+     */
+    public function testRemoveByComposerLeavesPluginOfNonPluginPackage(): void
+    {
+        $code = $this->installDummyPlugin();
+        $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
+        $installed['packages'][0]['type'] = 'library';
+        file_put_contents($this->installedJsonPath, json_encode($installed));
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
@@ -1091,29 +1150,37 @@ EOD;
     }
 
     /**
-     * 既定では composer で導入したプラグインと同じく, composer.json の extra.id とレコードの source をそろえる.
+     * 既定では composer で導入したプラグインと同じく, パッケージを installed.json に記録し,
+     * その extra.id とレコードの source をそろえる. source が 0 ならアーカイブで導入したものとして記録しない.
      *
      * @param int|null $source レコードの source. null ならランダムな値
-     * @param int|null $id composer.json の extra.id. null なら $source と同じ. 0 なら書かない
+     * @param int|null $id パッケージの extra.id. null なら $source と同じ. 0 なら書かない
      * @param array<string, string> $require composer.json の require
      * @param string $prefix コードの接頭辞. tearDown が消せるよう dummy で始める
+     * @param int|null $dirId プラグインのディレクトリの composer.json の extra.id. null なら $id と同じ. 0 なら書かない
      */
-    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = [], string $prefix = 'dummy'): string
+    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = [], string $prefix = 'dummy', ?int $dirId = null): string
     {
         $code = $prefix.sha1((string) mt_rand());
         $source ??= mt_rand(1, 999999);
         $id ??= $source;
+        $dirId ??= $id;
         $json = [
             'name' => 'ec-cube/'.strtolower($code),
             'version' => '1.0.0',
             'description' => $code,
+            'type' => 'eccube-plugin',
             'extra' => ['code' => $code],
         ];
-        if ($id !== 0) {
-            $json['extra']['id'] = $id;
-        }
         if ($require !== []) {
             $json['require'] = $require;
+        }
+        $package = $json;
+        if ($id !== 0) {
+            $package['extra']['id'] = $id;
+        }
+        if ($dirId !== 0) {
+            $json['extra']['id'] = $dirId;
         }
         $tmpfile = $this->createTempDir().'/plugin.tar';
         $tar = new \PharData($tmpfile);
@@ -1136,6 +1203,12 @@ class PluginManager extends AbstractPluginManager
 EOD);
         }
         $this->service->install($tmpfile, $source);
+
+        if ($source !== 0) {
+            $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
+            $installed['packages'][] = $package;
+            file_put_contents($this->installedJsonPath, json_encode($installed));
+        }
 
         return $code;
     }
