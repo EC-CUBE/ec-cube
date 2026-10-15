@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
+use Eccube\Tests\TwigNamespacePathTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +24,8 @@ use Twig\Environment;
 
 final class PageControllerTest extends AbstractAdminWebTestCase
 {
+    use TwigNamespacePathTrait;
+
     public function testRoutingAdminContentPageIndex()
     {
         $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_content_page'));
@@ -276,6 +279,11 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         $expectedPath = $pluginDir.'/'.$code.'/'.$name.'.twig';
         $unexpectedPath = $pluginDir.'/@'.$code.'/'.$name.'.twig';
         $source = $faker->realText();
+
+        // コンテナの再構築 (本物の cache:clear) は cache-clear グループの PageControllerCacheClearTest で確かめる.
+        // ここでは上書き用ディレクトリを登録済みの状態にして, 再構築を起こさない
+        $client->disableReboot();
+        $this->registerTwigNamespacePath($code, $pluginDir.'/'.$code);
 
         try {
             $client->request(
