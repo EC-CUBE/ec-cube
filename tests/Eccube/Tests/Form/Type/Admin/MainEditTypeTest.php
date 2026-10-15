@@ -18,6 +18,7 @@ namespace Eccube\Tests\Form\Type\Admin;
 use Eccube\Entity\Page;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 final class MainEditTypeTest extends AbstractTypeTestCase
@@ -178,6 +179,7 @@ final class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidFileNameNamespaceOnly(): void
     {
+        $this->form = $this->createFormForDefaultPage();
         $this->formData['file_name'] = '@PluginCode';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
@@ -185,9 +187,83 @@ final class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testInValidFileNameNamespaceEndsWithSlash(): void
     {
+        $this->form = $this->createFormForDefaultPage();
         $this->formData['file_name'] = '@PluginCode/';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * "." を許さないため, 名前空間付きでも上位ディレクトリへ抜けるファイル名は受け付けない.
+     * 既定ページのフォームで確かめる (ユーザーのページでは "@" の検証が先に効き, 正規表現を検証できない).
+     */
+    #[DataProvider(methodName: 'providePathTraversalFileNames')]
+    public function testInValidFileNamePathTraversal(string $fileName): void
+    {
+        $this->form = $this->createFormForDefaultPage();
+        $this->formData['file_name'] = $fileName;
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function providePathTraversalFileNames(): \Iterator
+    {
+        yield '名前空間の位置で抜ける' => ['@../../../../etc/passwd'];
+        yield '名前空間の後で抜ける' => ['@Boomerang/../../../etc/passwd'];
+        yield '名前空間なし' => ['../../etc/passwd'];
+        yield '絶対パス' => ['/etc/passwd'];
+    }
+
+    /**
+     * ユーザーが新しく作るページには, "@" で始まるファイル名を付けられない.
+     */
+    public function testInValidFileNameNamespaceForNewUserPage(): void
+    {
+        $this->form = $this->formFactory
+            ->createBuilder(MainEditType::class, $this->entityManager->getRepository(Page::class)->newPage(), ['csrf_protection' => false])
+            ->getForm();
+        $this->formData['file_name'] = '@PluginCode/xxx';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+        $this->assertSame(
+            trans('admin.content.page_file_name_namespace_not_allowed'),
+            $this->form['file_name']->getErrors()[0]->getMessage()
+        );
+    }
+
+    /**
+     * 保存済みのユーザーのページのファイル名を, "@" で始まるものへ変更できない.
+     */
+    public function testInValidFileNameNamespaceChangedForUserPage(): void
+    {
+        $this->formData['file_name'] = '@PluginCode/xxx';
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+        $this->assertSame(
+            trans('admin.content.page_file_name_namespace_not_allowed'),
+            $this->form['file_name']->getErrors()[0]->getMessage()
+        );
+    }
+
+    /**
+     * プラグインが DB へ直接登録した "@" で始まるユーザーのページは, 同じファイル名のままなら保存できる.
+     */
+    public function testValidFileNameNamespaceUnchangedForUserPage(): void
+    {
+        $Page = $this->createPage()->setFileName('@PluginCode/'.bin2hex(random_bytes(4)));
+        $this->entityManager->flush();
+        $this->form = $this->formFactory
+            ->createBuilder(MainEditType::class, $Page, ['csrf_protection' => false])
+            ->getForm();
+        $this->formData['file_name'] = $Page->getFileName();
+        $this->form->submit($this->formData);
+
+        $this->assertTrue($this->form->isValid());
     }
 
     public function testInValidFileNameContinuousSlash()

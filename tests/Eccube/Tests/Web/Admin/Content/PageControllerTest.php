@@ -357,15 +357,17 @@ final class PageControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * ファイル名の検証は "." を許さないため, 名前空間を許可しても
      * 上位ディレクトリへ抜けるファイル名は受け付けない.
+     *
+     * 名前空間付き ("@" 始まり) のパターンは MainEditTypeTest で既定ページのフォームを使って確かめる.
+     * 新規のユーザーのページでは "@" の検証が先に効くため, ここでは正規表現を検証できない.
      */
     public function testRoutingAdminContentPageRejectsPathTraversal(): void
     {
         $client = $this->client;
         $faker = $this->getFaker();
 
-        foreach (['@../../../../etc/passwd', '../../etc/passwd', '@Boomerang/../../../etc/passwd'] as $fileName) {
+        foreach (['../../etc/passwd', 'hoge/../../etc/passwd'] as $fileName) {
             $name = $faker->word();
             $crawler = $client->request(
                 Request::METHOD_POST,
