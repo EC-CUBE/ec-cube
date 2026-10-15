@@ -688,6 +688,8 @@ class PluginService
      * plugin-installer と同じく, プラグインの composer.json の extra.id がレコードの source と
      * 一致するものだけを対象にする. アーカイブで導入したプラグイン (source=0) や,
      * コードが同じだけの別のプラグインは, 事前にアンインストールせず composer remove に任せる.
+     * composer remove が削除するのはそのパッケージだけなので, composer.json の name が
+     * パッケージ名と一致することも確かめる.
      */
     private function findPluginInstalledByComposer(string $packageName): ?Plugin
     {
@@ -696,9 +698,17 @@ class PluginService
             return null;
         }
 
+        $pluginDir = $this->calcPluginDir($Plugin->getCode());
         try {
-            $config = $this->readConfig($this->calcPluginDir($Plugin->getCode()));
+            $config = $this->readConfig($pluginDir);
         } catch (PluginException) {
+            return null;
+        }
+
+        // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
+        $json = json_decode((string) file_get_contents($pluginDir.DIRECTORY_SEPARATOR.'composer.json'), true);
+        $name = $json['name'] ?? null;
+        if (!is_string($name) || strtolower($name) !== strtolower($packageName)) {
             return null;
         }
 

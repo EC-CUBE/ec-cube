@@ -925,6 +925,25 @@ EOD;
         $this->assertNotInstanceOf(Plugin::class, $this->pluginRepository->findByCode($dependentCode));
     }
 
+    /**
+     * composer remove は指定したパッケージだけを削除するので, コードが同じだけの別のパッケージを
+     * 削除するときは, プラグインを事前にアンインストールしない.
+     */
+    public function testRemoveByComposerLeavesPluginOfOtherPackage(): void
+    {
+        $code = $this->installDummyPlugin();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('acme/'.$code)
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('acme/'.$code));
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
@@ -950,6 +969,7 @@ EOD;
         $source ??= mt_rand(1, 999999);
         $id ??= $source;
         $json = [
+            'name' => 'ec-cube/'.strtolower($code),
             'version' => '1.0.0',
             'description' => $code,
             'extra' => ['code' => $code],
