@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
 
@@ -154,53 +155,95 @@ final class PageControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * プラグインの名前空間を指すページを管理画面から保存すると,
-     * 上書き用の app/template/plugin/[code] へ書き出される.
+     * ユーザーが新しく作るページには名前空間付きのファイル名を付けられない.
      *
-     * "@" を付けたまま書くと EccubeExtension が登録するパスと一致せず,
-     * 保存できたように見えて画面へ反映されない.
-     *
-     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     * フロントは @user_data/ を前置してテンプレートを探すため, @Boomerang/xxx で保存すると
+     * "@user_data/@Boomerang/xxx.twig" を解決できず 500 になる.
      */
-    public function testRoutingAdminContentPageWithPluginNamespace()
+    public function testRoutingAdminContentPageNewRejectsPluginNamespace(): void
     {
         $client = $this->client;
         $faker = $this->getFaker();
 
         $name = $faker->word();
-        $fileName = '@Boomerang/'.$name;
-        $source = $faker->realText();
-        $client->request(
+        $crawler = $client->request(
             Request::METHOD_POST,
             $this->generateUrl('admin_content_page_new'),
             [
                 'main_edit' => [
                     'name' => $name,
                     'url' => $name,
-                    'file_name' => $fileName,
-                    'tpl_data' => $source,
+                    'file_name' => '@Boomerang/'.$name,
+                    'tpl_data' => 'body',
                     '_token' => 'dummy',
                 ],
             ]
         );
 
-        $this->assertTrue($client->getResponse()->isRedirection());
-        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
-        $Page = $this->entityManager->getRepository(Page::class)->find($matches[1]);
-        $this->assertSame($fileName, $Page->getFileName());
+        $this->assertFalse($client->getResponse()->isRedirection(), '登録されない');
+        $this->assertStringContainsString(
+            'ファイル名の先頭に「@」は使用できません。',
+            $crawler->filter('.invalid-feedback')->text()
+        );
+        $this->assertNotInstanceOf(Page::class, $this->entityManager->getRepository(Page::class)->findOneBy(['url' => $name]));
+        $this->assertFileDoesNotExist(
+            static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig'
+        );
+    }
 
+    /**
+     * プラグインが DB へ直接登録した, 名前空間付きのファイル名を持つユーザーのページは,
+     * 同じファイル名のままなら再保存できる. 別の名前空間付きのファイル名へは変更できない.
+     */
+    public function testRoutingAdminContentPageResavesExistingUserPageWithPluginNamespace(): void
+    {
+        $client = $this->client;
+        $name = $this->getFaker()->word();
+        $Page = $this->createPluginNamespacePage('@Boomerang/'.$name, $name, Page::EDIT_TYPE_USER);
         $expectedPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig';
-        $unexpectedPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/@Boomerang/'.$name.'.twig';
 
         try {
-            $this->assertFileExists($expectedPath, '@ を除いたパスへ書き出す');
-            $this->assertFileDoesNotExist($unexpectedPath, '@ を含むパスへは書き出さない');
-            $this->assertSame($source, file_get_contents($expectedPath));
+            $client->request(
+                Request::METHOD_POST,
+                $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()]),
+                [
+                    'main_edit' => [
+                        'name' => $name,
+                        'url' => $name,
+                        'file_name' => '@Boomerang/'.$name,
+                        'tpl_data' => 'resaved',
+                        '_token' => 'dummy',
+                    ],
+                ]
+            );
+
+            $this->assertTrue($client->getResponse()->isRedirect(
+                $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()])
+            ), '保存済みの値と同じなら再保存できる');
+            $this->assertSame('resaved', file_get_contents($expectedPath));
+
+            $crawler = $client->request(
+                Request::METHOD_POST,
+                $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()]),
+                [
+                    'main_edit' => [
+                        'name' => $name,
+                        'url' => $name,
+                        'file_name' => '@Boomerang/'.$name.'_changed',
+                        'tpl_data' => 'changed',
+                        '_token' => 'dummy',
+                    ],
+                ]
+            );
+
+            $this->assertFalse($client->getResponse()->isRedirection(), '別の名前空間付きのファイル名へは変更できない');
+            $this->assertStringContainsString(
+                'ファイル名の先頭に「@」は使用できません。',
+                $crawler->filter('.invalid-feedback')->text()
+            );
         } finally {
-            foreach ([$expectedPath, $unexpectedPath] as $path) {
-                if (file_exists($path)) {
-                    unlink($path);
-                }
+            if (file_exists($expectedPath)) {
+                unlink($expectedPath);
             }
         }
     }
@@ -211,37 +254,22 @@ final class PageControllerTest extends AbstractAdminWebTestCase
      * 読み取り時に @user_data/ を前置すると "@user_data/@Boomerang/xxx.twig" という
      * 解決できない名前になり 500 になる. 保存経路だけを見ていると気付けない.
      */
-    public function testRoutingAdminContentPageEditWithPluginNamespace()
+    public function testRoutingAdminContentPageEditWithPluginNamespace(): void
     {
         $client = $this->client;
-        $faker = $this->getFaker();
+        $name = $this->getFaker()->word();
+        // プラグインが dtb_page へ登録する既定ページ. url はプラグインのルーティング名
+        $Page = $this->createPluginNamespacePage('@Boomerang/'.$name, 'logout', Page::EDIT_TYPE_DEFAULT);
 
-        $name = $faker->word();
-        $fileName = '@Boomerang/'.$name;
         $source = '{% extends \'default_frame.twig\' %}';
-        $client->request(
-            Request::METHOD_POST,
-            $this->generateUrl('admin_content_page_new'),
-            [
-                'main_edit' => [
-                    'name' => $name,
-                    'url' => $name,
-                    'file_name' => $fileName,
-                    'tpl_data' => $source,
-                    '_token' => 'dummy',
-                ],
-            ]
-        );
-        $this->assertTrue($client->getResponse()->isRedirection());
-        preg_match('|content/page/([0-9]+)/edit|', (string) $client->getResponse()->headers->get('Location'), $matches);
-
         $writtenPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig';
+        (new Filesystem())->dumpFile($writtenPath, $source);
 
         try {
             // 編集画面を開く. ここで名前空間を二重に付けると 500 になる
             $crawler = $client->request(
                 Request::METHOD_GET,
-                $this->generateUrl('admin_content_page_edit', ['id' => $matches[1]])
+                $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()])
             );
             $this->assertTrue(
                 $client->getResponse()->isSuccessful(),
@@ -425,5 +453,21 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         if (file_exists($templatePath.'/'.$Page->getFileName().'.twig')) {
             unlink($templatePath.'/'.$Page->getFileName().'.twig');
         }
+    }
+
+    /**
+     * プラグインが dtb_page へ直接登録する, 名前空間付きのファイル名を持つページを作る.
+     */
+    private function createPluginNamespacePage(string $fileName, string $url, int $editType): Page
+    {
+        $Page = (new Page())
+            ->setName('プラグインのページ')
+            ->setUrl($url)
+            ->setFileName($fileName)
+            ->setEditType($editType);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
+
+        return $Page;
     }
 }

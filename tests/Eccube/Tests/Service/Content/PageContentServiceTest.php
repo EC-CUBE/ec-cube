@@ -427,27 +427,27 @@ final class PageContentServiceTest extends EccubeTestCase
      * 「旧ファイル名に対応するディレクトリ」から消さなければならない.
      *
      * 新しい配置先で旧ファイル名を探すと, 別ページのテンプレートを巻き込んで
-     * 消しかねない (app/template/plugin/foo.twig 等).
+     * 消しかねない (app/template/user_data/Boomerang/foo.twig 等).
      */
     public function testApplyRemovesPreviousTemplateFromItsOwnDir(): void
     {
         $userDataDir = (string) $this->eccubeConfig->get('eccube_theme_user_data_dir');
         $pluginDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
 
-        // 通常のページとして作る
-        $this->apply(['name' => '移動前', 'body' => 'before']);
-        $previousPath = $userDataDir.'/'.$this->route.'.twig';
-        $this->assertFileExists($previousPath);
+        // プラグインが DB へ直接登録した, 名前空間付きのファイル名を持つユーザーのページ
+        $this->createPluginNamespacePage('@Boomerang/'.$this->route, Page::EDIT_TYPE_USER);
+        $previousPath = $pluginDir.'/Boomerang/'.$this->route.'.twig';
+        $this->createdFiles[] = $previousPath;
+        (new Filesystem())->dumpFile($previousPath, 'before');
 
-        // 巻き添えを検知するため, 新しい配置先に同名のファイルを置いておく
-        $decoyPath = $pluginDir.'/'.$this->route.'.twig';
+        // 巻き添えを検知するため, 新しい配置先に旧ファイル名と同じ相対パスのファイルを置いておく
+        $decoyPath = $userDataDir.'/Boomerang/'.$this->route.'.twig';
         $this->createdFiles[] = $decoyPath;
         (new Filesystem())->dumpFile($decoyPath, 'decoy');
 
-        // ファイル名だけ名前空間付きへ変更する
-        $movedPath = $pluginDir.'/Boomerang/'.$this->route.'.twig';
-        $this->createdFiles[] = $movedPath;
-        $this->apply(['name' => '移動後', 'file_name' => '@Boomerang/'.$this->route, 'body' => 'after']);
+        // ファイル名だけ名前空間なしへ変更する
+        $movedPath = $userDataDir.'/'.$this->route.'.twig';
+        $this->apply(['name' => '移動後', 'file_name' => $this->route, 'body' => 'after']);
 
         $this->assertFileExists($movedPath, '新しい配置先へ書き出す');
         $this->assertFileDoesNotExist($previousPath, '旧ファイルは元の配置先から消す');
@@ -466,7 +466,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $code = 'Rebuild'.bin2hex(random_bytes(4));
         $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
         $this->assertDirectoryDoesNotExist($namespaceDir);
-        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
 
         try {
             $first = $this->apply(['body' => 'first']);
@@ -511,15 +511,15 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
-     * プラグインが dtb_page へ登録する既定ページ (ファイル名が twig の名前空間を指す) を作る.
+     * プラグインが dtb_page へ直接登録する, ファイル名が twig の名前空間を指すページを作る.
      */
-    private function createPluginNamespacePage(string $fileName): Page
+    private function createPluginNamespacePage(string $fileName, int $editType): Page
     {
         $Page = (new Page())
             ->setName('プラグインのページ')
             ->setUrl((string) $this->route)
             ->setFileName($fileName)
-            ->setEditType(Page::EDIT_TYPE_DEFAULT);
+            ->setEditType($editType);
         $this->entityManager->persist($Page);
         $this->entityManager->flush();
 

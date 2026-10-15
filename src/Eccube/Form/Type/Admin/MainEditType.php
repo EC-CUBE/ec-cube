@@ -49,6 +49,8 @@ class MainEditType extends AbstractType
     #[\Override]
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $savedFileName = null;
+
         $builder
             ->add('name', TextType::class, [
                 'required' => true,
@@ -148,11 +150,13 @@ class MainEditType extends AbstractType
                         ->orderBy('l.id', 'DESC');
                 },
             ])
-            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event): void {
+            ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use (&$savedFileName): void {
                 $Page = $event->getData();
                 if (is_null($Page->getId())) {
                     return;
                 }
+                // 送信前のファイル名. POST_SUBMIT では送信値で上書き済みのため, ここで控えておく
+                $savedFileName = $Page->getFileName();
                 $form = $event->getForm();
                 $Layouts = $Page->getLayouts();
                 foreach ($Layouts as $Layout) {
@@ -164,7 +168,7 @@ class MainEditType extends AbstractType
                     }
                 }
             })
-            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            ->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) use (&$savedFileName): void {
                 $form = $event->getForm();
 
                 /** @var Page $Page */
@@ -215,6 +219,17 @@ class MainEditType extends AbstractType
                 $count = $qb->getQuery()->getSingleScalarResult();
                 if ($count > 0) {
                     $form['file_name']->addError(new FormError(trans('admin.content.page_file_name_exists')));
+                }
+
+                // ユーザーが作成するページ (Page::EDIT_TYPE_USER) では名前空間付きのファイル名を受け付けない.
+                // フロントは @user_data/ を前置してテンプレートを探すため, @PluginCode/xxx は解決できず 500 になる.
+                // 正規表現で @ を許しているのは, プラグインが登録した既定ページのファイル名 (hidden で送られる) を通すため.
+                // 保存済みの値と同じなら通す (プラグインが DB へ直接登録したページを再保存できなくしない).
+                if (Page::EDIT_TYPE_USER === $Page->getEditType()
+                    && str_starts_with((string) $Page->getFileName(), '@')
+                    && (is_null($Page->getId()) || $Page->getFileName() !== $savedFileName)
+                ) {
+                    $form['file_name']->addError(new FormError(trans('admin.content.page_file_name_namespace_not_allowed')));
                 }
 
                 // Page::EDIT_TYPE_USER を修正した場合は、 Page::EDIT_TYPE_DEFAULT とファイルの重複チェック

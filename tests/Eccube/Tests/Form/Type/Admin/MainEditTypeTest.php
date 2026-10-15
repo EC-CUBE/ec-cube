@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Form\Type\Admin;
 
+use Eccube\Entity\Page;
 use Eccube\Form\Type\Admin\MainEditType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
@@ -140,6 +141,7 @@ final class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testValidFileNameNamespace()
     {
+        $this->form = $this->createFormForDefaultPage();
         $this->formData['file_name'] = '@PluginCode/xxx';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -147,6 +149,7 @@ final class MainEditTypeTest extends AbstractTypeTestCase
 
     public function testValidFileNameNamespaceNested()
     {
+        $this->form = $this->createFormForDefaultPage();
         $this->formData['file_name'] = '@PluginCode/xxx/yyy';
         $this->form->submit($this->formData);
         $this->assertTrue($this->form->isValid());
@@ -292,5 +295,21 @@ final class MainEditTypeTest extends AbstractTypeTestCase
         $this->formData['meta_tags'] = str_repeat('1', $this->eccubeConfig['eccube_ltext_len'] + 1);
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * プラグインが登録した既定ページの編集フォーム.
+     *
+     * 名前空間付きのファイル名は, ユーザーが作るページ (EDIT_TYPE_USER) では新たに付けられず,
+     * 既定ページのファイル名 (hidden で送られる) としてだけ受け付ける.
+     */
+    private function createFormForDefaultPage(): FormInterface
+    {
+        $Page = $this->createPage()->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->entityManager->flush();
+
+        return $this->formFactory
+            ->createBuilder(MainEditType::class, $Page, ['csrf_protection' => false])
+            ->getForm();
     }
 }

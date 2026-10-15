@@ -1171,6 +1171,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
     <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: Data with the same file name already exists. Please enter a different one.
+admin.content.page_file_name_namespace_not_allowed: The file name cannot start with "@".
 admin.content.css__card_title: CSS Settings
 admin.content.block_name: Block Name
 admin.content.block__card_title: Block Settings
