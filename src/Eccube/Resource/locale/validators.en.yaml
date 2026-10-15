@@ -32,7 +32,7 @@ This password has been leaked in a data breach, it must not be used. Please use 
 Invalid twig format. {{ error }}: Invalid Twig format. {{ error }}
 form_error.numeric_only: Entry must be numbers.
 form_error.kana_only: Entry must be Kana.
-form_error.graph_only: Entry must be alphanumeric characters.
+form_error.graph_only: Entry must be alphanumeric characters or symbols.
 form_error.not_contain_spaces: Do not include spaces, tabs and line breaks.
 form_error.graph_and_hyphen_only: Entry must be alphanumeric characters or hyphens.
 form_error.not_selected: Not selected.

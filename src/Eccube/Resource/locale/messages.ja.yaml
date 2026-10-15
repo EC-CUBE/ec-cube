@@ -1970,10 +1970,10 @@ install.member_name: 管理者
 install.member_department:
 install.shop_name: あなたの店名
 install.mail_address: メールアドレス（受注メールなどの宛先になります）
-install.login_id: "管理画面ログインID（半角英数字%min%～%max%文字）"
-install.login_password: "管理画面パスワード（半角英数字%min%～%max%文字）"
+install.login_id: "管理画面ログインID（半角英数字・記号%min%～%max%文字）"
+install.login_password: "管理画面パスワード（%min%～%max%文字）"
 install.security_configuration: セキュリティの設定
-install.directory_name: "管理画面のディレクトリ名（半角英数字%min%～%max%文字）"
+install.directory_name: "管理画面のディレクトリ名（半角英数字・アンダースコア%min%～%max%文字）"
 install.directory_name_notice: セキュリティのため推測されにくいディレクトリ名を入力して下さい
 install.https_only: サイトへのアクセスを、SSL（https）経由に制限します
 install.https_only_notice: httpsからの接続でなければSSL制限を設定できません。

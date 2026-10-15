@@ -35,7 +35,7 @@ This password has been leaked in a data breach, it must not be used. Please use 
 Invalid twig format. {{ error }}: Twigのフォーマットが正しくありません。{{ error }}
 form_error.numeric_only: 数字で入力してください。
 form_error.kana_only: カタカナで入力してください。
-form_error.graph_only: 半角英数字で入力してください。
+form_error.graph_only: 半角英数字・記号で入力してください。
 form_error.not_contain_spaces: スペース、タブ、改行は含めないで下さい。
 form_error.graph_and_hyphen_only: 半角英数字かハイフンのみを入力してください。
 form_error.not_selected: 選択されていません。
