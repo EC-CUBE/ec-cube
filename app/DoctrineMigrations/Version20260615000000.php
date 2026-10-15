@@ -65,6 +65,12 @@ final class Version20260615000000 extends AbstractMigration
             "SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'"
         );
         if ($mailExists == 0) {
+            // プラグイン・データ移行・手作業の SQL が ID を指定して INSERT し setval していないと、PostgreSQL では
+            // シーケンスが MAX(id) より遅れ、この INSERT が主キー重複で失敗する。
+            // Version20261005000000 の補正はこの後に走るため間に合わず、ここで先に合わせる
+            if ($this->connection->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+                $this->addSql("SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), (SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template), false)");
+            }
             $name = $lang === 'en' ? 'Refund Request Notification' : '返品申請通知メール';
             $subject = $lang === 'en' ? 'A refund request has been submitted' : '返品申請を受け付けました';
             $this->addSql(
