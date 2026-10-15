@@ -240,6 +240,32 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
         $this->assertSame('Wednesday', $crawler->filter('#shop_master_OpeningHours_0_day_of_week input:checked')->attr('value'));
         $this->assertSame('Monday', $crawler->filter('#shop_master_OpeningHours_1_day_of_week input:checked')->attr('value'));
         $this->assertSame('Friday', $crawler->filter('#shop_master_OpeningHours_2_day_of_week input:checked')->attr('value'));
+
+        // 既存の 1 行目だけを更新しても順序は変わらない（UPDATE で行の物理的な位置が変わっても sort_no で並ぶ）
+        $formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Wednesday'], 'opens' => '09:00', 'closes' => '17:00'],
+            1 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            2 => ['day_of_week' => ['Friday'], 'opens' => '10:00', 'closes' => '19:00'],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $actual = [];
+        foreach ($BaseInfo->getOpeningHours() as $OpeningHours) {
+            $actual[] = [$OpeningHours->getDayOfWeek(), $OpeningHours->getSortNo(), $OpeningHours->getCloses()?->format('H:i')];
+        }
+        $this->assertSame([
+            [['Wednesday'], 0, '17:00'],
+            [['Monday'], 1, '18:00'],
+            [['Friday'], 2, '19:00'],
+        ], $actual);
     }
 
     /**
