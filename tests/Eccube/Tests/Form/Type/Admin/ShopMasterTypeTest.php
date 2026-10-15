@@ -215,7 +215,7 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         ];
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
-        $this->assertCount(1, $this->form->get('OpeningHours')->get('1')->get('closes')->getErrors());
+        $this->assertOverlapErrorOn('1');
     }
 
     /**
