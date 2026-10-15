@@ -879,6 +879,52 @@ EOD;
         yield 'extra.id と source が異なる' => [1001, 1002];
     }
 
+    /**
+     * 無効なプラグインに依存されている場合も, composer remove の前に止める.
+     *
+     * composer remove は依存されているパッケージを削除できずに失敗するため,
+     * 事前にアンインストールすると, プラグインが中途半端に削除された状態で残る.
+     */
+    public function testRemoveByComposerRejectsDisabledDependentPlugin(): void
+    {
+        $code = $this->installDummyPlugin();
+        $dependentCode = $this->installDummyPlugin(require: ['ec-cube/'.$code => '*']);
+        $this->assertFalse($this->pluginRepository->findByCode($dependentCode)->isEnabled());
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->never())->method('execRemove');
+        $this->replaceComposerService($composerService);
+
+        try {
+            $this->service->removeByComposer('ec-cube/'.$code);
+            $this->fail('依存されているプラグインは削除できない');
+        } catch (PluginException $e) {
+            $this->assertStringContainsString($dependentCode, $e->getMessage());
+        }
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
+    /**
+     * 依存しているプラグインも一緒に削除する場合は, composer remove が両方を削除できるので止めない.
+     */
+    public function testRemoveByComposerAllowsDependentPluginRemovedTogether(): void
+    {
+        $code = $this->installDummyPlugin();
+        $dependentCode = $this->installDummyPlugin(require: ['ec-cube/'.$code => '*']);
+        $packageNames = 'ec-cube/'.$code.' ec-cube/'.$dependentCode;
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with($packageNames)
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer($packageNames));
+        $this->assertNotInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+        $this->assertNotInstanceOf(Plugin::class, $this->pluginRepository->findByCode($dependentCode));
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
@@ -896,8 +942,9 @@ EOD;
      *
      * @param int|null $source レコードの source. null ならランダムな値
      * @param int|null $id composer.json の extra.id. null なら $source と同じ. 0 なら書かない
+     * @param array<string, string> $require composer.json の require
      */
-    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null): string
+    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = []): string
     {
         $code = 'dummy'.sha1((string) mt_rand());
         $source ??= mt_rand(1, 999999);
@@ -909,6 +956,9 @@ EOD;
         ];
         if ($id !== 0) {
             $json['extra']['id'] = $id;
+        }
+        if ($require !== []) {
+            $json['require'] = $require;
         }
         $tmpfile = $this->createTempDir().'/plugin.tar';
         $tar = new \PharData($tmpfile);
