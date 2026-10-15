@@ -28,7 +28,7 @@ use Eccube\Entity\Master\RefundRequestStatus;
  * - dtb_csv（商品CSV出力項目 refund_allowed / id=217）
  *
  * テーブル自体は Entity 属性＋schema:update で反映されるため、ここでは INSERT のみを扱う。
- * dtb_csv は ID を指定して INSERT するため、PostgreSQL ではシーケンスを MAX(id) に合わせる。
+ * PostgreSQL では、dtb_mail_template は採番の前に、dtb_csv は ID を指定した INSERT の後に、シーケンスを MAX(id) に合わせる。
  */
 final class Version20260615000000 extends AbstractMigration
 {
