@@ -136,11 +136,12 @@ final class PageApplyCommand extends Command
 
         $this->renderResult($io, $output, $format, $result, $dryRun);
 
-        if ($dryRun || ContentStatus::Unchanged === $result->status || $input->getOption('no-cache-clear')) {
+        if ($dryRun || ContentStatus::Unchanged === $result->status) {
             return Command::SUCCESS;
         }
 
-        $cleared = $this->clearContentCache($io);
+        // --no-cache-clear が省略するのはキャッシュの削除だけ. コンテナの再構築は別の操作なので, 必要なら案内する
+        $cleared = $input->getOption('no-cache-clear') || $this->clearContentCache($io);
         if ($result->containerRebuildRequired) {
             $this->reportContainerRebuildRequired($io);
 

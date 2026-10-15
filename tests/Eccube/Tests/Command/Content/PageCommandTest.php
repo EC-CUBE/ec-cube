@@ -283,6 +283,25 @@ final class PageCommandTest extends EccubeTestCase
         }
     }
 
+    /**
+     * --no-cache-clear が省略するのはキャッシュの削除だけで, コンテナの再構築が必要なら終了コード 3 と案内を返す.
+     */
+    public function testApplyWithNoCacheClearStillReportsContainerRebuild(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+
+        try {
+            $tester = $this->apply(['--route' => $this->route, '--body' => 'body']);
+
+            $this->assertSame(3, $tester->getStatusCode());
+            $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
     public function testShowOutputsTemplate(): void
     {
         $this->apply(['--route' => $this->route, '--name' => 'テストページ', '--body' => 'shown body']);
