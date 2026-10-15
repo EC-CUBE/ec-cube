@@ -976,8 +976,6 @@ admin.order.shipping_status: Shipping Status
 admin.order.delivery: Delivery to
 admin.order.not_payment: Unpaid
 admin.order.unshipped: Unshipped
-admin.order.delete__confirm_title: Deleting Order Info
-admin.order.delete__confirm_message: Are you sure to delete the order information?
 admin.order.delete_item__confirm_message: "The item will be deleted from the order. Are you sure to delete %name%?"
 admin.order.change_payment_method_message: If the payment charge changes, please update it manually.
 admin.order.non_member: Non-Member

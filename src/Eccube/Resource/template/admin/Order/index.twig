@@ -35,12 +35,6 @@ file that was distributed with this source code.
                 toggleBtnBulk('input[id^="check_"]', '.btn-bulk-wrapper');
             });
 
-            $('#btn_bulk_delete').on('click', function(event) {
-                event.preventDefault();
-                $('#form_bulk').attr('action', "{{ url('admin_order_bulk_delete') }}").submit();
-                return false;
-            });
-
             // PDF出力(複数)
             $('#bulkExportPdf').on('click', function(event) {
                 window.open('', 'newwin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=700, height=700');
@@ -402,7 +396,6 @@ file that was distributed with this source code.
                                             {{ 'admin.order.send_mail'|trans }}
                                         </button>
                                         <button type="button" id="bulkExportPdf" class="btn btn-ec-regular me-2">{{ 'admin.order.output_delivery_note_short'|trans }}</button>
-                                        {# TODO 削除処理は将来バージョンで対応 <button type="button" class="btn btn-ec-delete" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal">{{ 'admin.common.delete'|trans }}</button> #}
                                     </div>
                                     <div class="col d-none btn-bulk-wrapper">
                                         <div class="d-inline-block me-2">
@@ -644,29 +637,6 @@ file that was distributed with this source code.
                                 <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
                                 <button id="bulkChange" class="btn btn-ec-conversion" type="button"><!--confirmationModal_js.twig--></button>
                                 <button id="bulkChangeComplete" class="btn btn-ec-regular" style="display: none" type="button">{{ 'admin.common.close'|trans }}</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 一括削除の確認モーダル -->
-                <div class="modal fade" id="bulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title fw-bold">{{ 'admin.order.delete__confirm_title'|trans }}</h5>
-                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-start">
-                                <p class="text-start">{{ 'admin.order.delete__confirm_message'|trans }}</p>
-                                <ul id="bulkErrors"></ul>
-                                <div class="progress" style="display: none">
-                                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">{{ 'admin.common.cancel'|trans }}</button>
-                                <button class="btn btn-ec-delete" type="button" id="btn_bulk_delete">{{ 'admin.common.delete' | trans }}</button>
                             </div>
                         </div>
                     </div>
