@@ -371,9 +371,6 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
-     * app/template へ上書きしておらず, コアのテンプレートを解決できる既定ページ.
-     */
-    /**
      * プラグインの名前空間を指すページは, プラグイン同梱のテンプレートではなく
      * 上書き用の app/template/plugin へ置く.
      *
@@ -457,6 +454,9 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->assertSame('decoy', file_get_contents($decoyPath), '新しい配置先の同名ファイルを巻き込まない');
     }
 
+    /**
+     * app/template へ上書きしておらず, コアのテンプレートを解決できる既定ページ.
+     */
     private function findDefaultPageWithoutOverride(): Page
     {
         /** @var list<Page> $Pages */
