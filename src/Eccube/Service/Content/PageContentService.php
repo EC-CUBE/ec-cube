@@ -342,7 +342,13 @@ class PageContentService
         }
 
         if (!$isNew && [] === $fieldChanges && [] === $fileChanges) {
-            return new ContentResult(ContentStatus::Unchanged, $Page->getId(), $route);
+            // 保存を省いても, 再構築が済んでいなければ伝える. 同じ内容での再実行で案内を受け取れるようにする
+            return new ContentResult(
+                ContentStatus::Unchanged,
+                $Page->getId(),
+                $route,
+                containerRebuildRequired: $this->requiresContainerRebuild($Page)
+            );
         }
 
         return $this->save($Page, $body, $PcLayout, $SpLayout, $isNew ? null : $previousFileName)

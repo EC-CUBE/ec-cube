@@ -306,6 +306,33 @@ final class PageCommandTest extends EccubeTestCase
     }
 
     /**
+     * 同じ内容で再実行して結果が unchanged でも, 再構築が済むまでは終了コード 3 と案内を返す.
+     * 冪等な apply の再実行は, 案内を見落とした後に状態を確かめる自然な手順のため.
+     */
+    public function testApplyWithSameBodyStillReportsContainerRebuild(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        try {
+            $this->assertSame(3, $this->apply(['--route' => $this->route, '--body' => 'same'])->getStatusCode());
+
+            $tester = $this->apply(['--route' => $this->route, '--body' => 'same']);
+            $this->assertSame(3, $tester->getStatusCode(), '内容が同じでも, 登録されるまでは案内する');
+            $this->assertStringContainsString('unchanged: '.$this->route, $tester->getDisplay());
+            $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+
+            // コンテナを作り直した後の状態
+            $this->registerTwigNamespacePath($code, $namespaceDir);
+            $this->assertSame(0, $this->apply(['--route' => $this->route, '--body' => 'same'])->getStatusCode());
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
+    /**
      * 無効なプラグインの名前空間は, eccube:cache:build を実行しても twig に登録されない.
      * 案内に従っても解消しないため, 終了コード 3 を返さない.
      */

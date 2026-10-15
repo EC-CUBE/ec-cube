@@ -509,6 +509,31 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
+     * 内容が変わらず保存を省いた (Unchanged) 場合も, 再構築が要るかを返す.
+     * CLI で同じ内容の apply を再実行したときに, 再構築するまで案内し続けるため.
+     */
+    public function testApplyUnchangedStillRequiresContainerRebuild(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createdDirs[] = $namespaceDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        $this->assertTrue($this->apply(['body' => 'same'])->containerRebuildRequired);
+
+        $again = $this->apply(['body' => 'same']);
+        $this->assertSame(ContentStatus::Unchanged, $again->status);
+        $this->assertTrue($again->containerRebuildRequired, '内容が同じでも, 登録されるまでは再構築が要る');
+
+        // コンテナを作り直した後の状態
+        $this->registerTwigNamespacePath($code, $namespaceDir);
+        $registered = $this->apply(['body' => 'same']);
+        $this->assertSame(ContentStatus::Unchanged, $registered->status);
+        $this->assertFalse($registered->containerRebuildRequired);
+    }
+
+    /**
      * 無効なプラグインの名前空間は, コンテナを作り直しても twig に登録されないため, 再構築を求めない.
      * 求めると, 案内に従っても解消せず, 保存のたびに再構築 (管理画面では cache:clear) が走る.
      *
