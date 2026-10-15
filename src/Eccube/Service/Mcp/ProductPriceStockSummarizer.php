@@ -17,6 +17,7 @@ namespace Eccube\Service\Mcp;
 
 use Eccube\Entity\Product;
 use Eccube\Entity\ProductClass;
+use Eccube\Entity\ProductStock;
 
 /**
  * Product の価格・在庫を「min〜max」へ集約したサマリ断片を作る。
@@ -27,8 +28,10 @@ use Eccube\Entity\ProductClass;
  * min が null に化け「在庫が伏せられた / 欠損」と誤読される。 これを避けるため無制限クラスは
  * 有限 min/max の集計から除外し、 別途 `unlimited` フラグで表す。
  *
- * 集約元の ProductClass フィールドが allow_list で許可されている時だけ出力する (未許可なら null)。
+ * 集約元のフィールドが allow_list で許可されている時だけ出力する (未許可なら null)。
  * これによりサマリ経路でも「allow_list に無いものは出さない」境界を保つ。
+ * 在庫数の正典は ProductStock::stock のため、 在庫は ProductClass.ProductStock と ProductStock.stock の
+ * 両方が許可されている時に出力する。
  */
 final readonly class ProductPriceStockSummarizer
 {
@@ -43,7 +46,8 @@ final readonly class ProductPriceStockSummarizer
     public function summarize(Product $product): array
     {
         $priceAllowed = $this->allowListResolver->isAllowed(ProductClass::class, 'price02');
-        $stockAllowed = $this->allowListResolver->isAllowed(ProductClass::class, 'stock');
+        $stockAllowed = $this->allowListResolver->isAllowed(ProductClass::class, 'ProductStock')
+            && $this->allowListResolver->isAllowed(ProductStock::class, 'stock');
         $unlimitedAllowed = $this->allowListResolver->isAllowed(ProductClass::class, 'stock_unlimited');
 
         /** @var list<string> $prices */

@@ -38,6 +38,7 @@ class TemplateType extends AbstractType
     {
         $builder
             ->add('code', TextType::class, [
+                'empty_data' => '',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -46,6 +47,7 @@ class TemplateType extends AbstractType
                 ],
             ])
             ->add('name', TextType::class, [
+                'empty_data' => '',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
