@@ -24,6 +24,7 @@ use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
+use Eccube\Service\Composer\InstalledPackageReader;
 use Eccube\Service\PluginService;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -55,16 +56,16 @@ final class PluginServiceTest extends AbstractServiceTestCase
         $this->service = static::getContainer()->get(PluginService::class);
         $this->pluginRepository = $this->entityManager->getRepository(Plugin::class);
 
-        // 実際の vendor/composer/installed.json を書き換えないよう, 一時ファイルに差し替える
-        $this->installedJsonPath = tempnam(sys_get_temp_dir(), 'installed').'.json';
+        // 実際の vendor/composer/installed.json を書き換えないよう, 一時ファイルを読むものに差し替える
+        $this->installedJsonPath = $this->createTempDir().'/installed.json';
         file_put_contents($this->installedJsonPath, json_encode(['packages' => []]));
-        (new \ReflectionProperty(PluginService::class, 'installedJsonPath'))->setValue($this->service, $this->installedJsonPath);
+        (new \ReflectionProperty(PluginService::class, 'installedPackageReader'))->setValue($this->service, new InstalledPackageReader($this->installedJsonPath));
     }
 
     protected function tearDown(): void
     {
         if ($this->installedJsonPath !== null) {
-            (new Filesystem())->remove([$this->installedJsonPath, substr($this->installedJsonPath, 0, -strlen('.json'))]);
+            (new Filesystem())->remove(dirname($this->installedJsonPath));
         }
         $dirs = [];
         $finder = new Finder();
@@ -864,9 +865,9 @@ EOD;
      * 一致するプラグインだけを事前にアンインストールする. それ以外は composer remove に任せ, レコードを残す.
      */
     #[DataProvider(methodName: 'providePluginNotInstalledByComposer')]
-    public function testRemoveByComposerLeavesPluginNotInstalledByComposer(int $source, int $id): void
+    public function testRemoveByComposerLeavesPluginNotInstalledByComposer(int $source, int $id, ?int $dirId = null, ?bool $recordPackage = null): void
     {
-        $code = $this->installDummyPlugin(source: $source, id: $id);
+        $code = $this->installDummyPlugin(source: $source, id: $id, dirId: $dirId, recordPackage: $recordPackage);
 
         $composerService = $this->createMock(ComposerServiceInterface::class);
         $composerService->expects($this->once())
@@ -884,13 +885,67 @@ EOD;
     }
 
     /**
-     * @return \Iterator<string, array{int, int}>
+     * @return \Iterator<string, array{0: int, 1: int, 2?: int|null, 3?: bool}>
      */
     public static function providePluginNotInstalledByComposer(): \Iterator
     {
-        yield 'アーカイブで導入した (source=0, extra.id なし)' => [0, 0];
-        yield 'extra.id があるがアーカイブで導入した (source=0)' => [0, 1001];
+        yield 'アーカイブで導入した (installed.json に無い)' => [0, 0];
+        yield 'パッケージは記録されているが, アーカイブで導入した (source=0)' => [0, 1001, null, true];
         yield 'パッケージの extra.id と source が異なる' => [1001, 1002];
+        // ディレクトリの composer.json は見ない. どちらかが一致すればよい, という判定にしない
+        yield 'ディレクトリの extra.id だけが source と一致する' => [1001, 1002, 1001];
+    }
+
+    /**
+     * extra.id が空 ('0' を含む) のパッケージは, plugin-installer がアンインストールしない.
+     * source=0 (アーカイブで導入) のレコードを巻き込まない.
+     */
+    #[DataProvider(methodName: 'provideEmptyPackageId')]
+    public function testRemoveByComposerLeavesPluginWhenPackageIdIsEmpty(int|string $emptyId): void
+    {
+        $code = $this->installDummyPlugin(source: 0, recordPackage: true);
+        $this->updateInstalledPackage(0, ['extra' => ['code' => $code, 'id' => $emptyId]]);
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
+    /**
+     * @return \Iterator<string, array{int|string}>
+     */
+    public static function provideEmptyPackageId(): \Iterator
+    {
+        yield 'int の 0' => [0];
+        yield "文字列の '0'" => ['0'];
+        yield '空文字列' => [''];
+    }
+
+    /**
+     * plugin-installer はパッケージ名とプラグインのコードを結び付けないが, composer remove の前の
+     * dropTableToExtra() はパッケージ名の末尾をコードとしてディレクトリを探す.
+     * コードがパッケージ名の末尾と異なるプラグインは, 事前にアンインストールせず composer remove に任せる.
+     */
+    public function testRemoveByComposerLeavesPluginWhoseCodeDiffersFromPackageName(): void
+    {
+        $code = $this->installDummyPlugin();
+        $this->updateInstalledPackage(0, ['name' => 'ec-cube/other']);
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/other')
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/other'));
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
     /**
@@ -1067,12 +1122,8 @@ EOD;
     public function testRemoveByComposerLeavesPluginWithInvalidId(): void
     {
         $code = $this->installDummyPlugin();
-        $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
-        foreach ($installed['packages'] as &$package) {
-            $package['extra']['id'] = [$package['extra']['id']];
-        }
-        unset($package);
-        file_put_contents($this->installedJsonPath, json_encode($installed));
+        $source = $this->pluginRepository->findByCode($code)->getSource();
+        $this->updateInstalledPackage(0, ['extra' => ['code' => $code, 'id' => [$source]]]);
 
         $composerService = $this->createMock(ComposerServiceInterface::class);
         $composerService->expects($this->once())
@@ -1122,9 +1173,7 @@ EOD;
     public function testRemoveByComposerLeavesPluginOfNonPluginPackage(): void
     {
         $code = $this->installDummyPlugin();
-        $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
-        $installed['packages'][0]['type'] = 'library';
-        file_put_contents($this->installedJsonPath, json_encode($installed));
+        $this->updateInstalledPackage(0, ['type' => 'library']);
 
         $composerService = $this->createMock(ComposerServiceInterface::class);
         $composerService->expects($this->once())
@@ -1158,8 +1207,9 @@ EOD;
      * @param array<string, string> $require composer.json の require
      * @param string $prefix コードの接頭辞. tearDown が消せるよう dummy で始める
      * @param int|null $dirId プラグインのディレクトリの composer.json の extra.id. null なら $id と同じ. 0 なら書かない
+     * @param bool|null $recordPackage パッケージを installed.json に記録するか. null なら source が 0 でないとき記録する
      */
-    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = [], string $prefix = 'dummy', ?int $dirId = null): string
+    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = [], string $prefix = 'dummy', ?int $dirId = null, ?bool $recordPackage = null): string
     {
         $code = $prefix.sha1((string) mt_rand());
         $source ??= mt_rand(1, 999999);
@@ -1204,13 +1254,25 @@ EOD);
         }
         $this->service->install($tmpfile, $source);
 
-        if ($source !== 0) {
+        if ($recordPackage ?? $source !== 0) {
             $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
             $installed['packages'][] = $package;
             file_put_contents($this->installedJsonPath, json_encode($installed));
         }
 
         return $code;
+    }
+
+    /**
+     * installed.json に記録したパッケージの項目を書き換える.
+     *
+     * @param array<string, mixed> $values
+     */
+    private function updateInstalledPackage(int $index, array $values): void
+    {
+        $installed = json_decode((string) file_get_contents($this->installedJsonPath), true);
+        $installed['packages'][$index] = array_merge($installed['packages'][$index], $values);
+        file_put_contents($this->installedJsonPath, json_encode($installed));
     }
 
     private function replaceComposerService(ComposerServiceInterface $composerService): void

@@ -29,6 +29,7 @@ use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
+use Eccube\Service\Composer\InstalledPackageReader;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Psr\Container\ContainerInterface;
@@ -56,11 +57,6 @@ class PluginService
     private readonly string $projectRoot;
 
     /**
-     * composer が導入済みのパッケージを記録するファイル
-     */
-    private string $installedJsonPath;
-
-    /**
      * PluginService constructor.
      */
     public function __construct(
@@ -74,9 +70,9 @@ class PluginService
         protected ComposerServiceInterface $composerService,
         private readonly PluginApiService $pluginApiService,
         private readonly PluginContext $pluginContext,
+        protected InstalledPackageReader $installedPackageReader,
     ) {
         $this->projectRoot = $this->eccubeConfig->get('kernel.project_dir');
-        $this->installedJsonPath = $this->projectRoot.'/vendor/composer/installed.json';
     }
 
     /**
@@ -702,7 +698,7 @@ class PluginService
      */
     private function findPluginInstalledByComposer(string $packageName): ?Plugin
     {
-        $package = $this->findInstalledPackage($packageName);
+        $package = $this->installedPackageReader->find($packageName);
         if ($package === null || ($package['type'] ?? null) !== 'eccube-plugin') {
             return null;
         }
@@ -722,6 +718,14 @@ class PluginService
             return null;
         }
 
+        // composer remove の前の dropTableToExtra() は, パッケージ名の末尾をコードとしてプラグインの
+        // ディレクトリを探す. 一致しないものを先にアンインストールすると, その後で composer remove が
+        // 止まりレコードだけが消えるので, composer remove に任せる.
+        // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
+        if (strtolower($Plugin->getCode()) !== strtolower(basename($packageName))) {
+            return null;
+        }
+
         // アンインストールにはプラグインの composer.json が要る. 読めなければ composer remove に任せる
         try {
             $this->readConfig($this->calcPluginDir($Plugin->getCode()));
@@ -730,40 +734,6 @@ class PluginService
         }
 
         return $Plugin;
-    }
-
-    /**
-     * composer が記録した導入済みのパッケージを返す.
-     *
-     * composer を実行すると書き換わるため, 呼ぶたびに読み直す.
-     *
-     * @return array<string, mixed>|null
-     */
-    private function findInstalledPackage(string $packageName): ?array
-    {
-        $json = @file_get_contents($this->installedJsonPath);
-        if ($json === false) {
-            return null;
-        }
-        $installed = json_decode($json, true);
-        if (!is_array($installed)) {
-            return null;
-        }
-        // composer 1 は配列, composer 2 は packages の下に並べる
-        $packages = $installed['packages'] ?? $installed;
-        if (!is_array($packages)) {
-            return null;
-        }
-
-        // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
-        foreach ($packages as $package) {
-            if (is_array($package) && is_string($package['name'] ?? null)
-                && strtolower($package['name']) === strtolower($packageName)) {
-                return $package;
-            }
-        }
-
-        return null;
     }
 
     /**
