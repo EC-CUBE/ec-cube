@@ -242,6 +242,43 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
         $this->assertSame('Friday', $crawler->filter('#shop_master_OpeningHours_2_day_of_week input:checked')->attr('value'));
     }
 
+    /**
+     * 既存の営業時間の行の値をすべて消して保存すると、その行は削除される.
+     */
+    #[Group(name: 'cache-clear')]
+    public function testSubmitRemovesClearedOpeningHours(): void
+    {
+        $formData = $this->createFormData();
+        $formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            1 => ['day_of_week' => ['Tuesday'], 'opens' => '09:00', 'closes' => '18:00'],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        // 1 行目の値をすべて消して保存する（曜日のチェックボックスは未チェックだとキーごと送られない）
+        $formData['OpeningHours'] = [
+            0 => ['opens' => '', 'closes' => ''],
+            1 => ['day_of_week' => ['Tuesday'], 'opens' => '09:00', 'closes' => '18:00'],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $this->assertCount(1, $BaseInfo->getOpeningHours());
+        $this->assertSame(['Tuesday'], $BaseInfo->getOpeningHours()->first()->getDayOfWeek());
+    }
+
     public static function dataSubmitProvider(): \Iterator
     {
         yield [false, false];

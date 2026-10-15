@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Form\Type\Admin;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\OpeningHours;
 use Eccube\Form\Type\Admin\ShopMasterType;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
 use Symfony\Component\Form\FormInterface;
@@ -213,6 +214,33 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
             $actual[$OpeningHours->getDayOfWeek()[0]] = $OpeningHours->getSortNo();
         }
         $this->assertSame(['Monday' => 0, 'Tuesday' => 1, 'Wednesday' => 2], $actual);
+    }
+
+    /**
+     * 既存の行の値をすべて消して送信すると、その行は削除される.
+     */
+    public function testOpeningHoursExistingRowClearedIsRemoved(): void
+    {
+        $BaseInfo = new BaseInfo();
+        $BaseInfo->addOpeningHour(
+            (new OpeningHours())
+                ->setDayOfWeek(['Monday'])
+                ->setOpens(new \DateTime('09:00'))
+                ->setCloses(new \DateTime('18:00'))
+        );
+        $form = $this->formFactory
+            ->createBuilder(ShopMasterType::class, $BaseInfo, ['csrf_protection' => false])
+            ->getForm();
+
+        $formData = $this->formData;
+        // 曜日のチェックボックスは未チェックだとキーごと送られない
+        $formData['OpeningHours'] = [
+            0 => ['opens' => '', 'closes' => ''],
+        ];
+        $form->submit($formData);
+
+        $this->assertTrue($form->isValid());
+        $this->assertCount(0, $BaseInfo->getOpeningHours());
     }
 
     public function testInValidOpeningHoursMissingDay(): void

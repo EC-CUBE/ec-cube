@@ -180,6 +180,10 @@ class ShopMasterType extends AbstractType
                 'prototype' => true,
                 'by_reference' => false,
                 'required' => false,
+                // 既存の行の値をすべて消した場合も行ごと削除する。`true` だと子フォームの
+                // データが OpeningHours のインスタンスのため isEmpty() が false になり、削除されない
+                'delete_empty' => static fn (?OpeningHours $OpeningHours = null): bool => $OpeningHours === null
+                    || (!$OpeningHours->getDayOfWeek() && $OpeningHours->getOpens() === null && $OpeningHours->getCloses() === null),
             ])
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
