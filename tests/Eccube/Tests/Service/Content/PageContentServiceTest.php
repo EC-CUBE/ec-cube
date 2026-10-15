@@ -492,6 +492,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $this->assertDirectoryDoesNotExist($namespaceDir);
         $this->createdDirs[] = $namespaceDir;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
 
         $first = $this->apply(['body' => 'first']);
         $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $first->writtenPaths);
@@ -508,6 +509,26 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
+     * 無効なプラグインの名前空間は, コンテナを作り直しても twig に登録されないため, 再構築を求めない.
+     * 求めると, 案内に従っても解消せず, 保存のたびに再構築 (管理画面では cache:clear) が走る.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testSaveDoesNotRequireContainerRebuildForDisabledPlugin(): void
+    {
+        $code = 'Disabled'.bin2hex(random_bytes(4));
+        $this->assertNotContains($code, $this->eccubeConfig->get('eccube.plugins.enabled'));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createdDirs[] = $namespaceDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+
+        $result = $this->apply(['body' => 'body']);
+
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $result->writtenPaths, '上書き用ディレクトリはある');
+        $this->assertFalse($result->containerRebuildRequired);
+    }
+
+    /**
      * 上書きしていない (上書き用ディレクトリが無い) 既定ページは, 同梱のテンプレートを表示するのが正しく,
      * メタ情報だけを保存しても再構築を求めない.
      */
@@ -515,6 +536,7 @@ final class PageContentServiceTest extends EccubeTestCase
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
         $overrideDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
         $this->createdDirs[] = $overrideDir;
 

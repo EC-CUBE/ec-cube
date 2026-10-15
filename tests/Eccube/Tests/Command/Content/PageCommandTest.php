@@ -24,6 +24,7 @@ use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
 use Eccube\Tests\TwigNamespacePathTrait;
+use Eccube\Util\CacheUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -262,9 +263,10 @@ final class PageCommandTest extends EccubeTestCase
         $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
         $this->assertDirectoryDoesNotExist($namespaceDir);
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
 
         try {
-            $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
+            $tester = new CommandTester($this->createApplyCommand());
             $tester->execute(['--route' => $this->route, '--body' => 'first']);
 
             $this->assertSame(3, $tester->getStatusCode());
@@ -291,12 +293,34 @@ final class PageCommandTest extends EccubeTestCase
         $code = 'Rebuild'.bin2hex(random_bytes(4));
         $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
 
         try {
             $tester = $this->apply(['--route' => $this->route, '--body' => 'body']);
 
             $this->assertSame(3, $tester->getStatusCode());
             $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
+    /**
+     * 無効なプラグインの名前空間は, eccube:cache:build を実行しても twig に登録されない.
+     * 案内に従っても解消しないため, 終了コード 3 を返さない.
+     */
+    public function testApplyDoesNotReportContainerRebuildForDisabledPlugin(): void
+    {
+        $code = 'Disabled'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+
+        try {
+            $tester = $this->apply(['--route' => $this->route, '--body' => 'body']);
+
+            $this->assertFileExists($namespaceDir.'/'.$this->route.'.twig');
+            $this->assertSame(0, $tester->getStatusCode());
+            $this->assertStringNotContainsString('eccube:cache:build', $tester->getDisplay());
         } finally {
             (new Filesystem())->remove($namespaceDir);
         }
@@ -369,6 +393,21 @@ final class PageCommandTest extends EccubeTestCase
     }
 
     /**
+     * $this->pageContentService を使う eccube:page:apply を作る.
+     *
+     * 有効なプラグインを差し替えたサービス (createPageContentServiceWithEnabledPlugins()) を渡すため,
+     * コンテナからは取得しない. #[Required] で注入される依存はコンテナのものを渡す.
+     */
+    private function createApplyCommand(): PageApplyCommand
+    {
+        $command = new PageApplyCommand($this->pageContentService);
+        $command->setCacheUtil(self::getContainer()->get(CacheUtil::class));
+        $command->setEccubeConfig($this->eccubeConfig);
+
+        return $command;
+    }
+
+    /**
      * プラグインが dtb_page へ登録する既定ページ (ファイル名が twig の名前空間を指す) を作る.
      */
     private function createPluginNamespacePage(string $fileName): Page
@@ -390,7 +429,7 @@ final class PageCommandTest extends EccubeTestCase
      */
     private function apply(array $input, array $stdin = []): CommandTester
     {
-        $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
+        $tester = new CommandTester($this->createApplyCommand());
         if ([] !== $stdin) {
             $tester->setInputs($stdin);
         }

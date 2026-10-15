@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
+use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\TwigNamespacePathTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -46,6 +47,11 @@ final class PageControllerCacheClearTest extends AbstractAdminWebTestCase
         $this->marker = rtrim((string) static::getContainer()->getParameter('kernel.cache_dir'), '/').'/sample';
         // 目印を置いてから実行する. 存在しないまま assertFileDoesNotExist すると素通りする
         (new Filesystem())->dumpFile($this->marker, 'test');
+        // 無効なプラグインの名前空間は再構築の対象外のため, 有効なプラグインとして扱わせる
+        static::getContainer()->set(
+            PageContentService::class,
+            $this->createPageContentServiceWithEnabledPlugins($this->code)
+        );
     }
 
     protected function tearDown(): void

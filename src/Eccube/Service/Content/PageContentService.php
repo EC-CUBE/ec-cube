@@ -156,11 +156,14 @@ class PageContentService
      * コンテナを作り直すまで登録されず, フロントはプラグイン同梱のテンプレートを表示し続ける.
      *
      * ディレクトリの有無ではなく登録状況を見るため, 案内を見落としても次の保存で再び検出できる.
+     *
+     * 有効なプラグインの名前空間だけを対象にする. configureTwigPaths() は無効なプラグインの名前空間を登録しないため,
+     * コンテナを作り直しても登録されず, 対象にすると保存のたびに再構築を求め続ける.
      */
     private function requiresContainerRebuild(Page $Page): bool
     {
         $namespace = $this->resolvePluginNamespace($Page, (string) $Page->getFileName());
-        if (null === $namespace) {
+        if (null === $namespace || !$this->isEnabledPlugin($namespace)) {
             return false;
         }
 
@@ -171,6 +174,11 @@ class PageContentService
         }
 
         return !$this->isTwigPathRegistered($namespace, $dir);
+    }
+
+    private function isEnabledPlugin(string $code): bool
+    {
+        return in_array($code, (array) $this->eccubeConfig->get('eccube.plugins.enabled'), true);
     }
 
     /**
