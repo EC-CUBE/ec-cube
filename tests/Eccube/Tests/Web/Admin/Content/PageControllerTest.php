@@ -249,6 +249,57 @@ final class PageControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * プラグインが登録した既定ページ (ファイル名 @PluginCode/xxx) を管理画面から保存すると,
+     * 上書き用の app/template/plugin/PluginCode/xxx.twig へ書き出される (Issue #4904 の再現手順).
+     *
+     * 既定ページのファイル名は hidden で送られ, 保存時は保存済みの値へ戻される.
+     * "@" を付けたまま書くと EccubeExtension が登録するパスと一致せず, 画面へ反映されない.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testRoutingAdminContentPageEditSavesDefaultPageWithPluginNamespace(): void
+    {
+        $client = $this->client;
+        $faker = $this->getFaker();
+
+        $code = 'Boomerang'.bin2hex(random_bytes(4));
+        $name = $faker->word();
+        $fileName = '@'.$code.'/'.$name;
+        $Page = $this->createPluginNamespacePage($fileName, 'logout', Page::EDIT_TYPE_DEFAULT);
+
+        $pluginDir = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin';
+        $expectedPath = $pluginDir.'/'.$code.'/'.$name.'.twig';
+        $unexpectedPath = $pluginDir.'/@'.$code.'/'.$name.'.twig';
+        $source = $faker->realText();
+
+        try {
+            $client->request(
+                Request::METHOD_POST,
+                $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()]),
+                [
+                    'main_edit' => [
+                        'name' => 'プラグインのページ',
+                        'url' => $Page->getUrl(),
+                        'file_name' => $fileName,
+                        'tpl_data' => $source,
+                        '_token' => 'dummy',
+                    ],
+                ]
+            );
+
+            $this->assertTrue($client->getResponse()->isRedirect(
+                $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()])
+            ));
+            $this->assertSame($fileName, $this->entityManager->getRepository(Page::class)->find($Page->getId())?->getFileName());
+            $this->assertFileExists($expectedPath, '@ を除いたパスへ書き出す');
+            $this->assertFileDoesNotExist($unexpectedPath, '@ を含むパスへは書き出さない');
+            $this->assertSame($source, file_get_contents($expectedPath));
+        } finally {
+            (new Filesystem())->remove([$pluginDir.'/'.$code, $pluginDir.'/@'.$code]);
+        }
+    }
+
+    /**
      * 名前空間付きのファイル名を持つページの編集画面が開ける.
      *
      * 読み取り時に @user_data/ を前置すると "@user_data/@Boomerang/xxx.twig" という
