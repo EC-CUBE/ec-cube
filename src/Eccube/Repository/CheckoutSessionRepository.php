@@ -57,11 +57,7 @@ class CheckoutSessionRepository extends AbstractRepository
                 $qb->expr()->notIn('IDENTITY(cs.Status)', ':terminalStatuses')
             ))
             ->setParameter('now', $now)
-            ->setParameter('terminalStatuses', [
-                CheckoutSessionStatus::COMPLETED,
-                CheckoutSessionStatus::CANCELED,
-                CheckoutSessionStatus::EXPIRED,
-            ])
+            ->setParameter('terminalStatuses', CheckoutSessionStatus::TERMINAL_IDS)
             ->getQuery()
             ->getResult();
 

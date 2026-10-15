@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Tests\EccubeTestCase;
@@ -269,6 +271,107 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         $result = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
         $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '完了済セッションの cancel は 405');
         $this->assertSame('not_allowed', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $this->fetchStatusId($created['id']), '拒否後も DB 上は completed のまま');
+    }
+
+    /**
+     * 期限切れのセッションは終端のため cancel できず、expired のまま残る (#7229).
+     */
+    public function testCancelExpiredSessionReturns405AndKeepsStatus(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $this->forceStatus($created['id'], CheckoutSessionStatus::EXPIRED);
+
+        $result = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '期限切れセッションの cancel は 405');
+        $this->assertSame('not_allowed', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::EXPIRED, $this->fetchStatusId($created['id']), 'expired を canceled に書き換えない');
+    }
+
+    /**
+     * 取消済のセッションへの再 cancel は 405 で、canceled のまま残る (#7229).
+     */
+    public function testCancelCanceledSessionReturns405AndKeepsStatus(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '1 回目の cancel は 200');
+
+        $result = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/cancel', []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '取消済セッションの再 cancel は 405');
+        $this->assertSame('not_allowed', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($created['id']), '拒否後も DB 上は canceled のまま');
+    }
+
+    /**
+     * 同じ Idempotency-Key での cancel の再送は初回の 200 をリプレイし、別キーなら終端として 405 になる (#7229).
+     */
+    public function testCancelReplayWithSameIdempotencyKeyReturnsOriginal200(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/acp/checkout_sessions', $this->createPayload((int) $ProductClass->getId()));
+        $uri = '/acp/checkout_sessions/'.$created['id'].'/cancel';
+
+        $first = $this->postJson($uri, [], ['HTTP_Idempotency-Key' => 'idem-acp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '初回の cancel は 200');
+        $this->assertSame('canceled', $first['status']);
+
+        $second = $this->postJson($uri, [], ['HTTP_Idempotency-Key' => 'idem-acp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
+        $this->assertSame('true', $this->client->getResponse()->headers->get('Idempotent-Replayed'), 'リプレイは Idempotent-Replayed: true を付す');
+        // リプレイのボディは JSON カラムから復元され、MySQL の JSON 型はオブジェクトのキーを並べ替えて保存するため、キー順を揃えて比べる。
+        // 連想配列で比べるため、空オブジェクト {} と空配列 [] の違いは検出しない。
+        $this->assertSame($this->sortKeysRecursively($first), $this->sortKeysRecursively($second), 'リプレイは初回と同じ内容のボディを返す');
+
+        $other = $this->postJson($uri, []);
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $this->client->getResponse()->getStatusCode(), '別キーの cancel は終端として 405');
+        $this->assertSame('not_allowed', $other['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($created['id']), '拒否後も DB 上は canceled のまま');
+    }
+
+    /**
+     * 回収処理 (#7221) が未実装で expired へ遷移させる経路が無いため、DB 上のステータスを直接書き換える.
+     */
+    private function forceStatus(string $sessionId, int $statusId): void
+    {
+        /** @var CheckoutSession $session */
+        $session = $this->entityManager->getRepository(CheckoutSession::class)->findOneBy(['session_id' => $sessionId]);
+        $session->setStatus($this->entityManager->find(CheckoutSessionStatus::class, $statusId));
+        $this->entityManager->flush();
+    }
+
+    /**
+     * ORM の identity map を経由せず、DB に保存されたステータス id を読む.
+     */
+    private function fetchStatusId(string $sessionId): int
+    {
+        return (int) $this->entityManager->getConnection()->fetchOne(
+            'SELECT checkout_session_status_id FROM dtb_checkout_session WHERE session_id = ?',
+            [$sessionId],
+        );
+    }
+
+    /**
+     * 連想配列のキーを再帰的に昇順へ並べる (リストは要素の順序を保つ).
+     *
+     * @param array<mixed> $value
+     *
+     * @return array<mixed>
+     */
+    private function sortKeysRecursively(array $value): array
+    {
+        foreach ($value as $key => $child) {
+            if (is_array($child)) {
+                $value[$key] = $this->sortKeysRecursively($child);
+            }
+        }
+        if (!array_is_list($value)) {
+            ksort($value);
+        }
+
+        return $value;
     }
 
     public function testMissingBearerReturns401(): void

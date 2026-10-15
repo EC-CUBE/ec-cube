@@ -15,6 +15,8 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Entity\CheckoutSession;
+use Eccube\Entity\Master\CheckoutSessionStatus;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
@@ -242,6 +244,121 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $canceled = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertSame('canceled', $canceled['status'], 'cancel 後は canceled');
+    }
+
+    public function testCancelCompletedSessionReturns422(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+        $sessionId = $created['id'];
+        $completed = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/complete', []);
+        $this->assertSame('completed', $completed['status'], '前提: complete 済');
+
+        $result = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), '完了済セッションの cancel は 422');
+        $this->assertSame('invalid_session_state', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $this->fetchStatusId($sessionId), '拒否後も DB 上は completed のまま');
+    }
+
+    /**
+     * 期限切れのセッションは終端のため cancel できず、expired のまま残る (#7229).
+     */
+    public function testCancelExpiredSessionReturns422AndKeepsStatus(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+        $sessionId = $created['id'];
+        $this->forceStatus($sessionId, CheckoutSessionStatus::EXPIRED);
+
+        $result = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), '期限切れセッションの cancel は 422');
+        $this->assertSame('invalid_session_state', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::EXPIRED, $this->fetchStatusId($sessionId), 'expired を canceled に書き換えない');
+    }
+
+    /**
+     * 取消済のセッションへの再 cancel は 422 で、canceled のまま残る (#7229).
+     */
+    public function testCancelCanceledSessionReturns422AndKeepsStatus(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+        $sessionId = $created['id'];
+        $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '1 回目の cancel は 200');
+
+        $result = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), '取消済セッションの再 cancel は 422');
+        $this->assertSame('invalid_session_state', $result['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($sessionId), '拒否後も DB 上は canceled のまま');
+    }
+
+    /**
+     * 同じ Idempotency-Key での cancel の再送は初回の 200 をリプレイし、キー無しなら終端として 422 になる (#7229).
+     */
+    public function testCancelReplayWithSameIdempotencyKeyReturnsOriginal200(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+        $sessionId = $created['id'];
+        $uri = '/ucp/checkout-sessions/'.$sessionId.'/cancel';
+
+        $first = $this->postJson($uri, [], 'POST', ['HTTP_Idempotency-Key' => 'idem-ucp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '初回の cancel は 200');
+        $this->assertSame('canceled', $first['status']);
+
+        $second = $this->postJson($uri, [], 'POST', ['HTTP_Idempotency-Key' => 'idem-ucp-cancel']);
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), '同じキーの再送は初回の 200 をリプレイする');
+        // リプレイのボディは JSON カラムから復元され、MySQL の JSON 型はオブジェクトのキーを並べ替えて保存するため、キー順を揃えて比べる。
+        $this->assertSame($this->sortKeysRecursively($first), $this->sortKeysRecursively($second), 'リプレイは初回と同じボディを返す');
+
+        $other = $this->postJson($uri, []);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), 'キー無しの cancel は終端として 422');
+        $this->assertSame('invalid_session_state', $other['code']);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $this->fetchStatusId($sessionId), 'DB 上は canceled のまま');
+    }
+
+    /**
+     * 回収処理 (#7221) が未実装で expired へ遷移させる経路が無いため、DB 上のステータスを直接書き換える.
+     */
+    private function forceStatus(string $sessionId, int $statusId): void
+    {
+        /** @var CheckoutSession $session */
+        $session = $this->entityManager->getRepository(CheckoutSession::class)->findOneBy(['session_id' => $sessionId]);
+        $session->setStatus($this->entityManager->find(CheckoutSessionStatus::class, $statusId));
+        $this->entityManager->flush();
+    }
+
+    /**
+     * ORM の identity map を経由せず、DB に保存されたステータス id を読む.
+     */
+    private function fetchStatusId(string $sessionId): int
+    {
+        return (int) $this->entityManager->getConnection()->fetchOne(
+            'SELECT checkout_session_status_id FROM dtb_checkout_session WHERE session_id = ?',
+            [$sessionId],
+        );
+    }
+
+    /**
+     * 連想配列のキーを再帰的に昇順へ並べる (リストは要素の順序を保つ).
+     *
+     * @param array<mixed> $value
+     *
+     * @return array<mixed>
+     */
+    private function sortKeysRecursively(array $value): array
+    {
+        foreach ($value as $key => $child) {
+            if (is_array($child)) {
+                $value[$key] = $this->sortKeysRecursively($child);
+            }
+        }
+        if (!array_is_list($value)) {
+            ksort($value);
+        }
+
+        return $value;
     }
 
     public function testDisabledFlagReturns404(): void

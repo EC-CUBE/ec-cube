@@ -29,6 +29,8 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
@@ -399,6 +401,45 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
 
         $this->entityManager->refresh($stock);
         $this->assertSame(98, (int) $stock->getStock(), 'リプレイで在庫が二重に減らない');
+    }
+
+    /**
+     * completed 以外の終端 (canceled/expired) は確定できず、決済も在庫引当も行わない (#7229).
+     */
+    #[DataProvider(methodName: 'terminalStatusesRejectedByComplete')]
+    public function testTerminalSessionCannotBeCompleted(int $statusId): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('10');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 1);
+        $session->setStatus($this->statusMaster($statusId));
+        $this->entityManager->flush();
+
+        $handler = $this->stubHandler([PaymentOutcome::authorized('auth_1')]);
+
+        try {
+            $this->service($handler)->complete($session, []);
+            $this->fail('終端のセッションの complete は AgentCheckoutException を投げる');
+        } catch (AgentCheckoutException $e) {
+            $this->assertSame(AgentCheckoutErrorCode::INVALID_SESSION_STATE, $e->getErrorCode());
+        }
+
+        $this->assertSame(0, $handler->authorizeCount, '終端のセッションでは authorize を呼ばない');
+        $this->assertSame(0, $handler->captureCount, '終端のセッションでは capture を呼ばない');
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(10, (int) $stock->getStock(), '在庫を引き当てない');
+        $this->entityManager->refresh($session);
+        $this->assertSame($statusId, $session->getStatus()?->getId(), 'ステータスは変わらない');
+    }
+
+    /**
+     * @return \Iterator<string, array{int}>
+     */
+    public static function terminalStatusesRejectedByComplete(): \Iterator
+    {
+        yield 'canceled' => [CheckoutSessionStatus::CANCELED];
+        yield 'expired' => [CheckoutSessionStatus::EXPIRED];
     }
 
     public function testPendingHoldsAsInProgressThenResumeCompletes(): void
