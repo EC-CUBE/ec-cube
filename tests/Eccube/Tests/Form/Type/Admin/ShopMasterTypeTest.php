@@ -274,6 +274,60 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
     }
 
     /**
+     * 閉店 00:00（〜深夜 0 時まで）は日をまたぐ行として保存でき、翌日の 00:00 始まりの枠とは重ならない.
+     */
+    public function testValidOpeningHoursClosesAtMidnight(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Friday'], 'opens' => '18:00', 'closes' => '00:00'],
+            ['day_of_week' => ['Saturday'], 'opens' => '00:00', 'closes' => '05:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 日をまたぐ行どうしの連夜の営業（金 18:00〜03:00 と 土 18:00〜03:00）は重ならない.
+     */
+    public function testValidOpeningHoursConsecutiveOvernights(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Friday'], 'opens' => '18:00', 'closes' => '03:00'],
+            ['day_of_week' => ['Saturday'], 'opens' => '18:00', 'closes' => '03:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 日をまたぐ行どうしで、前の行の翌日側と後の行の当日側が重なればエラー.
+     */
+    public function testInValidOpeningHoursOvernightNextDayOverlapsOvernightSameDay(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Friday'], 'opens' => '22:00', 'closes' => '05:00'],
+            ['day_of_week' => ['Saturday'], 'opens' => '03:00', 'closes' => '01:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+        $this->assertOverlapErrorOn('1');
+    }
+
+    /**
+     * 祝日は翌日側を比べないが、当日側どうしは比べる.
+     */
+    public function testInValidOpeningHoursOvernightPublicHolidaysSameDayOverlap(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['PublicHolidays'], 'opens' => '22:00', 'closes' => '05:00'],
+            ['day_of_week' => ['PublicHolidays'], 'opens' => '23:00', 'closes' => '23:30'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+        $this->assertOverlapErrorOn('1');
+    }
+
+    /**
      * 表示順（sort_no）は送信キーではなく画面の行の順に 0 から振られる.
      */
     public function testOpeningHoursSortNoFollowsScreenOrder(): void
