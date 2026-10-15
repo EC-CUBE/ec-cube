@@ -29,6 +29,9 @@ final class Version20260615000000Test extends EccubeTestCase
 {
     private ?Connection $conn = null;
 
+    /** DELETE する前の MAX(id)+1。tearDown でシーケンスをこれより前に戻さないために記録する */
+    private ?int $nextMailTemplateId = null;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -41,23 +44,37 @@ final class Version20260615000000Test extends EccubeTestCase
 
     protected function tearDown(): void
     {
-        // setval はトランザクションのロールバック対象外のため、後続テストの採番を壊さないよう戻す
+        // setval はトランザクションのロールバック対象外のため、後続テストの採番を壊さないよう戻す。
+        // DELETE はこの後のロールバックで取り消され行が戻るので、DELETE する前の MAX(id)+1 を下回らないようにする
         if ($this->conn !== null && $this->conn->getDatabasePlatform() instanceof PostgreSQLPlatform) {
-            $this->conn->executeQuery("SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), (SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template), false)");
+            $this->conn->executeQuery(
+                "SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), GREATEST(:next, (SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template)), false)",
+                ['next' => $this->nextMailTemplateId ?? 1]
+            );
         }
         parent::tearDown();
     }
 
     public function testInsertsMailTemplateWhenSequenceLagsBehind(): void
     {
+        $this->nextMailTemplateId = (int) $this->conn->fetchOne('SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template');
+
         // 返品申請テンプレートが未投入で、ID 指定の INSERT 後に setval されずシーケンスが MAX(id) より遅れた環境を再現する
         $this->conn->executeStatement("DELETE FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
         $this->conn->executeQuery("SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), 1, false)");
 
         $migration = new Version20260615000000($this->conn, new NullLogger());
         $migration->up(new Schema());
-        foreach ($migration->getSql() as $query) {
-            $this->conn->executeStatement($query->getStatement(), $query->getParameters(), $query->getTypes());
+        // 失敗してもトランザクションを使える状態に戻し、tearDown の setval を実行できるようにする（savepoint まで戻す）
+        $this->conn->beginTransaction();
+        try {
+            foreach ($migration->getSql() as $query) {
+                $this->conn->executeStatement($query->getStatement(), $query->getParameters(), $query->getTypes());
+            }
+            $this->conn->commit();
+        } catch (\Throwable $e) {
+            $this->conn->rollBack();
+            throw $e;
         }
 
         $count = $this->conn->fetchOne("SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
