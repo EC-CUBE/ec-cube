@@ -60,7 +60,10 @@ class OpeningHours extends AbstractEntity
      * 営業時間 1 エントリの入力内容を検証する.
      *
      * - いずれかが入力されている行は、曜日・開店・閉店をすべて必須とする
-     * - 開店時刻は閉店時刻より前でなければならない
+     * - 開店と閉店に同じ時刻は指定できない（Google は 00:00/00:00 を終日休業と解釈するため。
+     *   24 時間営業は 00:00〜23:59 で表す）
+     * - 閉店が開店より前の場合は、翌日の閉店時刻として扱う（schema.org OpeningHoursSpecification の
+     *   「closes が opens より前なら翌日まで」と同じ解釈。深夜営業）
      * （すべて空の行は未使用行として検証しない）
      */
     #[Assert\Callback]
@@ -89,8 +92,8 @@ class OpeningHours extends AbstractEntity
                 ->atPath('closes')
                 ->addViolation();
         }
-        if ($hasOpens && $hasCloses && $this->opens >= $this->closes) {
-            $context->buildViolation('admin.setting.shop.opening_hours.error.opens_before_closes')
+        if ($this->opens !== null && $this->closes !== null && $this->opens->format('H:i') === $this->closes->format('H:i')) {
+            $context->buildViolation('admin.setting.shop.opening_hours.error.opens_equals_closes')
                 ->atPath('closes')
                 ->addViolation();
         }

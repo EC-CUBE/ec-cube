@@ -46,6 +46,20 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 class ShopMasterType extends AbstractType
 {
     /**
+     * 日をまたぐ営業時間の重複判定で使う、曜日（schema.org DayOfWeek）の翌日.
+     * PublicHolidays は翌日の曜日が決まらないため含めない.
+     */
+    private const NEXT_DAY_OF_WEEK = [
+        'Monday' => 'Tuesday',
+        'Tuesday' => 'Wednesday',
+        'Wednesday' => 'Thursday',
+        'Thursday' => 'Friday',
+        'Friday' => 'Saturday',
+        'Saturday' => 'Sunday',
+        'Sunday' => 'Monday',
+    ];
+
+    /**
      * ShopMasterType constructor.
      */
     public function __construct(protected EccubeConfig $eccubeConfig)
@@ -355,6 +369,9 @@ class ShopMasterType extends AbstractType
     /**
      * 同一曜日を含む営業時間の時間帯が重複していないか検証する.
      *
+     * 閉店が開店より前の行（深夜営業）は、曜日 d の [開店, 24:00) と翌日の [00:00, 閉店) に分けて比較する。
+     * 日曜の翌日は月曜とする。祝日（PublicHolidays）は翌日の曜日が決まらないため、翌日側は比較しない。
+     *
      * エンティティのコレクションではなく**フォームの子**を走査する。画面で中間行を削除すると
      * 送信キーは歯抜け（0, 2 等）になるが、コレクション側は adder で 0 始まりに詰め直されるため、
      * コレクションの添字から組み立てた property path は実在しない子を指してしまい、
@@ -370,37 +387,79 @@ class ShopMasterType extends AbstractType
         /** @var FormInterface[] $children */
         $children = iterator_to_array($form->get('OpeningHours'));
         $names = array_keys($children);
+        $segments = [];
+        foreach ($names as $name) {
+            $data = $children[$name]->getData();
+            $segments[$name] = $data instanceof OpeningHours ? $this->toDailySegments($data) : [];
+        }
+
         $count = count($names);
         for ($i = 0; $i < $count; ++$i) {
             for ($j = $i + 1; $j < $count; ++$j) {
-                $a = $children[$names[$i]]->getData();
-                $b = $children[$names[$j]]->getData();
-                if (!$a instanceof OpeningHours || !$b instanceof OpeningHours) {
-                    continue;
-                }
-
-                $daysA = $a->getDayOfWeek() ?? [];
-                $daysB = $b->getDayOfWeek() ?? [];
-                if (array_intersect($daysA, $daysB) === []) {
-                    continue;
-                }
-
-                $opensA = $a->getOpens();
-                $closesA = $a->getCloses();
-                $opensB = $b->getOpens();
-                $closesB = $b->getCloses();
-                // 時刻が欠けている行は単体バリデーションに委ねる
-                if ($opensA === null || $closesA === null || $opensB === null || $closesB === null) {
-                    continue;
-                }
-
-                // 時間帯が交差する場合はエラー（max(開店) < min(閉店)）
-                // 描画済みのリーフ（closes）にエラーを付け、該当行に表示されるようにする
-                if (max($opensA, $opensB) < min($closesA, $closesB)) {
+                if ($this->segmentsOverlap($segments[$names[$i]], $segments[$names[$j]])) {
+                    // 描画済みのリーフ（closes）にエラーを付け、該当行に表示されるようにする
                     $children[$names[$j]]->get('closes')
                         ->addError(new FormError(trans('admin.setting.shop.opening_hours.error.overlap')));
                 }
             }
         }
+    }
+
+    /**
+     * 営業時間 1 行を、曜日ごとの [開始分, 終了分) の区間に分解する.
+     *
+     * 時刻が欠けている行・開店と閉店が同じ行は単体バリデーションに委ね、区間を返さない.
+     *
+     * @return list<array{0: string, 1: int, 2: int}>
+     */
+    private function toDailySegments(OpeningHours $OpeningHours): array
+    {
+        $opens = $OpeningHours->getOpens();
+        $closes = $OpeningHours->getCloses();
+        if ($opens === null || $closes === null) {
+            return [];
+        }
+
+        $opensMin = (int) $opens->format('G') * 60 + (int) $opens->format('i');
+        $closesMin = (int) $closes->format('G') * 60 + (int) $closes->format('i');
+        if ($opensMin === $closesMin) {
+            return [];
+        }
+
+        $segments = [];
+        foreach ($OpeningHours->getDayOfWeek() ?? [] as $day) {
+            if ($opensMin < $closesMin) {
+                $segments[] = [$day, $opensMin, $closesMin];
+                continue;
+            }
+
+            // 日をまたぐ営業: 当日の [開店, 24:00) と翌日の [00:00, 閉店)
+            $segments[] = [$day, $opensMin, 24 * 60];
+            $nextDay = self::NEXT_DAY_OF_WEEK[$day] ?? null;
+            if ($nextDay !== null) {
+                $segments[] = [$nextDay, 0, $closesMin];
+            }
+        }
+
+        return $segments;
+    }
+
+    /**
+     * 2 つの区間リストに、同じ曜日で交差する区間があるか.
+     *
+     * @param list<array{0: string, 1: int, 2: int}> $a
+     * @param list<array{0: string, 1: int, 2: int}> $b
+     */
+    private function segmentsOverlap(array $a, array $b): bool
+    {
+        foreach ($a as [$dayA, $startA, $endA]) {
+            foreach ($b as [$dayB, $startB, $endB]) {
+                if ($dayA === $dayB && max($startA, $startB) < min($endA, $endB)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

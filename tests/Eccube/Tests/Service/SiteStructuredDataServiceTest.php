@@ -364,6 +364,29 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->assertSame('18:00', $spec['closes']);
     }
 
+    /**
+     * 日をまたぐ営業（閉店が開店より前）は、schema.org の解釈（closes が opens より前なら翌日まで）に
+     * 合わせて入力どおりに出力する.
+     */
+    public function testOvernightOpeningHoursIsOutputAsEntered(): void
+    {
+        $this->BaseInfo->getOpeningHours()->clear();
+        $OpeningHours = new OpeningHours();
+        $OpeningHours->setDayOfWeek(['Friday', 'Saturday']);
+        $OpeningHours->setOpens(new \DateTime('18:00'));
+        $OpeningHours->setCloses(new \DateTime('03:00'));
+        $this->BaseInfo->addOpeningHour($OpeningHours);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame([[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Friday', 'Saturday'],
+            'opens' => '18:00',
+            'closes' => '03:00',
+        ]], $data['openingHoursSpecification']);
+    }
+
     public function testEmptyOpeningHoursIsOmitted(): void
     {
         $this->BaseInfo->getOpeningHours()->clear();

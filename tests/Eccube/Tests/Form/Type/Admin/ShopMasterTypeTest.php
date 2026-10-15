@@ -181,13 +181,93 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($this->form->isValid());
     }
 
-    public function testInValidOpeningHoursOpensAfterCloses(): void
+    /**
+     * 閉店が開店より前の行は、翌日の閉店時刻として扱う（深夜営業）.
+     */
+    public function testValidOpeningHoursOvernight(): void
     {
         $this->formData['OpeningHours'] = [
-            ['day_of_week' => ['PublicHolidays'], 'opens' => '20:00', 'closes' => '15:00'],
+            ['day_of_week' => ['PublicHolidays'], 'opens' => '20:00', 'closes' => '03:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInValidOpeningHoursOpensEqualsCloses(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Monday'], 'opens' => '00:00', 'closes' => '00:00'],
         ];
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+        $this->assertCount(1, $this->form->get('OpeningHours')->get('0')->get('closes')->getErrors());
+    }
+
+    /**
+     * 日をまたぐ枠の後半（翌日の 00:00〜閉店）が、翌日の枠と重なればエラー.
+     */
+    public function testInValidOpeningHoursOvernightOverlapsNextDay(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Friday'], 'opens' => '18:00', 'closes' => '03:00'],
+            ['day_of_week' => ['Saturday'], 'opens' => '02:00', 'closes' => '10:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+        $this->assertCount(1, $this->form->get('OpeningHours')->get('1')->get('closes')->getErrors());
+    }
+
+    /**
+     * 日をまたぐ枠の後半が翌日の枠と接するだけ（閉店 = 翌日の開店）なら重複ではない.
+     */
+    public function testValidOpeningHoursOvernightTouchesNextDay(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Friday'], 'opens' => '18:00', 'closes' => '03:00'],
+            ['day_of_week' => ['Saturday'], 'opens' => '03:00', 'closes' => '10:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * 日をまたぐ枠の前半（当日の開店〜24:00）が、同じ曜日の枠と重なればエラー.
+     */
+    public function testInValidOpeningHoursOvernightOverlapsSameDay(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Wednesday'], 'opens' => '10:00', 'closes' => '20:00'],
+            ['day_of_week' => ['Wednesday'], 'opens' => '19:00', 'closes' => '01:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * 日曜の翌日は月曜として判定する.
+     */
+    public function testInValidOpeningHoursOvernightSundayWrapsToMonday(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['Monday'], 'opens' => '00:00', 'closes' => '05:00'],
+            ['day_of_week' => ['Sunday'], 'opens' => '22:00', 'closes' => '02:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+        $this->assertCount(1, $this->form->get('OpeningHours')->get('1')->get('closes')->getErrors());
+    }
+
+    /**
+     * 祝日は翌日の曜日が決まらないため、日をまたぐ枠の後半は重複判定に含めない.
+     */
+    public function testValidOpeningHoursOvernightPublicHolidaysIgnoresNextDay(): void
+    {
+        $this->formData['OpeningHours'] = [
+            ['day_of_week' => ['PublicHolidays'], 'opens' => '22:00', 'closes' => '05:00'],
+            ['day_of_week' => ['Monday'], 'opens' => '00:00', 'closes' => '10:00'],
+        ];
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
     }
 
     /**
