@@ -699,7 +699,7 @@ class PluginService
 
         $pluginDir = $this->calcPluginDir($Plugin->getCode());
         try {
-            $config = $this->readConfig($pluginDir);
+            $this->readConfig($pluginDir);
         } catch (PluginException) {
             return null;
         }
@@ -712,7 +712,11 @@ class PluginService
         }
 
         // plugin-installer は extra.id が空 ('0' を含む) のときアンインストールしない
-        $id = (string) $config['source'];
+        $id = $json['extra']['id'] ?? null;
+        if (!is_int($id) && !is_string($id)) {
+            return null;
+        }
+        $id = (string) $id;
         if ($id === '' || $id === '0' || $id !== $Plugin->getSource()) {
             return null;
         }

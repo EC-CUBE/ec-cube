@@ -1048,6 +1048,36 @@ EOD;
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
+    /**
+     * extra.id が文字列や数値でない場合は, 事前にアンインストールせず composer remove に任せる.
+     */
+    public function testRemoveByComposerLeavesPluginWithInvalidId(): void
+    {
+        $code = $this->installDummyPlugin();
+        $composerJsonPath = $this->service->calcPluginDir($code).'/composer.json';
+        $json = json_decode((string) file_get_contents($composerJsonPath), true);
+        $json['extra']['id'] = [$json['extra']['id']];
+        file_put_contents($composerJsonPath, json_encode($json));
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturn('removed');
+        $this->replaceComposerService($composerService);
+
+        // 文字列への変換で出る warning を見逃さないよう, 例外にする
+        set_error_handler(static function (int $errno, string $errstr): never {
+            throw new \ErrorException($errstr, 0, $errno);
+        });
+        try {
+            $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+        } finally {
+            restore_error_handler();
+        }
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
