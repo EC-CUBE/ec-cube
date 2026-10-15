@@ -192,15 +192,20 @@ final class PageControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
-     * プラグインが DB へ直接登録した, 名前空間付きのファイル名を持つユーザーのページは,
-     * 同じファイル名のままなら再保存できる. 別の名前空間付きのファイル名へは変更できない.
+     * プラグインが DB へ直接登録した, "@" で始まるファイル名を持つユーザーのページは,
+     * 同じファイル名のままなら再保存できる. 別の "@" で始まるファイル名へは変更できない.
+     *
+     * ユーザーのページの "@" は名前空間ではなくディレクトリ名の一部で, フロントが描画する
+     * "@user_data/@Code/xxx.twig" と同じ app/template/user_data/@Code/xxx.twig へ書き出す.
      */
     public function testRoutingAdminContentPageResavesExistingUserPageWithPluginNamespace(): void
     {
         $client = $this->client;
         $name = $this->getFaker()->word();
-        $Page = $this->createPluginNamespacePage('@Boomerang/'.$name, $name, Page::EDIT_TYPE_USER);
-        $expectedPath = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/Boomerang/'.$name.'.twig';
+        $code = 'Boomerang'.bin2hex(random_bytes(4));
+        $Page = $this->createPluginNamespacePage('@'.$code.'/'.$name, $name, Page::EDIT_TYPE_USER);
+        $userDataDir = static::getContainer()->getParameter('eccube_theme_user_data_dir');
+        $expectedPath = $userDataDir.'/@'.$code.'/'.$name.'.twig';
 
         try {
             $client->request(
@@ -210,7 +215,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
                     'main_edit' => [
                         'name' => $name,
                         'url' => $name,
-                        'file_name' => '@Boomerang/'.$name,
+                        'file_name' => '@'.$code.'/'.$name,
                         'tpl_data' => 'resaved',
                         '_token' => 'dummy',
                     ],
@@ -220,7 +225,9 @@ final class PageControllerTest extends AbstractAdminWebTestCase
             $this->assertTrue($client->getResponse()->isRedirect(
                 $this->generateUrl('admin_content_page_edit', ['id' => $Page->getId()])
             ), '保存済みの値と同じなら再保存できる');
-            $this->assertSame('resaved', file_get_contents($expectedPath));
+            $this->assertSame('resaved', file_get_contents($expectedPath), 'フロントが描画する user_data の配下へ書き出す');
+            $client->request(Request::METHOD_GET, $this->generateUrl('user_data', ['route' => $name]));
+            $this->assertStringContainsString('resaved', (string) $client->getResponse()->getContent(), 'フロントへ反映される');
 
             $crawler = $client->request(
                 Request::METHOD_POST,
@@ -229,22 +236,20 @@ final class PageControllerTest extends AbstractAdminWebTestCase
                     'main_edit' => [
                         'name' => $name,
                         'url' => $name,
-                        'file_name' => '@Boomerang/'.$name.'_changed',
+                        'file_name' => '@'.$code.'/'.$name.'_changed',
                         'tpl_data' => 'changed',
                         '_token' => 'dummy',
                     ],
                 ]
             );
 
-            $this->assertFalse($client->getResponse()->isRedirection(), '別の名前空間付きのファイル名へは変更できない');
+            $this->assertFalse($client->getResponse()->isRedirection(), '別の "@" で始まるファイル名へは変更できない');
             $this->assertStringContainsString(
                 'ファイル名の先頭に「@」は使用できません。',
                 $crawler->filter('.invalid-feedback')->text()
             );
         } finally {
-            if (file_exists($expectedPath)) {
-                unlink($expectedPath);
-            }
+            (new Filesystem())->remove($userDataDir.'/@'.$code);
         }
     }
 

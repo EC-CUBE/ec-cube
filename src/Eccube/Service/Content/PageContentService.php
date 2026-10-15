@@ -84,14 +84,25 @@ class PageContentService
     }
 
     /**
-     * プラグインの名前空間 (@PluginCode/...) を指すページか.
+     * プラグインの名前空間 (@PluginCode/...) を指す既定ページか.
      *
      * プラグインが用意したテンプレートは twig の名前空間で解決されるため,
-     * dtb_page.file_name には "@PluginCode/xxx" の形で入る.
+     * プラグインが登録する既定ページの dtb_page.file_name には "@PluginCode/xxx" の形で入る.
+     *
+     * ユーザーが作成したページは "@" で始まっても対象外とする. フロント (UserDataController) は
+     * "@user_data/" を前置して描画するため, "@Foo/x" は app/template/user_data/@Foo/x.twig を指す.
      */
     public function isPluginNamespacePage(Page $Page): bool
     {
-        return str_starts_with((string) $Page->getFileName(), self::TWIG_NAMESPACE_PREFIX);
+        return $this->isNamespacedFileName($Page, (string) $Page->getFileName());
+    }
+
+    /**
+     * ページのファイル名が twig の名前空間を指すか (isPluginNamespacePage() 参照).
+     */
+    private function isNamespacedFileName(Page $Page, string $fileName): bool
+    {
+        return !$this->isUserDataPage($Page) && str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX);
     }
 
     public function getTemplateDir(Page $Page): string
@@ -111,7 +122,7 @@ class PageContentService
         // EccubeExtension::configureTwigPaths() が @PluginCode として登録するのは
         // app/template/plugin/[code] と app/Plugin/[code]/Resource/template の 2 つ.
         // 編集内容はプラグイン同梱側ではなく, 上書き用の app/template/plugin へ書く.
-        if (str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
+        if ($this->isNamespacedFileName($Page, $fileName)) {
             return $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
         }
 
@@ -123,11 +134,11 @@ class PageContentService
     /**
      * 名前空間付きのファイル名について, twig の名前空間として登録される上書き用ディレクトリを返す.
      *
-     * "@PluginCode/xxx" なら app/template/plugin/PluginCode. 名前空間を持たない場合は null.
+     * "@PluginCode/xxx" なら app/template/plugin/PluginCode. 名前空間を指さない場合は null.
      */
-    private function resolvePluginNamespaceDir(string $fileName): ?string
+    private function resolvePluginNamespaceDir(Page $Page, string $fileName): ?string
     {
-        if (!str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
+        if (!$this->isNamespacedFileName($Page, $fileName)) {
             return null;
         }
 
@@ -141,7 +152,7 @@ class PageContentService
 
     public function getFilePath(Page $Page): string
     {
-        return $this->buildFilePath($this->getTemplateDir($Page), (string) $Page->getFileName());
+        return $this->buildFilePath($Page, $this->getTemplateDir($Page), (string) $Page->getFileName());
     }
 
     /**
@@ -150,10 +161,11 @@ class PageContentService
      * 先頭の "@" は twig の名前空間の記法でディレクトリ名には含まれない
      * (@PluginCode は app/template/plugin/PluginCode を指す) ため取り除く.
      * 取り除かないと登録済みのパスと一致せず, 書き出しても画面へ反映されない.
+     * ユーザーが作成したページの "@" はディレクトリ名の一部なので残す (isPluginNamespacePage() 参照).
      */
-    private function buildFilePath(string $templateDir, string $fileName): string
+    private function buildFilePath(Page $Page, string $templateDir, string $fileName): string
     {
-        if (str_starts_with($fileName, self::TWIG_NAMESPACE_PREFIX)) {
+        if ($this->isNamespacedFileName($Page, $fileName)) {
             $fileName = substr($fileName, strlen(self::TWIG_NAMESPACE_PREFIX));
         }
 
@@ -298,7 +310,7 @@ class PageContentService
             $this->entityManager->flush();
 
             $templateDir = $this->getTemplateDir($Page);
-            $filePath = $this->buildFilePath($templateDir, (string) $Page->getFileName());
+            $filePath = $this->buildFilePath($Page, $templateDir, (string) $Page->getFileName());
 
             // 本文が現在の内容と同じなら書き出さない (shouldWriteTemplate() 参照).
             // 比較相手の findTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
@@ -310,7 +322,7 @@ class PageContentService
                 // コンテナのコンパイル時にそのディレクトリが有った場合だけ
                 // (EccubeExtension::configureTwigPaths()). 初めて書き出すときはディレクトリごと作るため,
                 // コンテナを作り直すまでフロントはプラグイン同梱のテンプレートを表示し続ける.
-                $namespaceDir = $this->resolvePluginNamespaceDir((string) $Page->getFileName());
+                $namespaceDir = $this->resolvePluginNamespaceDir($Page, (string) $Page->getFileName());
                 $containerRebuildRequired = null !== $namespaceDir && !is_dir($namespaceDir);
                 try {
                     $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
@@ -324,6 +336,7 @@ class PageContentService
             // 更新でファイル名を変更した場合, 以前のファイルを削除する
             if (null !== $previousFileName && $Page->getFileName() !== $previousFileName) {
                 $oldFilePath = $this->buildFilePath(
+                    $Page,
                     $this->resolveTemplateDir($Page, $previousFileName),
                     $previousFileName
                 );

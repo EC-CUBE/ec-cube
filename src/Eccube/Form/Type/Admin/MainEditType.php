@@ -221,9 +221,9 @@ class MainEditType extends AbstractType
                     $form['file_name']->addError(new FormError(trans('admin.content.page_file_name_exists')));
                 }
 
-                // ユーザーが作成するページ (Page::EDIT_TYPE_USER) では名前空間付きのファイル名を受け付けない.
-                // フロントは @user_data/ を前置してテンプレートを探すため, @PluginCode/xxx は解決できず 500 になる.
-                // 正規表現で @ を許しているのは, プラグインが登録した既定ページのファイル名 (hidden で送られる) を通すため.
+                // ユーザーが作成するページ (Page::EDIT_TYPE_USER) では "@" で始まるファイル名を新たには受け付けない (4.3 と同じ).
+                // 正規表現で "@" を許しているのは, プラグインが登録した既定ページのファイル名 (hidden で送られる) を通すため.
+                // ユーザーのページの "@" は名前空間ではなく user_data 配下のディレクトリ名になり, 既定ページと紛らわしい.
                 // 保存済みの値と同じなら通す (プラグインが DB へ直接登録したページを再保存できなくしない).
                 if (Page::EDIT_TYPE_USER === $Page->getEditType()
                     && str_starts_with((string) $Page->getFileName(), '@')
