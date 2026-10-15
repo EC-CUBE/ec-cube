@@ -350,7 +350,7 @@ class ShopMasterType extends AbstractType
      *
      * 送信キーは中間行の削除で歯抜けになるため、キーではなくフォームの子の並び順を使う.
      */
-    public function sortOpeningHours(FormEvent $event): void
+    private function sortOpeningHours(FormEvent $event): void
     {
         $form = $event->getForm();
         if (!$form->has('OpeningHours')) {
@@ -377,7 +377,7 @@ class ShopMasterType extends AbstractType
      * コレクションの添字から組み立てた property path は実在しない子を指してしまい、
      * エラーが該当行に表示されない（あるいは失われる）。
      */
-    public function validateOpeningHoursOverlap(FormEvent $event): void
+    private function validateOpeningHoursOverlap(FormEvent $event): void
     {
         $form = $event->getForm();
         if (!$form->has('OpeningHours')) {
