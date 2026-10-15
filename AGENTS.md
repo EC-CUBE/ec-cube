@@ -199,9 +199,10 @@ bin/console eccube:keystore:generate      # 未生成の鍵だけを作る（冪
 ページ・ブロック・メールテンプレートの入力値の検証は管理画面と同じ FormType を通すため、
 重複チェックや twig の構文チェックも同じものが効く。
 `apply` / `remove` は build ディレクトリへ書き込めない場合、本処理を完了させたうえで終了コード `3` と
-`eccube:cache:build` の案内を返す。`eccube:page:apply` は、プラグインの名前空間を指すページ（`@PluginCode/xxx`）を
-上書きしたとき、上書き用の `app/template/plugin/{code}` がまだ twig に登録されていない場合も同じく `3` を返す
-（登録はコンテナのコンパイル時に決まるため。`--no-cache-clear` を付けても返す）。
+`eccube:cache:build` の案内を返す。`eccube:page:apply` は、有効なプラグインが登録した既定ページ（`@PluginCode/xxx`。
+ユーザーが作成したページは対象外）を保存したとき、上書き用の `app/template/plugin/{code}` がまだ twig に
+登録されていない場合も同じく `3` を返す（登録はコンテナのコンパイル時に決まるため。`--no-cache-clear` を付けても、
+内容が変わらず `unchanged` でも、登録されるまで返す）。
 
 `html/` はドキュメントルートのため、`eccube:user-data:put` は管理画面のファイル管理と同じ
 ファイル名・拡張子の検証（`eccube_file_uploadable_extensions`）を通す。`.php` 等は配置できない。
