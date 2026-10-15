@@ -30,7 +30,7 @@ final readonly class ContentResult
      * @param array<string, array{0: string, 1: string}> $fileChanges  ファイルパス => [変更前, 変更後]
      * @param bool                                    $containerRebuildRequired 反映にコンテナの再構築が必要か.
      *                                                                           twig の名前空間 (@PluginCode) へ登録するディレクトリはコンテナのコンパイル時に決まるため,
-     *                                                                           そのディレクトリを新たに作った場合に true になる
+     *                                                                           上書き用ディレクトリがまだ登録されていない場合に true になる
      */
     public function __construct(
         public ContentStatus $status,

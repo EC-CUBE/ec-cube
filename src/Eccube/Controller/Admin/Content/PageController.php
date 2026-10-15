@@ -155,8 +155,8 @@ class PageController extends AbstractController
             $this->cacheUtil->clearTwigCache();
             $this->cacheUtil->clearDoctrineCache();
             if ($result->containerRebuildRequired) {
-                // twig の名前空間に上書き用ディレクトリを登録し直すため, コンテナを作り直す.
-                // 毎回行うと保存のたびに再構築が走るため, ディレクトリを新たに作った初回だけに絞る
+                // twig の名前空間に上書き用ディレクトリを登録するため, コンテナを作り直す.
+                // 登録済みなら不要なので, まだ登録されていないときだけに絞る
                 $this->cacheUtil->clearCache();
             }
 

@@ -23,6 +23,7 @@ use Eccube\Entity\Page;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
+use Eccube\Tests\TwigNamespacePathTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -30,6 +31,7 @@ use Symfony\Component\Filesystem\Filesystem;
 final class PageCommandTest extends EccubeTestCase
 {
     use EffectiveUserTrait;
+    use TwigNamespacePathTrait;
 
     private ?PageContentService $pageContentService = null;
 
@@ -251,23 +253,15 @@ final class PageCommandTest extends EccubeTestCase
     }
 
     /**
-     * 名前空間付きのページで上書き用ディレクトリを新たに作った場合は, 本処理を完了させたうえで
-     * 終了コード 3 と eccube:cache:build の案内を返す. ディレクトリが既にあれば 0 を返す.
+     * 名前空間付きのページで上書き用ディレクトリが twig に登録されていない場合は, 本処理を完了させたうえで
+     * 終了コード 3 と eccube:cache:build の案内を返す. 登録済み (コンテナの再構築後) なら 0 を返す.
      */
-    public function testApplyReturnsManualActionRequiredWhenNamespaceDirIsCreated(): void
+    public function testApplyReturnsManualActionRequiredUntilNamespaceDirIsRegistered(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
         $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
         $this->assertDirectoryDoesNotExist($namespaceDir);
-
-        // プラグインが dtb_page へ登録する既定ページ
-        $Page = (new Page())
-            ->setName('プラグインのページ')
-            ->setUrl((string) $this->route)
-            ->setFileName('@'.$code.'/'.$this->route)
-            ->setEditType(Page::EDIT_TYPE_DEFAULT);
-        $this->entityManager->persist($Page);
-        $this->entityManager->flush();
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
 
         try {
             $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
@@ -278,7 +272,12 @@ final class PageCommandTest extends EccubeTestCase
             $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
 
             $tester->execute(['--route' => $this->route, '--body' => 'second']);
-            $this->assertSame(0, $tester->getStatusCode(), '初回だけに絞る');
+            $this->assertSame(3, $tester->getStatusCode(), '再構築するまでは繰り返し案内する');
+
+            // コンテナを作り直した後の状態
+            $this->registerTwigNamespacePath($code, $namespaceDir);
+            $tester->execute(['--route' => $this->route, '--body' => 'third']);
+            $this->assertSame(0, $tester->getStatusCode(), '登録済みなら案内しない');
         } finally {
             (new Filesystem())->remove($namespaceDir);
         }
@@ -348,6 +347,22 @@ final class PageCommandTest extends EccubeTestCase
         $tester->execute(['--route' => $Page->getUrl(), '--force' => true, '--no-cache-clear' => true]);
 
         $this->assertSame(1, $tester->getStatusCode());
+    }
+
+    /**
+     * プラグインが dtb_page へ登録する既定ページ (ファイル名が twig の名前空間を指す) を作る.
+     */
+    private function createPluginNamespacePage(string $fileName): Page
+    {
+        $Page = (new Page())
+            ->setName('プラグインのページ')
+            ->setUrl((string) $this->route)
+            ->setFileName($fileName)
+            ->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
+
+        return $Page;
     }
 
     /**

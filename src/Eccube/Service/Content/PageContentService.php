@@ -32,6 +32,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactoryInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
+use Twig\Loader\ChainLoader;
+use Twig\Loader\FilesystemLoader;
 
 /**
  * ページ (dtb_page と app/template 配下の twig) を対で扱う.
@@ -132,22 +134,78 @@ class PageContentService
     }
 
     /**
-     * 名前空間付きのファイル名について, twig の名前空間として登録される上書き用ディレクトリを返す.
-     *
-     * "@PluginCode/xxx" なら app/template/plugin/PluginCode. 名前空間を指さない場合は null.
+     * 名前空間付きのファイル名から, twig の名前空間 ("@PluginCode/xxx" なら PluginCode) を返す.
+     * 名前空間を指さない場合は null.
      */
-    private function resolvePluginNamespaceDir(Page $Page, string $fileName): ?string
+    private function resolvePluginNamespace(Page $Page, string $fileName): ?string
     {
         if (!$this->isNamespacedFileName($Page, $fileName)) {
             return null;
         }
 
         $namespace = strstr(substr($fileName, strlen(self::TWIG_NAMESPACE_PREFIX)), '/', true);
-        if (false === $namespace || '' === $namespace) {
-            return null;
+
+        return false === $namespace || '' === $namespace ? null : $namespace;
+    }
+
+    /**
+     * 名前空間付きのページの上書き用ディレクトリが, twig の名前空間として登録されていないか.
+     *
+     * EccubeExtension::configureTwigPaths() が app/template/plugin/[code] を @PluginCode へ登録するのは,
+     * コンテナのコンパイル時にそのディレクトリが有った場合だけ. 後から作ったディレクトリは,
+     * コンテナを作り直すまで登録されず, フロントはプラグイン同梱のテンプレートを表示し続ける.
+     *
+     * ディレクトリの有無ではなく登録状況を見るため, 案内を見落としても次の保存で再び検出できる.
+     */
+    private function requiresContainerRebuild(Page $Page): bool
+    {
+        $namespace = $this->resolvePluginNamespace($Page, (string) $Page->getFileName());
+        if (null === $namespace) {
+            return false;
         }
 
-        return $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$namespace;
+        $dir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$namespace;
+        if (!is_dir($dir)) {
+            // 上書きしていなければ, 同梱のテンプレートを表示するのが正しい
+            return false;
+        }
+
+        return !$this->isTwigPathRegistered($namespace, $dir);
+    }
+
+    /**
+     * twig のローダに, 名前空間のパスとして $dir が登録されているか.
+     *
+     * スマートフォン向けの表示 (MobileTemplatePathListener) ではローダが ChainLoader で包まれるため, 中身を辿る.
+     */
+    private function isTwigPathRegistered(string $namespace, string $dir): bool
+    {
+        $expected = self::normalizeDir($dir);
+        $loaders = [$this->twig->getLoader()];
+        while ([] !== $loaders) {
+            $loader = array_shift($loaders);
+            if ($loader instanceof ChainLoader) {
+                array_push($loaders, ...$loader->getLoaders());
+                continue;
+            }
+            if (!$loader instanceof FilesystemLoader || !in_array($namespace, $loader->getNamespaces(), true)) {
+                continue;
+            }
+            foreach ($loader->getPaths($namespace) as $path) {
+                if (self::normalizeDir($path) === $expected) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private static function normalizeDir(string $dir): string
+    {
+        $real = realpath($dir);
+
+        return false === $real ? rtrim($dir, '/\\') : $real;
     }
 
     public function getFilePath(Page $Page): string
@@ -295,9 +353,9 @@ class PageContentService
      *
      * 本文が現在の内容と同じ場合はファイルを書き出さない (ContentResult::$writtenPaths も空になる).
      *
-     * 名前空間付きのページで上書き用ディレクトリ (app/template/plugin/[code]) を新たに作った場合は,
-     * ContentResult::$containerRebuildRequired を true にする. 呼び出し側でコンテナを作り直さないと
-     * 書き出したテンプレートがフロントへ反映されない.
+     * 名前空間付きのページで上書き用ディレクトリ (app/template/plugin/[code]) が twig にまだ登録されていない場合は,
+     * ContentResult::$containerRebuildRequired を true にする (requiresContainerRebuild() 参照).
+     * 呼び出し側でコンテナを作り直さないと, 上書きしたテンプレートがフロントへ反映されない.
      *
      * @throws ContentWriteException テンプレートファイルを書き出せない場合
      */
@@ -316,14 +374,7 @@ class PageContentService
             // 比較相手の findTemplate() はファイルが無ければコアのテンプレートへフォールバックするので,
             // 上書きしていないページのメタ情報だけを更新しても app/template にファイルが増えない.
             $writtenPaths = [];
-            $containerRebuildRequired = false;
             if (self::shouldWriteTemplate($this->findTemplate($Page), $body)) {
-                // twig の名前空間 (@PluginCode) に app/template/plugin/[code] が登録されるのは,
-                // コンテナのコンパイル時にそのディレクトリが有った場合だけ
-                // (EccubeExtension::configureTwigPaths()). 初めて書き出すときはディレクトリごと作るため,
-                // コンテナを作り直すまでフロントはプラグイン同梱のテンプレートを表示し続ける.
-                $namespaceDir = $this->resolvePluginNamespaceDir($Page, (string) $Page->getFileName());
-                $containerRebuildRequired = null !== $namespaceDir && !is_dir($namespaceDir);
                 try {
                     $this->filesystem->dumpFile($filePath, StringUtil::convertLineFeed($body));
                 } catch (IOException $e) {
@@ -351,6 +402,9 @@ class PageContentService
             }
 
             $this->replaceLayouts($Page, $PcLayout, $SpLayout);
+
+            // 書き出しの有無に関わらず判定する. 以前の保存で案内を見落とした場合も, 再保存で検出できる
+            $containerRebuildRequired = $this->requiresContainerRebuild($Page);
 
             return new ContentResult(
                 $isNew ? ContentStatus::Created : ContentStatus::Updated,

@@ -25,11 +25,13 @@ use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
+use Eccube\Tests\TwigNamespacePathTrait;
 use Symfony\Component\Filesystem\Filesystem;
 
 final class PageContentServiceTest extends EccubeTestCase
 {
     use EffectiveUserTrait;
+    use TwigNamespacePathTrait;
 
     private ?PageContentService $pageContentService = null;
 
@@ -478,29 +480,56 @@ final class PageContentServiceTest extends EccubeTestCase
 
     /**
      * twig の名前空間に app/template/plugin/[code] が登録されるのは, コンテナのコンパイル時に
-     * そのディレクトリが有った場合だけ. 初めて書き出してディレクトリを作ったときは,
-     * コンテナを作り直さないとフロントへ反映されないことを呼び出し側へ伝える.
+     * そのディレクトリが有った場合だけ. 登録されるまでは, コンテナを作り直さないと
+     * フロントへ反映されないことを呼び出し側へ伝え続ける (案内を見落としても次の保存で再び伝える).
      *
      * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
      */
-    public function testSaveRequiresContainerRebuildOnlyWhenNamespaceDirIsCreated(): void
+    public function testSaveRequiresContainerRebuildUntilNamespaceDirIsRegistered(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
         $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
         $this->assertDirectoryDoesNotExist($namespaceDir);
+        $this->createdDirs[] = $namespaceDir;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
 
-        try {
-            $first = $this->apply(['body' => 'first']);
-            $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $first->writtenPaths);
-            $this->assertTrue($first->containerRebuildRequired, 'ディレクトリを新たに作った場合は再構築が要る');
+        $first = $this->apply(['body' => 'first']);
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $first->writtenPaths);
+        $this->assertTrue($first->containerRebuildRequired, '上書き用ディレクトリが登録されていなければ再構築が要る');
 
-            $second = $this->apply(['body' => 'second']);
-            $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $second->writtenPaths);
-            $this->assertFalse($second->containerRebuildRequired, 'ディレクトリが既にあれば再構築は要らない');
-        } finally {
-            (new Filesystem())->remove($namespaceDir);
-        }
+        $second = $this->apply(['body' => 'second']);
+        $this->assertTrue($second->containerRebuildRequired, '再構築するまでは, 次の保存でも再構築が要る');
+
+        // コンテナを作り直した後の状態
+        $this->registerTwigNamespacePath($code, $namespaceDir);
+        $third = $this->apply(['body' => 'third']);
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $third->writtenPaths);
+        $this->assertFalse($third->containerRebuildRequired, '登録済みなら再構築は要らない');
+    }
+
+    /**
+     * 上書きしていない (上書き用ディレクトリが無い) 既定ページは, 同梱のテンプレートを表示するのが正しく,
+     * メタ情報だけを保存しても再構築を求めない.
+     */
+    public function testSaveDoesNotRequireContainerRebuildWithoutOverride(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $overrideDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createdDirs[] = $overrideDir;
+
+        // プラグイン同梱のテンプレート (app/Plugin/[code]/Resource/template 相当)
+        $bundledDir = sys_get_temp_dir().'/'.$code;
+        $this->createdDirs[] = $bundledDir;
+        (new Filesystem())->dumpFile($bundledDir.'/'.$this->route.'.twig', 'bundled');
+        $this->registerTwigNamespacePath($code, $bundledDir);
+
+        $result = $this->apply(['name' => '名前だけ変更']);
+
+        $this->assertSame(ContentStatus::Updated, $result->status);
+        $this->assertSame([], $result->writtenPaths);
+        $this->assertDirectoryDoesNotExist($overrideDir);
+        $this->assertFalse($result->containerRebuildRequired);
     }
 
     /**
