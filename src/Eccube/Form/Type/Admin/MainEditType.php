@@ -72,12 +72,12 @@ class MainEditType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
-                    // 先頭の @ は twig の名前空間 (@PluginCode/xxx) を許すためのもの.
-                    // 名前空間を使う場合は @名前空間 + / + 空でないパスを必須にする
-                    // (@PluginCode や @PluginCode/ は保存先が plugin/PluginCode.twig,
-                    //  plugin/PluginCode/.twig となり @PluginCode/xxx 形式にならないため).
-                    // "." を許さないため ".." による上位ディレクトリへの脱出は依然できない.
-                    new Assert\Regex(pattern: '/^(@[0-9a-zA-Z_\-]+\/)?[0-9a-zA-Z_\-]+(\/[0-9a-zA-Z_\-]+)*$/'),
+                    // 名前空間なし: 4.3 以前と同じ (末尾の / も許す).
+                    // 名前空間あり: twig の名前空間 (@PluginCode/xxx) を指す既定ページのファイル名 (hidden で送られる) を通すためのもの.
+                    // @名前空間 + / + 空でないパスを必須にする (@PluginCode や @PluginCode/ は保存先が
+                    // plugin/PluginCode.twig, plugin/PluginCode/.twig となり @PluginCode/xxx 形式にならないため).
+                    // どちらも "." を許さないため ".." による上位ディレクトリへの脱出はできない.
+                    new Assert\Regex(pattern: '/^(?:([0-9a-zA-Z_\-]+\/?)+|@[0-9a-zA-Z_\-]+(\/[0-9a-zA-Z_\-]+)+)$/'),
                 ],
             ])
             ->add('tpl_data', TextareaType::class, [
