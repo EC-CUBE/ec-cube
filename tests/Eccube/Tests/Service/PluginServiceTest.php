@@ -944,6 +944,45 @@ EOD;
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
+    /**
+     * 依存しているプラグインを一緒に指定しても, 事前にアンインストールしないもの (アーカイブで導入したもの) は
+     * composer remove で削除されないので, 有効・無効にかかわらず依存の判定から外さない.
+     * composer で導入したものでも, 有効なら削除できないので止める.
+     */
+    #[DataProvider(methodName: 'provideDependentRemovedTogether')]
+    public function testRemoveByComposerRejectsDependentPluginRemovedTogether(bool $byComposer, bool $enabled): void
+    {
+        $code = $this->installDummyPlugin();
+        $dependentCode = $byComposer
+            ? $this->installDummyPlugin(require: ['ec-cube/'.$code => '*'])
+            : $this->installDummyPlugin(source: 0, id: 0, require: ['ec-cube/'.$code => '*']);
+        $Dependent = $this->pluginRepository->findByCode($dependentCode);
+        $Dependent->setEnabled($enabled);
+        $this->entityManager->flush();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->never())->method('execRemove');
+        $this->replaceComposerService($composerService);
+
+        try {
+            $this->service->removeByComposer('ec-cube/'.$code.' ec-cube/'.$dependentCode);
+            $this->fail('削除できないプラグインに依存されている場合は削除できない');
+        } catch (PluginException $e) {
+            $this->assertStringContainsString($dependentCode, $e->getMessage());
+        }
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
+    /**
+     * @return \Iterator<string, array{bool, bool}>
+     */
+    public static function provideDependentRemovedTogether(): \Iterator
+    {
+        yield 'アーカイブで導入した有効なプラグイン' => [false, true];
+        yield 'アーカイブで導入した無効なプラグイン' => [false, false];
+        yield 'composer で導入した有効なプラグイン' => [true, true];
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);

@@ -633,28 +633,27 @@ class PluginService
      */
     public function removeByComposer(string $packageNames, ?OutputInterface $output = null): string
     {
-        $packages = explode(' ', trim($packageNames));
-        // 一緒に削除するプラグインからの依存は, composer remove を妨げない
-        $removingCodes = array_map(fn (string $packageName): string => strtolower(basename($packageName)), $packages);
         $Plugins = [];
-        foreach ($packages as $packageName) {
+        foreach (explode(' ', trim($packageNames)) as $packageName) {
             $Plugin = $this->findPluginInstalledByComposer($packageName);
-            if ($Plugin === null) {
-                continue;
+            if ($Plugin !== null) {
+                $Plugins[] = $Plugin;
             }
+        }
+
+        // 一緒に事前アンインストールするプラグインからの依存は, composer remove を妨げない.
+        // それ以外 (アーカイブで導入したものなど) は, 引数に並んでいても依存の判定から外さない.
+        $removingCodes = array_map(fn (Plugin $Plugin): string => $Plugin->getCode(), $Plugins);
+        foreach ($Plugins as $Plugin) {
             // アンインストールした後で composer remove が失敗しないよう, 削除できないものは先に止める
             if ($Plugin->isEnabled()) {
                 throw new PluginException('プラグインを無効化してください。'.$Plugin->getCode());
             }
             // 無効なプラグインに依存されている場合も composer remove は失敗するので, 管理画面と同じく無効なものも含める
-            $dependents = array_values(array_filter(
-                $this->findDependentPlugin($Plugin->getCode()),
-                fn (string $code): bool => !in_array(strtolower($code), $removingCodes, true)
-            ));
+            $dependents = array_values(array_diff($this->findDependentPlugin($Plugin->getCode()), $removingCodes));
             if ($dependents !== []) {
                 throw new PluginException('このプラグインに依存しているプラグインがあるため削除できません。'.$dependents[0]);
             }
-            $Plugins[] = $Plugin;
         }
 
         // PluginManager::uninstall() の出力は, これまで composer remove の出力としてログに含まれていた.
