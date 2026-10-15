@@ -18,6 +18,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
+use Eccube\Doctrine\ORM\Query\DateFormat;
 use Eccube\Doctrine\Query\Queries;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Master\OrderStatus;
@@ -644,5 +645,39 @@ class OrderRepository extends AbstractRepository
         $qb = $this->queries->customize(QueryKey::ORDER_SEARCH_ADMIN, $qb, $searchData);
 
         return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * 期間内の売上データを日付でグループ化して集計
+     *
+     * @param \DateTimeInterface $fromDate 開始日時 (含む)
+     * @param \DateTimeInterface $toDate 終了日時 (含まない)
+     * @param int[] $excludeStatuses 除外する受注ステータスID
+     * @param string $format 日付フォーマット (DateFormat::FORMATS のキー)
+     *
+     * @return array<int, array{date_key: string, total_price: numeric-string|int|float|null, order_count: int|string}>
+     */
+    public function getSalesDataGroupedByDate(\DateTimeInterface $fromDate, \DateTimeInterface $toDate, array $excludeStatuses, string $format = 'Y/m/d'): array
+    {
+        if (!isset(DateFormat::FORMATS[$format])) {
+            throw new \InvalidArgumentException(sprintf('Unsupported date format "%s". Expected one of: %s', $format, implode(', ', array_keys(DateFormat::FORMATS))));
+        }
+
+        $qb = $this->createQueryBuilder('o')
+            ->select("DATEFORMAT(o.order_date, '{$format}') as date_key")
+            ->addSelect('SUM(o.payment_total) as total_price')
+            ->addSelect('COUNT(o.id) as order_count')
+            ->andWhere('o.order_date >= :fromDate')
+            ->andWhere('o.order_date < :toDate')
+            ->andWhere('o.OrderStatus NOT IN (:excludes)')
+            ->setParameter('fromDate', $fromDate)
+            ->setParameter('toDate', $toDate)
+            ->setParameter('excludes', $excludeStatuses)
+            ->groupBy('date_key')
+            ->orderBy('date_key', 'ASC');
+
+        $query = $qb->getQuery();
+
+        return $query->getResult();
     }
 }
