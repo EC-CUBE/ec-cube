@@ -22,7 +22,15 @@ file that was distributed with this source code.
     <script>
         $(function() {
             var $holder = $('#opening-hours-group');
-            var index = $holder.find('.opening-hours-item').length;
+            // 次に追加する行の index。中間行を削除した送信でエラー再描画されると name の番号が歯抜け（0, 2 等）に
+            // なり、行数を使うと既存の行と衝突して 2 行が 1 行に合体する。既存の行の最大番号 + 1 から始める
+            var index = 0;
+            $holder.find(':input[name^="shop_master[OpeningHours]["]').each(function() {
+                var m = this.name.match(/OpeningHours\]\[(\d+)\]/);
+                if (m) {
+                    index = Math.max(index, parseInt(m[1], 10) + 1);
+                }
+            });
 
             // 営業時間の行を追加する
             $('#add-opening-hour-button').on('click', function() {

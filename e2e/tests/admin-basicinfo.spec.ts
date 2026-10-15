@@ -17,6 +17,34 @@ async function ensureAdminLoggedIn(page: import('@playwright/test').Page) {
   }
 }
 
+/**
+ * Helper: 基本設定画面を開く（セッション切れなら再ログインする）.
+ */
+async function openShopSetting(page: import('@playwright/test').Page) {
+  await page.goto(`/${adminRoute}/setting/shop`);
+  await page.waitForLoadState('load');
+  await ensureAdminLoggedIn(page);
+  if (!page.url().includes('/setting/shop')) {
+    await page.goto(`/${adminRoute}/setting/shop`);
+    await page.waitForLoadState('load');
+  }
+  await expect(page.locator('.c-pageTitle')).toContainText('基本設定');
+}
+
+/**
+ * Helper: 営業時間の行をすべて削除して保存する（後続テストへ状態を残さない）.
+ */
+async function clearOpeningHours(page: import('@playwright/test').Page) {
+  await openShopSetting(page);
+  const deleteButtons = page.locator('#opening-hours-group .delete-opening-hour');
+  while (await deleteButtons.count() > 0) {
+    await deleteButtons.first().click();
+  }
+  await page.locator('button.ladda-button[type="submit"]').click();
+  await page.waitForLoadState('load');
+  await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+}
+
 test.describe('Admin Basic Info (EA07)', () => {
   test.describe.configure({ mode: 'serial' });
 
@@ -1515,6 +1543,60 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
       await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+    }
+  });
+
+  test('basicinfo_構造化データ_営業時間_エラー再表示後の行追加 - EA0701-UC01-T21', async ({ page }) => {
+    test.setTimeout(120_000);
+
+    try {
+      await clearOpeningHours(page);
+
+      // --- 3 行入力し、中間の行を削除したうえで、残りの 2 行を重複させてエラーにする ---
+      await openShopSetting(page);
+      for (let i = 0; i < 3; i++) {
+        await page.locator('#add-opening-hour-button').click();
+      }
+      await page.locator('#shop_master_OpeningHours_0_day_of_week_0').check(); // Monday
+      await page.locator('#shop_master_OpeningHours_0_opens').fill('09:00');
+      await page.locator('#shop_master_OpeningHours_0_closes').fill('12:00');
+      await page.locator('#shop_master_OpeningHours_1_day_of_week_1').check(); // Tuesday
+      await page.locator('#shop_master_OpeningHours_1_opens').fill('09:00');
+      await page.locator('#shop_master_OpeningHours_1_closes').fill('12:00');
+      await page.locator('#shop_master_OpeningHours_2_day_of_week_0').check(); // Monday（1 行目と重複）
+      await page.locator('#shop_master_OpeningHours_2_opens').fill('10:00');
+      await page.locator('#shop_master_OpeningHours_2_closes').fill('13:00');
+      await page.locator('#opening-hours-group .opening-hours-item').nth(1).locator('.delete-opening-hour').click();
+      await page.locator('button.ladda-button[type="submit"]').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toHaveCount(0);
+      await expect(page.locator('#opening-hours-group')).toContainText('同じ曜日で営業時間が重複しています');
+      await expect(page.locator('#opening-hours-group .opening-hours-item')).toHaveCount(2);
+
+      // --- 再表示後に行を追加すると、既存の番号（0, 2）と衝突しない番号が振られる ---
+      await page.locator('#shop_master_OpeningHours_2_day_of_week_0').uncheck();
+      await page.locator('#shop_master_OpeningHours_2_day_of_week_2').check(); // Wednesday
+      await page.locator('#add-opening-hour-button').click();
+      await expect(page.locator('#opening-hours-group .opening-hours-item')).toHaveCount(3);
+      await expect(page.locator('#shop_master_OpeningHours_3_opens')).toHaveCount(1);
+      await page.locator('#shop_master_OpeningHours_3_day_of_week_5').check(); // Saturday
+      await page.locator('#shop_master_OpeningHours_3_opens').fill('14:00');
+      await page.locator('#shop_master_OpeningHours_3_closes').fill('17:00');
+      await page.locator('button.ladda-button[type="submit"]').click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toContainText('保存しました', { timeout: 30_000 });
+
+      // --- 3 行が合体せずに、画面の順で保存されている ---
+      await openShopSetting(page);
+      await expect(page.locator('#opening-hours-group .opening-hours-item')).toHaveCount(3);
+      await expect(page.locator('#shop_master_OpeningHours_0_day_of_week_0')).toBeChecked(); // Monday
+      await expect(page.locator('#shop_master_OpeningHours_0_closes')).toHaveValue('12:00');
+      await expect(page.locator('#shop_master_OpeningHours_1_day_of_week_2')).toBeChecked(); // Wednesday
+      await expect(page.locator('#shop_master_OpeningHours_1_closes')).toHaveValue('13:00');
+      await expect(page.locator('#shop_master_OpeningHours_2_day_of_week_5')).toBeChecked(); // Saturday
+      await expect(page.locator('#shop_master_OpeningHours_2_closes')).toHaveValue('17:00');
+    } finally {
+      await clearOpeningHours(page);
     }
   });
 });
