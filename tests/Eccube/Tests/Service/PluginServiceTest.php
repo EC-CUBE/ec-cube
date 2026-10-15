@@ -876,6 +876,7 @@ EOD;
     public static function providePluginNotInstalledByComposer(): \Iterator
     {
         yield 'アーカイブで導入した (source=0, extra.id なし)' => [0, 0];
+        yield 'extra.id があるがアーカイブで導入した (source=0)' => [0, 1001];
         yield 'extra.id と source が異なる' => [1001, 1002];
     }
 
@@ -1002,6 +1003,51 @@ EOD;
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
+    /**
+     * 管理画面はプラグインコードからパッケージ名を作るため, 大文字を含むことがある.
+     * composer.json の name (小文字) と大文字小文字が違っても, 事前にアンインストールする.
+     */
+    public function testRemoveByComposerUninstallsPluginWithUppercaseCode(): void
+    {
+        $code = $this->installDummyPlugin(prefix: 'dummyUpper');
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturnCallback(function () use ($code): string {
+                $this->assertNotInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code), 'composer remove の前にレコードを消す');
+
+                return 'removed';
+            });
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+    }
+
+    /**
+     * 複数のパッケージのうち 1 つでも削除できなければ, 他のプラグインも事前にアンインストールしない.
+     */
+    public function testRemoveByComposerUninstallsNothingWhenAnyPluginIsRejected(): void
+    {
+        $code = $this->installDummyPlugin();
+        $enabledCode = $this->installDummyPlugin();
+        $this->pluginRepository->findByCode($enabledCode)->setEnabled(true);
+        $this->entityManager->flush();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->never())->method('execRemove');
+        $this->replaceComposerService($composerService);
+
+        try {
+            $this->service->removeByComposer('ec-cube/'.$code.' ec-cube/'.$enabledCode);
+            $this->fail('有効なプラグインは削除できない');
+        } catch (PluginException $e) {
+            $this->assertStringContainsString($enabledCode, $e->getMessage());
+        }
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
@@ -1020,10 +1066,11 @@ EOD;
      * @param int|null $source レコードの source. null ならランダムな値
      * @param int|null $id composer.json の extra.id. null なら $source と同じ. 0 なら書かない
      * @param array<string, string> $require composer.json の require
+     * @param string $prefix コードの接頭辞. tearDown が消せるよう dummy で始める
      */
-    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = []): string
+    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null, array $require = [], string $prefix = 'dummy'): string
     {
-        $code = 'dummy'.sha1((string) mt_rand());
+        $code = $prefix.sha1((string) mt_rand());
         $source ??= mt_rand(1, 999999);
         $id ??= $source;
         $json = [
