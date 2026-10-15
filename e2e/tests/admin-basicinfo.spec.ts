@@ -1546,7 +1546,7 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
       await expect(page.locator('.alert-success')).toHaveCount(0);
-      await expect(page.locator('#opening-hours-group')).toContainText('同じ曜日で営業時間が重複しています');
+      await expect(page.locator('#opening-hours-group')).toContainText('営業時間が重複しています');
 
     } finally {
       // --- クリーンアップ：営業時間の行とスカラー項目を消して保存 ---
@@ -1600,7 +1600,7 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
       await expect(page.locator('.alert-success')).toHaveCount(0);
-      await expect(page.locator('#opening-hours-group')).toContainText('同じ曜日で営業時間が重複しています');
+      await expect(page.locator('#opening-hours-group')).toContainText('営業時間が重複しています');
 
       // --- JSON-LD には入力どおり（opens 18:00 / closes 03:00）に出力される ---
       await page.goto('/');
@@ -1641,7 +1641,7 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.locator('button.ladda-button[type="submit"]').click();
       await page.waitForLoadState('load');
       await expect(page.locator('.alert-success')).toHaveCount(0);
-      await expect(page.locator('#opening-hours-group')).toContainText('同じ曜日で営業時間が重複しています');
+      await expect(page.locator('#opening-hours-group')).toContainText('営業時間が重複しています');
       await expect(page.locator('#opening-hours-group .opening-hours-item')).toHaveCount(2);
 
       // --- 再表示後に行を追加すると、既存の番号（0, 2）と衝突しない番号が振られる ---

@@ -1299,7 +1299,7 @@ admin.setting.shop.opening_hours.friday: Friday
 admin.setting.shop.opening_hours.saturday: Saturday
 admin.setting.shop.opening_hours.sunday: Sunday
 admin.setting.shop.opening_hours.public_holidays: Public Holidays
-admin.setting.shop.opening_hours.error.overlap: The opening hours overlap on the same day of the week.
+admin.setting.shop.opening_hours.error.overlap: The opening hours overlap with another row.
 admin.setting.shop.shop.option_delivery_fee: Shipping Charge
 admin.setting.shop.shop.option_delivery_fee_free_amount: Free Shipping (Amount)
 admin.setting.shop.shop.option_delivery_fee_free_quantity: Free Shipping (Qty)

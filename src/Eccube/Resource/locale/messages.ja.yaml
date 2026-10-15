@@ -1298,7 +1298,7 @@ admin.setting.shop.opening_hours.friday: 金曜日
 admin.setting.shop.opening_hours.saturday: 土曜日
 admin.setting.shop.opening_hours.sunday: 日曜日
 admin.setting.shop.opening_hours.public_holidays: 祝日
-admin.setting.shop.opening_hours.error.overlap: 同じ曜日で営業時間が重複しています。
+admin.setting.shop.opening_hours.error.overlap: 営業時間が重複しています。
 admin.setting.shop.shop.option_delivery_fee: 送料設定
 admin.setting.shop.shop.option_delivery_fee_free_amount: 送料無料条件（金額）
 admin.setting.shop.shop.option_delivery_fee_free_quantity: 送料無料条件（数量）
