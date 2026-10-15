@@ -25,6 +25,7 @@ use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
 use Eccube\Service\PluginService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -845,6 +846,39 @@ EOD;
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
+    /**
+     * plugin-installer と同じく, composer.json の extra.id がレコードの source と一致するプラグインだけを
+     * 事前にアンインストールする. それ以外は composer remove に任せ, レコードを残す.
+     */
+    #[DataProvider(methodName: 'providePluginNotInstalledByComposer')]
+    public function testRemoveByComposerLeavesPluginNotInstalledByComposer(int $source, int $id): void
+    {
+        $code = $this->installDummyPlugin(source: $source, id: $id);
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->once())
+            ->method('execRemove')
+            ->with('ec-cube/'.$code)
+            ->willReturnCallback(function () use ($code): string {
+                $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code), '事前にアンインストールしない');
+
+                return 'removed';
+            });
+        $this->replaceComposerService($composerService);
+
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/'.$code));
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
+    }
+
+    /**
+     * @return \Iterator<string, array{int, int}>
+     */
+    public static function providePluginNotInstalledByComposer(): \Iterator
+    {
+        yield 'アーカイブで導入した (source=0, extra.id なし)' => [0, 0];
+        yield 'extra.id と source が異なる' => [1001, 1002];
+    }
+
     public function testRemoveByComposerPassesThroughNonPluginPackage(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
@@ -857,16 +891,28 @@ EOD;
         $this->assertSame('removed', $this->service->removeByComposer('vendor/library'));
     }
 
-    private function installDummyPlugin(bool $withManager = false): string
+    /**
+     * 既定では composer で導入したプラグインと同じく, composer.json の extra.id とレコードの source をそろえる.
+     *
+     * @param int|null $source レコードの source. null ならランダムな値
+     * @param int|null $id composer.json の extra.id. null なら $source と同じ. 0 なら書かない
+     */
+    private function installDummyPlugin(bool $withManager = false, ?int $source = null, ?int $id = null): string
     {
         $code = 'dummy'.sha1((string) mt_rand());
-        $tmpfile = $this->createTempDir().'/plugin.tar';
-        $tar = new \PharData($tmpfile);
-        $tar->addFromString('composer.json', json_encode([
+        $source ??= mt_rand(1, 999999);
+        $id ??= $source;
+        $json = [
             'version' => '1.0.0',
             'description' => $code,
             'extra' => ['code' => $code],
-        ]));
+        ];
+        if ($id !== 0) {
+            $json['extra']['id'] = $id;
+        }
+        $tmpfile = $this->createTempDir().'/plugin.tar';
+        $tar = new \PharData($tmpfile);
+        $tar->addFromString('composer.json', json_encode($json));
         if ($withManager) {
             $tar->addFromString('PluginManager.php', <<<EOD
 <?php
@@ -884,7 +930,7 @@ class PluginManager extends AbstractPluginManager
 }
 EOD);
         }
-        $this->service->install($tmpfile);
+        $this->service->install($tmpfile, $source);
 
         return $code;
     }

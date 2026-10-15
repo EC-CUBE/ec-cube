@@ -635,7 +635,7 @@ class PluginService
     {
         $Plugins = [];
         foreach (explode(' ', trim($packageNames)) as $packageName) {
-            $Plugin = $this->pluginRepository->findByCode(basename($packageName));
+            $Plugin = $this->findPluginInstalledByComposer($packageName);
             if ($Plugin === null) {
                 continue;
             }
@@ -673,6 +673,35 @@ class PluginService
         }
 
         return $uninstallLog.$log;
+    }
+
+    /**
+     * composer で導入したプラグインのレコードを返す.
+     *
+     * plugin-installer と同じく, プラグインの composer.json の extra.id がレコードの source と
+     * 一致するものだけを対象にする. アーカイブで導入したプラグイン (source=0) や,
+     * コードが同じだけの別のプラグインは, 事前にアンインストールせず composer remove に任せる.
+     */
+    private function findPluginInstalledByComposer(string $packageName): ?Plugin
+    {
+        $Plugin = $this->pluginRepository->findByCode(basename($packageName));
+        if ($Plugin === null) {
+            return null;
+        }
+
+        try {
+            $config = $this->readConfig($this->calcPluginDir($Plugin->getCode()));
+        } catch (PluginException) {
+            return null;
+        }
+
+        // plugin-installer は extra.id が空 ('0' を含む) のときアンインストールしない
+        $id = (string) $config['source'];
+        if ($id === '' || $id === '0' || $id !== $Plugin->getSource()) {
+            return null;
+        }
+
+        return $Plugin;
     }
 
     /**
