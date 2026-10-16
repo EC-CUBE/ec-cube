@@ -11,11 +11,11 @@
     "test:misc": "playwright test plugin-misc"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0",
-    "@types/node": "^26.5.0",
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
-    "mysql2": "^3.24.4",
-    "pg": "^8.23.0",
+    "mysql2": "^3.24.5",
+    "pg": "^8.23.1",
     "tar": "^7.5.22",
     "typescript": "^7.0.2"
   },
