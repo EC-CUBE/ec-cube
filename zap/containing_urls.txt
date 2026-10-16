@@ -60,7 +60,6 @@ https://ec-cube/admin/order
 https://ec-cube/admin/order/1
 https://ec-cube/admin/order/1/edit
 https://ec-cube/admin/order/1/mail
-https://ec-cube/admin/order/bulk_delete
 https://ec-cube/admin/order/csv_template
 https://ec-cube/admin/order/export
 https://ec-cube/admin/order/export/order

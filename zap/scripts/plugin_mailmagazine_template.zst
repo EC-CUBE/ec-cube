@@ -356,7 +356,7 @@
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "\"mail_magazine_template_edit\\[_token\\]\" value=\"",
+      "prefix": "\"mail_magazine_template_edit\\[_token\\]\"[^>]*value=\"",
       "postfix": "\" />\\s+<div class=\"c-outsideBlock\">",
       "location": "BODY",
       "variableName": "tempate-edit-token",

@@ -1,0 +1,188 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_enable_agent_checkout.zst",
+  "description": "An example empty sequence script. Add requests to populate the sequence.",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "comment": "ACP / UCP のチェックアウトを有効にし、ACP のトークンを取得する OAuth クライアントを固定の ID で作る (api_acp_checkout / api_ucp_checkout の before_script)",
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf-login",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "data": "_csrf_token\u003d{{csrf-login}}\u0026login_id\u003dadmin\u0026password\u003dpassword",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "name\u003d\"shop_master\\[_token\\]\"[^\u003e]*value\u003d\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "csrf1",
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop",
+      "data": "shop_master%5B_token%5D\u003d{{csrf1}}\u0026shop_master%5Bcompany_name%5D\u003d\u0026shop_master%5Bcompany_kana%5D\u003d\u0026shop_master%5Bshop_name%5D\u003dEC-CUBE+SHOP\u0026shop_master%5Bshop_kana%5D\u003d\u0026shop_master%5Bshop_name_eng%5D\u003d\u0026shop_master%5Bpostal_code%5D\u003d\u0026shop_master%5Baddress%5D%5Bpref%5D\u003d\u0026shop_master%5Baddress%5D%5Baddr01%5D\u003d\u0026shop_master%5Baddress%5D%5Baddr02%5D\u003d\u0026shop_master%5Bphone_number%5D\u003d\u0026shop_master%5Bbusiness_hour%5D\u003d\u0026shop_master%5Bemail01%5D\u003dadmin%40example.com\u0026shop_master%5Bemail03%5D\u003dadmin%40example.com\u0026shop_master%5Bemail04%5D\u003dadmin%40example.com\u0026shop_master%5Bemail02%5D\u003dadmin%40example.com\u0026shop_master%5Bgood_traded%5D\u003d\u0026shop_master%5Bmessage%5D\u003d\u0026shop_master%5Bdelivery_free_amount%5D\u003d\u0026shop_master%5Bdelivery_free_quantity%5D\u003d\u0026shop_master%5Boption_customer_activate%5D\u003d1\u0026shop_master%5Boption_mypage_order_status_display%5D\u003d1\u0026shop_master%5Boption_favorite_product%5D\u003d1\u0026shop_master%5Boption_remember_me%5D\u003d1\u0026shop_master%5Boption_mail_notifier%5D\u003d1\u0026shop_master%5Binvoice_registration_number%5D\u003d\u0026shop_master%5Boption_point%5D\u003d1\u0026shop_master%5Bbasic_point_rate%5D\u003d1\u0026shop_master%5Bpoint_conversion_rate%5D\u003d1\u0026shop_master%5Boption_guest_purchase%5D\u003d1\u0026shop_master%5Boption_sanitize_csv_formulas%5D\u003d1\u0026shop_master%5Border_pdf_visible_shop_name%5D\u003d1\u0026shop_master%5Border_pdf_visible_address%5D\u003d1\u0026shop_master%5Border_pdf_visible_company_name%5D\u003d1\u0026shop_master%5Border_pdf_visible_phone_number%5D\u003d1\u0026shop_master%5Border_pdf_visible_email%5D\u003d1\u0026shop_master%5Border_pdf_visible_invoice_number%5D\u003d1\u0026shop_master%5Bacp_checkout_enabled%5D\u003d1\u0026shop_master%5Bucp_checkout_enabled%5D\u003d1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/api/oauth/acp/new",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 8,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "name\u003d\"api_admin_agent_commerce_client\\[_token\\]\"[^\u003e]*value\u003d\"",
+      "postfix": "\"",
+      "location": "BODY",
+      "variableName": "csrf-acp",
+      "index": 9,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
+    },
+    {
+      "url": "https://ec-cube/admin/api/oauth/acp/new",
+      "data": "api_admin_agent_commerce_client%5B_token%5D\u003d{{csrf-acp}}\u0026api_admin_agent_commerce_client%5Bname%5D\u003dzap-acp\u0026api_admin_agent_commerce_client%5Bidentifier%5D\u003dzapacpclient\u0026api_admin_agent_commerce_client%5Bsecret%5D\u003dzapacpsecret0123456789abcdefghijklmnop\u0026api_admin_agent_commerce_client%5Bscopes%5D%5B%5D\u003dacp%3Acheckout",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 10,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

@@ -14,6 +14,62 @@
   },
   "statements": [
     {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 1655292281770,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "admin_login_csrf",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{admin_login_csrf}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 88\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655292289492,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/product/product/new",
       "data": "",
       "method": "GET",
@@ -34,22 +90,12 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 125422,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
       "timestamp": 1715669198763,
       "cookies": [],
-      "index": 1,
+      "index": 4,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -60,16 +106,16 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf1",
-      "index": 2,
+      "index": 5,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
       "url": "https://ec-cube/admin/product/product/new",
       "urlToken": "https://ec-cube/admin/product/product/new",
-      "data": "------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[_token]\"\r\n\r\n{{csrf1}}\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[return_link]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[name]\"\r\n\r\ntest\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][sale_type]\"\r\n\r\n1\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[product_image][]\"; filename\u003d\"\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[description_detail]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[description_list]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][price02]\"\r\n\r\n1\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][price01]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][stock_unlimited]\"\r\n\r\n1\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[search_word]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][code]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][sale_limit]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][delivery_duration]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[free_area]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[note]\"\r\n\r\n\r\n------WebKitFormBoundarySbsWexjPuxxErSeL\r\nContent-Disposition: form-data; name\u003d\"admin_product[Status]\"\r\n\r\n1\r\n------WebKitFormBoundarySbsWexjPuxxErSeL--\r\n",
+      "data": "------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[_token]\"\r\n\r\n{{csrf1}}\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[return_link]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[name]\"\r\n\r\ntest\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][sale_type]\"\r\n\r\n1\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[product_image][]\"; filename\u003d\"\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[description_detail]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[description_list]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][price02]\"\r\n\r\n1\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][price01]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][stock_unlimited]\"\r\n\r\n1\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[search_word]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][code]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][sale_limit]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[class][delivery_duration]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[free_area]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[note]\"\r\n\r\n\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[faqs_rendered]\"\r\n\r\n1\r\n------webkitformboundarysbswexjpuxxersel\r\nContent-Disposition: form-data; name\u003d\"admin_product[Status]\"\r\n\r\n1\r\n------webkitformboundarysbswexjpuxxersel--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2174\r\nsec-ch-ua: \"Chromium\";v\u003d\"124\", \"Google Chrome\";v\u003d\"124\", \"Not-A.Brand\";v\u003d\"99\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary\u003d----WebKitFormBoundarySbsWexjPuxxErSeL\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 2174\r\nsec-ch-ua: \"Chromium\";v\u003d\"124\", \"Google Chrome\";v\u003d\"124\", \"Not-A.Brand\";v\u003d\"99\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary\u003d----webkitformboundarysbswexjpuxxersel\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "response": {
         "url": "https://ec-cube/admin/product/product/new",
         "headers": "HTTP/1.1 302 Found\r\nDate: Tue, 14 May 2024 06:46:53 GMT\r\nServer: Apache/2.4.59 (Debian)\r\nX-Frame-Options: SAMEORIGIN\r\nX-Powered-By: PHP/8.1.28\r\nCache-Control: max-age\u003d0, must-revalidate, private\r\nLocation: /admin/product/product/3/edit\r\nX-Debug-Token: 4a50db\r\nX-Debug-Token-Link: https://ec-cube/_profiler/4a50db\r\nX-Robots-Tag: noindex\r\nExpires: Tue, 14 May 2024 06:46:53 GMT\r\nSet-Cookie: maintenance_token\u003ddeleted; expires\u003dMon, 15 May 2023 06:46:52 GMT; Max-Age\u003d0; path\u003d/; httponly\r\nSet-Cookie: sf_redirect\u003d%7B%22token%22%3A%224a50db%22%2C%22route%22%3A%22admin_product_product_new%22%2C%22method%22%3A%22POST%22%2C%22controller%22%3A%7B%22class%22%3A%22Eccube%5C%5CController%5C%5CAdmin%5C%5CProduct%5C%5CProductController%22%2C%22method%22%3A%22edit%22%2C%22file%22%3A%22%5C%2Fvar%5C%2Fwww%5C%2Fhtml%5C%2Fsrc%5C%2FEccube%5C%2FController%5C%2FAdmin%5C%2FProduct%5C%2FProductController.php%22%2C%22line%22%3A428%7D%2C%22status_code%22%3A302%2C%22status_text%22%3A%22Found%22%7D; path\u003d/; httponly; samesite\u003dlax\r\nX-XSS-Protection: 1; mode\u003dblock\r\nX-Content-Type-Options: nosniff\r\nContent-Type: text/html; charset\u003dUTF-8\r\ncontent-length: 362\r\n\r\n",
@@ -86,27 +132,26 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 362,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
       "timestamp": 1715669213337,
       "cookies": [],
-      "index": 3,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
-      "url": "https://ec-cube/admin/product/product/3/edit",
+      "prefix": "Location: /admin/product/product/",
+      "postfix": "/edit",
+      "location": "HEAD",
+      "variableName": "product-id",
+      "index": 7,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
+      "url": "https://ec-cube/admin/product/product/{{product-id}}/edit",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \"Chromium\";v\u003d\"124\", \"Google Chrome\";v\u003d\"124\", \"Not-A.Brand\";v\u003d\"99\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\n",
@@ -126,22 +171,12 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 129213,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
       "timestamp": 1715669214042,
       "cookies": [],
-      "index": 4,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -152,7 +187,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 5,
+      "index": 9,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -177,22 +212,12 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 75289,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
       "timestamp": 1715669226105,
       "cookies": [],
-      "index": 6,
+      "index": 10,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -217,180 +242,17 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 83528,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
       "timestamp": 1715669234730,
-      "cookies": [],
-      "index": 7,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "fieldDefinition": {
-        "formIndex": 2,
-        "fieldName": "_token3",
-        "elementType": "ZestFieldDefinition"
-      },
-      "variableName": "csrf3",
-      "index": 8,
-      "enabled": true,
-      "elementType": "ZestAssignFieldValue"
-    },
-    {
-      "fieldDefinition": {
-        "formIndex": 3,
-        "fieldName": "_token2",
-        "elementType": "ZestFieldDefinition"
-      },
-      "variableName": "csrf4",
-      "index": 9,
-      "enabled": true,
-      "elementType": "ZestAssignFieldValue"
-    },
-    {
-      "fieldDefinition": {
-        "formIndex": 4,
-        "fieldName": "_token1",
-        "elementType": "ZestFieldDefinition"
-      },
-      "variableName": "csrf5",
-      "index": 10,
-      "enabled": true,
-      "elementType": "ZestAssignFieldValue"
-    },
-    {
-      "url": "https://ec-cube/html/template/default/assets/icon/cross-dark.svg",
-      "data": "",
-      "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Chromium\";v\u003d\"124\", \"Google Chrome\";v\u003d\"124\", \"Not-A.Brand\";v\u003d\"99\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: no-cors\r\nSec-Fetch-Dest: image\r\n",
-      "response": {
-        "url": "https://ec-cube/html/template/default/assets/icon/cross-dark.svg",
-        "headers": "HTTP/1.1 200 OK\r\nDate: Tue, 14 May 2024 06:47:15 GMT\r\nServer: Apache/2.4.59 (Debian)\r\nX-Frame-Options: SAMEORIGIN\r\nLast-Modified: Mon, 15 Apr 2024 05:40:07 GMT\r\nETag: \"2b1-6161c0dd19bc0\"\r\nAccept-Ranges: bytes\r\nContent-Length: 689\r\nX-XSS-Protection: 1; mode\u003dblock\r\nX-Content-Type-Options: nosniff\r\nContent-Type: image/svg+xml\r\n\r\n",
-        "body": "\u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" viewBox\u003d\"0 0 360 360\"\u003e\n    \u003ctitle\u003ecross-dark\u003c/title\u003e\n    \u003cstyle\u003e.icon{fill:#525263;fill-rule:evenodd;}\u003c/style\u003e\n    \u003cpath class\u003d\"icon\" d\u003d\"M337.572,293.77L223.65,179.85L337.572,65.928c3.547-3.546,3.163-9.678-0.855-13.7l-29.095-29.093  c-4.022-4.021-10.153-4.402-13.7-0.856L180,136.199L66.08,22.279c-3.547-3.547-9.681-3.165-13.702,0.856L23.286,52.228  c-4.02,4.022-4.404,10.154-0.857,13.7L136.35,179.85L22.429,293.77c-3.547,3.545-3.163,9.678,0.857,13.701l29.093,29.092  c4.021,4.023,10.155,4.406,13.702,0.857L180,223.499L293.92,337.42c3.548,3.549,9.679,3.166,13.701-0.857l29.095-29.092  C340.735,303.448,341.121,297.315,337.572,293.77z\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n",
-        "statusCode": 200,
-        "responseTimeInMs": 12,
-        "elementType": "ZestResponse"
-      },
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 689,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1715669235450,
       "cookies": [],
       "index": 11,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
-      "url": "https://content-autofill.googleapis.com/v1/pages/ChVDaHJvbWUvMTI0LjAuNjM2Ny4yMDcSIAkgkGbLiVhhrBIFDS7W3YISBQ2PFQVJIa05sNyZSrN6EhkJMt_D1g8r84ASBQ2kPvRXISajnruxfQ3mEhkJ68AZSZzagEYSBQ2kPvRXISajnruxfQ3mEicJ11EfHBp1x2ISBQ2Yu5bAEgUN8OLiyBIFDaQ-9FchPaxPI-zwTkY\u003d?alt\u003dproto",
-      "data": "",
-      "method": "GET",
-      "headers": "X-Goog-Encode-Response-If-Executable: base64\r\nX-Goog-Api-Key: AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw\r\nX-Client-Data: CNDfygE\u003d\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: no-cors\r\nSec-Fetch-Dest: empty\r\n",
-      "response": {
-        "url": "https://content-autofill.googleapis.com/v1/pages/ChVDaHJvbWUvMTI0LjAuNjM2Ny4yMDcSIAkgkGbLiVhhrBIFDS7W3YISBQ2PFQVJIa05sNyZSrN6EhkJMt_D1g8r84ASBQ2kPvRXISajnruxfQ3mEhkJ68AZSZzagEYSBQ2kPvRXISajnruxfQ3mEicJ11EfHBp1x2ISBQ2Yu5bAEgUN8OLiyBIFDaQ-9FchPaxPI-zwTkY\u003d?alt\u003dproto",
-        "headers": "HTTP/1.1 200 OK\r\nCache-Control: private,max-age\u003d604800\r\nContent-Type: text/plain\r\nX-Goog-Safety-Encoding: base64\r\nX-Goog-Safety-Content-Type: application/x-protobuf\r\nVary: X-Origin\r\nVary: Referer\r\nDate: Tue, 14 May 2024 06:47:15 GMT\r\nServer: ESF\r\nX-XSS-Protection: 0\r\nX-Frame-Options: SAMEORIGIN\r\nX-Content-Type-Options: nosniff\r\nAlt-Svc: h3\u003d\":443\"; ma\u003d2592000,h3-29\u003d\":443\"; ma\u003d2592000\r\nAccept-Ranges: none\r\nVary: Origin,Accept-Encoding\r\ncontent-length: 96\r\n\r\n",
-        "body": "ChIKBw0u1t2CGgAKBw2PFQVJGgAKCQoHDaQ+9FcaAAoJCgcNpD70VxoAChsKBw2Yu5bAGgAKBw3w4uLIGgAKBw2kPvRXGgA\u003d",
-        "statusCode": 200,
-        "responseTimeInMs": 178,
-        "elementType": "ZestResponse"
-      },
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 96,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1715669235481,
-      "cookies": [],
-      "index": 12,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "url": "https://ec-cube/_wdt/4ecb67",
-      "data": "",
-      "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Chromium\";v\u003d\"124\", \"Google Chrome\";v\u003d\"124\", \"Not-A.Brand\";v\u003d\"99\"\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
-      "response": {
-        "url": "https://ec-cube/_wdt/4ecb67",
-        "headers": "HTTP/1.1 200 OK\r\nDate: Tue, 14 May 2024 06:47:15 GMT\r\nServer: Apache/2.4.59 (Debian)\r\nX-Frame-Options: SAMEORIGIN\r\nX-Powered-By: PHP/8.1.28\r\nCache-Control: no-cache, private\r\nX-Robots-Tag: noindex\r\nSet-Cookie: maintenance_token\u003ddeleted; expires\u003dMon, 15 May 2023 06:47:14 GMT; Max-Age\u003d0; path\u003d/; httponly\r\nVary: Accept-Encoding\r\nX-XSS-Protection: 1; mode\u003dblock\r\nX-Content-Type-Options: nosniff\r\nContent-Type: text/html; charset\u003dUTF-8\r\ncontent-length: 33535\r\n\r\n",
-        "body": "\u003c!-- START of Symfony Web Debug Toolbar --\u003e\n\u003cdiv id\u003d\"sfMiniToolbar-4ecb67\" class\u003d\"sf-minitoolbar\" data-no-turbolink data-turbo\u003d\"false\"\u003e\n    \u003cbutton type\u003d\"button\" title\u003d\"Show Symfony toolbar\" id\u003d\"sfToolbarMiniToggler-4ecb67\" accesskey\u003d\"D\" aria-expanded\u003d\"false\" aria-controls\u003d\"sfToolbarMainContent-4ecb67\"\u003e\n        \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\"\u003e\u003cpath fill\u003d\"currentColor\" d\u003d\"M12 .9C5.8.9.9 5.8.9 12a11 11 0 1 0 22.2 0A11 11 0 0 0 12 .9zm6.5 6c-.6 0-.9-.3-.9-.8 0-.2 0-.4.2-.6l.2-.4c0-.3-.5-.4-.6-.4-1.8.1-2.3 2.5-2.7 4.4l-.2 1c1 .2 1.8 0 2.2-.3.6-.4-.2-.7-.1-1.2.1-.3.5-.5.7-.6.5 0 .7.5.7.9 0 .7-1 1.8-3 1.8l-.6-.1-.6 2.4c-.4 1.6-.8 3.8-2.4 5.7-1.4 1.7-2.9 1.9-3.5 1.9-1.2 0-1.9-.6-2-1.5 0-.8.7-1.3 1.2-1.3.6 0 1.1.5 1.1 1s-.2.6-.4.6c-.1.1-.3.2-.3.4 0 .1.1.3.4.3.5 0 .8-.3 1.1-.5 1.2-.9 1.6-2.7 2.2-5.7l.1-.7.7-3.2c-.8-.6-1.3-1.4-2.4-1.7-.6-.1-1.1.1-1.5.5-.4.5-.2 1.1.2 1.5l.7.6c.7.8 1.2 1.6 1 2.5-.3 1.5-2 2.6-4 1.9-1.8-.6-2-1.8-1.8-2.5.2-.6.6-.7 1.1-.6.5.2.6.7.6 1.2l-.1.3c-.2.1-.3.3-.3.4-.1.4.4.6.7.7.7.3 1.6-.2 1.8-.8a1 1 0 0 0-.4-1.1l-.7-.8c-.4-.4-1.1-1.4-.7-2.6.1-.5.4-.9.7-1.3a4 4 0 0 1 2.8-.6c1.2.4 1.8 1.1 2.6 1.8.5-1.2 1-2.4 1.8-3.5.9-.9 1.9-1.6 3.1-1.7 1.3.2 2.2.7 2.2 1.6 0 .4-.2 1.1-.9 1.1z\"/\u003e\u003c/svg\u003e\n\n    \u003c/button\u003e\n\u003c/div\u003e\n\u003cdiv id\u003d\"sfToolbarClearer-4ecb67\" class\u003d\"sf-toolbar-clearer\"\u003e\u003c/div\u003e\n\n\u003cdiv id\u003d\"sfToolbarMainContent-4ecb67\" class\u003d\"sf-toolbarreset notranslate clear-fix\" data-no-turbolink\u003e\n                                            \n                \n    \n    \n    \n    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-request sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003drequest\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e        \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-green\"\u003e200\u003c/span\u003e\n                    \u003cspan class\u003d\"sf-toolbar-request-icon\"\u003e\u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-corner-down-right\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eRedirect\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M6 6v6a3 3 0 0 0 3 3h10l-4 -4m0 8l4 -4\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\u003c/span\u003e                        \u003cspan class\u003d\"sf-toolbar-label\"\u003e @\u003c/span\u003e\n            \u003cspan class\u003d\"sf-toolbar-value sf-toolbar-info-piece-additional\"\u003eproduct_list\u003c/span\u003e\n            \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e        \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eHTTP status\u003c/b\u003e\n                \u003cspan\u003e200 OK\u003c/span\u003e\n            \u003c/div\u003e\n\n            \n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eController\u003c/b\u003e\n                \u003cspan\u003e            \u003ca href\u003d\"file:///var/www/html/src/Eccube/Controller/ProductController.php#L114\" title\u003d\"Eccube\\Controller\\ProductController\"\u003eProductController :: index\u003c/a\u003e\n    \u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eRoute name\u003c/b\u003e\n                \u003cspan\u003eproduct_list\u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eHas session\u003c/b\u003e\n                \u003cspan\u003eyes\u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eStateless Check\u003c/b\u003e\n                \u003cspan\u003eno\u003c/span\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\n        \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n                \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                    \u003cb\u003e\n                        \u003cspan class\u003d\"sf-toolbar-redirection-status sf-toolbar-status-yellow\"\u003e302\u003c/span\u003e\n                        Redirect from\n                    \u003c/b\u003e\n                    \u003cspan\u003e\n                                        \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-redirection-method\"\u003ePOST\u003c/span\u003e\u003ca href\u003d\"file:///var/www/html/src/Eccube/Controller/Mypage/MypageController.php#L101\" title\u003d\"Eccube\\Controller\\Mypage\\MypageController\"\u003e@mypage_login\u003c/a\u003e\n        \n                        (\u003ca href\u003d\"/_profiler/dbe7bf\"\u003edbe7bf\u003c/a\u003e)\n                    \u003c/span\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n        \n            \u003c/div\u003e\n\u003c/div\u003e\n\n\n                                                                                        \n    \n    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-time sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dtime\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e        \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-chart-infographic\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eTime\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003ccircle cx\u003d\"7\" cy\u003d\"7\" r\u003d\"4\"\u003e\u003c/circle\u003e\n    \u003cpath d\u003d\"M7 3v4h4\"\u003e\u003c/path\u003e\n    \u003cline x1\u003d\"9\" y1\u003d\"17\" x2\u003d\"9\" y2\u003d\"21\"\u003e\u003c/line\u003e\n    \u003cline x1\u003d\"17\" y1\u003d\"14\" x2\u003d\"17\" y2\u003d\"21\"\u003e\u003c/line\u003e\n    \u003cline x1\u003d\"13\" y1\u003d\"13\" x2\u003d\"13\" y2\u003d\"21\"\u003e\u003c/line\u003e\n    \u003cline x1\u003d\"21\" y1\u003d\"12\" x2\u003d\"21\" y2\u003d\"21\"\u003e\u003c/line\u003e\n\u003c/svg\u003e\n\n        \u003cspan class\u003d\"sf-toolbar-value\"\u003e591\u003c/span\u003e\n        \u003cspan class\u003d\"sf-toolbar-label\"\u003ems\u003c/span\u003e\n    \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eTotal time\u003c/b\u003e\n            \u003cspan\u003e591 ms\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eInitialization time\u003c/b\u003e\n            \u003cspan\u003e169 ms\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n\n\n                                                                \n    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-time sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dtime\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e                \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-cpu\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eMemory\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003crect x\u003d\"5\" y\u003d\"5\" width\u003d\"14\" height\u003d\"14\" rx\u003d\"1\"\u003e\u003c/rect\u003e\n    \u003cpath d\u003d\"M9 9h6v6h-6z\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M3 10h2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M3 14h2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M10 3v2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M14 3v2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M21 10h-2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M21 14h-2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M14 21v-2\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M10 21v-2\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n        \u003cspan class\u003d\"sf-toolbar-value\"\u003e45.5\u003c/span\u003e\n        \u003cspan class\u003d\"sf-toolbar-label\"\u003eMiB\u003c/span\u003e\n    \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003ePeak memory usage\u003c/b\u003e\n            \u003cspan\u003e45.5 MiB\u003c/span\u003e\n        \u003c/div\u003e\n\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003ePHP memory limit\u003c/b\u003e\n            \u003cspan\u003e786 MiB\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n\n\n                                                                                \n        \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-validator sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dvalidator\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-checklist\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M14 19l2 2l4 -4\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M9 8h4\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M9 12h2\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n            \u003cspan class\u003d\"sf-toolbar-value\"\u003e\n                1\n            \u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eValidator calls\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status\"\u003e1\u003c/span\u003e\n            \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eNumber of violations\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status\"\u003e0\u003c/span\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\u003c/div\u003e\n\n    \n                                                                \n    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-ajax sf-toolbar-status-normal \" \u003e\n            \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e        \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-arrows-down-up\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cline x1\u003d\"17\" y1\u003d\"3\" x2\u003d\"17\" y2\u003d\"21\"\u003e\u003c/line\u003e\n    \u003cpath d\u003d\"M10 18l-3 3l-3 -3\"\u003e\u003c/path\u003e\n    \u003cline x1\u003d\"7\" y1\u003d\"21\" x2\u003d\"7\" y2\u003d\"3\"\u003e\u003c/line\u003e\n    \u003cpath d\u003d\"M20 6l-3 -3l-3 3\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n        \u003cspan class\u003d\"sf-toolbar-value sf-toolbar-ajax-request-counter\"\u003e0\u003c/span\u003e\n    \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info\"\u003e        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cspan class\u003d\"sf-toolbar-header\"\u003e\n                \u003cb class\u003d\"sf-toolbar-ajax-info\"\u003e\u003c/b\u003e\n                \u003cb class\u003d\"sf-toolbar-action\"\u003e(\u003ca class\u003d\"sf-toolbar-ajax-clear\" href\u003d\"javascript:void(0);\"\u003eClear\u003c/a\u003e)\u003c/b\u003e\n            \u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003ctable class\u003d\"sf-toolbar-ajax-requests\"\u003e\n                \u003cthead\u003e\n                    \u003ctr\u003e\n                        \u003cth\u003e#\u003c/th\u003e\n                        \u003cth\u003eProfile\u003c/th\u003e\n                        \u003cth\u003eMethod\u003c/th\u003e\n                        \u003cth\u003eType\u003c/th\u003e\n                        \u003cth\u003eStatus\u003c/th\u003e\n                        \u003cth\u003eURL\u003c/th\u003e\n                        \u003cth\u003eTime\u003c/th\u003e\n                    \u003c/tr\u003e\n                \u003c/thead\u003e\n                \u003ctbody class\u003d\"sf-toolbar-ajax-request-list\"\u003e\u003c/tbody\u003e\n            \u003c/table\u003e\n        \u003c/div\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n\n\n                                                                                \n        \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-form sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dform\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-forms\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eCache\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M13 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M5 7h-1a1 1 0 0 0 -1 1v8a1 1 0 0 0 1 1h1\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M17 12h.01\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M13 12h.01\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n            \u003cspan class\u003d\"sf-toolbar-value\"\u003e\n                1\n            \u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eNumber of forms\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status\"\u003e1\u003c/span\u003e\n            \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eNumber of errors\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-\"\u003e0\u003c/span\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\u003c/div\u003e\n\n    \n                                                                                    \n        \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-logger sf-toolbar-status-none \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dlogger\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e                        \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-file-alert\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eLogger\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M14 3v4a1 1 0 0 0 1 1h4\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z\"\u003e\u003c/path\u003e\n    \u003cline x1\u003d\"12\" y1\u003d\"17\" x2\u003d\"12.01\" y2\u003d\"17\"\u003e\u003c/line\u003e\n    \u003cline x1\u003d\"12\" y1\u003d\"11\" x2\u003d\"12\" y2\u003d\"14\"\u003e\u003c/line\u003e\n\u003c/svg\u003e\n\n            \u003cspan class\u003d\"sf-toolbar-value\"\u003e1224\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eErrors\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-\"\u003e0\u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eWarnings\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-\"\u003e0\u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eDeprecations\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-none\"\u003e1224\u003c/span\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\u003c/div\u003e\n\n    \n                                                                        \n                                                                                \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-cache sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dcache\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-stack-2\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eCache\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpolyline points\u003d\"12 4 4 8 12 12 20 8 12 4\"\u003e\u003c/polyline\u003e\n    \u003cpolyline points\u003d\"4 12 12 16 20 12\"\u003e\u003c/polyline\u003e\n    \u003cpolyline points\u003d\"4 16 12 20 20 16\"\u003e\u003c/polyline\u003e\n\u003c/svg\u003e\n\n            \u003cspan class\u003d\"sf-toolbar-value\"\u003e2792\u003c/span\u003e\n            \u003cspan class\u003d\"sf-toolbar-info-piece-additional-detail\"\u003e\n                \u003cspan class\u003d\"sf-toolbar-label\"\u003ein\u003c/span\u003e\n                \u003cspan class\u003d\"sf-toolbar-value\"\u003e11.63\u003c/span\u003e\n                \u003cspan class\u003d\"sf-toolbar-label\"\u003ems\u003c/span\u003e\n            \u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eCache Calls\u003c/b\u003e\n            \u003cspan\u003e2792\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eTotal time\u003c/b\u003e\n            \u003cspan\u003e11.63 ms\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eCache hits\u003c/b\u003e\n            \u003cspan\u003e2760 / 2776 (99.42%)\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eCache writes\u003c/b\u003e\n            \u003cspan\u003e16\u003c/span\u003e\n        \u003c/div\u003e\n        \u003c/div\u003e\n\u003c/div\u003e\n\n    \n                                                                        \n        \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-translation sf-toolbar-status-red \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dtranslation\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-language-hiragana\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M4 5h7\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M7 4c0 4.846 0 7 .5 8\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M10 8.5c0 2.286 -2 4.5 -3.5 4.5s-2.5 -1.135 -2.5 -2c0 -2 1 -3 3 -3s5 .57 5 2.857c0 1.524 -.667 2.571 -2 3.143\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M12 20l4 -9l4 9\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M19.1 18h-6.2\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n                                    \u003cspan class\u003d\"sf-toolbar-value\"\u003e26\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eDefault locale\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status\"\u003e\n                    ja\n                \u003c/span\u003e\n            \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eMissing messages\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-red\"\u003e\n                    26\n                \u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eFallback messages\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-\"\u003e\n                    0\n                \u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eDefined messages\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status\"\u003e5\u003c/span\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\u003c/div\u003e\n\n    \n                                                                        \n        \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-security sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dsecurity\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-user\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"  role\u003d\"img\"\u003e\n    \u003ctitle\u003eSecurity\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003ccircle cx\u003d\"12\" cy\u003d\"7\" r\u003d\"4\"\u003e\u003c/circle\u003e\n    \u003cpath d\u003d\"M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n            \u003cspan class\u003d\"sf-toolbar-value\"\u003en/a\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e            \n            \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n                                                            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                            \u003cb\u003eAuthenticated\u003c/b\u003e\n                            \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-yellow\"\u003eNo\u003c/span\u003e\n                        \u003c/div\u003e\n                    \n                                            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                            \u003cb\u003eFirewall name\u003c/b\u003e\n                            \u003cspan\u003ecustomer\u003c/span\u003e\n                        \u003c/div\u003e\n                    \n                                                \u003c/div\u003e\n        \u003c/div\u003e\n\u003c/div\u003e\n\n    \n                                                                    \n    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-twig sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dtwig\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e        \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-seeding\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\" role\u003d\"img\"\u003e\n    \u003ctitle\u003eTwig\u003c/title\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M12 10a6 6 0 0 0 -6 -6h-3v2a6 6 0 0 0 6 6h3\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M12 14a6 6 0 0 1 6 -6h3v1a6 6 0 0 1 -6 6h-3\"\u003e\u003c/path\u003e\n    \u003cline x1\u003d\"12\" y1\u003d\"20\" x2\u003d\"12\" y2\u003d\"10\"\u003e\u003c/line\u003e\n\u003c/svg\u003e\n\n        \u003cspan class\u003d\"sf-toolbar-value\"\u003e64\u003c/span\u003e\n        \u003cspan class\u003d\"sf-toolbar-label\"\u003ems\u003c/span\u003e\n    \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e                                \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eEntry View\u003c/b\u003e\n            \u003cspan\u003e\n                                      \u003ca href\u003d\"file:///var/www/html/src/Eccube/Resource/template/default/Product/list.twig#L1\" title\u003d\"/var/www/html/src/Eccube/Resource/template/default/Product/list.twig\"\u003e\n                         Product/list.twig\n                     \u003c/a\u003e\n                             \u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eRender Time\u003c/b\u003e\n            \u003cspan\u003e64 ms\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eTemplate Calls\u003c/b\u003e\n            \u003cspan class\u003d\"sf-toolbar-status\"\u003e23\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eBlock Calls\u003c/b\u003e\n            \u003cspan class\u003d\"sf-toolbar-status\"\u003e141\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eMacro Calls\u003c/b\u003e\n            \u003cspan class\u003d\"sf-toolbar-status\"\u003e12\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n\n\n                                                                \n        \n        \n        \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-db sf-toolbar-status-normal \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003ddb\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e            \n                            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-database\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cellipse cx\u003d\"12\" cy\u003d\"6\" rx\u003d\"8\" ry\u003d\"3\"\u003e\u003c/ellipse\u003e\n    \u003cpath d\u003d\"M4 6v6a8 3 0 0 0 16 0v-6\"\u003e\u003c/path\u003e\n    \u003cpath d\u003d\"M4 12v6a8 3 0 0 0 16 0v-6\"\u003e\u003c/path\u003e\n\u003c/svg\u003e\n\n            \n                            \u003cspan class\u003d\"sf-toolbar-value\"\u003e23\u003c/span\u003e\n                \u003cspan class\u003d\"sf-toolbar-info-piece-additional-detail\"\u003e\n                    \u003cspan class\u003d\"sf-toolbar-label\"\u003ein\u003c/span\u003e\n                    \u003cspan class\u003d\"sf-toolbar-value\"\u003e23.10\u003c/span\u003e\n                    \u003cspan class\u003d\"sf-toolbar-label\"\u003ems\u003c/span\u003e\n                \u003c/span\u003e\n                    \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eDatabase Queries\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status \"\u003e23\u003c/span\u003e\n            \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eDifferent statements\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status\"\u003e20\u003c/span\u003e\n            \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eQuery time\u003c/b\u003e\n                \u003cspan\u003e23.10 ms\u003c/span\u003e\n            \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eInvalid entities\u003c/b\u003e\n                \u003cspan class\u003d\"sf-toolbar-status \"\u003e0\u003c/span\u003e\n            \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                    \u003cb\u003eSecond Level Cache\u003c/b\u003e\n                    \u003cspan class\u003d\"sf-toolbar-status\"\u003edisabled\u003c/span\u003e\n                \u003c/div\u003e\n                    \u003c/div\u003e\n\u003c/div\u003e\n\n\n    \n                                                                                                                                        \n            \n            \n            \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-doctrine_migrations sf-toolbar-status-red \" \u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003ddoctrine_migrations\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e                                    \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-versions\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003crect x\u003d\"10\" y\u003d\"5\" width\u003d\"10\" height\u003d\"14\" rx\u003d\"2\"\u003e\u003c/rect\u003e\n    \u003cline x1\u003d\"7\" y1\u003d\"7\" x2\u003d\"7\" y2\u003d\"17\"\u003e\u003c/line\u003e\n    \u003cline x1\u003d\"4\" y1\u003d\"8\" x2\u003d\"4\" y2\u003d\"16\"\u003e\u003c/line\u003e\n\u003c/svg\u003e\n\n                \n                \u003cspan class\u003d\"sf-toolbar-value\"\u003e18\u003c/span\u003e\n            \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e                \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n                    \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                        \u003cb\u003eCurrent Migration\u003c/b\u003e\n                        \u003cspan\u003en/a\u003c/span\u003e\n                    \u003c/div\u003e\n                \u003c/div\u003e\n\n                \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n                    \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                        \u003cspan class\u003d\"sf-toolbar-header\"\u003e\n                            \u003cb\u003eDatabase Migrations\u003c/b\u003e\n                        \u003c/span\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                        \u003cb\u003eExecuted\u003c/b\u003e\n                        \u003cspan class\u003d\"sf-toolbar-status\"\u003e0\u003c/span\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                        \u003cb\u003eUnavailable\u003c/b\u003e\n                        \u003cspan class\u003d\"sf-toolbar-status \"\u003e0\u003c/span\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                        \u003cb\u003eAvailable\u003c/b\u003e\n                        \u003cspan class\u003d\"sf-toolbar-status\"\u003e18\u003c/span\u003e\n                    \u003c/div\u003e\n                    \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                        \u003cb\u003eNew\u003c/b\u003e\n                        \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-red\"\u003e18\u003c/span\u003e\n                    \u003c/div\u003e\n                \u003c/div\u003e\n            \u003c/div\u003e\n\u003c/div\u003e\n\n            \n                                                                \n                                                                \n    \n                                                                \n                                                                                    \n    \n    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-config sf-toolbar-status-normal sf-toolbar-block-right\" title\u003d\"\"\u003e\n    \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67?panel\u003dconfig\"\u003e        \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e        \u003cspan class\u003d\"sf-toolbar-label\"\u003e\n            \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\"\u003e\u003cpath fill\u003d\"currentColor\" d\u003d\"M12 .9C5.8.9.9 5.8.9 12a11 11 0 1 0 22.2 0A11 11 0 0 0 12 .9zm6.5 6c-.6 0-.9-.3-.9-.8 0-.2 0-.4.2-.6l.2-.4c0-.3-.5-.4-.6-.4-1.8.1-2.3 2.5-2.7 4.4l-.2 1c1 .2 1.8 0 2.2-.3.6-.4-.2-.7-.1-1.2.1-.3.5-.5.7-.6.5 0 .7.5.7.9 0 .7-1 1.8-3 1.8l-.6-.1-.6 2.4c-.4 1.6-.8 3.8-2.4 5.7-1.4 1.7-2.9 1.9-3.5 1.9-1.2 0-1.9-.6-2-1.5 0-.8.7-1.3 1.2-1.3.6 0 1.1.5 1.1 1s-.2.6-.4.6c-.1.1-.3.2-.3.4 0 .1.1.3.4.3.5 0 .8-.3 1.1-.5 1.2-.9 1.6-2.7 2.2-5.7l.1-.7.7-3.2c-.8-.6-1.3-1.4-2.4-1.7-.6-.1-1.1.1-1.5.5-.4.5-.2 1.1.2 1.5l.7.6c.7.8 1.2 1.6 1 2.5-.3 1.5-2 2.6-4 1.9-1.8-.6-2-1.8-1.8-2.5.2-.6.6-.7 1.1-.6.5.2.6.7.6 1.2l-.1.3c-.2.1-.3.3-.3.4-.1.4.4.6.7.7.7.3 1.6-.2 1.8-.8a1 1 0 0 0-.4-1.1l-.7-.8c-.4-.4-1.1-1.4-.7-2.6.1-.5.4-.9.7-1.3a4 4 0 0 1 2.8-.6c1.2.4 1.8 1.1 2.6 1.8.5-1.2 1-2.4 1.8-3.5.9-.9 1.9-1.6 3.1-1.7 1.3.2 2.2.7 2.2 1.6 0 .4-.2 1.1-.9 1.1z\"/\u003e\u003c/svg\u003e\n\n        \u003c/span\u003e\n        \u003cspan class\u003d\"sf-toolbar-value\"\u003e6.4.3\u003c/span\u003e\n    \u003c/div\u003e\n    \u003c/a\u003e        \u003cdiv class\u003d\"sf-toolbar-info\"\u003e        \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003eProfiler token\u003c/b\u003e\n                \u003cspan\u003e\n                                            \u003ca href\u003d\"https://ec-cube/_profiler/4ecb67\"\u003e4ecb67\u003c/a\u003e\n                                    \u003c/span\u003e\n            \u003c/div\u003e\n\n                            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                    \u003cb\u003eEnvironment\u003c/b\u003e\n                    \u003cspan\u003edev\u003c/span\u003e\n                \u003c/div\u003e\n            \n                            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                    \u003cb\u003eDebug\u003c/b\u003e\n                    \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-green\"\u003eenabled\u003c/span\u003e\n                \u003c/div\u003e\n                    \u003c/div\u003e\n\n        \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info-piece sf-toolbar-info-php\"\u003e\n                \u003cb\u003ePHP version\u003c/b\u003e\n                \u003cspan\u003e\n                    8.1.28\n                    \u0026nbsp; \u003ca href\u003d\"/_profiler/phpinfo\"\u003eView phpinfo()\u003c/a\u003e\n                \u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece sf-toolbar-info-php-ext\"\u003e\n                \u003cb\u003ePHP Extensions\u003c/b\u003e\n                                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-gray\"\u003eXdebug ✗\u003c/span\u003e\n                                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-green\"\u003eAPCu ✓\u003c/span\u003e\n                \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-green\"\u003eOPcache ✓\u003c/span\u003e\n            \u003c/div\u003e\n\n            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                \u003cb\u003ePHP SAPI\u003c/b\u003e\n                \u003cspan\u003eapache2handler\u003c/span\u003e\n            \u003c/div\u003e\n        \u003c/div\u003e\n\n        \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                    \u003cb\u003eResources\u003c/b\u003e\n                    \u003cspan\u003e\n                        \u003ca href\u003d\"https://symfony.com/doc/6.4.3/index.html\" rel\u003d\"help\"\u003e\n                            Read Symfony 6.4.3 Docs\n                        \u003c/a\u003e\n                    \u003c/span\u003e\n                \u003c/div\u003e\n                \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n                    \u003cb\u003eHelp\u003c/b\u003e\n                    \u003cspan\u003e\n                        \u003ca href\u003d\"https://symfony.com/support\"\u003e\n                            Symfony Support Channels\n                        \u003c/a\u003e\n                    \u003c/span\u003e\n                \u003c/div\u003e\n                    \u003c/div\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n\n\n                                                                    \n    \u003cdiv class\u003d\"sf-toolbar-block sf-toolbar-block-eccube_core sf-toolbar-status-normal sf-toolbar-block-right\" \u003e\n            \u003cdiv class\u003d\"sf-toolbar-icon\"\u003e    \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" viewBox\u003d\"0 0 124.45 105.65\"\u003e\u003cdefs\u003e\u003cstyle\u003e.cls-1{fill:#353a4e;}.cls-2{fill:#fc0;}.cls-3{fill:#f2b50a;}\u003c/style\u003e\u003c/defs\u003e\u003ctitle\u003eeccube_logo_basic\u003c/title\u003e\u003cpath class\u003d\"cls-1\" d\u003d\"M106.81,15s6.63,49.2-37.4,62.22c-4.09,0-56.94,6.54-58.6-46.42V81.11L69.4,95,110.81,77V16.58Z\"/\u003e\u003cpath class\u003d\"cls-2\" d\u003d\"M110.81,63.42V77L69.4,95,10.81,81.11V65C4,69.18,0,74.22,0,79.65c0,14.36,27.86,26,62.22,26s62.22-11.64,62.22-26C124.45,73.51,119.33,67.86,110.81,63.42Z\"/\u003e\u003cpath class\u003d\"cls-2\" d\u003d\"M69.4,0,10.81,25C9,84.13,61.55,78.42,69.4,77.21Z\"/\u003e\u003cpath class\u003d\"cls-3\" d\u003d\"M106.81,15,69.4,0V77.21C115.22,65.84,106.81,15,106.81,15Z\"/\u003e\u003c/svg\u003e\n    \u003cspan class\u003d\"sf-toolbar-value\"\u003e4.3.0-beta\u003c/span\u003e\n    \u003c/div\u003e\n            \u003cdiv class\u003d\"sf-toolbar-info\"\u003e    \u003cscript\u003e\n        // Minimize to toolbar\n        Sfjs.setPreference(\u0027toolbar/displayState\u0027, \u0027none\u0027);\n    \u003c/script\u003e\n    \u003cstyle\u003e\n        .sf-toolbar-block .sf-toolbar-info-piece.sf-toolbar-plugins .sf-toolbar-status {\n            display: block !important;\n            float: left;\n            margin-right: 4px !important;\n            margin-left: 0 !important;\n            margin-top: 4px;\n        }\n        .sf-toolbar-block .sf-toolbar-info-piece.sf-toolbar-plugins \u003e b {\n            vertical-align: middle;\n        }\n    \u003c/style\u003e\n    \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eEC-CUBE\u003c/b\u003e\n            \u003cspan\u003e\u003ca href\u003d\"https://www.ec-cube.net\"\u003e4.3.0-beta\u003c/a\u003e\u003c/span\u003e\n        \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece sf-toolbar-plugins\"\u003e\n            \u003cb\u003ePlugins\u003c/b\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"Web API\"\u003e\n                    Api42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"Coupon Plugin for EC-CUBE42\"\u003e\n                    Coupon42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"メールマガジンプラグイン\"\u003e\n                    MailMagazine42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"商品レビュー管理プラグイン\"\u003e\n                    ProductReview42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"おすすめ商品管理プラグイン\"\u003e\n                    Recommend42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"関連商品プラグイン\"\u003e\n                    RelatedProduct42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"売上集計プラグイン\"\u003e\n                    SalesReport42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"Securitychecker42\"\u003e\n                    Securitychecker42\n                \u003c/div\u003e\n                            \u003cdiv class\u003d\"sf-toolbar-status sf-toolbar-status-red\" title\u003d\"Site Kit プラグイン\"\u003e\n                    SiteKit42\n                \u003c/div\u003e\n                    \u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eCurrency\u003c/b\u003e\n            \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-green\"\u003e\n                \u003cabbr title\u003d\"Current and default currency\"\u003e\n                    JPY\n                \u003c/abbr\u003e\n            \u003c/span\u003e\n                    \u003c/div\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eLocale\u003c/b\u003e\n            \u003cspan class\u003d\"sf-toolbar-status sf-toolbar-status-green\"\u003e\n                \u003cabbr title\u003d\"Current locale\"\u003e\n                    ja\n                \u003c/abbr\u003e\n            \u003c/span\u003e\n                            \u003cspan class\u003d\"sf-toolbar-status\"\u003e\n                    \u003cabbr title\u003d\"Default locale\"\u003e\n                        \n                    \u003c/abbr\u003e\n                \u003c/span\u003e\n                    \u003c/div\u003e\n    \u003c/div\u003e\n    \u003cdiv class\u003d\"sf-toolbar-info-group\"\u003e\n        \u003cdiv class\u003d\"sf-toolbar-info-piece\"\u003e\n            \u003cb\u003eResources\u003c/b\u003e\n            \u003cspan\u003e\u003ca href\u003d\"https://doc4.ec-cube.net/\" rel\u003d\"help\"\u003eEC-CUBE Documentation\u003c/a\u003e\u003c/span\u003e\n        \u003c/div\u003e\n    \u003c/div\u003e\n    \u003c/div\u003e\n\u003c/div\u003e\n\n                            \n    \u003cbutton class\u003d\"hide-button\" type\u003d\"button\" id\u003d\"sfToolbarHideButton-4ecb67\" title\u003d\"Close Toolbar\" accesskey\u003d\"D\" aria-expanded\u003d\"true\" aria-controls\u003d\"sfToolbarMainContent-4ecb67\"\u003e\n        \u003csvg xmlns\u003d\"http://www.w3.org/2000/svg\" data-icon-name\u003d\"icon-tabler-x\" width\u003d\"24\" height\u003d\"24\" viewBox\u003d\"0 0 24 24\" stroke-width\u003d\"1.5\" stroke\u003d\"currentColor\" fill\u003d\"none\" stroke-linecap\u003d\"round\" stroke-linejoin\u003d\"round\"\u003e\n    \u003cpath stroke\u003d\"none\" d\u003d\"M0 0h24v24H0z\" fill\u003d\"none\"\u003e\u003c/path\u003e\n    \u003cline x1\u003d\"18\" y1\u003d\"6\" x2\u003d\"6\" y2\u003d\"18\"\u003e\u003c/line\u003e\n    \u003cline x1\u003d\"6\" y1\u003d\"6\" x2\u003d\"18\" y2\u003d\"18\"\u003e\u003c/line\u003e\n\u003c/svg\u003e\n\n    \u003c/button\u003e\n\u003c/div\u003e\n\u003c!-- END of Symfony Web Debug Toolbar --\u003e\n",
-        "statusCode": 200,
-        "responseTimeInMs": 393,
-        "elementType": "ZestResponse"
-      },
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 33407,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1715669235460,
-      "cookies": [],
-      "index": 13,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "url": "https://ec-cube/products/detail/3",
+      "url": "https://ec-cube/products/detail/{{product-id}}",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Chromium\";v\u003d\"124\", \"Google Chrome\";v\u003d\"124\", \"Not-A.Brand\";v\u003d\"99\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
@@ -410,35 +272,14 @@
             "elementType": "ZestExpressionStatusCode"
           },
           "elementType": "ZestAssertion"
-        },
-        {
-          "rootExpression": {
-            "length": 77205,
-            "approx": 1,
-            "variableName": "response.body",
-            "not": false,
-            "elementType": "ZestExpressionLength"
-          },
-          "elementType": "ZestAssertion"
         }
       ],
       "followRedirects": false,
       "timestamp": 1715669243305,
       "cookies": [],
-      "index": 14,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
-    {
-      "fieldDefinition": {
-        "formIndex": 1,
-        "fieldName": "_token",
-        "elementType": "ZestFieldDefinition"
-      },
-      "variableName": "csrf6",
-      "index": 15,
-      "enabled": true,
-      "elementType": "ZestAssignFieldValue"
     }
   ],
   "authentication": [],
