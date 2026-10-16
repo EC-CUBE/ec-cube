@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service;
 
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\OpeningHours;
 use Eccube\Repository\BaseInfoRepository;
 use Eccube\Service\SiteStructuredDataService;
 use Symfony\Component\Filesystem\Filesystem;
@@ -261,5 +262,188 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
 
         // 空文字の場合は "0221:" だけの iso6523Code を出力しない
         $this->assertArrayNotHasKey('iso6523Code', $data);
+    }
+
+    public function testSameAsIsSplitIntoListAndTrimmed(): void
+    {
+        $this->BaseInfo->setSameAs("https://example.com/a\n  https://example.com/b  \n\nhttps://example.com/c");
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        // 改行区切り→trim→空行除去でURLのリストになる
+        $this->assertSame([
+            'https://example.com/a',
+            'https://example.com/b',
+            'https://example.com/c',
+        ], $data['sameAs']);
+    }
+
+    public function testEmptySameAsIsOmitted(): void
+    {
+        $this->BaseInfo->setSameAs("  \n  ");
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('sameAs', $data);
+    }
+
+    public function testFoundingDateIsFormatted(): void
+    {
+        $this->BaseInfo->setFoundingDate(new \DateTime('2000-04-01'));
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('2000-04-01', $data['foundingDate']);
+    }
+
+    public function testNumberOfEmployeesIsQuantitativeValue(): void
+    {
+        $this->BaseInfo->setNumberOfEmployees(42);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('QuantitativeValue', $data['numberOfEmployees']['@type']);
+        $this->assertSame(42, $data['numberOfEmployees']['value']);
+    }
+
+    public function testSiteImageIsOutputAsImage(): void
+    {
+        $this->BaseInfo->setSiteImage('https://example.com/site.png');
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame('https://example.com/site.png', $data['image']);
+    }
+
+    public function testCopyrightYearIsOutputOnWebSite(): void
+    {
+        $this->BaseInfo->setCopyrightYear(2020);
+
+        $data = $this->service->createWebSiteJsonLd($this->BaseInfo);
+        [$webSite] = $data['@graph'];
+
+        // copyrightYear は WebSite ノードに載る（Organization ではない）
+        $this->assertSame('WebSite', $webSite['@type']);
+        $this->assertSame(2020, $webSite['copyrightYear']);
+    }
+
+    public function testOptionalSchemaFieldsAreOmittedWhenUnset(): void
+    {
+        $this->BaseInfo->setSameAs(null);
+        $this->BaseInfo->setFoundingDate(null);
+        $this->BaseInfo->setNumberOfEmployees(null);
+        $this->BaseInfo->setSiteImage(null);
+        $this->BaseInfo->setCopyrightYear(null);
+
+        $org = $this->service->createOrganizationJsonLd($this->BaseInfo);
+        [$webSite] = $this->service->createWebSiteJsonLd($this->BaseInfo)['@graph'];
+
+        $this->assertArrayNotHasKey('sameAs', $org);
+        $this->assertArrayNotHasKey('foundingDate', $org);
+        $this->assertArrayNotHasKey('numberOfEmployees', $org);
+        $this->assertArrayNotHasKey('image', $org);
+        $this->assertArrayNotHasKey('copyrightYear', $webSite);
+    }
+
+    /**
+     * 営業時間は Organization 直下ではなく、問い合わせ窓口（contactPoint）の hoursAvailable に出力する.
+     *
+     * openingHoursSpecification は schema.org で Place のプロパティで、Organization には定義されていない。
+     */
+    public function testOpeningHoursIsOutputAsContactPointHoursAvailable(): void
+    {
+        $this->BaseInfo->setPhoneNumber('0312345678');
+        $this->BaseInfo->getOpeningHours()->clear();
+        $OpeningHours = new OpeningHours();
+        $OpeningHours->setDayOfWeek(['Monday', 'Tuesday']);
+        $OpeningHours->setOpens(new \DateTime('09:00'));
+        $OpeningHours->setCloses(new \DateTime('18:00'));
+        $this->BaseInfo->addOpeningHour($OpeningHours);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('openingHoursSpecification', $data);
+        // 既存の ContactPoint（電話番号など）に統合する
+        $this->assertSame('ContactPoint', $data['contactPoint']['@type']);
+        $this->assertSame('0312345678', $data['contactPoint']['telephone']);
+        $this->assertSame([[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Monday', 'Tuesday'],
+            'opens' => '09:00',
+            'closes' => '18:00',
+        ]], $data['contactPoint']['hoursAvailable']);
+    }
+
+    /**
+     * 電話番号もメールアドレスも無くても、営業時間があれば ContactPoint を出力する.
+     */
+    public function testOpeningHoursCreatesContactPointWithoutPhoneOrEmail(): void
+    {
+        $this->BaseInfo->setPhoneNumber(null);
+        $this->BaseInfo->setEmail02(null);
+        $this->BaseInfo->getOpeningHours()->clear();
+        $OpeningHours = new OpeningHours();
+        $OpeningHours->setDayOfWeek(['Saturday']);
+        $OpeningHours->setOpens(new \DateTime('10:00'));
+        $OpeningHours->setCloses(new \DateTime('17:00'));
+        $this->BaseInfo->addOpeningHour($OpeningHours);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $contactPoint = $data['contactPoint'];
+        $this->assertSame('ContactPoint', $contactPoint['@type']);
+        $this->assertSame('customer support', $contactPoint['contactType']);
+        $this->assertArrayNotHasKey('telephone', $contactPoint);
+        $this->assertArrayNotHasKey('email', $contactPoint);
+        $this->assertArrayHasKey('url', $contactPoint);
+        $this->assertSame(['Saturday'], $contactPoint['hoursAvailable'][0]['dayOfWeek']);
+    }
+
+    /**
+     * 日をまたぐ営業（閉店が開店より前）は、schema.org の解釈（closes が opens より前なら翌日まで）に
+     * 合わせて入力どおりに出力する.
+     */
+    public function testOvernightOpeningHoursIsOutputAsEntered(): void
+    {
+        $this->BaseInfo->getOpeningHours()->clear();
+        $OpeningHours = new OpeningHours();
+        $OpeningHours->setDayOfWeek(['Friday', 'Saturday']);
+        $OpeningHours->setOpens(new \DateTime('18:00'));
+        $OpeningHours->setCloses(new \DateTime('03:00'));
+        $this->BaseInfo->addOpeningHour($OpeningHours);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertSame([[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Friday', 'Saturday'],
+            'opens' => '18:00',
+            'closes' => '03:00',
+        ]], $data['contactPoint']['hoursAvailable']);
+    }
+
+    public function testEmptyOpeningHoursIsOmitted(): void
+    {
+        $this->BaseInfo->setPhoneNumber('0312345678');
+        $this->BaseInfo->getOpeningHours()->clear();
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('openingHoursSpecification', $data);
+        $this->assertArrayNotHasKey('hoursAvailable', $data['contactPoint']);
+    }
+
+    /**
+     * 電話番号・メールアドレス・営業時間がいずれも無ければ、ContactPoint は出力しない.
+     */
+    public function testContactPointIsOmittedWithoutPhoneEmailAndOpeningHours(): void
+    {
+        $this->BaseInfo->setPhoneNumber(null);
+        $this->BaseInfo->setEmail02(null);
+        $this->BaseInfo->getOpeningHours()->clear();
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('contactPoint', $data);
     }
 }

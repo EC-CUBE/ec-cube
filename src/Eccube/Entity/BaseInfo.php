@@ -13,11 +13,14 @@
 
 namespace Eccube\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\Master\Country;
 use Eccube\Entity\Master\Pref;
 use Eccube\Repository\BaseInfoRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'dtb_base_info')]
 #[ORM\InheritanceType('SINGLE_TABLE')]
@@ -196,6 +199,34 @@ class BaseInfo extends AbstractEntity
 
     #[ORM\Column(name: 'order_pdf_visible_invoice_number', type: Types::BOOLEAN, options: ['default' => true])]
     private bool $order_pdf_visible_invoice_number = true;
+
+    #[ORM\Column(name: 'same_as', type: Types::TEXT, nullable: true)]
+    private ?string $same_as = null;
+
+    #[ORM\Column(name: 'founding_date', type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $founding_date = null;
+
+    #[ORM\Column(name: 'number_of_employees', type: Types::INTEGER, nullable: true)]
+    private ?int $number_of_employees = null;
+
+    #[ORM\Column(name: 'copyright_year', type: Types::INTEGER, nullable: true)]
+    private ?int $copyright_year = null;
+
+    #[ORM\Column(name: 'site_image', type: Types::STRING, length: 255, nullable: true)]
+    private ?string $site_image = null;
+
+    /**
+     * @var Collection<int, OpeningHours>
+     */
+    #[ORM\OneToMany(targetEntity: OpeningHours::class, mappedBy: 'BaseInfo', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['sort_no' => 'ASC'])]
+    #[Assert\Valid]
+    private Collection $OpeningHours;
+
+    public function __construct()
+    {
+        $this->OpeningHours = new ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -1123,5 +1154,124 @@ class BaseInfo extends AbstractEntity
     public function isOrderPdfVisibleInvoiceNumber(): bool
     {
         return $this->order_pdf_visible_invoice_number;
+    }
+
+    /**
+     * Get sameAs.
+     *
+     * 構造化データ（Organization.sameAs）に出力する SNS 等の公式 URL を改行区切りで保持する.
+     */
+    public function getSameAs(): ?string
+    {
+        return $this->same_as;
+    }
+
+    /**
+     * Set sameAs.
+     */
+    public function setSameAs(?string $sameAs): BaseInfo
+    {
+        $this->same_as = $sameAs;
+
+        return $this;
+    }
+
+    /**
+     * Get foundingDate.
+     */
+    public function getFoundingDate(): ?\DateTime
+    {
+        return $this->founding_date;
+    }
+
+    /**
+     * Set foundingDate.
+     */
+    public function setFoundingDate(?\DateTime $foundingDate): BaseInfo
+    {
+        $this->founding_date = $foundingDate;
+
+        return $this;
+    }
+
+    /**
+     * Get numberOfEmployees.
+     */
+    public function getNumberOfEmployees(): ?int
+    {
+        return $this->number_of_employees;
+    }
+
+    /**
+     * Set numberOfEmployees.
+     */
+    public function setNumberOfEmployees(?int $numberOfEmployees): BaseInfo
+    {
+        $this->number_of_employees = $numberOfEmployees;
+
+        return $this;
+    }
+
+    /**
+     * Get copyrightYear.
+     */
+    public function getCopyrightYear(): ?int
+    {
+        return $this->copyright_year;
+    }
+
+    /**
+     * Set copyrightYear.
+     */
+    public function setCopyrightYear(?int $copyrightYear): BaseInfo
+    {
+        $this->copyright_year = $copyrightYear;
+
+        return $this;
+    }
+
+    /**
+     * Get siteImage.
+     */
+    public function getSiteImage(): ?string
+    {
+        return $this->site_image;
+    }
+
+    /**
+     * Set siteImage.
+     */
+    public function setSiteImage(?string $siteImage): BaseInfo
+    {
+        $this->site_image = $siteImage;
+
+        return $this;
+    }
+
+    /**
+     * Get openingHours.
+     *
+     * @return Collection<int, OpeningHours>
+     */
+    public function getOpeningHours(): Collection
+    {
+        return $this->OpeningHours;
+    }
+
+    public function addOpeningHour(OpeningHours $openingHour): BaseInfo
+    {
+        if (!$this->OpeningHours->contains($openingHour)) {
+            $this->OpeningHours[] = $openingHour;
+            $openingHour->setBaseInfo($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOpeningHour(OpeningHours $openingHour): BaseInfo
+    {
+        $this->OpeningHours->removeElement($openingHour);
+
+        return $this;
     }
 }

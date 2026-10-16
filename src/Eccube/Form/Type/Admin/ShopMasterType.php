@@ -15,6 +15,7 @@ namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
 use Eccube\Entity\BaseInfo;
+use Eccube\Entity\OpeningHours;
 use Eccube\Form\EventListener\ConvertKanaListener;
 use Eccube\Form\Type\AddressType;
 use Eccube\Form\Type\PhoneNumberType;
@@ -23,20 +24,42 @@ use Eccube\Form\Type\PriceType;
 use Eccube\Form\Type\ToggleSwitchType;
 use Eccube\Form\Validator\Email;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Class ShopMasterType
  */
 class ShopMasterType extends AbstractType
 {
+    /**
+     * 日をまたぐ営業時間の重複判定で使う、曜日（schema.org DayOfWeek）の翌日.
+     * PublicHolidays は翌日の曜日が決まらないため含めない.
+     */
+    private const NEXT_DAY_OF_WEEK = [
+        'Monday' => 'Tuesday',
+        'Tuesday' => 'Wednesday',
+        'Wednesday' => 'Thursday',
+        'Thursday' => 'Friday',
+        'Friday' => 'Saturday',
+        'Saturday' => 'Sunday',
+        'Sunday' => 'Monday',
+    ];
+
     /**
      * ShopMasterType constructor.
      */
@@ -127,6 +150,64 @@ class ShopMasterType extends AbstractType
                 'constraints' => [
                     new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
                 ],
+            ])
+            // 構造化データ（JSON-LD / schema.org）
+            ->add('same_as', TextareaType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(max: $this->eccubeConfig['eccube_ltext_len']),
+                    new Assert\Callback($this->validateSameAsUrls(...)),
+                ],
+            ])
+            ->add('founding_date', DateType::class, [
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+                'constraints' => [
+                    new Assert\LessThanOrEqual(value: 'today', message: 'admin.setting.shop.founding_date.error.not_future'),
+                ],
+            ])
+            ->add('number_of_employees', IntegerType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\PositiveOrZero(),
+                    // DB カラムは INT。桁あふれによる保存時エラーを防ぐため上限を設ける
+                    new Assert\LessThanOrEqual(2147483647),
+                ],
+            ])
+            ->add('copyright_year', IntegerType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Range(min: 1900, max: 9999),
+                ],
+            ])
+            ->add('site_image', TextType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+                    new Assert\Url(),
+                ],
+            ])
+            // opening_hours_rendered は営業時間の欄が描画されたことを示すセンチネル。
+            // shop_master.twig が営業時間の欄と一緒に出力するため、テンプレートを上書きして
+            // 欄を描画していない場合だけ送信データから欠落する。
+            // 「上書きで未描画」と「画面で全行削除」はどちらも OpeningHours のキーが送られてこないため、
+            // このセンチネルが無いと両者を区別できない（PRE_SUBMIT の removeUnrenderedOpeningHours() を参照）。
+            ->add('opening_hours_rendered', HiddenType::class, [
+                'mapped' => false,
+                'data' => '1',
+            ])
+            ->add('OpeningHours', CollectionType::class, [
+                'entry_type' => OpeningHoursType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'by_reference' => false,
+                'required' => false,
+                // 既存の行の値をすべて消した場合も行ごと削除する。`true` だと子フォームの
+                // データが OpeningHours のインスタンスのため isEmpty() が false になり、削除されない
+                'delete_empty' => static fn (?OpeningHours $OpeningHours = null): bool => $OpeningHours === null
+                    || (!$OpeningHours->getDayOfWeek() && $OpeningHours->getOpens() === null && $OpeningHours->getCloses() === null),
             ])
             // 送料設定
             ->add('delivery_free_amount', PriceType::class, [
@@ -228,6 +309,13 @@ class ShopMasterType extends AbstractType
                 ])
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
+
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $this->removeUnrenderedOpeningHours(...));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $this->reindexOpeningHours(...));
+        // 営業時間の重複はフォームの子キーに紐づけたいので、クラス制約の Callback ではなく
+        // POST_SUBMIT で検証する（詳細は validateOpeningHoursOverlap() のコメント参照）。
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOpeningHoursOverlap(...));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, $this->sortOpeningHours(...));
     }
 
     /**
@@ -239,5 +327,195 @@ class ShopMasterType extends AbstractType
         $resolver->setDefaults([
             'data_class' => BaseInfo::class,
         ]);
+    }
+
+    /**
+     * sameAs（改行区切りの複数URL）の各行が有効な URL か検証する.
+     *
+     * 単一URLの site_image と同じ Assert\Url で1行ずつ検証し、
+     * 1行でも不正なら項目全体にエラーを付ける（空行は無視する）.
+     */
+    public function validateSameAsUrls(?string $sameAs, ExecutionContextInterface $context): void
+    {
+        if ($sameAs === null || $sameAs === '') {
+            return;
+        }
+
+        $validator = $context->getValidator();
+        $lines = preg_split('/\R/u', $sameAs) ?: [];
+        foreach ($lines as $line) {
+            $url = trim($line);
+            if ($url === '') {
+                continue;
+            }
+            if ($validator->validate($url, new Assert\Url())->count() > 0) {
+                $context->buildViolation('admin.setting.shop.same_as.error.invalid_url')
+                    ->addViolation();
+
+                return;
+            }
+        }
+    }
+
+    /**
+     * 営業時間の欄が描画されていない（テンプレートの上書き等）ときは、営業時間に一切触れない.
+     *
+     * CollectionType は送信キーが無いと空のコレクションとして扱い、allow_delete と
+     * BaseInfo::$OpeningHours の orphanRemoval により既存の営業時間を警告なしで全件削除してしまうため、
+     * フィールドごと取り除いて DataMapper が $OpeningHours に触れないようにする.
+     */
+    private function removeUnrenderedOpeningHours(FormEvent $event): void
+    {
+        $data = $event->getData();
+        if (!is_array($data) || empty($data['opening_hours_rendered'])) {
+            $event->getForm()->remove('OpeningHours');
+        }
+    }
+
+    /**
+     * 送信された営業時間の行のキーを 0 から詰め直す.
+     *
+     * 画面で中間の行を削除すると送信キーは歯抜け（0, 2 等）になるが、BaseInfo::$OpeningHours は
+     * adder で 0 から詰めて追加されるため、OpeningHours::validate() の違反のパス
+     * （OpeningHours[<コレクションの添字>].closes 等）が別の行や実在しない子を指し、
+     * エラーが該当の行に表示されない（ルートのフォームに付き、画面に何も出ずに保存されない）。
+     * 子フォームのキーとコレクションの添字をそろえるため、送信データの段階で詰め直す.
+     *
+     * 曜日も開店・閉店も空の行は、詰め直す前に取り除く。残すと SUBMIT の段階で delete_empty が
+     * 子を外し、キーがふたたび歯抜けになるため（既存の行を空にした場合も、値が詰め直されて
+     * 末尾のエンティティが削除されるだけで、保存される内容と順序は変わらない）.
+     */
+    private function reindexOpeningHours(FormEvent $event): void
+    {
+        $data = $event->getData();
+        if (!is_array($data) || !isset($data['OpeningHours']) || !is_array($data['OpeningHours'])) {
+            return;
+        }
+
+        $rows = array_filter(
+            $data['OpeningHours'],
+            static fn ($row): bool => !is_array($row)
+                || !empty($row['day_of_week'])
+                || (string) ($row['opens'] ?? '') !== ''
+                || (string) ($row['closes'] ?? '') !== ''
+        );
+        $data['OpeningHours'] = array_values($rows);
+        $event->setData($data);
+    }
+
+    /**
+     * 営業時間の表示順（sort_no）を画面の行の順に 0 から振り直す.
+     *
+     * 送信キーではなくフォームの子の並び順を使う（キーは reindexOpeningHours() で詰め直している）.
+     */
+    private function sortOpeningHours(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        if (!$form->has('OpeningHours')) {
+            return;
+        }
+
+        $sortNo = 0;
+        foreach ($form->get('OpeningHours') as $child) {
+            $OpeningHours = $child->getData();
+            if ($OpeningHours instanceof OpeningHours) {
+                $OpeningHours->setSortNo($sortNo++);
+            }
+        }
+    }
+
+    /**
+     * 営業時間の時間帯が重複していないかを、日をまたぐ行は翌日の曜日の行とも比べて検証する.
+     *
+     * 閉店が開店より前の行（深夜営業）は、曜日 d の [開店, 24:00) と翌日の [00:00, 閉店) に分けて比較する。
+     * 日曜の翌日は月曜とする。祝日（PublicHolidays）は翌日の曜日が決まらないため、翌日側は比較しない。
+     *
+     * エンティティのコレクションではなく**フォームの子**を走査し、エラーを子フォームへ直接付ける
+     * （送信キーは reindexOpeningHours() で 0 から詰め直しており、子のキーと画面の行の順が一致する）。
+     */
+    private function validateOpeningHoursOverlap(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        if (!$form->has('OpeningHours')) {
+            return;
+        }
+
+        /** @var FormInterface[] $children */
+        $children = iterator_to_array($form->get('OpeningHours'));
+        $names = array_keys($children);
+        $segments = [];
+        foreach ($names as $name) {
+            $data = $children[$name]->getData();
+            $segments[$name] = $data instanceof OpeningHours ? $this->toDailySegments($data) : [];
+        }
+
+        $count = count($names);
+        for ($i = 0; $i < $count; ++$i) {
+            for ($j = $i + 1; $j < $count; ++$j) {
+                if ($this->segmentsOverlap($segments[$names[$i]], $segments[$names[$j]])) {
+                    // 描画済みのリーフ（closes）にエラーを付け、該当行に表示されるようにする
+                    $children[$names[$j]]->get('closes')
+                        ->addError(new FormError(trans('admin.setting.shop.opening_hours.error.overlap')));
+                }
+            }
+        }
+    }
+
+    /**
+     * 営業時間 1 行を、曜日ごとの [開始分, 終了分) の区間に分解する.
+     *
+     * 時刻が欠けている行・開店と閉店が同じ行は単体バリデーションに委ね、区間を返さない.
+     *
+     * @return list<array{0: string, 1: int, 2: int}>
+     */
+    private function toDailySegments(OpeningHours $OpeningHours): array
+    {
+        $opens = $OpeningHours->getOpens();
+        $closes = $OpeningHours->getCloses();
+        if ($opens === null || $closes === null) {
+            return [];
+        }
+
+        $opensMin = (int) $opens->format('G') * 60 + (int) $opens->format('i');
+        $closesMin = (int) $closes->format('G') * 60 + (int) $closes->format('i');
+        if ($opensMin === $closesMin) {
+            return [];
+        }
+
+        $segments = [];
+        foreach ($OpeningHours->getDayOfWeek() ?? [] as $day) {
+            if ($opensMin < $closesMin) {
+                $segments[] = [$day, $opensMin, $closesMin];
+                continue;
+            }
+
+            // 日をまたぐ営業: 当日の [開店, 24:00) と翌日の [00:00, 閉店)
+            $segments[] = [$day, $opensMin, 24 * 60];
+            $nextDay = self::NEXT_DAY_OF_WEEK[$day] ?? null;
+            if ($nextDay !== null) {
+                $segments[] = [$nextDay, 0, $closesMin];
+            }
+        }
+
+        return $segments;
+    }
+
+    /**
+     * 2 つの区間リストに、同じ曜日で交差する区間があるか.
+     *
+     * @param list<array{0: string, 1: int, 2: int}> $a
+     * @param list<array{0: string, 1: int, 2: int}> $b
+     */
+    private function segmentsOverlap(array $a, array $b): bool
+    {
+        foreach ($a as [$dayA, $startA, $endA]) {
+            foreach ($b as [$dayB, $startB, $endB]) {
+                if ($dayA === $dayB && max($startA, $startB) < min($endA, $endB)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

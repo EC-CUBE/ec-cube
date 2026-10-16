@@ -19,6 +19,40 @@ file that was distributed with this source code.
 
 {% block javascript %}
     <script src="//yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+    <script>
+        $(function() {
+            var $holder = $('#opening-hours-group');
+            // 次に追加する行の index。中間行を削除した送信でエラー再描画されると name の番号が歯抜け（0, 2 等）に
+            // なり、行数を使うと既存の行と衝突して 2 行が 1 行に合体する。既存の行の最大番号 + 1 から始める
+            var index = 0;
+            $holder.find(':input[name^="shop_master[OpeningHours]["]').each(function() {
+                var m = this.name.match(/OpeningHours\]\[(\d+)\]/);
+                if (m) {
+                    index = Math.max(index, parseInt(m[1], 10) + 1);
+                }
+            });
+
+            // 営業時間の行を追加する
+            $('#add-opening-hour-button').on('click', function() {
+                var prototype = $holder.data('prototype');
+                var newForm = $(prototype.replace(/__name__/g, index));
+                $holder.append(newForm);
+                index++;
+            });
+
+            // 営業時間の行を削除する
+            $holder.on('click', '.delete-opening-hour', function() {
+                $(this).closest('.opening-hours-item').remove();
+            });
+
+            // 時刻入力欄をクリックしたら時刻ピッカーを開く（時計アイコンを押さなくてもよい）
+            $holder.on('click', 'input[type="time"]', function() {
+                if (typeof this.showPicker === 'function') {
+                    this.showPicker();
+                }
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block main %}
@@ -212,6 +246,66 @@ file that was distributed with this source code.
                                     {{ form_errors(form.message) }}
                                 </div>
                                 <div class="col-2"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.same_as'|trans }}"><span>{{ 'admin.setting.shop.shop.same_as'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.same_as) }}
+                                    {{ form_errors(form.same_as) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.founding_date'|trans }}"><span>{{ 'admin.setting.shop.shop.founding_date'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.founding_date) }}
+                                    {{ form_errors(form.founding_date) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.number_of_employees'|trans }}"><span>{{ 'admin.setting.shop.shop.number_of_employees'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.number_of_employees) }}
+                                    {{ form_errors(form.number_of_employees) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.copyright_year'|trans }}"><span>{{ 'admin.setting.shop.shop.copyright_year'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.copyright_year) }}
+                                    {{ form_errors(form.copyright_year) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.site_image'|trans }}"><span>{{ 'admin.setting.shop.shop.site_image'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    {{ form_widget(form.site_image) }}
+                                    {{ form_errors(form.site_image) }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.setting.shop.shop.opening_hours'|trans }}"><span>{{ 'admin.setting.shop.shop.opening_hours'|trans }}</span><i class="fa fa-question-circle fa-lg ms-1"></i></div>
+                                </div>
+                                <div class="col mb-2">
+                                    <div id="opening-hours-group" data-prototype="{% apply escape %}{{ include('@admin/Setting/Shop/opening_hours_prototype.twig', {'form': form.OpeningHours.vars.prototype}) }}{% endapply %}">
+                                        {% for child in form.OpeningHours %}
+                                            {{ include('@admin/Setting/Shop/opening_hours_prototype.twig', {'form': child}) }}
+                                        {% endfor %}
+                                    </div>
+                                    <button type="button" id="add-opening-hour-button" class="btn btn-ec-regular mt-2">{{ 'admin.setting.shop.opening_hours.add'|trans }}</button>
+                                    {# 営業時間の欄を描画したことを示す。上書きテンプレートで欄が無い場合に既存の営業時間を削除しないため #}
+                                    {{ form_widget(form.opening_hours_rendered) }}
+                                </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}
                             {% for f in form|filter(f => f.vars.eccube_form_options.auto_render) %}
