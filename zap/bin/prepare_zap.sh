@@ -22,11 +22,30 @@ zap() {
     return 1
 }
 
+# アドオンの一覧の取得 (Check for updates) に失敗すると、導入されないまま zap.sh は成功で終わる。
+# 導入できたかをファイルで確かめ、無ければ導入し直す。
+# <確かめるファイル> は省略すると、アドオンのファイル (ZAP の同梱か、ダウンロードしたもの)
+install_addon() {
+    local id=$1 check=${2:-} i
+    for i in 1 2 3; do
+        zap -addoninstall "${id}"
+        if [[ -n ${check} ]]; then
+            docker compose exec -T zap test -f "${check}" && return 0
+        else
+            docker compose exec -T zap sh -c "ls /zap/plugin/${id}-*.zap /home/zap/.ZAP/plugin/${id}-*.zap 2> /dev/null; true" | grep -q . && return 0
+        fi
+        echo "アドオン ${id} を導入できませんでした (${i} 回目)" >&2
+        sleep 10
+    done
+    return 1
+}
+
 zap -addonupdate
+# sequence は同梱の版を外して最新を入れる。同梱のファイルが残るため、アドオンが置くポリシーで確かめる
 zap -addonuninstall sequence
-zap -addoninstall sequence
-zap -addoninstall automation
-zap -addoninstall groovy
+install_addon sequence /home/zap/.ZAP/policies/Sequence.policy
+install_addon automation
+install_addon groovy
 
 docker compose exec -T zap sh -c "sed \
     -e 's#<policy>Sequence</policy>#<policy>Smoke</policy>#' \
