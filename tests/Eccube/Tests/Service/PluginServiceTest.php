@@ -934,16 +934,18 @@ EOD;
     public function testRemoveByComposerLeavesPluginWhoseCodeDiffersFromPackageName(): void
     {
         $code = $this->installDummyPlugin();
-        $this->updateInstalledPackage(0, ['name' => 'ec-cube/other']);
+        $this->updateInstalledPackage(0, ['name' => 'ec-cube/dummyother']);
+        // パッケージ名の末尾と同じ名前のディレクトリが無いと, コードの判定より前に拒否される
+        (new Filesystem())->mkdir($this->service->calcPluginDir('dummyother'));
 
         $composerService = $this->createMock(ComposerServiceInterface::class);
         $composerService->expects($this->once())
             ->method('execRemove')
-            ->with('ec-cube/other')
+            ->with('ec-cube/dummyother')
             ->willReturn('removed');
         $this->replaceComposerService($composerService);
 
-        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/other'));
+        $this->assertSame('removed', $this->service->removeByComposer('ec-cube/dummyother'));
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
@@ -1185,16 +1187,41 @@ EOD;
         $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
-    public function testRemoveByComposerPassesThroughNonPluginPackage(): void
+    /**
+     * app/Plugin にディレクトリが無いパッケージ (プラグインでないものなど) は, composer remove の前の
+     * dropTableToExtra() と同じく拒否する.
+     */
+    public function testRemoveByComposerRejectsPackageWithoutPluginDirectory(): void
     {
         $composerService = $this->createMock(ComposerServiceInterface::class);
-        $composerService->expects($this->once())
-            ->method('execRemove')
-            ->with('vendor/library')
-            ->willReturn('removed');
+        $composerService->expects($this->never())->method('execRemove');
         $this->replaceComposerService($composerService);
 
-        $this->assertSame('removed', $this->service->removeByComposer('vendor/library'));
+        $this->expectException(PluginException::class);
+        $this->expectExceptionMessage('vendor/library not found');
+        $this->service->removeByComposer('vendor/library');
+    }
+
+    /**
+     * プラグインと, app/Plugin にディレクトリが無いパッケージを一緒に指定した場合は, プラグインも
+     * 事前にアンインストールしない. アンインストールした後で dropTableToExtra() に拒否されると,
+     * composer remove が走らずレコードだけが消えるため.
+     */
+    public function testRemoveByComposerUninstallsNothingWhenAnyPackageHasNoPluginDirectory(): void
+    {
+        $code = $this->installDummyPlugin();
+
+        $composerService = $this->createMock(ComposerServiceInterface::class);
+        $composerService->expects($this->never())->method('execRemove');
+        $this->replaceComposerService($composerService);
+
+        try {
+            $this->service->removeByComposer('ec-cube/'.$code.' vendor/library');
+            $this->fail('app/Plugin にディレクトリが無いパッケージは削除できない');
+        } catch (PluginException $e) {
+            $this->assertSame('vendor/library not found', $e->getMessage());
+        }
+        $this->assertInstanceOf(Plugin::class, $this->pluginRepository->findByCode($code));
     }
 
     /**

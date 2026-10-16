@@ -635,8 +635,19 @@ class PluginService
      */
     public function removeByComposer(string $packageNames, ?OutputInterface $output = null): string
     {
+        $packageNameList = explode(' ', trim($packageNames));
+
+        // composer remove の前の dropTableToExtra() は, app/Plugin にディレクトリが無いパッケージ
+        // (プラグインでないものなど) を拒否する. 事前にアンインストールした後で拒否されないよう,
+        // 何も変更しないうちに同じ判定で止める.
+        foreach ($packageNameList as $packageName) {
+            if (!$this->hasPluginDirectory($packageName)) {
+                throw new PluginException($packageName.' not found');
+            }
+        }
+
         $Plugins = [];
-        foreach (explode(' ', trim($packageNames)) as $packageName) {
+        foreach ($packageNameList as $packageName) {
             $Plugin = $this->findPluginInstalledByComposer($packageName);
             if ($Plugin !== null) {
                 $Plugins[] = $Plugin;
@@ -681,6 +692,22 @@ class PluginService
         }
 
         return $uninstallLog.$log;
+    }
+
+    /**
+     * パッケージ名の末尾と同じ名前のディレクトリが app/Plugin にあるかを返す.
+     *
+     * ComposerApiService::dropTableToExtra() と同じく, 大文字小文字は区別しない.
+     */
+    private function hasPluginDirectory(string $packageName): bool
+    {
+        foreach (glob($this->projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) ?: [] as $dir) {
+            if (strtolower(basename($dir)) === strtolower(basename($packageName))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
