@@ -276,7 +276,7 @@ class OwnerStoreController extends AbstractController
         $packageName = self::$vendorName.'/'.$pluginCode;
 
         try {
-            $log = $this->composerService->execRemove($packageName);
+            $log = $this->pluginService->removeByComposer($packageName);
 
             return $this->json(['success' => false, 'log' => $log]);
         } catch (\Exception $e) {

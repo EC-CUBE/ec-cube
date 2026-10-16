@@ -29,9 +29,11 @@ use Eccube\Entity\Plugin;
 use Eccube\Exception\PluginException;
 use Eccube\Repository\PluginRepository;
 use Eccube\Service\Composer\ComposerServiceInterface;
+use Eccube\Service\Composer\InstalledPackageReader;
 use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
@@ -68,6 +70,7 @@ class PluginService
         protected ComposerServiceInterface $composerService,
         private readonly PluginApiService $pluginApiService,
         private readonly PluginContext $pluginContext,
+        protected InstalledPackageReader $installedPackageReader,
     ) {
         $this->projectRoot = $this->eccubeConfig->get('kernel.project_dir');
     }
@@ -611,6 +614,153 @@ class PluginService
         $this->pluginApiService->pluginUninstalled($plugin);
 
         return true;
+    }
+
+    /**
+     * composer で導入したプラグインを composer remove で削除する.
+     *
+     * composer remove は依存パッケージの vendor を非同期で削除するため, その最中に
+     * ec-cube/plugin-installer がプラグインをアンインストールすると, スキーマ更新が
+     * 削除済みのクラスを読み込んで失敗することがある (#7204).
+     * 依存パッケージが揃っているうちにアンインストールを済ませ, プラグインのレコードを消しておく.
+     * plugin-installer はレコードが無いプラグインのアンインストールを行わない.
+     *
+     * プラグインのディレクトリは composer remove が削除する. dropTableToExtra() が
+     * プラグインのディレクトリを参照するため, ここでは削除しない.
+     *
+     * @param string $packageNames format "foo/bar foo/baz"
+     *
+     * @throws PluginException
+     * @throws \Exception
+     */
+    public function removeByComposer(string $packageNames, ?OutputInterface $output = null): string
+    {
+        $packageNameList = explode(' ', trim($packageNames));
+
+        // composer remove の前の dropTableToExtra() は, app/Plugin にディレクトリが無いパッケージ
+        // (プラグインでないものなど) を拒否する. 事前にアンインストールした後で拒否されないよう,
+        // 何も変更しないうちに同じ判定で止める.
+        foreach ($packageNameList as $packageName) {
+            if (!$this->hasPluginDirectory($packageName)) {
+                throw new PluginException($packageName.' not found');
+            }
+        }
+
+        $Plugins = [];
+        foreach ($packageNameList as $packageName) {
+            $Plugin = $this->findPluginInstalledByComposer($packageName);
+            if ($Plugin !== null) {
+                $Plugins[] = $Plugin;
+            }
+        }
+
+        // 一緒に事前アンインストールするプラグインからの依存は, composer remove を妨げない.
+        // それ以外 (アーカイブで導入したものなど) は, 引数に並んでいても依存の判定から外さない.
+        $removingCodes = array_map(fn (Plugin $Plugin): string => $Plugin->getCode(), $Plugins);
+        foreach ($Plugins as $Plugin) {
+            // アンインストールした後で composer remove が失敗しないよう, 削除できないものは先に止める
+            if ($Plugin->isEnabled()) {
+                throw new PluginException('プラグインを無効化してください。'.$Plugin->getCode());
+            }
+            // 無効なプラグインに依存されている場合も composer remove は失敗するので, 管理画面と同じく無効なものも含める
+            $dependents = array_values(array_diff($this->findDependentPlugin($Plugin->getCode()), $removingCodes));
+            if ($dependents !== []) {
+                throw new PluginException('このプラグインに依存しているプラグインがあるため削除できません。'.$dependents[0]);
+            }
+        }
+
+        // PluginManager::uninstall() の出力は, これまで composer remove の出力としてログに含まれていた.
+        // 出力先が無い (Web から呼ばれた) 場合は, 応答に混ざらないよう同じくログへ集める.
+        $uninstallLog = '';
+        foreach ($Plugins as $Plugin) {
+            if ($output === null) {
+                ob_start();
+            }
+            try {
+                $this->uninstall($Plugin, false);
+            } finally {
+                if ($output === null) {
+                    $uninstallLog .= (string) ob_get_clean();
+                }
+            }
+        }
+
+        $log = $this->composerService->execRemove($packageNames, $output);
+
+        foreach ($Plugins as $Plugin) {
+            $this->removeAssets($Plugin->getCode());
+        }
+
+        return $uninstallLog.$log;
+    }
+
+    /**
+     * パッケージ名の末尾と同じ名前のディレクトリが app/Plugin にあるかを返す.
+     *
+     * ComposerApiService::dropTableToExtra() と同じく, 大文字小文字は区別しない.
+     */
+    private function hasPluginDirectory(string $packageName): bool
+    {
+        foreach (glob($this->projectRoot.'/app/Plugin/*', GLOB_ONLYDIR) ?: [] as $dir) {
+            if (strtolower(basename($dir)) === strtolower(basename($packageName))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * composer で導入したプラグインのレコードを返す.
+     *
+     * plugin-installer がアンインストールするものと同じプラグインを返す. plugin-installer は,
+     * composer が記録したパッケージ (vendor/composer/installed.json) の extra.id と source が
+     * 一致するレコードをアンインストールする. プラグインのディレクトリの composer.json は見ない.
+     * plugin-installer は更新時にもディレクトリの composer.json へ extra.id を書き込むが, その後に
+     * パッケージが展開されるため, 更新後はパッケージに含まれていた extra.id が残り, パッケージの値
+     * (= source) と異なることがある.
+     *
+     * アーカイブで導入したプラグインや, 別のパッケージ (installed.json に無いもの) は,
+     * 事前にアンインストールせず composer remove に任せる.
+     */
+    private function findPluginInstalledByComposer(string $packageName): ?Plugin
+    {
+        $package = $this->installedPackageReader->find($packageName);
+        if ($package === null || ($package['type'] ?? null) !== 'eccube-plugin') {
+            return null;
+        }
+
+        // plugin-installer は extra.id が空 ('0' を含む) のときアンインストールしない
+        $id = $package['extra']['id'] ?? null;
+        if (!is_int($id) && !is_string($id)) {
+            return null;
+        }
+        $id = (string) $id;
+        if ($id === '' || $id === '0') {
+            return null;
+        }
+
+        $Plugin = $this->pluginRepository->findOneBy(['source' => $id]);
+        if ($Plugin === null) {
+            return null;
+        }
+
+        // dropTableToExtra() と composer remove は, パッケージ名の末尾と同じ名前のディレクトリを対象にする.
+        // コードが異なるプラグインは, 削除されるものと同じとは言い切れないので, 事前にアンインストールせず
+        // composer remove (plugin-installer) に任せる.
+        // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
+        if (strtolower($Plugin->getCode()) !== strtolower(basename($packageName))) {
+            return null;
+        }
+
+        // アンインストールにはプラグインの composer.json が要る. 読めなければ composer remove に任せる
+        try {
+            $this->readConfig($this->calcPluginDir($Plugin->getCode()));
+        } catch (PluginException) {
+            return null;
+        }
+
+        return $Plugin;
     }
 
     /**

@@ -88,6 +88,10 @@ services:
         arguments:
             $projectDir: '%kernel.project_dir%'
 
+    Eccube\Service\Composer\InstalledPackageReader:
+        arguments:
+            $installedJsonPath: '%kernel.project_dir%/vendor/composer/installed.json'
+
     Eccube\Service\Composer\ComposerProcessService:
         lazy: true
 
