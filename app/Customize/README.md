@@ -5,7 +5,6 @@ PSR-4 で `Customize\` = `app/Customize/` にマッピングされ、autowire / 
 着脱・再配布できる機能は `app/Plugin/` を使う（こちらは 1 回限りの改変向け）。
 
 - 📖 仕様（人間向け）: [README.html](./README.html)
-- 🛠 実装規約（AI 向け）: [`eccube-customize/SKILL.md`](../../.claude/skills/eccube-customize/SKILL.md)
 - 🧩 着脱式の機能: [`app/Plugin/`](../Plugin/README.md)
 
 ## 主要ディレクトリ
@@ -18,5 +17,6 @@ PSR-4 で `Customize\` = `app/Customize/` にマッピングされ、autowire / 
 
 ## 注意
 
+- 店舗がプロジェクト固有のコードを置く場所。EC-CUBE 本体へのコントリビュートでは使わず `src/Eccube/` を改修する（[AGENTS.md](../../AGENTS.md)）。
 - 「アップグレード安全」はパッチ更新まで。override はコアのパッチ再適用が要るため最小限に。
 - カラム追加にマイグレーションは不要（属性＋`schema:update`）。型変更・データ投入は `app/DoctrineMigrations/`。

@@ -50,6 +50,7 @@ class BlockType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'empty_data' => '',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),
@@ -57,6 +58,7 @@ class BlockType extends AbstractType
                 ],
             ])
             ->add('file_name', TextType::class, [
+                'empty_data' => '',
                 'required' => true,
                 'constraints' => [
                     new Assert\NotBlank(),

@@ -44,6 +44,7 @@ class LayoutType extends AbstractType
                 'name',
                 TextType::class,
                 [
+                    'empty_data' => '',
                     'constraints' => [
                         new Assert\NotBlank(),
                     ],
