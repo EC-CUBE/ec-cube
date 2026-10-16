@@ -113,6 +113,28 @@ final class DocsExportServiceTest extends TestCase
         $this->assertStringContainsString('拡張ポイント', (string) file_get_contents($out.'/Foo/README.html'));
     }
 
+    public function testExportIncludesHtmlDocumentsUnderDocsOnly(): void
+    {
+        $source = $this->workDir.'/src';
+        $out = $this->workDir.'/out';
+        // docs/ 配下の HTML 文書は README.html でなくても対象
+        $this->filesystem->dumpFile($source.'/docs/features/features.html', $this->sampleHtml());
+        // docs/ 配下でも HTML 以外は対象外
+        $this->filesystem->dumpFile($source.'/docs/features/features.yaml', 'features: []');
+        $this->filesystem->dumpFile($source.'/docs/mcp/scope.md', '# scope');
+        // docs/ 以外の README.html 以外の HTML は対象外
+        $this->filesystem->dumpFile($source.'/Foo/index.html', $this->sampleHtml());
+        $this->filesystem->dumpFile($source.'/Foo/docs/page.html', $this->sampleHtml());
+
+        $written = $this->service->export($source, $out, DocsExportService::FILTER_CUSTOMER);
+
+        $this->assertSame(['docs/features/features.html'], $written);
+        // README.html と同じくフィルタされる
+        $content = (string) file_get_contents($out.'/docs/features/features.html');
+        $this->assertStringContainsString('概要', $content);
+        $this->assertStringNotContainsString('拡張ポイント', $content);
+    }
+
     public function testExportCustomerFiltersEachFile(): void
     {
         $source = $this->workDir.'/src';

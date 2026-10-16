@@ -17,4 +17,4 @@ Web 画面を介さない運用・保守処理を集約する。コマンドは�
 - `PluginEnableCommand.php` ほか `Plugin*Command.php` — プラグインのライフサイクル操作
 - `CacheBuildCommand.php` — `eccube:cache:build`（`var/build` の生成。権限を分けた構成での `cache:clear` の代替）
 - `Content/` `Env/` `KeyStore/` — ページ・ブロック・メールテンプレート・`.env`・署名鍵などを CLI から操作するコマンド群
-- `DocsExportCommand.php` — `eccube:docs:export`（全 `README.html` の集約出力）
+- `DocsExportCommand.php` — `eccube:docs:export`（全 `README.html` と `docs/` 配下の HTML 文書の集約出力）
