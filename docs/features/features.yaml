@@ -90,7 +90,7 @@ features:
     summary: 会員・ゲストがお届け先・配送方法・支払方法を選んで注文を確定する。金額計算は受注処理パイプラインが担う。
     dirs: [src/Eccube/Controller/ShoppingController.php, src/Eccube/Controller/NonMemberShoppingController.php, src/Eccube/Service/PurchaseFlow]
     prs:
-      4.4.0: [6878, 7162]
+      4.4.0: [6878, 6881, 7162]
 
   - id: FR-20-03
     name: 配送方法・支払方法の保存と復元
@@ -105,12 +105,14 @@ features:
     summary: 購入手続きでお届け先を選び直す。登録済みの住所をその画面で編集・削除できる。
     dirs: [src/Eccube/Controller/ShoppingController.php]
     prs:
-      4.4.0: [6951]
+      4.4.0: [6881, 6951]
 
   - id: FR-20-05
     name: 複数配送
     summary: 1 回の注文で商品ごとに異なるお届け先を指定する。
     dirs: [src/Eccube/Controller/ShippingMultipleController.php]
+    prs:
+      4.4.0: [6881]
 
   - id: FR-20-06
     name: ポイント
@@ -120,7 +122,7 @@ features:
   # ---------------------------------------------------------------- FR-30-xx 会員
   - id: FR-30-01
     name: 会員登録
-    summary: 仮登録メールの URL から本登録する。
+    summary: 入力・確認画面で会員情報を登録する。基本設定の仮会員機能が有効なら仮登録メールを送り、メールの URL から本登録する。無効なら確認画面からそのまま本登録する。
     dirs: [src/Eccube/Controller/EntryController.php]
     prs:
       4.4.0: [6881]
@@ -129,6 +131,8 @@ features:
     name: ログイン
     summary: 会員がマイページ・購入手続きへログインする。
     dirs: [src/Eccube/Controller/Mypage/MypageController.php, src/Eccube/Security]
+    prs:
+      4.4.0: [6881]
 
   - id: FR-30-03
     name: パスワード要件
@@ -141,6 +145,8 @@ features:
     name: パスワード再設定
     summary: メールで届く URL からパスワードを再設定する。
     dirs: [src/Eccube/Controller/ForgotController.php]
+    prs:
+      4.4.0: [6881]
 
   - id: FR-30-05
     name: 会員情報の変更
@@ -160,10 +166,12 @@ features:
     name: お届け先の登録
     summary: マイページでお届け先を登録・編集・削除する。
     dirs: [src/Eccube/Controller/Mypage/DeliveryController.php]
+    prs:
+      4.4.0: [6881]
 
   - id: FR-30-08
     name: 返品申請
-    summary: マイページの注文履歴から商品ごとに返品を申請し、写真を添付する。申請の状況と履歴を確認する。
+    summary: マイページの注文履歴から商品ごとに返品を申請し、写真を添付する。申請の状況と履歴を確認する。申請できるのは発送済みの注文のうち、商品の返品許可フラグ（既定は許可）が立っている明細だけ。返品許可フラグは商品 CSV の出力項目にもある。
     dirs: [src/Eccube/Controller/Mypage/RefundRequestController.php, src/Eccube/Service/RefundRequestService.php]
     since: 4.4.0
     prs:
@@ -524,7 +532,7 @@ features:
 
   - id: AD-70-08
     name: 読み取り専用モード
-    summary: ECCUBE_RESTRICT_FILE_UPLOAD=1 で、ファイルへ書き込む画面を読み取り専用にし、代わりの CLI コマンドを案内する。
+    summary: ECCUBE_RESTRICT_FILE_UPLOAD=1 で、ファイルへ書き込む画面を読み取り専用にし、代わりの CLI コマンドを案内する。対象はページ管理・ブロック管理・CSS・JavaScript 管理・ファイル管理・メール設定・セキュリティ管理・テンプレート管理と、プラグインのインストール・有効化・無効化・アップデート・削除。
     dirs: [app/config/eccube/packages/eccube.yaml, src/Eccube/EventListener/RestrictFileUploadListener.php]
     since: 4.4.0
     prs:
@@ -551,7 +559,7 @@ features:
   - id: AD-80-04
     name: 認証キー設定
     summary: オーナーズストアの認証キーを登録する。新しく発行する前に注意を表示する。
-    dirs: [src/Eccube/Controller/Admin/Store/OwnerStoreController.php]
+    dirs: [src/Eccube/Controller/Admin/Store/PluginController.php]
     prs:
       4.4.0: [6958]
 
@@ -588,7 +596,7 @@ features:
     summary: 公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。
     dirs: [Dockerfile, docker-compose.yml]
     prs:
-      4.4.0: [6813, 6985]
+      4.4.0: [6813, 6985, 7207]
 
   # ---------------------------------------------------------------- DV-20-xx 運用（CLI）
   - id: DV-20-01
@@ -605,7 +613,7 @@ features:
     dirs: [src/Eccube/Service/Permission, docker-compose.permission-lanes.yml]
     since: 4.4.0
     prs:
-      4.4.0: [7098, 7100, 7124]
+      4.4.0: [7098, 7100]
 
   - id: DV-20-03
     name: ページ・ブロック・メールテンプレートの CLI 操作
@@ -659,8 +667,8 @@ features:
   # ---------------------------------------------------------------- DV-30-xx API
   - id: DV-30-01
     name: MCP サーバー
-    summary: 商品・在庫・受注・会員・プラグインの管理データを、AI クライアントから読み取り専用で参照する MCP サーバー。認可は API プラグインの OAuth2 scope に委ねる。
-    dirs: [src/Eccube/Service/Mcp, app/config/eccube/packages/mcp.yaml, docs/mcp]
+    summary: 商品・在庫・受注・会員・プラグインの管理データを、AI クライアントから読み取り専用で参照する MCP サーバー。HTTP での認可は API プラグインの OAuth2 scope に委ねる。同じツールを eccube:cli:<ツール名> コマンドとして CLI からも実行できる（ローカルの実行者を信頼し、トークンは不要）。
+    dirs: [src/Eccube/Service/Mcp, app/config/eccube/packages/mcp.yaml, docs/mcp, src/Eccube/Command/EccubeCliToolCommand.php]
     since: 4.4.0
     prs:
       4.4.0: [6832, 7120]
@@ -671,7 +679,7 @@ features:
     dirs: [src/Eccube/Service/AgentCommerce, src/Eccube/Controller/AgentCommerce, src/Eccube/Command/AgentCommerce/AcpFeedPushCommand.php]
     since: 4.4.0
     prs:
-      4.4.0: [6802, 6815, 6825, 6843, 6872]
+      4.4.0: [6802, 6815, 6825, 6843]
 
   - id: DV-30-03
     name: エージェントコマース（UCP）
