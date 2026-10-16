@@ -16,6 +16,7 @@ declare(strict_types=1);
 namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
+use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\TwigNamespacePathTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -279,8 +280,12 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         $unexpectedPath = $pluginDir.'/@'.$code.'/'.$name.'.twig';
         $source = $faker->realText();
 
+        // Issue #4904 の対象は有効なプラグインのページのため, 有効なプラグインとして扱わせる.
+        // 無効なプラグインの名前空間は再構築の対象外で, 下の登録の有無が結果に効かなくなる
+        static::getContainer()->set(PageContentService::class, $this->createPageContentServiceWithEnabledPlugins($code));
         // コンテナの再構築 (本物の cache:clear) は cache-clear グループの PageControllerCacheClearTest で確かめる.
-        // ここでは上書き用ディレクトリを登録済みの状態にして, 再構築を起こさない
+        // ここでは上書き用ディレクトリを登録済みの状態にして, 再構築を起こさない.
+        // 差し替えたサービスと登録を保存のリクエストへ引き継ぐため, カーネルを作り直さない
         $client->disableReboot();
         $this->registerTwigNamespacePath($code, $pluginDir.'/'.$code);
 
