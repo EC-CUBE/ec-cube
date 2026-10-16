@@ -36,10 +36,7 @@ final class Version20260615000000Test extends EccubeTestCase
     {
         parent::setUp();
         $this->conn = $this->entityManager->getConnection();
-        if (!$this->conn->getDatabasePlatform() instanceof PostgreSQLPlatform) {
-            // MySQL / SQLite は ID 指定の INSERT でも採番が追随するため、シーケンスの遅れが起きない
-            $this->markTestSkipped('PostgreSQL のシーケンスに固有の問題のため');
-        }
+        $this->nextMailTemplateId = (int) $this->conn->fetchOne('SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template');
     }
 
     protected function tearDown(): void
@@ -55,14 +52,37 @@ final class Version20260615000000Test extends EccubeTestCase
         parent::tearDown();
     }
 
-    public function testInsertsMailTemplateWhenSequenceLagsBehind(): void
+    public function testInsertsMailTemplateWhenMissing(): void
     {
-        $this->nextMailTemplateId = (int) $this->conn->fetchOne('SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template');
-
-        // 返品申請テンプレートが未投入で、ID 指定の INSERT 後に setval されずシーケンスが MAX(id) より遅れた環境を再現する
+        // 返品申請テンプレートが未投入の環境を再現する。ID は指定せず採番に任せるため、全 DB で確かめる
         $this->conn->executeStatement("DELETE FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
-        $this->conn->executeQuery("SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), 1, false)");
+        if ($this->conn->getDatabasePlatform() instanceof PostgreSQLPlatform) {
+            // PostgreSQL では、ID 指定の INSERT 後に setval されずシーケンスが MAX(id) より遅れた状態にする。
+            // MySQL / SQLite は ID 指定の INSERT でも採番が追随するため、この遅れは起きない
+            $this->conn->executeQuery("SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), 1, false)");
+        }
 
+        $this->runUp();
+
+        $count = $this->conn->fetchOne("SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
+        $this->assertSame(1, (int) $count);
+    }
+
+    public function testInsertsMailTemplateWhenItsIdIsUsedByAnotherTemplate(): void
+    {
+        // 4.3 以前にメールテンプレートを追加し、返品申請テンプレートの ID（fixture では 10）が別のテンプレートで使用済みの環境を再現する
+        $this->conn->executeStatement("UPDATE dtb_mail_template SET file_name = 'Mail/shop_custom.twig' WHERE file_name = 'Mail/refund_request_notify.twig'");
+
+        $this->runUp();
+
+        $count = $this->conn->fetchOne("SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
+        $this->assertSame(1, (int) $count);
+        $count = $this->conn->fetchOne("SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/shop_custom.twig'");
+        $this->assertSame(1, (int) $count, '使用済みの ID のテンプレートを上書きしない');
+    }
+
+    private function runUp(): void
+    {
         $migration = new Version20260615000000($this->conn, new NullLogger());
         $migration->up(new Schema());
         // 失敗してもトランザクションを使える状態に戻し、tearDown の setval を実行できるようにする（savepoint まで戻す）
@@ -76,8 +96,5 @@ final class Version20260615000000Test extends EccubeTestCase
             $this->conn->rollBack();
             throw $e;
         }
-
-        $count = $this->conn->fetchOne("SELECT COUNT(*) FROM dtb_mail_template WHERE file_name = 'Mail/refund_request_notify.twig'");
-        $this->assertSame(1, (int) $count);
     }
 }
