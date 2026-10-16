@@ -6,7 +6,7 @@
 #   -c  clone だけ行う (複数のレーンを並列に準備する前に 1 回だけ実行する)
 #
 # docker compose は呼び出し元の環境変数 (COMPOSE_FILE / COMPOSE_PROJECT_NAME) で実行する。
-# ブランチは ZAP_PLUGIN_BRANCH で変更できる (既定は 4.4)。
+# ブランチは ZAP_PLUGIN_BRANCH で変更できる (既定は 4.4)。plugins.txt の行ごとに、取得元の GitHub のアカウントとブランチも指定できる。
 
 set -euo pipefail
 
@@ -20,28 +20,32 @@ mapfile -t PLUGINS < <(grep -vE '^\s*(#|$)' zap/plugins.txt)
 
 mkdir -p "${REPOS}"
 for p in "${PLUGINS[@]}"; do
-    IFS=: read -r repo pkg code <<< "${p}"
-    # clone 済みなら触らない (複数のレーンが同時に導入するため、clone 先へは書き込まない)
-    [[ -d ${REPOS}/${repo} ]] && continue
-    git clone --quiet --depth 1 --branch "${BRANCH}" "https://github.com/EC-CUBE/${repo}.git" "${REPOS}/${repo}.tmp"
+    IFS=: read -r repo pkg code owner branch <<< "${p}"
+    src="${owner:-EC-CUBE}/${repo}@${branch:-${BRANCH}}"
+    # 同じ取得元を clone 済みなら触らない (複数のレーンが同時に導入するため、clone 先へは書き込まない)
+    if [[ -d ${REPOS}/${repo} && $(cat "${REPOS}/.${repo}.source" 2> /dev/null) == "${src}" ]]; then continue; fi
+    rm -rf "${REPOS:?}/${repo}" "${REPOS:?}/${repo}.tmp"
+    git clone --quiet --depth 1 --branch "${branch:-${BRANCH}}" "https://github.com/${owner:-EC-CUBE}/${repo}.git" "${REPOS}/${repo}.tmp"
     # extra.id が無いと eccube:composer:require が失敗する
     jq '.extra.id //= 0' "${REPOS}/${repo}.tmp/composer.json" > "${REPOS}/${repo}.tmp/composer.json.new"
     mv "${REPOS}/${repo}.tmp/composer.json.new" "${REPOS}/${repo}.tmp/composer.json"
     mv "${REPOS}/${repo}.tmp" "${REPOS}/${repo}"
+    echo "${src}" > "${REPOS}/.${repo}.source"
+    echo "${code}: ${src}"
 done
 [[ -n ${CLONE_ONLY} ]] && exit 0
 
 # Web サーバーのユーザーは clone 元に書き込めないため、symlink ではなくコンテナ内へコピーして導入する
 docker compose exec -T -u 0:0 ec-cube sh -c 'rm -rf /var/www/repos && mkdir -p /var/www/repos'
 for p in "${PLUGINS[@]}"; do
-    IFS=: read -r repo pkg code <<< "${p}"
+    IFS=: read -r repo pkg code _ <<< "${p}"
     docker compose cp "${REPOS}/${repo}" "ec-cube:/var/www/repos/${repo}" > /dev/null
 done
 docker compose exec -T -u 0:0 ec-cube chown -R www-data:www-data /var/www/repos
 
 run() { docker compose exec -T -u www-data:www-data ec-cube "$@"; }
 for p in "${PLUGINS[@]}"; do
-    IFS=: read -r repo pkg code <<< "${p}"
+    IFS=: read -r repo pkg code _ <<< "${p}"
     echo "=== ${code}"
     run composer config "repositories.${pkg}" \
         "{\"type\":\"path\",\"url\":\"/var/www/repos/${repo}\",\"options\":{\"symlink\":false}}"
