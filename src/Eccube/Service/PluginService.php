@@ -745,9 +745,9 @@ class PluginService
             return null;
         }
 
-        // composer remove の前の dropTableToExtra() は, パッケージ名の末尾をコードとしてプラグインの
-        // ディレクトリを探す. 一致しないものを先にアンインストールすると, その後で composer remove が
-        // 止まりレコードだけが消えるので, composer remove に任せる.
+        // dropTableToExtra() と composer remove は, パッケージ名の末尾と同じ名前のディレクトリを対象にする.
+        // コードが異なるプラグインは, 削除されるものと同じとは言い切れないので, 事前にアンインストールせず
+        // composer remove (plugin-installer) に任せる.
         // 管理画面はプラグインコードからパッケージ名を作るので, 大文字小文字は区別しない
         if (strtolower($Plugin->getCode()) !== strtolower(basename($packageName))) {
             return null;

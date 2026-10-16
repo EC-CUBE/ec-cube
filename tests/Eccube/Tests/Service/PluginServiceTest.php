@@ -927,9 +927,10 @@ EOD;
     }
 
     /**
-     * plugin-installer はパッケージ名とプラグインのコードを結び付けないが, composer remove の前の
-     * dropTableToExtra() はパッケージ名の末尾をコードとしてディレクトリを探す.
-     * コードがパッケージ名の末尾と異なるプラグインは, 事前にアンインストールせず composer remove に任せる.
+     * plugin-installer はパッケージ名とプラグインのコードを結び付けないが, dropTableToExtra() と
+     * composer remove はパッケージ名の末尾と同じ名前のディレクトリを対象にする. コードがパッケージ名の
+     * 末尾と異なるプラグインは, 削除されるものと同じとは言い切れないので, 事前にアンインストールせず
+     * composer remove に任せる.
      */
     public function testRemoveByComposerLeavesPluginWhoseCodeDiffersFromPackageName(): void
     {
