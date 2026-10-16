@@ -29,7 +29,7 @@ final class Version20260615000000Test extends EccubeTestCase
 {
     private ?Connection $conn = null;
 
-    /** DELETE する前の MAX(id)+1。tearDown でシーケンスをこれより前に戻さないために記録する */
+    /** テスト開始時の MAX(id)+1。tearDown でシーケンスをこれより前に戻さないために記録する */
     private ?int $nextMailTemplateId = null;
 
     protected function setUp(): void
@@ -42,7 +42,7 @@ final class Version20260615000000Test extends EccubeTestCase
     protected function tearDown(): void
     {
         // setval はトランザクションのロールバック対象外のため、後続テストの採番を壊さないよう戻す。
-        // DELETE はこの後のロールバックで取り消され行が戻るので、DELETE する前の MAX(id)+1 を下回らないようにする
+        // テスト中の変更はこの後のロールバックで取り消されるので、テスト開始時の MAX(id)+1 を下回らないようにする
         if ($this->conn !== null && $this->conn->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             $this->conn->executeQuery(
                 "SELECT setval(pg_get_serial_sequence('dtb_mail_template', 'id'), GREATEST(:next, (SELECT COALESCE(MAX(id), 0) + 1 FROM dtb_mail_template)), false)",
