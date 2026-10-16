@@ -105,7 +105,7 @@ Doctrine/EventSubscriber/     … エンティティ永続化前後のフック�
   <tr><th>やりたいこと</th><th>フックするイベント</th></tr>
   <tr><td>コントローラ処理の前後に割り込む</td><td>EC-CUBE 独自イベント（<code>EccubeEvents::XXX</code> 定数）を購読し <code>EventArgs</code> で読み書き</td></tr>
   <tr><td>リクエスト／レスポンスを横断的に変える</td><td>Kernel イベント（<code>KernelEvents::REQUEST</code> 等）。<code>if (!$event-&gt;isMainRequest()) return;</code> でサブリクエストを除外</td></tr>
-  <tr><td>画面に HTML／アセットを差し込む</td><td>テンプレートイベント（ファイル名がイベント名。Skill <code>twig-template</code>）</td></tr>
+  <tr><td>画面に HTML／アセットを差し込む</td><td>テンプレートイベント（ファイル名がイベント名。Skill <code>eccube-twig-template</code>）</td></tr>
   <tr><td>エンティティの永続化前後に処理を足す</td><td>Doctrine イベント（<code>#[AsDoctrineListener]</code>）</td></tr>
  </table>
  <p>登録の実際:</p>
