@@ -192,7 +192,7 @@
   <tr id="DV-10-02"><td><a href="#DV-10-02"><code>DV-10-02</code></a></td><td>CLI インストール</td><td>eccube:install でコマンドラインからインストールする。初期データ（マスタ・管理者）は eccube:fixtures:load で投入する（eccube:install から呼ばれる）。</td><td><a href="../../src/Eccube/Command/README.html"><code>src/Eccube/Command</code></a></td><td></td></tr>
   <tr id="DV-10-03"><td><a href="#DV-10-03"><code>DV-10-03</code></a></td><td>動作要件</td><td>対応する PHP・データベース・PHP 拡張モジュールのバージョン。</td><td><a href="../../composer.json"><code>composer.json</code></a><br><a href="../../index.php"><code>index.php</code></a></td><td></td></tr>
   <tr id="DV-10-04"><td><a href="#DV-10-04"><code>DV-10-04</code></a></td><td>環境変数の読み込み</td><td>.env・.env.local・.env.local.php を symfony/dotenv で読み込む。</td><td><a href="../../index.php"><code>index.php</code></a><br><a href="../../bin/console"><code>bin/console</code></a></td><td></td></tr>
-  <tr id="DV-10-05"><td><a href="#DV-10-05"><code>DV-10-05</code></a></td><td>Docker イメージ</td><td>公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。</td><td><a href="../../Dockerfile"><code>Dockerfile</code></a><br><a href="../../docker-compose.yml"><code>docker-compose.yml</code></a></td><td></td></tr>
+  <tr id="DV-10-05"><td><a href="#DV-10-05"><code>DV-10-05</code></a></td><td>Docker イメージ</td><td>公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。送信したメールは compose の mailpit（http://localhost:8025）で確認する。</td><td><a href="../../Dockerfile"><code>Dockerfile</code></a><br><a href="../../docker-compose.yml"><code>docker-compose.yml</code></a></td><td></td></tr>
  </table>
  <h3>運用（CLI） <span class="badge">DV-20-xx</span></h3>
  <table>

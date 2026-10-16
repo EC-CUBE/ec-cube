@@ -593,7 +593,7 @@ features:
 
   - id: DV-10-05
     name: Docker イメージ
-    summary: 公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。
+    summary: 公開する Docker イメージと docker compose の構成。amd64・arm64 に対応する。送信したメールは compose の mailpit（http://localhost:8025）で確認する。
     dirs: [Dockerfile, docker-compose.yml]
     prs:
       4.4.0: [6813, 6985, 7207]
