@@ -95,20 +95,16 @@ class PageController extends AbstractController
 
         // 更新時
         $fileName = null;
-        $namespace = '@user_data/';
         $PrevPage = clone $Page;
         if ($id) {
             // 編集不可ページはURL、ページ名、ファイル名を保持
             if ($Page->getEditType() >= Page::EDIT_TYPE_DEFAULT) {
                 $isUserDataPage = false;
-                $namespace = '';
             }
-            // テンプレートファイルの取得
-            $source = $this->twig->getLoader()
-                ->getSourceContext($namespace.$Page->getFileName().'.twig')
-                ->getCode();
-
-            $form->get('tpl_data')->setData($source);
+            // テンプレートの取得は Service に委譲する. 配置先の判定
+            // (@PluginCode / user_data / テーマ) をコントローラと二重に持つと,
+            // 名前空間付きのファイル名へ @user_data/ を重ねて 500 になる.
+            $form->get('tpl_data')->setData($this->pageContentService->readTemplate($Page));
 
             $fileName = $Page->getFileName();
         } elseif ($request->getMethod() === 'GET' && !$form->isSubmitted()) {
@@ -158,17 +154,20 @@ class PageController extends AbstractController
             // キャッシュの削除
             $this->cacheUtil->clearTwigCache();
             $this->cacheUtil->clearDoctrineCache();
+            if ($result->containerRebuildRequired) {
+                // twig の名前空間に上書き用ディレクトリを登録するため, コンテナを作り直す.
+                // 登録済みなら不要なので, まだ登録されていないときだけに絞る
+                $this->cacheUtil->clearCache();
+            }
 
             return $this->redirectToRoute('admin_content_page_edit', ['id' => $Page->getId()]);
         }
 
-        if ($isUserDataPage) {
-            $templatePath = $this->getParameter('eccube_theme_user_data_dir');
-            $url = '';
-        } else {
-            $templatePath = $this->getParameter('eccube_theme_front_dir');
-            $url = $this->router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
-        }
+        // 配置先の判定は Service が持つ (@PluginCode のページは app/template/plugin へ置く)
+        $templatePath = $this->pageContentService->getTemplateDir($PrevPage);
+        $url = $isUserDataPage
+            ? ''
+            : $this->router->getRouteCollection()->get($PrevPage->getUrl())->getPath();
         $projectDir = $this->getParameter('kernel.project_dir');
         $templatePath = str_replace($projectDir.'/', '', $templatePath);
 

@@ -1170,6 +1170,7 @@ admin.content.page_meta_metatag_placeholder: |
     <meta property="product:product_link" content="{{ url('product_detail', {'id': Product.id}) }}"/>
     <meta property="product:retailer_title" content="{{ BaseInfo.shop_name }}"/>
 admin.content.page_file_name_exists: 同じファイル名のデータが存在しています。別のファイル名を入力してください。
+admin.content.page_file_name_namespace_not_allowed: ファイル名の先頭に「@」は使用できません。
 admin.content.css__card_title: CSS設定
 admin.content.js__card_title: JavaScript設定
 admin.content.block_name: ブロック名

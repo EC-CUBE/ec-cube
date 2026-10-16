@@ -28,6 +28,9 @@ final readonly class ContentResult
      * @param list<string>                            $removedPaths 削除したファイル
      * @param array<string, array{0: string, 1: string}> $fieldChanges フィールド名 => [変更前, 変更後]
      * @param array<string, array{0: string, 1: string}> $fileChanges  ファイルパス => [変更前, 変更後]
+     * @param bool                                    $containerRebuildRequired 反映にコンテナの再構築が必要か.
+     *                                                                           twig の名前空間 (@PluginCode) へ登録するディレクトリはコンテナのコンパイル時に決まるため,
+     *                                                                           上書き用ディレクトリがまだ登録されていない場合に true になる
      */
     public function __construct(
         public ContentStatus $status,
@@ -37,6 +40,7 @@ final readonly class ContentResult
         public array $removedPaths = [],
         public array $fieldChanges = [],
         public array $fileChanges = [],
+        public bool $containerRebuildRequired = false,
     ) {
     }
 
@@ -53,7 +57,8 @@ final readonly class ContentResult
             $this->writtenPaths,
             $this->removedPaths,
             $fieldChanges,
-            $fileChanges
+            $fileChanges,
+            $this->containerRebuildRequired
         );
     }
 

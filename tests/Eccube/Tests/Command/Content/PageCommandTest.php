@@ -23,12 +23,16 @@ use Eccube\Entity\Page;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
+use Eccube\Tests\TwigNamespacePathTrait;
+use Eccube\Util\CacheUtil;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class PageCommandTest extends EccubeTestCase
 {
     use EffectiveUserTrait;
+    use TwigNamespacePathTrait;
 
     private ?PageContentService $pageContentService = null;
 
@@ -249,6 +253,106 @@ final class PageCommandTest extends EccubeTestCase
         }
     }
 
+    /**
+     * 名前空間付きのページで上書き用ディレクトリが twig に登録されていない場合は, 本処理を完了させたうえで
+     * 終了コード 3 と eccube:cache:build の案内を返す. 登録済み (コンテナの再構築後) なら 0 を返す.
+     */
+    public function testApplyReturnsManualActionRequiredUntilNamespaceDirIsRegistered(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->assertDirectoryDoesNotExist($namespaceDir);
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        try {
+            $tester = new CommandTester($this->createApplyCommand());
+            $tester->execute(['--route' => $this->route, '--body' => 'first']);
+
+            $this->assertSame(3, $tester->getStatusCode());
+            $this->assertFileExists($namespaceDir.'/'.$this->route.'.twig', '本処理は完了している');
+            $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+
+            $tester->execute(['--route' => $this->route, '--body' => 'second']);
+            $this->assertSame(3, $tester->getStatusCode(), '再構築するまでは繰り返し案内する');
+
+            // コンテナを作り直した後の状態
+            $this->registerTwigNamespacePath($code, $namespaceDir);
+            $tester->execute(['--route' => $this->route, '--body' => 'third']);
+            $this->assertSame(0, $tester->getStatusCode(), '登録済みなら案内しない');
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
+    /**
+     * --no-cache-clear が省略するのはキャッシュの削除だけで, コンテナの再構築が必要なら終了コード 3 と案内を返す.
+     */
+    public function testApplyWithNoCacheClearStillReportsContainerRebuild(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        try {
+            $tester = $this->apply(['--route' => $this->route, '--body' => 'body']);
+
+            $this->assertSame(3, $tester->getStatusCode());
+            $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
+    /**
+     * 同じ内容で再実行して結果が unchanged でも, 再構築が済むまでは終了コード 3 と案内を返す.
+     * 冪等な apply の再実行は, 案内を見落とした後に状態を確かめる自然な手順のため.
+     */
+    public function testApplyWithSameBodyStillReportsContainerRebuild(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        try {
+            $this->assertSame(3, $this->apply(['--route' => $this->route, '--body' => 'same'])->getStatusCode());
+
+            $tester = $this->apply(['--route' => $this->route, '--body' => 'same']);
+            $this->assertSame(3, $tester->getStatusCode(), '内容が同じでも, 登録されるまでは案内する');
+            $this->assertStringContainsString('unchanged: '.$this->route, $tester->getDisplay());
+            $this->assertStringContainsString('eccube:cache:build', $tester->getDisplay());
+
+            // コンテナを作り直した後の状態
+            $this->registerTwigNamespacePath($code, $namespaceDir);
+            $this->assertSame(0, $this->apply(['--route' => $this->route, '--body' => 'same'])->getStatusCode());
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
+    /**
+     * 無効なプラグインの名前空間は, eccube:cache:build を実行しても twig に登録されない.
+     * 案内に従っても解消しないため, 終了コード 3 を返さない.
+     */
+    public function testApplyDoesNotReportContainerRebuildForDisabledPlugin(): void
+    {
+        $code = 'Disabled'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
+
+        try {
+            $tester = $this->apply(['--route' => $this->route, '--body' => 'body']);
+
+            $this->assertFileExists($namespaceDir.'/'.$this->route.'.twig');
+            $this->assertSame(0, $tester->getStatusCode());
+            $this->assertStringNotContainsString('eccube:cache:build', $tester->getDisplay());
+        } finally {
+            (new Filesystem())->remove($namespaceDir);
+        }
+    }
+
     public function testShowOutputsTemplate(): void
     {
         $this->apply(['--route' => $this->route, '--name' => 'テストページ', '--body' => 'shown body']);
@@ -316,12 +420,43 @@ final class PageCommandTest extends EccubeTestCase
     }
 
     /**
+     * $this->pageContentService を使う eccube:page:apply を作る.
+     *
+     * 有効なプラグインを差し替えたサービス (createPageContentServiceWithEnabledPlugins()) を渡すため,
+     * コンテナからは取得しない. #[Required] で注入される依存はコンテナのものを渡す.
+     */
+    private function createApplyCommand(): PageApplyCommand
+    {
+        $command = new PageApplyCommand($this->pageContentService);
+        $command->setCacheUtil(self::getContainer()->get(CacheUtil::class));
+        $command->setEccubeConfig($this->eccubeConfig);
+
+        return $command;
+    }
+
+    /**
+     * プラグインが dtb_page へ登録する既定ページ (ファイル名が twig の名前空間を指す) を作る.
+     */
+    private function createPluginNamespacePage(string $fileName): Page
+    {
+        $Page = (new Page())
+            ->setName('プラグインのページ')
+            ->setUrl((string) $this->route)
+            ->setFileName($fileName)
+            ->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
+
+        return $Page;
+    }
+
+    /**
      * @param array<string, mixed> $input
      * @param list<string>         $stdin
      */
     private function apply(array $input, array $stdin = []): CommandTester
     {
-        $tester = new CommandTester(self::getContainer()->get(PageApplyCommand::class));
+        $tester = new CommandTester($this->createApplyCommand());
         if ([] !== $stdin) {
             $tester->setInputs($stdin);
         }

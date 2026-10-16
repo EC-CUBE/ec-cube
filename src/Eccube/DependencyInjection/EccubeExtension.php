@@ -26,6 +26,15 @@ use Symfony\Component\Finder\Finder;
 class EccubeExtension extends Extension implements PrependExtensionInterface
 {
     /**
+     * プラグインのテンプレートを上書きするディレクトリ (kernel.project_dir からの相対パス).
+     *
+     * configureTwigPaths() が [code] を @PluginCode へ登録する. 登録先を読む側
+     * (PageContentService) も同じ値から組み立て, 書き出したファイルが登録されたパスとずれないようにする.
+     * eccube_theme_app_dir はテーマの配置先の設定で, プラグインの上書き先は従来どおりこの値で固定する.
+     */
+    public const PLUGIN_TEMPLATE_OVERRIDE_DIR = 'app/template/plugin';
+
+    /**
      * Loads a specific configuration.
      *
      * @param array<mixed> $configs
@@ -213,7 +222,7 @@ class EccubeExtension extends Extension implements PrependExtensionInterface
 
         foreach ($enabled as $code) {
             // app/template/plugin/[plugin code]
-            $dir = $projectDir.'/app/template/plugin/'.$code;
+            $dir = $projectDir.'/'.self::PLUGIN_TEMPLATE_OVERRIDE_DIR.'/'.$code;
             if (file_exists($dir)) {
                 $paths[$dir] = $code;
             }

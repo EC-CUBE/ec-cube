@@ -25,10 +25,13 @@ use Eccube\Service\Content\ContentStatus;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Tests\EccubeTestCase;
 use Eccube\Tests\EffectiveUserTrait;
+use Eccube\Tests\TwigNamespacePathTrait;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class PageContentServiceTest extends EccubeTestCase
 {
     use EffectiveUserTrait;
+    use TwigNamespacePathTrait;
 
     private ?PageContentService $pageContentService = null;
 
@@ -37,6 +40,11 @@ final class PageContentServiceTest extends EccubeTestCase
      */
     private ?array $createdFiles = null;
 
+    /**
+     * @var list<string>|null テストで作成したディレクトリ (中身ごと消す)
+     */
+    private ?array $createdDirs = null;
+
     private ?string $route = null;
 
     protected function setUp(): void
@@ -44,6 +52,7 @@ final class PageContentServiceTest extends EccubeTestCase
         parent::setUp();
         $this->pageContentService = self::getContainer()->get(PageContentService::class);
         $this->createdFiles = [];
+        $this->createdDirs = [];
         $this->route = 'test_page_'.bin2hex(random_bytes(4));
     }
 
@@ -54,6 +63,7 @@ final class PageContentServiceTest extends EccubeTestCase
                 unlink($path);
             }
         }
+        (new Filesystem())->remove($this->createdDirs ?? []);
 
         parent::tearDown();
     }
@@ -370,6 +380,242 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
+     * プラグインの名前空間を指す既定ページは, プラグイン同梱のテンプレートではなく
+     * 上書き用の app/template/plugin へ置く.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testGetTemplateDirForPluginNamespacePage(): void
+    {
+        $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_DEFAULT);
+
+        $this->assertSame(
+            $this->pluginOverrideDir(),
+            $this->pageContentService->getTemplateDir($Page)
+        );
+    }
+
+    /**
+     * "@" は twig の記法でディレクトリ名には含まれない. 付けたまま書き出すと
+     * EccubeExtension が登録するパス (app/template/plugin/Boomerang) と一致せず,
+     * 保存しても画面へ反映されない.
+     */
+    public function testGetFilePathStripsTwigNamespacePrefix(): void
+    {
+        $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_DEFAULT);
+
+        $this->assertSame(
+            $this->pluginOverrideDir().'/Boomerang/example.twig',
+            $this->pageContentService->getFilePath($Page)
+        );
+    }
+
+    /**
+     * 名前空間を持たないページの配置先は変えない.
+     */
+    public function testGetTemplateDirForNormalPageIsUnchanged(): void
+    {
+        $UserPage = (new Page())->setFileName('user_data/example')->setEditType(Page::EDIT_TYPE_USER);
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_user_data_dir'),
+            $this->pageContentService->getTemplateDir($UserPage)
+        );
+
+        $DefaultPage = (new Page())->setFileName('Product/list')->setEditType(Page::EDIT_TYPE_DEFAULT);
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_front_dir').'/Product/list.twig',
+            $this->pageContentService->getFilePath($DefaultPage)
+        );
+    }
+
+    /**
+     * ユーザーが作成したページは "@" で始まっても名前空間として扱わない.
+     * フロント (UserDataController) は "@user_data/@Boomerang/example.twig" を描画するため,
+     * 配置先は app/template/user_data/@Boomerang/example.twig になる.
+     */
+    public function testGetFilePathKeepsAtSignForUserPage(): void
+    {
+        $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_USER);
+
+        $this->assertSame(
+            $this->eccubeConfig->get('eccube_theme_user_data_dir').'/@Boomerang/example.twig',
+            $this->pageContentService->getFilePath($Page)
+        );
+    }
+
+    /**
+     * "@" で始まるユーザーのページのファイル名を変更したとき, 旧ファイルは user_data の配下から消す.
+     *
+     * 名前空間として扱うと app/template/plugin/[code] を探し, 同じ名前の既定ページの
+     * 上書きファイルを巻き込んで消しかねない.
+     */
+    public function testApplyRemovesPreviousTemplateFromItsOwnDir(): void
+    {
+        $userDataDir = (string) $this->eccubeConfig->get('eccube_theme_user_data_dir');
+        $code = 'Boomerang'.bin2hex(random_bytes(4));
+        $this->createdDirs[] = $userDataDir.'/@'.$code;
+        $this->createdDirs[] = $this->pluginOverrideDir().'/'.$code;
+
+        // プラグインが DB へ直接登録した, "@" で始まるファイル名を持つユーザーのページ
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_USER);
+        $previousPath = $userDataDir.'/@'.$code.'/'.$this->route.'.twig';
+        (new Filesystem())->dumpFile($previousPath, 'before');
+
+        // 巻き添えを検知するため, 同じ名前の既定ページの上書きファイルを置いておく
+        $decoyPath = $this->pluginOverrideDir().'/'.$code.'/'.$this->route.'.twig';
+        (new Filesystem())->dumpFile($decoyPath, 'decoy');
+
+        // ファイル名だけ "@" の無いものへ変更する
+        $movedPath = $userDataDir.'/'.$this->route.'.twig';
+        $this->apply(['name' => '移動後', 'file_name' => $this->route, 'body' => 'after']);
+
+        $this->assertFileExists($movedPath, '新しいファイル名で書き出す');
+        $this->assertFileDoesNotExist($previousPath, '旧ファイルは user_data の配下から消す');
+        $this->assertSame('decoy', file_get_contents($decoyPath), '既定ページの上書きファイルを巻き込まない');
+    }
+
+    /**
+     * twig の名前空間に app/template/plugin/[code] が登録されるのは, コンテナのコンパイル時に
+     * そのディレクトリが有った場合だけ. 登録されるまでは, コンテナを作り直さないと
+     * フロントへ反映されないことを呼び出し側へ伝え続ける (案内を見落としても次の保存で再び伝える).
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testSaveRequiresContainerRebuildUntilNamespaceDirIsRegistered(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->assertDirectoryDoesNotExist($namespaceDir);
+        $this->createdDirs[] = $namespaceDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        $first = $this->apply(['body' => 'first']);
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $first->writtenPaths);
+        $this->assertTrue($first->containerRebuildRequired, '上書き用ディレクトリが登録されていなければ再構築が要る');
+
+        $second = $this->apply(['body' => 'second']);
+        $this->assertTrue($second->containerRebuildRequired, '再構築するまでは, 次の保存でも再構築が要る');
+
+        // コンテナを作り直した後の状態
+        $this->registerTwigNamespacePath($code, $namespaceDir);
+        $third = $this->apply(['body' => 'third']);
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $third->writtenPaths);
+        $this->assertFalse($third->containerRebuildRequired, '登録済みなら再構築は要らない');
+    }
+
+    /**
+     * eccube_theme_app_dir を変えた環境でも, 上書き用のテンプレートは configureTwigPaths() が登録する
+     * kernel.project_dir/app/template/plugin へ書き出し, 登録済みかも同じパスで判定する.
+     * 設定値から組み立てると, 書き出したファイルが登録されず, 保存のたびに再構築を求め続ける.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testPluginOverrideDirIgnoresThemeAppDirSetting(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $customThemeAppDir = sys_get_temp_dir().'/'.$code.'_theme';
+        $this->createdDirs[] = $namespaceDir;
+        $this->createdDirs[] = $customThemeAppDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithConfig(
+            [$code],
+            ['eccube_theme_app_dir' => $customThemeAppDir]
+        );
+
+        // コンテナを作り直した後の状態 (configureTwigPaths() が登録するパス)
+        $this->registerTwigNamespacePath($code, $namespaceDir);
+        $result = $this->apply(['body' => 'body']);
+
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $result->writtenPaths);
+        $this->assertDirectoryDoesNotExist($customThemeAppDir.'/plugin');
+        $this->assertFalse($result->containerRebuildRequired, '登録済みのパスへ書き出したので再構築は要らない');
+    }
+
+    /**
+     * 内容が変わらず保存を省いた (Unchanged) 場合も, 再構築が要るかを返す.
+     * CLI で同じ内容の apply を再実行したときに, 再構築するまで案内し続けるため.
+     */
+    public function testApplyUnchangedStillRequiresContainerRebuild(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->createdDirs[] = $namespaceDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+
+        $this->assertTrue($this->apply(['body' => 'same'])->containerRebuildRequired);
+
+        $again = $this->apply(['body' => 'same']);
+        $this->assertSame(ContentStatus::Unchanged, $again->status);
+        $this->assertTrue($again->containerRebuildRequired, '内容が同じでも, 登録されるまでは再構築が要る');
+
+        // コンテナを作り直した後の状態
+        $this->registerTwigNamespacePath($code, $namespaceDir);
+        $registered = $this->apply(['body' => 'same']);
+        $this->assertSame(ContentStatus::Unchanged, $registered->status);
+        $this->assertFalse($registered->containerRebuildRequired);
+    }
+
+    /**
+     * 無効なプラグインの名前空間は, コンテナを作り直しても twig に登録されないため, 再構築を求めない.
+     * 求めると, 案内に従っても解消せず, 保存のたびに再構築 (管理画面では cache:clear) が走る.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testSaveDoesNotRequireContainerRebuildForDisabledPlugin(): void
+    {
+        $code = 'Disabled'.bin2hex(random_bytes(4));
+        $this->assertNotContains($code, $this->eccubeConfig->get('eccube.plugins.enabled'));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $this->createdDirs[] = $namespaceDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+
+        $result = $this->apply(['body' => 'body']);
+
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $result->writtenPaths, '上書き用ディレクトリはある');
+        $this->assertFalse($result->containerRebuildRequired);
+    }
+
+    /**
+     * 上書きしていない (上書き用ディレクトリが無い) 既定ページは, 同梱のテンプレートを表示するのが正しく,
+     * メタ情報だけを保存しても再構築を求めない.
+     */
+    public function testSaveDoesNotRequireContainerRebuildWithoutOverride(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
+        $overrideDir = $this->pluginOverrideDir().'/'.$code;
+        $this->createdDirs[] = $overrideDir;
+
+        // プラグイン同梱のテンプレート (app/Plugin/[code]/Resource/template 相当)
+        $bundledDir = sys_get_temp_dir().'/'.$code;
+        $this->createdDirs[] = $bundledDir;
+        (new Filesystem())->dumpFile($bundledDir.'/'.$this->route.'.twig', 'bundled');
+        $this->registerTwigNamespacePath($code, $bundledDir);
+
+        $result = $this->apply(['name' => '名前だけ変更']);
+
+        $this->assertSame(ContentStatus::Updated, $result->status);
+        $this->assertSame([], $result->writtenPaths);
+        $this->assertDirectoryDoesNotExist($overrideDir);
+        $this->assertFalse($result->containerRebuildRequired);
+    }
+
+    /**
+     * 名前空間を持たないページは, 書き出してもコンテナの再構築を求めない.
+     */
+    public function testSaveDoesNotRequireContainerRebuildForNormalPage(): void
+    {
+        $result = $this->apply(['name' => 'テストページ', 'body' => 'body']);
+
+        $this->assertNotSame([], $result->writtenPaths);
+        $this->assertFalse($result->containerRebuildRequired);
+    }
+
+    /**
      * app/template へ上書きしておらず, コアのテンプレートを解決できる既定ページ.
      */
     private function findDefaultPageWithoutOverride(): Page
@@ -385,6 +631,22 @@ final class PageContentServiceTest extends EccubeTestCase
         }
 
         self::fail('app/template へ上書きしていない既定ページが見つかりません.');
+    }
+
+    /**
+     * プラグインが dtb_page へ直接登録する, ファイル名が twig の名前空間を指すページを作る.
+     */
+    private function createPluginNamespacePage(string $fileName, int $editType): Page
+    {
+        $Page = (new Page())
+            ->setName('プラグインのページ')
+            ->setUrl((string) $this->route)
+            ->setFileName($fileName)
+            ->setEditType($editType);
+        $this->entityManager->persist($Page);
+        $this->entityManager->flush();
+
+        return $Page;
     }
 
     /**
