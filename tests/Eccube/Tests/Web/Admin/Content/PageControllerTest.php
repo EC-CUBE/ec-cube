@@ -288,6 +288,9 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         // 差し替えたサービスと登録を保存のリクエストへ引き継ぐため, カーネルを作り直さない
         $client->disableReboot();
         $this->registerTwigNamespacePath($code, $pluginDir.'/'.$code);
+        // 再構築が起きないことを確かめる目印. 存在しないまま assertFileExists しても意味が無いため, 実行前に置く
+        $marker = rtrim((string) static::getContainer()->getParameter('kernel.cache_dir'), '/').'/sample_'.$code;
+        (new Filesystem())->dumpFile($marker, 'test');
 
         try {
             $client->request(
@@ -311,8 +314,9 @@ final class PageControllerTest extends AbstractAdminWebTestCase
             $this->assertFileExists($expectedPath, '@ を除いたパスへ書き出す');
             $this->assertFileDoesNotExist($unexpectedPath, '@ を含むパスへは書き出さない');
             $this->assertSame($source, file_get_contents($expectedPath));
+            $this->assertFileExists($marker, '登録済みならコンテナを作り直さない');
         } finally {
-            (new Filesystem())->remove([$pluginDir.'/'.$code, $pluginDir.'/@'.$code]);
+            (new Filesystem())->remove([$pluginDir.'/'.$code, $pluginDir.'/@'.$code, $marker]);
         }
     }
 
