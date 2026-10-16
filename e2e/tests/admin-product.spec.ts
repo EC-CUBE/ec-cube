@@ -1094,6 +1094,105 @@ test.describe('Admin Product (EA03)', () => {
     await expect(page.locator(nameSelector(5))).toContainText(name5);
   });
 
+  test('product_カテゴリFAQ 並び替えと表示順 - EA0305-UC04-T01', async ({ page }) => {
+    // カテゴリ 1 (フィクスチャ) の FAQ 編集画面
+    await page.goto(`/${adminRoute}/product/category/1/faq`);
+    await page.waitForLoadState('load');
+    await expect(page.locator(pageTitle)).toContainText('カテゴリFAQ');
+
+    const prefix = 'e2e_faq_';
+    const suffix = String(Date.now());
+    const questionA = `${prefix}a_${suffix}`;
+    const questionB = `${prefix}b_${suffix}`;
+    const items = page.locator('.faq-collection__item');
+    const sortNos = async () => (await items.locator('.sort-no').evaluateAll(
+      (els) => els.map((el) => (el as HTMLInputElement).value),
+    ));
+    const questions = async () => (await items.locator('input[type="text"]').evaluateAll(
+      (els) => els.map((el) => (el as HTMLInputElement).value),
+    ));
+    const expectSequential = (values: string[]) => {
+      expect(values).toEqual(values.map((_, i) => String(i + 1)));
+    };
+
+    const moveUp = async (index: number) => {
+      await page.evaluate(() => document.querySelectorAll('.tooltip').forEach((el) => el.remove()));
+      await items.nth(index).locator('a.action-up').click();
+    };
+
+    try {
+      // 既存行は表示順の昇順 (1..n) で並んでいる
+      const initialCount = await items.count();
+      expectSequential(await sortNos());
+
+      // 2 行追加すると末尾に付き、表示順が採番される
+      await page.locator('.faq-collection__add').click();
+      await page.locator('.faq-collection__add').click();
+      await expect(items).toHaveCount(initialCount + 2);
+      const rowA = items.nth(initialCount);
+      const rowB = items.nth(initialCount + 1);
+      await rowA.locator('input[type="text"]').fill(questionA);
+      await rowA.locator('textarea').fill('answer A');
+      await rowB.locator('input[type="text"]').fill(questionB);
+      await rowB.locator('textarea').fill('answer B');
+      expectSequential(await sortNos());
+
+      // 末尾の行を ↑ で 1 つ上げると、表示順が振り直される
+      await moveUp(initialCount + 1);
+      expect((await questions()).slice(initialCount)).toEqual([questionB, questionA]);
+      expectSequential(await sortNos());
+
+      // 保存した表示順で再表示される (サーバが表示順の昇順で返す)
+      await page.getByRole('button', { name: '登録' }).click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.alert-success')).toContainText('保存しました');
+      await page.goto(`/${adminRoute}/product/category/1/faq`);
+      await page.waitForLoadState('load');
+      await expect(items).toHaveCount(initialCount + 2);
+      expect((await questions()).slice(initialCount)).toEqual([questionB, questionA]);
+      expectSequential(await sortNos());
+
+      // 入力エラーで再描画されると、JS が表示順の昇順に並べ直す。
+      // 保存済みの行は入力エラー時にフォームの添字順 (保存時の順) のまま描画され、
+      // hidden の表示順だけが送信値になる。並べ直しは画面側の初期ソートだけが担う。
+      await moveUp(initialCount + 1);
+      expect((await questions()).slice(initialCount)).toEqual([questionA, questionB]);
+      await items.nth(initialCount).locator('textarea').fill('');
+      // required 属性のブラウザ側検証を外し、サーバ側の検証エラーで再描画させる
+      await page.locator('#form1').evaluate((form) => { (form as HTMLFormElement).noValidate = true; });
+      const [response] = await Promise.all([
+        page.waitForResponse((r) => r.request().method() === 'POST' && /category\/1\/faq/.test(r.url())),
+        page.getByRole('button', { name: '登録' }).click(),
+      ]);
+      await page.waitForLoadState('load');
+      await expect(items.locator('.invalid-feedback').first()).toBeVisible();
+      // サーバの描画は保存時の順 (B, A) のまま
+      const html = await response.text();
+      expect(html.indexOf(questionB)).toBeGreaterThan(-1);
+      expect(html.indexOf(questionB)).toBeLessThan(html.indexOf(questionA));
+      // 画面では JS が表示順の昇順 (A, B) に並べ直している
+      await expect(items).toHaveCount(initialCount + 2);
+      expect((await questions()).slice(initialCount)).toEqual([questionA, questionB]);
+      expectSequential(await sortNos());
+    } finally {
+      // 後片付け: このテストが追加した行 (途中で失敗した回の残りも含む) を削除して保存する
+      await page.goto(`/${adminRoute}/product/category/1/faq`);
+      await page.waitForLoadState('load');
+      await page.evaluate(() => document.querySelectorAll('.tooltip').forEach((el) => el.remove()));
+      const testRows = items.filter({ has: page.locator(`input[type="text"][value^="${prefix}"]`) });
+      const testRowCount = await testRows.count();
+      for (let i = testRowCount - 1; i >= 0; i--) {
+        await testRows.nth(i).locator('.faq-collection__remove').click();
+      }
+      if (testRowCount > 0) {
+        await page.getByRole('button', { name: '登録' }).click();
+        await page.waitForLoadState('load');
+        await expect(page.locator('.alert-success')).toContainText('保存しました');
+      }
+      await expect(items.filter({ has: page.locator(`input[type="text"][value^="${prefix}"]`) })).toHaveCount(0);
+    }
+  });
+
   test('product_カテゴリ表示順の変更 - EA0305-UC03-T01', async ({ page }) => {
     // Navigate to category management
     await page.goto(`/${adminRoute}/product/category`);

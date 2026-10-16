@@ -286,6 +286,93 @@ test.describe('Admin Basic Info (EA07)', () => {
     expect(afterDeleteCount).toBe(beforeCount);
   });
 
+  test('basicinfo_配送方法 お届け時間の並び替えと表示順 - EA0707-UC03-T01', async ({ page }) => {
+    const deliveryName = 'test_delivery_time_' + Date.now();
+    const rows = page.locator('#delivery-time-group .sortable-item');
+    const labels = async () => rows.locator('.display-label').allTextContents();
+    const sortNos = async () => (await rows.locator('.sort-no').evaluateAll(
+      (els) => els.map((el) => (el as HTMLInputElement).value),
+    ));
+
+    const moveUp = async (index: number) => {
+      await page.evaluate(() => document.querySelectorAll('.tooltip').forEach((el) => el.remove()));
+      await rows.nth(index).locator('a.action-up').click();
+    };
+
+    try {
+      // --- 配送方法を新規登録し、お届け時間を 2 件追加する ---
+      await page.goto(`/${adminRoute}/setting/shop/delivery/new`);
+      await page.waitForLoadState('load');
+      await page.locator('#delivery_name').fill(deliveryName);
+      await page.locator('#delivery_service_name').fill('名称');
+      await page.locator('#delivery_payments_1').check();
+      await page.locator('#delivery_free_all').fill('100');
+      await page.locator('#set_fee_all').click();
+
+      await page.locator('#add-delivery-time-value').fill('午前');
+      await page.locator('#add-delivery-time-button').click();
+      await page.locator('#add-delivery-time-value').fill('午後');
+      await page.locator('#add-delivery-time-button').click();
+      await expect(rows).toHaveCount(2);
+      expect(await labels()).toEqual(['午前', '午後']);
+      expect(await sortNos()).toEqual(['1', '2']);
+
+      // 2 件目を ↑ で上げると表示順が振り直される
+      await moveUp(1);
+      expect(await labels()).toEqual(['午後', '午前']);
+      expect(await sortNos()).toEqual(['1', '2']);
+
+      await page.getByRole('button', { name: '登録' }).click();
+      await page.waitForLoadState('load');
+      await expect(page.locator('.c-container div.c-contentsArea > div.alert-success')).toContainText('保存しました');
+
+      // --- 保存した表示順で再表示される (サーバが表示順の昇順で返す) ---
+      await expect(page).toHaveURL(/delivery\/\d+\/edit/);
+      await page.reload();
+      await page.waitForLoadState('load');
+      await expect(rows).toHaveCount(2);
+      expect(await labels()).toEqual(['午後', '午前']);
+      expect(await sortNos()).toEqual(['1', '2']);
+
+      // --- 入力エラーで再描画されると、JS が表示順の昇順に並べ直す ---
+      // 保存済みの行は入力エラー時にフォームの添字順 (保存時の順) のまま描画され、
+      // hidden の表示順だけが送信値になる。並べ直しは画面側の初期ソートだけが担う。
+      await moveUp(1);
+      expect(await labels()).toEqual(['午前', '午後']);
+      await page.locator('#delivery_name').fill('');
+      // required 属性のブラウザ側検証を外し、サーバ側の検証エラーで再描画させる
+      await page.locator('#delivery_name').evaluate((el) => { (el as HTMLInputElement).form!.noValidate = true; });
+      const [response] = await Promise.all([
+        page.waitForResponse((r) => r.request().method() === 'POST' && /delivery\/\d+\/edit/.test(r.url())),
+        page.getByRole('button', { name: '登録' }).click(),
+      ]);
+      await page.waitForLoadState('load');
+      await expect(page.locator('#delivery_name')).toHaveClass(/is-invalid/);
+      // サーバの描画は保存時の順 (午後, 午前) のまま
+      const html = await response.text();
+      const position = (label: string) => html.indexOf(`<a class="display-label">${label}</a>`);
+      expect(position('午後')).toBeGreaterThan(-1);
+      expect(position('午後')).toBeLessThan(position('午前'));
+      // 画面では JS が表示順の昇順 (午前, 午後) に並べ直している
+      await expect(rows).toHaveCount(2);
+      expect(await labels()).toEqual(['午前', '午後']);
+      expect(await sortNos()).toEqual(['1', '2']);
+    } finally {
+      // --- 後片付け (途中で失敗しても一覧先頭に残さない。後続テストは一覧の先頭行を固定で見る) ---
+      await page.goto(`/${adminRoute}/setting/shop/delivery`);
+      await page.waitForLoadState('load');
+      const row = page.locator(`div.c-primaryCol ul li:has-text("${deliveryName}")`);
+      if (await row.count() > 0) {
+        await row.locator('a[data-bs-target="#DeleteModal"]').click();
+        await page.locator('#DeleteModal').waitFor({ state: 'visible' });
+        await page.waitForTimeout(500);
+        await page.locator('#DeleteModal > div > div > div.modal-footer > a').click();
+        await page.waitForLoadState('load');
+        await expect(page.locator('.c-container div.c-contentsArea > div.alert-success')).toContainText('削除しました');
+      }
+    }
+  });
+
   test('basicinfo_配送方法一覧順序変更 - EA0706-UC02-T01', async ({ page }) => {
     // Navigate to delivery list
     await page.goto(`/${adminRoute}/setting/shop/delivery`);

@@ -100,6 +100,23 @@ test.describe('Front Product (EF02)', () => {
     expect(src).toMatch(/\/upload\/save_image\/.+\.png$/);
   });
 
+  test('EF0202-UC01-T04 商品詳細 サムネイルクリックでメイン画像が切り替わる', async ({ page }) => {
+    await page.goto('/products/detail/1');
+    await page.waitForLoadState('load');
+
+    // メイン画像の slick が初期化され、init イベントで商品情報欄が表示される
+    const visual = page.locator('.item_visual');
+    await expect(visual).toHaveClass(/slick-initialized/);
+    await expect(page.locator('.ec-grid2__cell').first()).toBeVisible();
+    await expect(visual.locator('.slick-current')).toHaveAttribute('data-slick-index', '0');
+
+    // 2 枚目のサムネイルをクリックすると slickGoTo でメイン画像が 2 枚目になる
+    const thumbs = page.locator('.item_nav .slideThumb');
+    expect(await thumbs.count()).toBeGreaterThan(1);
+    await thumbs.nth(1).click();
+    await expect(visual.locator('.slick-current')).toHaveAttribute('data-slick-index', '1');
+  });
+
   test('EF0202-UC02-T04 商品詳細(規格あり) カートに追加', async ({ page }) => {
     await page.goto('/products/detail/1');
     await page.waitForLoadState('load');
