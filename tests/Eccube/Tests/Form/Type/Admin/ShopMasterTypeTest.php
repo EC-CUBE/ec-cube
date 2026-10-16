@@ -475,6 +475,28 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
     }
 
     /**
+     * 追加したまま空の行が途中にあっても、行単位の検証（必須）のエラーは送信した行の閉店時刻に付く.
+     * 空の行は送信データの段階で取り除くため、delete_empty で子のキーが歯抜けにならない.
+     */
+    public function testInValidOpeningHoursEmptyRowInMiddleRequiredErrorOnSubmittedRow(): void
+    {
+        $this->formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            1 => ['opens' => '', 'closes' => ''],
+            2 => ['day_of_week' => ['Tuesday'], 'opens' => '09:00', 'closes' => ''],
+        ];
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+        $this->assertCount(0, $this->form->getErrors());
+        $this->assertCount(0, $this->form->get('OpeningHours')->getErrors());
+        $rows = array_values(iterator_to_array($this->form->get('OpeningHours')));
+        $this->assertCount(2, $rows);
+        $this->assertCount(0, $rows[0]->get('closes')->getErrors());
+        $this->assertValidatorErrorOn($rows[1]->get('closes'), 'admin.setting.shop.opening_hours.error.closes_required');
+    }
+
+    /**
      * 送信キーが歯抜け（1, 2）でも、開店と閉店が同じ時刻のエラーは送信した行に付く（先頭の行には付かない）.
      */
     public function testInValidOpeningHoursGapKeysOpensEqualsClosesErrorOnSubmittedRow(): void

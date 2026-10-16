@@ -380,6 +380,10 @@ class ShopMasterType extends AbstractType
      * （OpeningHours[<コレクションの添字>].closes 等）が別の行や実在しない子を指し、
      * エラーが該当の行に表示されない（ルートのフォームに付き、画面に何も出ずに保存されない）。
      * 子フォームのキーとコレクションの添字をそろえるため、送信データの段階で詰め直す.
+     *
+     * 曜日も開店・閉店も空の行は、詰め直す前に取り除く。残すと SUBMIT の段階で delete_empty が
+     * 子を外し、キーがふたたび歯抜けになるため（既存の行を空にした場合も、値が詰め直されて
+     * 末尾のエンティティが削除されるだけで、保存される内容と順序は変わらない）.
      */
     private function reindexOpeningHours(FormEvent $event): void
     {
@@ -388,7 +392,14 @@ class ShopMasterType extends AbstractType
             return;
         }
 
-        $data['OpeningHours'] = array_values($data['OpeningHours']);
+        $rows = array_filter(
+            $data['OpeningHours'],
+            static fn ($row): bool => !is_array($row)
+                || !empty($row['day_of_week'])
+                || (string) ($row['opens'] ?? '') !== ''
+                || (string) ($row['closes'] ?? '') !== ''
+        );
+        $data['OpeningHours'] = array_values($rows);
         $event->setData($data);
     }
 
