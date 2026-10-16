@@ -5,6 +5,9 @@ services:
     environment:
       APP_ENV: "prod"
       APP_DEBUG: 0
+      # イメージに vendor を含めず、起動時に composer install するため、prod で使わない開発用の依存は入れない。
+      # 開発用の依存の配布元が取得できなくなるとスキャンが始まらない (phpstan/phpstan-doctrine の zip が 404 になった)
+      COMPOSER_NO_DEV: "1"
       # セキュリティ設定 (admin_security) への攻撃で .env の IP 制限や管理画面のパスが書き換わり、
       # 以降のリクエストが締め出されないよう、既定値のまま環境変数で固定する。
       # 環境変数で上書きされたキーは、画面から保存しても .env へ書き込まれない
@@ -16,6 +19,9 @@ services:
       # 画面では必須のため空にできない。すべてのホストに一致させ、未設定と同じ動作にする
       TRUSTED_HOSTS: ".*"
       ECCUBE_ADMIN_ROUTE: "admin"
+    volumes:
+      # アクセスログにリダイレクト先を足す (zap/apache-access-log.conf)
+      - ./zap/apache-access-log.conf:/etc/apache2/conf-enabled/zz-zap-access-log.conf:ro
 
   zap:
     image: ghcr.io/zaproxy/zaproxy:stable

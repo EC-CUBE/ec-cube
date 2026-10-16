@@ -61,12 +61,19 @@ docker compose cp zap:/tmp/alerts.json "${OUT}/alerts.json" > /dev/null 2>&1
 docker compose logs --since "${SINCE}" --no-log-prefix ec-cube > "${OUT}/access.log" 2> /dev/null
 if zap/bin/attack_counts.sh "zap/scripts/${TARGET}.zst" "${OUT}/access.log" > "${OUT}/attacks.tsv" \
     && [[ ${POLICY} == Sequence ]]; then
-    # パラメータがあるのに正常な応答 (2xx/3xx) が再生の分程度しか無いリクエストは、攻撃が画面の処理まで届いていない
+    # パラメータがあるのに正常な応答 (2xx/3xx) が再生の分程度しか無いリクエストは、攻撃が画面の処理まで届いていない。
+    # 3xx の大半がログイン画面・購入エラー画面・2 段階認証の画面へ戻されているものも同じ (ログインのリクエスト自身は除く)
     awk -F'\t' -v target="${TARGET}" -v gha="${GITHUB_ACTIONS:-}" '
-        $5 == "あり" { split($6, r, "/"); if (r[1] + r[2] <= 3) {
-            msg = sprintf("%s: 攻撃が届いていない可能性 %s %s (ステップ %s、%d 件、応答 2xx/3xx/4xx/5xx = %s)", target, $2, $3, $4, $1, $6)
-            print (gha != "" ? "::notice::" : "[notice] ") msg
-        } }' "${OUT}/attacks.tsv"
+        $5 == "あり" {
+            split($6, r, "/")
+            split($7, top, ", "); dest = top[1]; n = dest; sub(/ [0-9]+$/, "", dest); sub(/^.* /, "", n)
+            dead = $3 !~ /\/login$/ && dest ~ /(\/login|\/shopping\/error|\/two_factor_auth\/)/ && $1 >= 20 && n + 0 >= $1 * 0.9
+            if (r[1] + r[2] <= 3 || dead) {
+                msg = sprintf("%s: 攻撃が届いていない可能性 %s %s (ステップ %s、%d 件、応答 2xx/3xx/4xx/5xx = %s%s)",
+                    target, $2, $3, $4, $1, $6, dead ? "、3xx の行き先 " $7 : "")
+                print (gha != "" ? "::notice::" : "[notice] ") msg
+            }
+        }' "${OUT}/attacks.tsv"
 fi
 
 exec zap/bin/check_results.sh "${OUT}/zap.log" "${POLICY}" "${TARGET}"

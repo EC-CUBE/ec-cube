@@ -10,8 +10,11 @@
 # 同じメソッドと URL のリクエストが複数のステップにある場合は、まとめて数える。
 # before_script や再生のリクエストも含むため、件数が数件なら攻撃はほぼ届いていない。
 # 件数が多くても 4xx ばかりなら、攻撃は画面の処理まで届かずに弾かれている (例: 使用済みの URL で 404)。
+# 3xx は保存に成功したリダイレクトとは限らない。ログイン画面やエラー画面へ戻されていれば、攻撃は処理まで届いていない。
+# アクセスログの末尾にリダイレクト先がある場合 (zap/apache-access-log.conf)、3xx を行き先ごとに数える。
 #
 # 出力はタブ区切り: <件数> <メソッド> <URL> <ステップの番号> <パラメータの有無> <応答の内訳 2xx/3xx/4xx/5xx>
+#                   <3xx の行き先 (多い順に 3 件。数字だけの階層は {id} にまとめる)>
 
 set -euo pipefail
 
@@ -48,10 +51,32 @@ jq -r '
         path = f[2]
         sub(/\?.*/, "", path)
         k = substr(f[4], 1, 1)
-        for (i = 1; i <= n; i++) if (f[1] == m[i] && path ~ re[i]) { c[i]++; s[i, k]++ }
+        dest = ""
+        if (k == 3 && match($0, /"[^"]*"$/)) {
+            dest = substr($0, RSTART + 1, RLENGTH - 2)
+            # 行き先の無い旧形式のログでは、末尾は User-Agent になる
+            if (dest !~ /^(https?:\/\/|\/)/) dest = ""
+            sub(/^https?:\/\/[^\/]+/, "", dest)
+            sub(/\?.*/, "", dest)
+            gsub(/\/[0-9]+/, "/{id}", dest)
+        }
+        for (i = 1; i <= n; i++) if (f[1] == m[i] && path ~ re[i]) {
+            c[i]++; s[i, k]++
+            if (dest != "") { if (!((i, dest) in d)) { nd[i]++; dn[i, nd[i]] = dest } d[i, dest]++ }
+        }
     }
     END {
-        for (i = 1; i <= n; i++)
-            print c[i] + 0, m[i], p[i], st[i], pa[i], (s[i, 2] + 0) "/" (s[i, 3] + 0) "/" (s[i, 4] + 0) "/" (s[i, 5] + 0)
+        for (i = 1; i <= n; i++) {
+            # 3xx の行き先を多い順に 3 件
+            top = ""
+            for (t = 1; t <= 3; t++) {
+                best = 0
+                for (j = 1; j <= nd[i]; j++) if (!((i, j) in used) && d[i, dn[i, j]] > best) { best = d[i, dn[i, j]]; bj = j }
+                if (best == 0) break
+                used[i, bj] = 1
+                top = top (top == "" ? "" : ", ") dn[i, bj] " " best
+            }
+            print c[i] + 0, m[i], p[i], st[i], pa[i], (s[i, 2] + 0) "/" (s[i, 3] + 0) "/" (s[i, 4] + 0) "/" (s[i, 5] + 0), top
+        }
     }
 ' - "${LOG}" | sort -t$'\t' -k1,1n

@@ -1,0 +1,13 @@
+購入エラー画面で、カートと受注の紐付けを外さない。購入手続きの画面への攻撃が購入エラー画面へリダイレクトされると、以降の攻撃が受注を見つけられずに購入エラー画面へ戻されるのを防ぐ
+
+--- a/src/Eccube/Controller/ShoppingController.php
++++ b/src/Eccube/Controller/ShoppingController.php
+@@ -1170,7 +1170,7 @@
+         $Cart = $this->cartService->getCart();
+         if (null !== $Cart) {
+             $this->cartPurchaseFlow->validate($Cart, new PurchaseContext($Cart, $this->getUser()));
+-            $this->cartService->setPreOrderId(null);
++            // ZAP: $this->cartService->setPreOrderId(null);
+             $this->cartService->save();
+         }
+ 

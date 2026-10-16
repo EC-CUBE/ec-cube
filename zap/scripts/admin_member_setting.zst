@@ -360,7 +360,7 @@
     },
     {
       "urlToken": "https://ec-cube/admin/setting/system/member/{{member-id}}/edit",
-      "data": "admin_member%5B_token%5D={{csrf7}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=abc*********123&admin_member%5Bplain_password%5D%5Bsecond%5D=abc*********123&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1&admin_member%5Btwo_factor_auth_enabled%5D=1",
+      "data": "admin_member%5B_token%5D={{csrf7}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=abc*********123&admin_member%5Bplain_password%5D%5Bsecond%5D=abc*********123&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 346\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
@@ -382,6 +382,28 @@
     },
     {
       "urlToken": "https://ec-cube/admin/setting/system/member/{{member-id}}/edit",
+      "data": "admin_member%5B_token%5D={{csrf7}}&admin_member%5Bname%5D=member-{{member-suffix}}&admin_member%5Bdepartment%5D=member-{{member-suffix}}&admin_member%5Bplain_password%5D%5Bfirst%5D=abc*********123&admin_member%5Bplain_password%5D%5Bsecond%5D=abc*********123&admin_member%5BAuthority%5D=0&admin_member%5BWork%5D=1&admin_member%5Btwo_factor_auth_enabled%5D=1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 346\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656667690539,
+      "cookies": [],
+      "index": 22,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "urlToken": "https://ec-cube/admin/setting/system/member/{{member-id}}/edit",
       "data": "",
       "method": "GET",
       "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
@@ -398,7 +420,7 @@
       "followRedirects": false,
       "timestamp": 1656667690581,
       "cookies": [],
-      "index": 22,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -420,7 +442,7 @@
       "followRedirects": false,
       "timestamp": 1656667690601,
       "cookies": [],
-      "index": 23,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -431,7 +453,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf8",
-      "index": 24,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -442,13 +464,13 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "two_factor_auth_key",
-      "index": 25,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
       "comment": "2 段階認証の設定。攻撃は誤ったコードの送信で受ける (設定が完了すると以降は設定済みとして転送され、フォームの処理に届かないため)",
-      "index": 26,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -470,13 +492,13 @@
       "followRedirects": false,
       "timestamp": 1656667715340,
       "cookies": [],
-      "index": 27,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "正しいコードで設定を完了する。device_token の ZAP_TOTP は zap/scripts/totp.js が置き換える",
-      "index": 28,
+      "index": 29,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -498,13 +520,13 @@
       "followRedirects": false,
       "timestamp": 1656667715340,
       "cookies": [],
-      "index": 29,
+      "index": 30,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "2 段階認証の変更",
-      "index": 30,
+      "index": 31,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -526,7 +548,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 31,
+      "index": 32,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -535,7 +557,7 @@
       "postfix": "\"",
       "location": "BODY",
       "variableName": "csrf-2fa-edit",
-      "index": 32,
+      "index": 33,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -544,7 +566,7 @@
       "postfix": "\"",
       "location": "BODY",
       "variableName": "two-factor-auth-key",
-      "index": 33,
+      "index": 34,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -566,7 +588,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 34,
+      "index": 35,
       "enabled": true,
       "elementType": "ZestRequest"
     }
