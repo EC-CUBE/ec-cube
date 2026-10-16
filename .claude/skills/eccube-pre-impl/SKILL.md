@@ -176,6 +176,7 @@ description: 新規機能の設計・実装を始める直前のチェックリ�
 - ❌ `migrations:diff` で ALTER を自動生成する → ✅ `migrations:generate` の空雛形に、INSERT・型変更など `schema:update` で扱えない分だけ手書きする
 - ❌ マイグレーションでテーブルを"新規定義"してスキーマの源泉にする → ✅ 源泉は Entity 属性
 - ❌ INSERT・構造変更でガードなし → 再実行や環境差で失敗。✅ 存在チェックで冪等にする
+- ❌ ID 指定の INSERT だけ → ✅ PostgreSQL はシーケンスが進まず採番が重複する。`setval()` で MAX(id) に合わせる SQL も積む
 - ❌ `down()` 未実装 → ロールバック不能。✅ `up()`/`down()` を対で実装
 
 > 実装パターン・コード例・実行方法: `.claude/skills/eccube-migration/SKILL.md`

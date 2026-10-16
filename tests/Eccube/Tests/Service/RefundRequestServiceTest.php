@@ -16,6 +16,8 @@ declare(strict_types=1);
 namespace Eccube\Tests\Service;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Entity\MailHistory;
+use Eccube\Entity\MailTemplate;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\RefundRequestStatus;
 use Eccube\Entity\Order;
@@ -65,6 +67,30 @@ final class RefundRequestServiceTest extends EccubeTestCase
         $this->assertSame('1', $result->getQuantity());
         $this->assertSame('商品に破損がありました', $result->getReason());
         $this->assertEmailCount(1);
+    }
+
+    public function testCreateRefundRequestSavesMailHistory(): void
+    {
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($Order->getProductOrderItems()[0]);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('1');
+        $RefundRequest->setReason('商品に破損がありました');
+
+        $this->refundRequestService->createRefundRequest($RefundRequest, [], self::SESSION_ID);
+
+        // persist のまま残っていないことを確かめるため、UnitOfWork を捨てて DB から読む
+        $orderId = $Order->getId();
+        $this->entityManager->clear();
+
+        $MailHistories = $this->entityManager->getRepository(MailHistory::class)->findBy(['Order' => $orderId]);
+        $this->assertCount(1, $MailHistories);
     }
 
     public function testCreateRefundRequestWithoutFiles(): void
@@ -303,6 +329,43 @@ final class RefundRequestServiceTest extends EccubeTestCase
 
         $this->assertStringContainsString($Order->getOrderNo(), (string) $body);
         $this->assertStringContainsString('メール本文検証用の理由テキスト', (string) $body);
+    }
+
+    public function testMailTemplateIsFoundByFileName(): void
+    {
+        // 4.3 以前にメールテンプレートを追加した環境を再現する: id=10 はショップ独自のテンプレートで、
+        // 返品申請通知メールは別の ID で登録されている
+        $Template10 = $this->entityManager->find(MailTemplate::class, 10);
+        $this->assertInstanceOf(MailTemplate::class, $Template10);
+        $Template10->setFileName('Mail/contact_mail.twig')
+            ->setMailSubject('ショップ独自のテンプレート');
+
+        $RefundTemplate = new MailTemplate();
+        $RefundTemplate->setName('返品申請通知メール')
+            ->setFileName('Mail/refund_request_notify.twig')
+            ->setMailSubject('返品申請を受け付けました（別 ID）')
+            ->setDeletable(false)
+            ->setCreateDate(new \DateTime())
+            ->setUpdateDate(new \DateTime());
+        $this->entityManager->persist($RefundTemplate);
+
+        $Customer = $this->createCustomer();
+        $Order = $this->createOrder($Customer);
+        $this->setOrderStatus($Order, OrderStatus::DELIVERED);
+        $this->entityManager->flush();
+
+        $RefundRequest = new RefundRequest();
+        $RefundRequest->setOrder($Order);
+        $RefundRequest->setOrderItem($Order->getProductOrderItems()[0]);
+        $RefundRequest->setCustomer($Customer);
+        $RefundRequest->setQuantity('1');
+        $RefundRequest->setReason('商品に破損がありました');
+
+        $this->refundRequestService->createRefundRequest($RefundRequest, [], self::SESSION_ID);
+
+        /** @var Email $email */
+        $email = $this->getMailerMessage();
+        $this->assertStringContainsString('返品申請を受け付けました（別 ID）', (string) $email->getSubject());
     }
 
     public function testChangeStatusDispatchesEvent(): void
