@@ -128,7 +128,7 @@ OrderByCustomizer→ OrderByClause[] を addOrderBy で追加</div>
   <li><strong>日時は必ず UTC で DB に入る</strong>。生 SQL で日時を条件に使うと TZ ずれを起こす。DQL の <code>EXTRACT</code> は補正込みだが、直書き SQL は自前で補正が要る。</li>
   <li><strong>SQL フィルタは既定で無効</strong>。「在庫なしを隠す」「仮受注を除く」は自動では効かない。フロント商品一覧や売上集計など、必要な経路で明示的に <code>enableFilter()</code> する（コアの Repository / Controller が手本）。</li>
   <li><strong><code>in_stock</code> は ORM の flush を通ったときだけ同期される</strong>。DBAL や生 SQL で在庫数を更新すると <code>in_stock</code> がずれ、在庫なし非表示の結果を誤る。</li>
-  <li>クエリに条件を足したいときは Repository を書き換えず、<code>QueryCustomizer</code> を <code>eccube.query_customizer</code> タグで登録して差し込む（アップグレード安全）。</li>
+  <li>店舗・プラグインがクエリに条件を足したいときは Repository を書き換えず、<code>QueryCustomizer</code> を <code>eccube.query_customizer</code> タグで登録して差し込む（アップグレード安全）。</li>
   <li><code>WhereClause</code> は必ずパラメータバインドを通す。生値を DQL 文字列へ連結しない（SQL インジェクション回避）。</li>
   <li>Mapping ドライバ／Proxy まわりは <code>app/proxy/entity/</code> 生成物と密結合。トレイト追加後の再生成は <code>bin/console eccube:generate:proxies</code>。</li>
   <li><code>CsvDataFixtures</code> はインストール／初期データ投入専用の低レベル一括 INSERT（同階層の <code>definition.yml</code> で投入順を定義）。通常の CSV 入出力（商品・受注）は <code>Service/Csv*Service</code> 側で、これとは別物。</li>

@@ -73,7 +73,7 @@
    ↓ calculateAll
 ③ 明細前処理      ItemPreprocessor         … 明細1行ごとの調整（コアでは未使用の拡張点）
    ↓ calculateAll
-④ 受注前処理      ItemHolderPreprocessor   … 送料/手数料/税 明細の付与・調整
+④ 受注前処理      ItemHolderPreprocessor   … 送料/手数料/税 明細の付与・調整、注文番号の採番
    ↓ calculateAll
 ⑤ 値引き(削除)    DiscountProcessor        … 既存の値引き明細をいったん全消し
    ↓ calculateAll
@@ -84,7 +84,7 @@
  自分が付けた明細を毎回削除してから付け直すことで<strong>何度実行しても結果が変わらない（冪等）</strong>ように作られています。</div>
 
  <h3>確定：<code>prepare()</code> / <code>commit()</code> / <code>rollback()</code></h3>
- <p>確定系は <code>PurchaseProcessor</code> のみが担います。在庫引当や注文番号採番など、実際に世界を変える処理です。</p>
+ <p>確定系は <code>PurchaseProcessor</code> のみが担います。在庫の減算・利用ポイントの減算・会員の購入情報の更新など、DB に確定結果を書き込む処理です（注文番号の採番は ④ の <code>ItemHolderPreprocessor</code>、加算ポイントの計算は ⑦ で行われます）。</p>
  <div class="flow">prepare()   仮確定（在庫引当 等）… 失敗時は例外を投げてフロー中断
 commit()    確定
 rollback()  仮確定の取消（在庫戻し 等）… prepare の逆操作</div>
@@ -100,7 +100,7 @@ rollback()  仮確定の取消（在庫戻し 等）… prepare の逆操作</di
   <tr><td>カート/受注全体の検証（購入を止めたい）</td><td><code>ItemHolderValidator</code> / <code>ItemHolderPostValidator</code></td></tr>
   <tr><td>送料・手数料・税など明細の付与/調整</td><td><code>ItemHolderPreprocessor</code></td></tr>
   <tr><td>値引き</td><td><code>DiscountProcessor</code></td></tr>
-  <tr><td>在庫引当・採番・ポイント付与など確定処理</td><td><code>PurchaseProcessor</code>（<code>AbstractPurchaseProcessor</code> 継承）</td></tr>
+  <tr><td>在庫・利用ポイントの減算など確定処理</td><td><code>PurchaseProcessor</code>（<code>AbstractPurchaseProcessor</code> 継承）</td></tr>
  </table>
  <p>登録方法は 2 通り（併用しない）:</p>
  <ul>

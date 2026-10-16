@@ -69,7 +69,7 @@
 <section data-section="extension" data-customer="false">
  <h2>拡張ポイント<span class="dev-only">開発者向け</span></h2>
  <ul>
-  <li><strong>プロジェクト固有の追加・上書きは <code>app/Customize/Controller/</code></strong> へ。コア（<code>src/Eccube/Controller/</code>）を直接改変しない（アップグレード安全のため）。</li>
+  <li><strong>店舗のプロジェクト固有の追加・上書きは <code>app/Customize/Controller/</code></strong> へ。店舗側ではコア（<code>src/Eccube/Controller/</code>）を直接改変しない（アップグレード安全のため）。本体へのコントリビュートでは <code>src/Eccube/Controller/</code> を改修する。</li>
   <li><strong>プラグイン</strong>は自身のディレクトリ内にコントローラを持ち、ルーティング属性で URL を登録する。</li>
   <li>ルーティングは <strong><code>#[Route]</code> 属性</strong>（<code>Symfony\Component\Routing\Attribute\Route</code>）。管理画面のパスは <code>%eccube_admin_route%</code> プレフィックス配下に置く。</li>
   <li>リクエスト／レスポンスのライフサイクルへの割り込みは <strong>EventSubscriber / EventListener</strong> で行う（コントローラを直接いじらない）。</li>
