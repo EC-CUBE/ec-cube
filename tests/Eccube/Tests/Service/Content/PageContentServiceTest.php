@@ -390,7 +390,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_DEFAULT);
 
         $this->assertSame(
-            $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin',
+            $this->pluginOverrideDir(),
             $this->pageContentService->getTemplateDir($Page)
         );
     }
@@ -405,7 +405,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $Page = (new Page())->setFileName('@Boomerang/example')->setEditType(Page::EDIT_TYPE_DEFAULT);
 
         $this->assertSame(
-            $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/Boomerang/example.twig',
+            $this->pluginOverrideDir().'/Boomerang/example.twig',
             $this->pageContentService->getFilePath($Page)
         );
     }
@@ -454,7 +454,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $userDataDir = (string) $this->eccubeConfig->get('eccube_theme_user_data_dir');
         $code = 'Boomerang'.bin2hex(random_bytes(4));
         $this->createdDirs[] = $userDataDir.'/@'.$code;
-        $this->createdDirs[] = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $this->createdDirs[] = $this->pluginOverrideDir().'/'.$code;
 
         // プラグインが DB へ直接登録した, "@" で始まるファイル名を持つユーザーのページ
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_USER);
@@ -462,7 +462,7 @@ final class PageContentServiceTest extends EccubeTestCase
         (new Filesystem())->dumpFile($previousPath, 'before');
 
         // 巻き添えを検知するため, 同じ名前の既定ページの上書きファイルを置いておく
-        $decoyPath = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code.'/'.$this->route.'.twig';
+        $decoyPath = $this->pluginOverrideDir().'/'.$code.'/'.$this->route.'.twig';
         (new Filesystem())->dumpFile($decoyPath, 'decoy');
 
         // ファイル名だけ "@" の無いものへ変更する
@@ -484,7 +484,7 @@ final class PageContentServiceTest extends EccubeTestCase
     public function testSaveRequiresContainerRebuildUntilNamespaceDirIsRegistered(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->assertDirectoryDoesNotExist($namespaceDir);
         $this->createdDirs[] = $namespaceDir;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
@@ -505,13 +505,42 @@ final class PageContentServiceTest extends EccubeTestCase
     }
 
     /**
+     * eccube_theme_app_dir を変えた環境でも, 上書き用のテンプレートは configureTwigPaths() が登録する
+     * kernel.project_dir/app/template/plugin へ書き出し, 登録済みかも同じパスで判定する.
+     * 設定値から組み立てると, 書き出したファイルが登録されず, 保存のたびに再構築を求め続ける.
+     *
+     * @see \Eccube\DependencyInjection\EccubeExtension::configureTwigPaths()
+     */
+    public function testPluginOverrideDirIgnoresThemeAppDirSetting(): void
+    {
+        $code = 'Rebuild'.bin2hex(random_bytes(4));
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
+        $customThemeAppDir = sys_get_temp_dir().'/'.$code.'_theme';
+        $this->createdDirs[] = $namespaceDir;
+        $this->createdDirs[] = $customThemeAppDir;
+        $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
+        $this->pageContentService = $this->createPageContentServiceWithConfig(
+            [$code],
+            ['eccube_theme_app_dir' => $customThemeAppDir]
+        );
+
+        // コンテナを作り直した後の状態 (configureTwigPaths() が登録するパス)
+        $this->registerTwigNamespacePath($code, $namespaceDir);
+        $result = $this->apply(['body' => 'body']);
+
+        $this->assertSame([$namespaceDir.'/'.$this->route.'.twig'], $result->writtenPaths);
+        $this->assertDirectoryDoesNotExist($customThemeAppDir.'/plugin');
+        $this->assertFalse($result->containerRebuildRequired, '登録済みのパスへ書き出したので再構築は要らない');
+    }
+
+    /**
      * 内容が変わらず保存を省いた (Unchanged) 場合も, 再構築が要るかを返す.
      * CLI で同じ内容の apply を再実行したときに, 再構築するまで案内し続けるため.
      */
     public function testApplyUnchangedStillRequiresContainerRebuild(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->createdDirs[] = $namespaceDir;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
         $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
@@ -539,7 +568,7 @@ final class PageContentServiceTest extends EccubeTestCase
     {
         $code = 'Disabled'.bin2hex(random_bytes(4));
         $this->assertNotContains($code, $this->eccubeConfig->get('eccube.plugins.enabled'));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->createdDirs[] = $namespaceDir;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
 
@@ -558,7 +587,7 @@ final class PageContentServiceTest extends EccubeTestCase
         $code = 'Rebuild'.bin2hex(random_bytes(4));
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route, Page::EDIT_TYPE_DEFAULT);
         $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
-        $overrideDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $overrideDir = $this->pluginOverrideDir().'/'.$code;
         $this->createdDirs[] = $overrideDir;
 
         // プラグイン同梱のテンプレート (app/Plugin/[code]/Resource/template 相当)

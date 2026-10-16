@@ -39,6 +39,17 @@ use Twig\Loader\FilesystemLoader;
 trait TwigNamespacePathTrait
 {
     /**
+     * プラグインのテンプレートの上書き用ディレクトリ.
+     *
+     * EccubeExtension::configureTwigPaths() が登録するパスと同じく, kernel.project_dir から組み立てる
+     * (eccube_theme_app_dir の設定には従わない).
+     */
+    protected function pluginOverrideDir(): string
+    {
+        return static::getContainer()->getParameter('kernel.project_dir').'/app/template/plugin';
+    }
+
+    /**
      * 現在のコンテナの twig ローダへ, 名前空間のパスを追加する.
      *
      * ディレクトリが無いと FilesystemLoader::addPath() が例外を投げるため, 先に作る.
@@ -77,19 +88,37 @@ trait TwigNamespacePathTrait
      */
     protected function createPageContentServiceWithEnabledPlugins(string ...$codes): PageContentService
     {
+        return $this->createPageContentServiceWithConfig($codes);
+    }
+
+    /**
+     * 有効なプラグインに加えて, 設定値 ($parameters) を差し替えた PageContentService を作る.
+     *
+     * @param list<string> $enabledPlugins
+     * @param array<string, mixed> $parameters
+     */
+    protected function createPageContentServiceWithConfig(array $enabledPlugins, array $parameters = []): PageContentService
+    {
         $container = static::getContainer();
-        $eccubeConfig = new class($container->get(ContainerBagInterface::class), $codes) extends EccubeConfig {
+        $eccubeConfig = new class($container->get(ContainerBagInterface::class), $enabledPlugins, $parameters) extends EccubeConfig {
             /**
              * @param list<string> $enabledPlugins
+             * @param array<string, mixed> $parameters
              */
-            public function __construct(ContainerBagInterface $container, private readonly array $enabledPlugins)
-            {
+            public function __construct(
+                ContainerBagInterface $container,
+                private readonly array $enabledPlugins,
+                private readonly array $parameters,
+            ) {
                 parent::__construct($container);
             }
 
             #[\Override]
             public function get(string $key): mixed
             {
+                if (array_key_exists($key, $this->parameters)) {
+                    return $this->parameters[$key];
+                }
                 $value = parent::get($key);
 
                 return 'eccube.plugins.enabled' === $key ? [...(array) $value, ...$this->enabledPlugins] : $value;

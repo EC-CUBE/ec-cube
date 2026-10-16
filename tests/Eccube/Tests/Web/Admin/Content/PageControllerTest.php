@@ -189,7 +189,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
             $crawler->filter('.invalid-feedback')->text()
         );
         $this->assertNotInstanceOf(Page::class, $this->entityManager->getRepository(Page::class)->findOneBy(['url' => $name]));
-        $this->assertDirectoryDoesNotExist(static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/'.$code);
+        $this->assertDirectoryDoesNotExist($this->pluginOverrideDir().'/'.$code);
         $this->assertDirectoryDoesNotExist(static::getContainer()->getParameter('eccube_theme_user_data_dir').'/@'.$code);
     }
 
@@ -274,7 +274,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         $fileName = '@'.$code.'/'.$name;
         $Page = $this->createPluginNamespacePage($fileName, 'logout', Page::EDIT_TYPE_DEFAULT);
 
-        $pluginDir = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin';
+        $pluginDir = $this->pluginOverrideDir();
         $expectedPath = $pluginDir.'/'.$code.'/'.$name.'.twig';
         $unexpectedPath = $pluginDir.'/@'.$code.'/'.$name.'.twig';
         $source = $faker->realText();
@@ -326,7 +326,7 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         $Page = $this->createPluginNamespacePage('@'.$code.'/'.$name, 'logout', Page::EDIT_TYPE_DEFAULT);
 
         $source = '{% extends \'default_frame.twig\' %}';
-        $namespaceDir = static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $writtenPath = $namespaceDir.'/'.$name.'.twig';
         (new Filesystem())->dumpFile($writtenPath, $source);
 

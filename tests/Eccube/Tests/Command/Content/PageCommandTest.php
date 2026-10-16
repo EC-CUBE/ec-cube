@@ -260,7 +260,7 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyReturnsManualActionRequiredUntilNamespaceDirIsRegistered(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->assertDirectoryDoesNotExist($namespaceDir);
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
         $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
@@ -291,7 +291,7 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyWithNoCacheClearStillReportsContainerRebuild(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
         $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
 
@@ -312,7 +312,7 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyWithSameBodyStillReportsContainerRebuild(): void
     {
         $code = 'Rebuild'.bin2hex(random_bytes(4));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
         $this->pageContentService = $this->createPageContentServiceWithEnabledPlugins($code);
 
@@ -339,7 +339,7 @@ final class PageCommandTest extends EccubeTestCase
     public function testApplyDoesNotReportContainerRebuildForDisabledPlugin(): void
     {
         $code = 'Disabled'.bin2hex(random_bytes(4));
-        $namespaceDir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$code;
+        $namespaceDir = $this->pluginOverrideDir().'/'.$code;
         $this->createPluginNamespacePage('@'.$code.'/'.$this->route);
 
         try {

@@ -58,7 +58,7 @@ final class PageControllerCacheClearTest extends AbstractAdminWebTestCase
     {
         (new Filesystem())->remove([
             (string) $this->marker,
-            static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/'.$this->code,
+            $this->pluginOverrideDir().'/'.$this->code,
         ]);
 
         parent::tearDown();
@@ -85,7 +85,7 @@ final class PageControllerCacheClearTest extends AbstractAdminWebTestCase
         $this->client->disableReboot();
         $this->registerTwigNamespacePath(
             (string) $this->code,
-            static::getContainer()->getParameter('eccube_theme_app_dir').'/plugin/'.$this->code
+            $this->pluginOverrideDir().'/'.$this->code
         );
 
         $this->post($Page);

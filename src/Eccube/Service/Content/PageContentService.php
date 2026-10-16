@@ -17,6 +17,7 @@ namespace Eccube\Service\Content;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\EccubeConfig;
+use Eccube\DependencyInjection\EccubeExtension;
 use Eccube\Entity\Layout;
 use Eccube\Entity\Master\DeviceType;
 use Eccube\Entity\Page;
@@ -117,12 +118,25 @@ class PageContentService
         // app/template/plugin/[code] と app/Plugin/[code]/Resource/template の 2 つ.
         // 編集内容はプラグイン同梱側ではなく, 上書き用の app/template/plugin へ書く.
         if ($this->isNamespacedFileName($Page, $fileName)) {
-            return $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin';
+            return $this->getPluginOverrideDir();
         }
 
         return $this->isUserDataPage($Page)
             ? (string) $this->eccubeConfig->get('eccube_theme_user_data_dir')
             : (string) $this->eccubeConfig->get('eccube_theme_front_dir');
+    }
+
+    /**
+     * プラグインのテンプレートの上書き用ディレクトリ (app/template/plugin).
+     *
+     * configureTwigPaths() と同じく kernel.project_dir から組み立てる. eccube_theme_app_dir から組み立てると,
+     * その設定を変えた環境では書き出したディレクトリが twig に登録されず, 保存のたびに再構築を求め続ける.
+     *
+     * @see EccubeExtension::configureTwigPaths()
+     */
+    private function getPluginOverrideDir(): string
+    {
+        return $this->eccubeConfig->get('kernel.project_dir').'/'.EccubeExtension::PLUGIN_TEMPLATE_OVERRIDE_DIR;
     }
 
     /**
@@ -159,7 +173,7 @@ class PageContentService
             return false;
         }
 
-        $dir = $this->eccubeConfig->get('eccube_theme_app_dir').'/plugin/'.$namespace;
+        $dir = $this->getPluginOverrideDir().'/'.$namespace;
         if (!is_dir($dir)) {
             // 上書きしていなければ, 同梱のテンプレートを表示するのが正しい
             return false;
