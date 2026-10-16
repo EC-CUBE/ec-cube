@@ -400,10 +400,10 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
     }
 
     /**
-     * 画面で中間行を削除すると送信キーが歯抜け（0, 2 等）になるため、
-     * 重複エラーは詰めた通し番号ではなく実在する子フォームのキーに付く必要がある.
+     * 画面で中間行を削除すると送信キーが歯抜け（0, 2 等）になる。キーは 0 から詰め直され、
+     * 重複エラーは画面で 2 行目の行に付く.
      */
-    public function testInValidOpeningHoursOverlapAttachesErrorToSubmittedKey(): void
+    public function testInValidOpeningHoursOverlapAttachesErrorToSubmittedRow(): void
     {
         $this->formData['OpeningHours'] = [
             0 => ['day_of_week' => ['Saturday'], 'opens' => '10:00', 'closes' => '15:00'],
@@ -412,7 +412,47 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->form->submit($this->formData);
 
         $this->assertFalse($this->form->isValid());
-        $this->assertCount(1, $this->form->get('OpeningHours')->get('2')->get('closes')->getErrors());
+        $this->assertSame([0, 1], array_keys(iterator_to_array($this->form->get('OpeningHours'))));
+        $this->assertOverlapErrorOn('1');
+    }
+
+    /**
+     * 送信キーが歯抜け（0, 2）でも、行単位の検証（必須）のエラーは送信した行の閉店時刻に付く.
+     * 詰め直さないと違反のパスが実在しない子を指し、ルートのフォームに付いて画面に何も出ない.
+     */
+    public function testInValidOpeningHoursGapKeysRequiredErrorOnSubmittedRow(): void
+    {
+        $this->formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            2 => ['day_of_week' => ['Tuesday'], 'opens' => '09:00', 'closes' => ''],
+        ];
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+        $this->assertCount(0, $this->form->getErrors());
+        $rows = array_values(iterator_to_array($this->form->get('OpeningHours')));
+        $this->assertCount(2, $rows);
+        $this->assertCount(0, $rows[0]->get('closes')->getErrors());
+        $this->assertValidatorErrorOn($rows[1]->get('closes'), 'admin.setting.shop.opening_hours.error.closes_required');
+    }
+
+    /**
+     * 送信キーが歯抜け（1, 2）でも、開店と閉店が同じ時刻のエラーは送信した行に付く（先頭の行には付かない）.
+     */
+    public function testInValidOpeningHoursGapKeysOpensEqualsClosesErrorOnSubmittedRow(): void
+    {
+        $this->formData['OpeningHours'] = [
+            1 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            2 => ['day_of_week' => ['Tuesday'], 'opens' => '10:00', 'closes' => '10:00'],
+        ];
+        $this->form->submit($this->formData);
+
+        $this->assertFalse($this->form->isValid());
+        $this->assertCount(0, $this->form->getErrors());
+        $rows = array_values(iterator_to_array($this->form->get('OpeningHours')));
+        $this->assertCount(2, $rows);
+        $this->assertCount(0, $rows[0]->get('closes')->getErrors());
+        $this->assertValidatorErrorOn($rows[1]->get('closes'), 'admin.setting.shop.opening_hours.error.opens_equals_closes');
     }
 
     public function testValidOpeningHoursDifferentDayNoOverlap(): void
@@ -559,6 +599,19 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($form->isValid());
         $this->assertFalse($BaseInfo->isOrderPdfVisibleShopName());
         $this->assertTrue($BaseInfo->isOrderPdfVisibleBusinessHour());
+    }
+
+    /**
+     * 指定したフォームに、validators ドメインの指定した文言のエラーが 1 件だけ付いていることを確かめる.
+     */
+    private function assertValidatorErrorOn(FormInterface $form, string $message): void
+    {
+        $errors = $form->getErrors();
+        $this->assertCount(1, $errors);
+        $this->assertSame(
+            static::getContainer()->get(TranslatorInterface::class)->trans($message, [], 'validators'),
+            $errors[0]->getMessage()
+        );
     }
 
     /**

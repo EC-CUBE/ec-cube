@@ -300,6 +300,7 @@ class ShopMasterType extends AbstractType
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
 
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $this->reindexOpeningHours(...));
         // 営業時間の重複はフォームの子キーに紐づけたいので、クラス制約の Callback ではなく
         // POST_SUBMIT で検証する（詳細は validateOpeningHoursOverlap() のコメント参照）。
         $builder->addEventListener(FormEvents::POST_SUBMIT, $this->validateOpeningHoursOverlap(...));
@@ -346,9 +347,29 @@ class ShopMasterType extends AbstractType
     }
 
     /**
+     * 送信された営業時間の行のキーを 0 から詰め直す.
+     *
+     * 画面で中間の行を削除すると送信キーは歯抜け（0, 2 等）になるが、BaseInfo::$OpeningHours は
+     * adder で 0 から詰めて追加されるため、OpeningHours::validate() の違反のパス
+     * （OpeningHours[<コレクションの添字>].closes 等）が別の行や実在しない子を指し、
+     * エラーが該当の行に表示されない（ルートのフォームに付き、画面に何も出ずに保存されない）。
+     * 子フォームのキーとコレクションの添字をそろえるため、送信データの段階で詰め直す.
+     */
+    private function reindexOpeningHours(FormEvent $event): void
+    {
+        $data = $event->getData();
+        if (!is_array($data) || !isset($data['OpeningHours']) || !is_array($data['OpeningHours'])) {
+            return;
+        }
+
+        $data['OpeningHours'] = array_values($data['OpeningHours']);
+        $event->setData($data);
+    }
+
+    /**
      * 営業時間の表示順（sort_no）を画面の行の順に 0 から振り直す.
      *
-     * 送信キーは中間行の削除で歯抜けになるため、キーではなくフォームの子の並び順を使う.
+     * 送信キーではなくフォームの子の並び順を使う（キーは reindexOpeningHours() で詰め直している）.
      */
     private function sortOpeningHours(FormEvent $event): void
     {
@@ -372,10 +393,8 @@ class ShopMasterType extends AbstractType
      * 閉店が開店より前の行（深夜営業）は、曜日 d の [開店, 24:00) と翌日の [00:00, 閉店) に分けて比較する。
      * 日曜の翌日は月曜とする。祝日（PublicHolidays）は翌日の曜日が決まらないため、翌日側は比較しない。
      *
-     * エンティティのコレクションではなく**フォームの子**を走査する。画面で中間行を削除すると
-     * 送信キーは歯抜け（0, 2 等）になるが、コレクション側は adder で 0 始まりに詰め直されるため、
-     * コレクションの添字から組み立てた property path は実在しない子を指してしまい、
-     * エラーが該当行に表示されない（あるいは失われる）。
+     * エンティティのコレクションではなく**フォームの子**を走査し、エラーを子フォームへ直接付ける
+     * （送信キーは reindexOpeningHours() で 0 から詰め直しており、子のキーと画面の行の順が一致する）。
      */
     private function validateOpeningHoursOverlap(FormEvent $event): void
     {

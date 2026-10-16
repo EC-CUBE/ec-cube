@@ -269,6 +269,48 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
     }
 
     /**
+     * 既存の営業時間の中間の行を削除して保存すると（送信キーは 0, 2）、残りの行が画面の順に保存される.
+     * 送信キーは 0 から詰め直されるため、既存のエンティティへ値が割り当て直されても内容と順序は変わらない.
+     */
+    #[Group(name: 'cache-clear')]
+    public function testSubmitRemovesMiddleOpeningHoursRow(): void
+    {
+        $formData = $this->createFormData();
+        $formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Wednesday'], 'opens' => '09:00', 'closes' => '18:00'],
+            1 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+            2 => ['day_of_week' => ['Friday'], 'opens' => '10:00', 'closes' => '19:00'],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        // 2 行目を削除して保存する
+        unset($formData['OpeningHours'][1]);
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $actual = [];
+        foreach ($BaseInfo->getOpeningHours() as $OpeningHours) {
+            $actual[] = [$OpeningHours->getDayOfWeek(), $OpeningHours->getSortNo(), $OpeningHours->getOpens()?->format('H:i'), $OpeningHours->getCloses()?->format('H:i')];
+        }
+        $this->assertSame([
+            [['Wednesday'], 0, '09:00', '18:00'],
+            [['Friday'], 1, '10:00', '19:00'],
+        ], $actual);
+    }
+
+    /**
      * 既存の営業時間の行の値をすべて消して保存すると、その行は削除される.
      */
     #[Group(name: 'cache-clear')]
