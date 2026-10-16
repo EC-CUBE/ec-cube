@@ -183,16 +183,11 @@ class SiteStructuredDataService
             $data['sameAs'] = $sameAs;
         }
 
-        $openingHours = $this->buildOpeningHours($BaseInfo);
-        if ($openingHours !== []) {
-            $data['openingHoursSpecification'] = $openingHours;
-        }
-
         return $data;
     }
 
     /**
-     * 店舗設定の営業時間を OpeningHoursSpecification のリストに変換する.
+     * 店舗設定の営業時間を OpeningHoursSpecification のリスト（ContactPoint.hoursAvailable の値）に変換する.
      *
      * 曜日・開店時刻・閉店時刻がいずれも無いエントリは出力しない.
      *
@@ -272,7 +267,7 @@ class SiteStructuredDataService
     }
 
     /**
-     * ContactPoint 構造を組み立てる（連絡手段が1つも無ければ null）.
+     * ContactPoint 構造を組み立てる（連絡手段も営業時間も無ければ null）.
      *
      * @return array<string, mixed>|null
      */
@@ -289,8 +284,15 @@ class SiteStructuredDataService
         }
         $this->addIfNotEmpty($contactPoint, 'email', $BaseInfo->getEmail02());
 
-        // telephone / email が無ければ url だけの ContactPoint は出力しない
-        if (!isset($contactPoint['telephone']) && !isset($contactPoint['email'])) {
+        // 営業時間は問い合わせ窓口の受付時間として載せる。openingHoursSpecification は Place の
+        // プロパティで Organization には定義されていないため、ContactPoint の hoursAvailable を使う
+        $openingHours = $this->buildOpeningHours($BaseInfo);
+        if ($openingHours !== []) {
+            $contactPoint['hoursAvailable'] = $openingHours;
+        }
+
+        // telephone / email / 営業時間がいずれも無ければ url だけの ContactPoint は出力しない
+        if (!isset($contactPoint['telephone']) && !isset($contactPoint['email']) && !isset($contactPoint['hoursAvailable'])) {
             return null;
         }
 

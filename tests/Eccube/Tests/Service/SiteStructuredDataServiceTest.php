@@ -345,8 +345,14 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
         $this->assertArrayNotHasKey('copyrightYear', $webSite);
     }
 
-    public function testOpeningHoursSpecification(): void
+    /**
+     * 営業時間は Organization 直下ではなく、問い合わせ窓口（contactPoint）の hoursAvailable に出力する.
+     *
+     * openingHoursSpecification は schema.org で Place のプロパティで、Organization には定義されていない。
+     */
+    public function testOpeningHoursIsOutputAsContactPointHoursAvailable(): void
     {
+        $this->BaseInfo->setPhoneNumber('0312345678');
         $this->BaseInfo->getOpeningHours()->clear();
         $OpeningHours = new OpeningHours();
         $OpeningHours->setDayOfWeek(['Monday', 'Tuesday']);
@@ -356,12 +362,41 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
 
         $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
 
-        $this->assertArrayHasKey('openingHoursSpecification', $data);
-        $spec = $data['openingHoursSpecification'][0];
-        $this->assertSame('OpeningHoursSpecification', $spec['@type']);
-        $this->assertSame(['Monday', 'Tuesday'], $spec['dayOfWeek']);
-        $this->assertSame('09:00', $spec['opens']);
-        $this->assertSame('18:00', $spec['closes']);
+        $this->assertArrayNotHasKey('openingHoursSpecification', $data);
+        // 既存の ContactPoint（電話番号など）に統合する
+        $this->assertSame('ContactPoint', $data['contactPoint']['@type']);
+        $this->assertSame('0312345678', $data['contactPoint']['telephone']);
+        $this->assertSame([[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Monday', 'Tuesday'],
+            'opens' => '09:00',
+            'closes' => '18:00',
+        ]], $data['contactPoint']['hoursAvailable']);
+    }
+
+    /**
+     * 電話番号もメールアドレスも無くても、営業時間があれば ContactPoint を出力する.
+     */
+    public function testOpeningHoursCreatesContactPointWithoutPhoneOrEmail(): void
+    {
+        $this->BaseInfo->setPhoneNumber(null);
+        $this->BaseInfo->setEmail02(null);
+        $this->BaseInfo->getOpeningHours()->clear();
+        $OpeningHours = new OpeningHours();
+        $OpeningHours->setDayOfWeek(['Saturday']);
+        $OpeningHours->setOpens(new \DateTime('10:00'));
+        $OpeningHours->setCloses(new \DateTime('17:00'));
+        $this->BaseInfo->addOpeningHour($OpeningHours);
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $contactPoint = $data['contactPoint'];
+        $this->assertSame('ContactPoint', $contactPoint['@type']);
+        $this->assertSame('customer support', $contactPoint['contactType']);
+        $this->assertArrayNotHasKey('telephone', $contactPoint);
+        $this->assertArrayNotHasKey('email', $contactPoint);
+        $this->assertArrayHasKey('url', $contactPoint);
+        $this->assertSame(['Saturday'], $contactPoint['hoursAvailable'][0]['dayOfWeek']);
     }
 
     /**
@@ -384,15 +419,31 @@ final class SiteStructuredDataServiceTest extends AbstractServiceTestCase
             'dayOfWeek' => ['Friday', 'Saturday'],
             'opens' => '18:00',
             'closes' => '03:00',
-        ]], $data['openingHoursSpecification']);
+        ]], $data['contactPoint']['hoursAvailable']);
     }
 
     public function testEmptyOpeningHoursIsOmitted(): void
     {
+        $this->BaseInfo->setPhoneNumber('0312345678');
         $this->BaseInfo->getOpeningHours()->clear();
 
         $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
 
         $this->assertArrayNotHasKey('openingHoursSpecification', $data);
+        $this->assertArrayNotHasKey('hoursAvailable', $data['contactPoint']);
+    }
+
+    /**
+     * 電話番号・メールアドレス・営業時間がいずれも無ければ、ContactPoint は出力しない.
+     */
+    public function testContactPointIsOmittedWithoutPhoneEmailAndOpeningHours(): void
+    {
+        $this->BaseInfo->setPhoneNumber(null);
+        $this->BaseInfo->setEmail02(null);
+        $this->BaseInfo->getOpeningHours()->clear();
+
+        $data = $this->service->createOrganizationJsonLd($this->BaseInfo);
+
+        $this->assertArrayNotHasKey('contactPoint', $data);
     }
 }

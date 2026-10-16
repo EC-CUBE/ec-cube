@@ -46,7 +46,7 @@ async function clearOpeningHours(page: import('@playwright/test').Page) {
 }
 
 /**
- * Helper: フロントの JSON-LD から OpeningHoursSpecification を集める.
+ * Helper: フロントの JSON-LD から、ContactPoint の hoursAvailable に載った OpeningHoursSpecification を集める.
  */
 async function collectOpeningHoursSpecs(page: import('@playwright/test').Page): Promise<Record<string, unknown>[]> {
   const scripts = await page.locator('script[type="application/ld+json"]').allTextContents();
@@ -56,8 +56,8 @@ async function collectOpeningHoursSpecs(page: import('@playwright/test').Page): 
       node.forEach(walk);
     } else if (node !== null && typeof node === 'object') {
       const obj = node as Record<string, unknown>;
-      if (obj['@type'] === 'OpeningHoursSpecification') {
-        specs.push(obj);
+      if (obj['@type'] === 'ContactPoint' && Array.isArray(obj['hoursAvailable'])) {
+        specs.push(...(obj['hoursAvailable'] as Record<string, unknown>[]));
       }
       Object.values(obj).forEach(walk);
     }
@@ -1531,7 +1531,14 @@ test.describe('Admin Basic Info (EA07)', () => {
       await page.goto('/');
       await page.waitForLoadState('load');
       const content = await page.content();
-      expect(content).toContain('"openingHoursSpecification"');
+      // 営業時間は Organization 直下（openingHoursSpecification は Place のプロパティ）ではなく contactPoint.hoursAvailable に載る
+      expect(content).not.toContain('"openingHoursSpecification"');
+      expect(await collectOpeningHoursSpecs(page)).toContainEqual({
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday'],
+        opens: '09:00',
+        closes: '18:00',
+      });
       expect(content).toContain('"sameAs"');
       expect(content).toContain(sameAsUrl);
 

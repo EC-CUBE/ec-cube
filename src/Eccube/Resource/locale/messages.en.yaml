@@ -1907,7 +1907,7 @@ tooltip.setting.shop.shop.founding_date: The founding date of the shop/company, 
 tooltip.setting.shop.shop.number_of_employees: The number of employees, output to structured data (Organization.numberOfEmployees).
 tooltip.setting.shop.shop.copyright_year: The starting year of the copyright notice, output to structured data (WebSite.copyrightYear).
 tooltip.setting.shop.shop.site_image: The absolute URL of the site image, output to structured data (Organization.image).
-tooltip.setting.shop.shop.opening_hours: The opening hours output to structured data (Organization.openingHoursSpecification). Set the days of the week (multiple allowed) and the opening/closing times per row. If the closing time is earlier than the opening time, it is treated as the closing time on the next day (e.g. 18:00 to 03:00). For 24-hour operation, enter 00:00 to 23:59.
+tooltip.setting.shop.shop.opening_hours: The opening hours output to structured data (contactPoint.hoursAvailable of Organization). Set the days of the week (multiple allowed) and the opening/closing times per row. If the closing time is earlier than the opening time, it is treated as the closing time on the next day (e.g. 18:00 to 03:00). For 24-hour operation, enter 00:00 to 23:59.
 tooltip.setting.shop.shop.order_pdf: Items printed in the shop information area of the delivery slip PDF. Among the items turned ON, only those with a value entered are printed.
 tooltip.setting.shop.shop.option_delivery_fee_free_amount: Shipping charge will be waived if a customer purchases more than this amount.
 tooltip.setting.shop.shop.option_delivery_fee_free_quantity: Shipping charge will be waived if a customer purchases more than this quantity.
