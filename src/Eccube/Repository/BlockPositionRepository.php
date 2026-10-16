@@ -17,6 +17,7 @@ use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Entity\Block;
 use Eccube\Entity\BlockPosition;
 use Eccube\Entity\Layout;
+use Eccube\Util\IdUtil;
 
 /**
  * BlockPositionRepository
@@ -47,23 +48,39 @@ class BlockPositionRepository extends AbstractRepository
     {
         $em = $this->getEntityManager();
 
-        $max = count($Blocks) + count($UnusedBlocks);
+        $registered = [];
+        $max = count($Blocks) + count((array) $UnusedBlocks);
         for ($i = 0; $i < $max; $i++) {
             // block_idが取得できない場合はinsertしない
             if (!isset($data['block_id_'.$i])) {
                 continue;
             }
-            // 未使用ブロックはinsertしない
-            if ($data['section_'.$i] == Layout::TARGET_ID_UNUSED) {
+            $blockId = IdUtil::toId($data['block_id_'.$i]);
+            $section = IdUtil::toId($data['section_'.$i] ?? null);
+            $blockRow = isset($data['block_row_'.$i]) ? IdUtil::toId($data['block_row_'.$i]) : null;
+            // 値が整数でない場合はinsertしない
+            if (null === $blockId || null === $section || (isset($data['block_row_'.$i]) && null === $blockRow)) {
                 continue;
             }
-            $Block = $this->blockRepository->find($data['block_id_'.$i]);
+            // 未使用ブロックはinsertしない
+            if ($section === Layout::TARGET_ID_UNUSED) {
+                continue;
+            }
+            // 同じ配置への重複はinsertしない
+            if (isset($registered[$section][$blockId])) {
+                continue;
+            }
+            $Block = $this->blockRepository->find($blockId);
+            if (null === $Block) {
+                continue;
+            }
+            $registered[$section][$blockId] = true;
             $BlockPosition = new BlockPosition();
             $BlockPosition
-                ->setBlockId($data['block_id_'.$i])
+                ->setBlockId($blockId)
                 ->setLayoutId($Layout->getId())
-                ->setBlockRow($data['block_row_'.$i])
-                ->setSection($data['section_'.$i])
+                ->setBlockRow($blockRow)
+                ->setSection($section)
                 ->setBlock($Block)
                 ->setLayout($Layout);
             $Layout->addBlockPosition($BlockPosition);

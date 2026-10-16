@@ -103,13 +103,13 @@ class FaqController extends AbstractController
     public function moveSortNo(Request $request): Response
     {
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
-            $sortNos = $request->request->all();
+            $sortNos = $this->getSortNosFromRequest($request);
             foreach ($sortNos as $faqId => $sortNo) {
                 $Faq = $this->faqRepository->find($faqId);
                 if (!$Faq || $Faq->getFaqType() !== Faq::FAQ_TYPE_COMMON) {
                     continue;
                 }
-                $Faq->setSortNo((int) $sortNo);
+                $Faq->setSortNo($sortNo);
                 $this->entityManager->persist($Faq);
             }
             $this->entityManager->flush();

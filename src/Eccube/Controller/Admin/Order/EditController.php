@@ -45,6 +45,7 @@ use Eccube\Service\PurchaseFlow\PurchaseContext;
 use Eccube\Service\PurchaseFlow\PurchaseException;
 use Eccube\Service\PurchaseFlow\PurchaseFlow;
 use Eccube\Service\TaxRuleService;
+use Eccube\Util\IdUtil;
 use Knp\Component\Pager\Pagination\SlidingPagination;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Twig\Attribute\Template;
@@ -116,13 +117,19 @@ class EditController extends AbstractController
         $form->handleRequest($request);
         $purchaseContext = new PurchaseContext($OriginOrder, $OriginOrder->getCustomer());
 
+        // 明細種別・商品規格が不正な明細は入力エラーになる. 受注の処理 (在庫差分の計算等) は行えないため、計算を省く
+        $hasInvalidOrderItem = false;
         foreach ($TargetOrder->getOrderItems() as $orderItem) {
+            if (null === $orderItem->getOrderItemType() || ($orderItem->isProduct() && null === $orderItem->getProductClass())) {
+                $hasInvalidOrderItem = true;
+                continue;
+            }
             if ($orderItem->getTaxDisplayType() == null) {
                 $orderItem->setTaxDisplayType($this->orderHelper->getTaxDisplayType($orderItem->getOrderItemType()));
             }
         }
 
-        if ($form->isSubmitted() && $form['OrderItems']->isValid()) {
+        if ($form->isSubmitted() && $form['OrderItems']->isValid() && !$hasInvalidOrderItem) {
             $event = new EventArgs(
                 [
                     'builder' => $builder,
@@ -457,9 +464,9 @@ class EditController extends AbstractController
         if ($request->isXmlHttpRequest() && $this->isTokenValid()) {
             log_debug('search customer by id start.');
 
+            $customerId = IdUtil::toId($request->get('id'));
             /** @var Customer|null $Customer */
-            $Customer = $this->customerRepository
-                ->find($request->get('id'));
+            $Customer = null !== $customerId ? $this->customerRepository->find($customerId) : null;
 
             $event = new EventArgs(
                 [
@@ -533,11 +540,12 @@ class EditController extends AbstractController
             if ('POST' === $request->getMethod()) {
                 $page_no = 1;
 
+                $id = $request->get('id');
                 $searchData = [
-                    'id' => $request->get('id'),
+                    'id' => is_scalar($id) ? $id : null,
                 ];
 
-                if ($categoryId = $request->get('category_id')) {
+                if ($categoryId = IdUtil::toId($request->get('category_id'))) {
                     $Category = $this->categoryRepository->find($categoryId);
                     $searchData['category_id'] = $Category;
                 }

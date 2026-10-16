@@ -28,6 +28,7 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Tests\EccubeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Layer 3 (PurchaseFlow 連携) tests for AgentCheckoutPurchaseFlowAdapter.
@@ -275,5 +276,37 @@ final class AgentCheckoutPurchaseFlowAdapterTest extends EccubeTestCase
         } catch (AgentCheckoutException $e) {
             $this->assertSame(AgentCheckoutErrorCode::MISSING_ADDRESS, $e->getErrorCode());
         }
+    }
+
+    /**
+     * 住所の項目がカラム長を超える場合は、DB のエラーではなく AgentCheckoutException を投げる.
+     */
+    #[DataProvider(methodName: 'provideTooLongAddress')]
+    public function testGuestWithTooLongAddressThrows(string $field, string $value): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $address = $this->guestAddress();
+        $request = new AgentCheckoutRequest(
+            lineItems: [new AgentCheckoutLineItem((int) $ProductClass->getId(), 1)],
+            buyer: new AgentCheckoutAddress(...array_merge(get_object_vars($address), [$field => $value])),
+        );
+
+        try {
+            $this->adapter->buildOrder($request);
+            self::fail('カラム長を超える住所は AgentCheckoutException を投げる');
+        } catch (AgentCheckoutException $e) {
+            $this->assertSame(AgentCheckoutErrorCode::INVALID_ADDRESS, $e->getErrorCode());
+        }
+        $this->assertTrue($this->entityManager->isOpen());
+    }
+
+    /**
+     * @return \Iterator<string, array{string, string}>
+     */
+    public static function provideTooLongAddress(): \Iterator
+    {
+        yield 'phone_number' => ['phoneNumber', str_repeat('0', 15)];
+        yield 'postal_code' => ['postalCode', str_repeat('0', 9)];
+        yield 'name01' => ['name01', str_repeat('あ', 256)];
     }
 }

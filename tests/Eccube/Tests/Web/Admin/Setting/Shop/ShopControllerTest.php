@@ -231,4 +231,29 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
         $this->actual = $formData['email01'];
         $this->verify();
     }
+
+    /**
+     * 登録済みの適格請求書発行事業者登録番号を空にして保存できる.
+     */
+    public function testSubmitClearInvoiceRegistrationNumber(): void
+    {
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $BaseInfo->setInvoiceRegistrationNumber('T1234567890123');
+        $this->entityManager->flush();
+
+        $formData = $this->createFormData();
+        $formData['invoice_registration_number'] = '';
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_shop')));
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        $this->assertNull($BaseInfo->getInvoiceRegistrationNumber());
+    }
 }

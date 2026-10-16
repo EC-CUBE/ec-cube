@@ -18,7 +18,9 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 use Eccube\Entity\Master\OrderStatus;
 use Eccube\Entity\Master\Sex;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class MasterdataControllerTest
@@ -427,5 +429,80 @@ final class MasterdataControllerTest extends AbstractAdminWebTestCase
             'data' => $data,
             'masterdata_name' => $entity,
         ];
+    }
+
+    /**
+     * マスタデータでないクラス名は受け付けない.
+     */
+    #[DataProvider(methodName: 'provideInvalidMasterdataName')]
+    public function testEditWithInvalidMasterdataName(string $masterdataName): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_system_masterdata_edit'),
+            [
+                'admin_system_masterdata_edit' => [
+                    '_token' => 'dummy',
+                    'data' => [['id' => '1', 'name' => 'test']],
+                    'masterdata_name' => $masterdataName,
+                ],
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidMasterdataName(): \Iterator
+    {
+        yield 'not master' => ['Eccube-Entity-Customer'];
+        yield 'not exists' => ['Eccube-Entity-Master-NotExists'];
+        yield 'abstract' => ['Eccube-Entity-Master-AbstractMasterEntity'];
+    }
+
+    /**
+     * マスタの ID の型を超える値は入力エラーにする.
+     */
+    public function testEditWithOutOfRangeId(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_system_masterdata_edit'),
+            [
+                'admin_system_masterdata_edit' => [
+                    '_token' => 'dummy',
+                    'data' => [['id' => '32768', 'name' => 'test']],
+                    'masterdata_name' => $this->entityTest,
+                ],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertNotInstanceOf(Sex::class, $this->entityManager->getRepository(Sex::class)->findOneBy(['name' => 'test']));
+    }
+
+    /**
+     * 削除対象の判定で、整数でないキーを DB へ問い合わせない.
+     */
+    public function testEditWithInvalidKey(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_system_masterdata_edit'),
+            [
+                'admin_system_masterdata_edit' => [
+                    '_token' => 'dummy',
+                    'data' => [
+                        'abc' => ['id' => '', 'name' => ''],
+                        '2147483648' => ['id' => '', 'name' => ''],
+                    ],
+                    'masterdata_name' => $this->entityTest,
+                ],
+            ]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
     }
 }

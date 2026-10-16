@@ -21,6 +21,7 @@ use Eccube\Event\EventArgs;
 use Eccube\Form\Type\Admin\PaymentRegisterType;
 use Eccube\Repository\PaymentRepository;
 use Eccube\Service\Payment\Method\Cash;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -119,7 +120,9 @@ class PaymentController extends AbstractController
             // ファイルアップロード
             $file = $form['payment_image']->getData();
             $fs = new Filesystem();
-            if ($file && !str_contains((string) $file, '..') && $fs->exists($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
+            // ディレクトリを指す値 (/ や . 等) を rename しないよう、一時ディレクトリ直下のファイルに限る
+            if (is_string($file) && '' !== $file && $file === basename($file) && !str_contains($file, '..')
+                && is_file($this->getParameter('eccube_temp_image_dir').'/'.$file)) {
                 $fs->rename(
                     $this->getParameter('eccube_temp_image_dir').'/'.$file,
                     $this->getParameter('eccube_save_image_dir').'/'.$file
@@ -219,13 +222,19 @@ class PaymentController extends AbstractController
             throw new BadRequestHttpException();
         }
 
+        $source = (string) $request->query->get('source');
+        // realpath() は null バイトを含む文字列で ValueError を投げるため先に弾く
+        if (str_contains($source, '..') || str_contains($source, "\0")) {
+            throw new NotFoundHttpException();
+        }
+
         $dirs = [
             $this->eccubeConfig['eccube_save_image_dir'],
             $this->eccubeConfig['eccube_temp_image_dir'],
         ];
 
         foreach ($dirs as $dir) {
-            $image = \realpath($dir.'/'.$request->query->get('source'));
+            $image = \realpath($dir.'/'.$source);
             $dir = \realpath($dir);
 
             if (\is_file($image) && \str_starts_with($image, $dir)) {
@@ -326,11 +335,15 @@ class PaymentController extends AbstractController
         }
 
         if ($this->isTokenValid()) {
-            $sortNos = $request->request->all();
+            // sort_no は smallint
+            $sortNos = $this->getSortNosFromRequest($request, IdUtil::SMALLINT_MAX);
             foreach ($sortNos as $paymentId => $sortNo) {
-                /** @var Payment $Payment */
+                /** @var Payment|null $Payment */
                 $Payment = $this->paymentRepository
                     ->find($paymentId);
+                if (!$Payment) {
+                    continue;
+                }
                 $Payment->setSortNo($sortNo);
                 $this->entityManager->persist($Payment);
             }

@@ -14,6 +14,7 @@
 namespace Eccube\Form\DataTransformer;
 
 use Doctrine\Persistence\ObjectManager;
+use Eccube\Util\IdUtil;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -57,6 +58,17 @@ class EntityToIdTransformer implements DataTransformerInterface
         }
         /** @var class-string<T> $classname */
         $classname = $this->className;
+
+        // 整数型の ID に数値でない値や範囲外の値を渡すと、DB によっては例外になるため問い合わせる前に弾く
+        $metadata = $this->om->getClassMetadata($classname);
+        $identifiers = $metadata->getIdentifierFieldNames();
+        if (1 === count($identifiers)) {
+            $max = IdUtil::maxForType($metadata->getTypeOfField($identifiers[0]));
+            if (null !== $max && null === IdUtil::toId($id, $max)) {
+                throw new TransformationFailedException();
+            }
+        }
+
         $entity = $this->om
             ->getRepository($classname)
             ->find($id)

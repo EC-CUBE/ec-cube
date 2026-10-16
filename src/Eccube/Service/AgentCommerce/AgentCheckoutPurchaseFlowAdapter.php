@@ -18,6 +18,7 @@ use Eccube\Entity\Cart;
 use Eccube\Entity\CartItem;
 use Eccube\Entity\Customer;
 use Eccube\Entity\Order;
+use Eccube\Entity\Shipping;
 use Eccube\Repository\Master\AgentProtocolRepository;
 use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\ProductClassRepository;
@@ -227,6 +228,8 @@ class AgentCheckoutPurchaseFlowAdapter
             throw new AgentCheckoutException(AgentCheckoutErrorCode::MISSING_ADDRESS, 'buyer address is required for guest checkout');
         }
 
+        $this->assertAddressFitsColumns($address);
+
         $Customer = new Customer();
         $Customer
             ->setName01((string) $address->name01)
@@ -249,5 +252,42 @@ class AgentCheckoutPurchaseFlowAdapter
         }
 
         return $Customer;
+    }
+
+    /**
+     * 住所の各項目が、コピー先 (会員・受注・出荷) のカラム長に収まることを確かめる.
+     *
+     * 収まらない値は flush 時に DB のエラーとなり EntityManager が閉じるため、永続化の前に弾く.
+     */
+    private function assertAddressFitsColumns(AgentCheckoutAddress $address): void
+    {
+        $fields = [
+            'name01' => $address->name01,
+            'name02' => $address->name02,
+            'kana01' => $address->kana01,
+            'kana02' => $address->kana02,
+            'company_name' => $address->companyName,
+            'postal_code' => $address->postalCode,
+            'addr01' => $address->addr01,
+            'addr02' => $address->addr02,
+            'email' => $address->email,
+            'phone_number' => $address->phoneNumber,
+        ];
+
+        foreach ($fields as $field => $value) {
+            if ($value === null) {
+                continue;
+            }
+            foreach ([Customer::class, Order::class, Shipping::class] as $class) {
+                $metadata = $this->entityManager->getClassMetadata($class);
+                if (!$metadata->hasField($field)) {
+                    continue;
+                }
+                $length = $metadata->getFieldMapping($field)->length ?? null;
+                if ($length !== null && mb_strlen($value) > $length) {
+                    throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_ADDRESS, sprintf('"%s" must be at most %d characters', $field, $length));
+                }
+            }
+        }
     }
 }

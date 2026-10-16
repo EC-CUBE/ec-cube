@@ -130,4 +130,35 @@ final class BlockPositionRepositoryTest extends EccubeTestCase
         $this->actual = count($BlockPositions);
         $this->verify();
     }
+
+    /**
+     * 整数でない値・存在しないブロック・同じ配置への重複は登録しない.
+     */
+    public function testRegisterWithInvalidData(): void
+    {
+        $Layout = $this->layoutRepository->get($this->layout_id);
+        $Block = $this->UsedBlocks[0];
+
+        $data = [
+            // 正しい値
+            'block_id_0' => (string) $Block->getId(), 'section_0' => '1', 'block_row_0' => '0',
+            // 整数でない値
+            'block_id_1' => 'abc', 'section_1' => '1', 'block_row_1' => '1',
+            'block_id_2' => (string) $Block->getId(), 'section_2' => 'abc', 'block_row_2' => '1',
+            'block_id_3' => (string) $Block->getId(), 'section_3' => '2', 'block_row_3' => ['1'],
+            // 範囲外・存在しないブロック
+            'block_id_4' => '2147483648', 'section_4' => '1', 'block_row_4' => '1',
+            'block_id_5' => '2147483647', 'section_5' => '1', 'block_row_5' => '1',
+            // 同じ配置への重複
+            'block_id_6' => (string) $Block->getId(), 'section_6' => '1', 'block_row_6' => '2',
+        ];
+
+        $this->blockPositionRepository->register($data, $this->blockRepository->findAll(), [], $Layout);
+
+        $BlockPositions = $this->blockPositionRepository->findBy(['Layout' => $Layout]);
+        $this->assertCount(1, $BlockPositions);
+        $this->assertSame($Block->getId(), $BlockPositions[0]->getBlockId());
+        $this->assertSame(1, $BlockPositions[0]->getSection());
+        $this->assertSame(0, $BlockPositions[0]->getBlockRow());
+    }
 }

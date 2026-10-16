@@ -175,10 +175,13 @@ class ClassNameController extends AbstractController
             throw new BadRequestHttpException();
         }
 
-        $sortNos = $request->request->all();
+        $sortNos = $this->getSortNosFromRequest($request);
         foreach ($sortNos as $classNameId => $sortNo) {
             $ClassName = $this->classNameRepository
                 ->find($classNameId);
+            if (!$ClassName) {
+                continue;
+            }
             $ClassName->setSortNo($sortNo);
             $this->entityManager->persist($ClassName);
         }

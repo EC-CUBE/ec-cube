@@ -23,9 +23,11 @@ use Eccube\Repository\PageLayoutRepository;
 use Eccube\Repository\PageRepository;
 use Eccube\Service\Content\PageContentService;
 use Eccube\Util\CacheUtil;
+use Eccube\Util\IdUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Twig\Environment;
 
@@ -74,7 +76,11 @@ class PageController extends AbstractController
         if (null === $id) {
             $Page = $this->pageRepository->newPage();
         } else {
-            $Page = $this->pageRepository->find($id);
+            $pageId = IdUtil::toId($id);
+            $Page = null !== $pageId ? $this->pageRepository->find($pageId) : null;
+            if (null === $Page) {
+                throw new NotFoundHttpException();
+            }
         }
 
         $isUserDataPage = true;
