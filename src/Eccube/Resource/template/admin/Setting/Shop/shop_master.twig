@@ -303,6 +303,8 @@ file that was distributed with this source code.
                                         {% endfor %}
                                     </div>
                                     <button type="button" id="add-opening-hour-button" class="btn btn-ec-regular mt-2">{{ 'admin.setting.shop.opening_hours.add'|trans }}</button>
+                                    {# 営業時間の欄を描画したことを示す。上書きテンプレートで欄が無い場合に既存の営業時間を削除しないため #}
+                                    {{ form_widget(form.opening_hours_rendered) }}
                                 </div>
                             </div>
                             {# エンティティ拡張の自動出力 #}

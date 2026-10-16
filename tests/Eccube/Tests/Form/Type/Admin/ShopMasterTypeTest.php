@@ -55,6 +55,8 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         'email04' => 'eccube@example.com',
         'delivery_free_amount' => '1000',
         'delivery_free_quantity' => '1000',
+        // 営業時間の欄が描画されたことを示すセンチネル（shop_master.twig が出力する）
+        'opening_hours_rendered' => '1',
         /*
         'good_traded' => '取り扱い商品',
         'message' => 'メッセージ',
@@ -380,6 +382,42 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertCount(0, $BaseInfo->getOpeningHours());
     }
 
+    /**
+     * 営業時間の欄が描画されていない送信（テンプレートの上書き等。センチネルも OpeningHours のキーも無い）では、
+     * 既存の営業時間を削除しない.
+     */
+    public function testOpeningHoursKeptWhenFieldNotRendered(): void
+    {
+        $BaseInfo = $this->createBaseInfoWithOpeningHours();
+        $form = $this->formFactory
+            ->createBuilder(ShopMasterType::class, $BaseInfo, ['csrf_protection' => false])
+            ->getForm();
+
+        $formData = $this->formData;
+        unset($formData['opening_hours_rendered']);
+        $form->submit($formData);
+
+        $this->assertTrue($form->isValid());
+        $this->assertCount(1, $BaseInfo->getOpeningHours());
+        $this->assertSame(['Monday'], $BaseInfo->getOpeningHours()->first()->getDayOfWeek());
+    }
+
+    /**
+     * 営業時間の欄が描画されていて行が 1 つも送られない（画面で全行を削除した）ときは、既存の営業時間を削除する.
+     */
+    public function testOpeningHoursRemovedWhenRenderedWithoutRows(): void
+    {
+        $BaseInfo = $this->createBaseInfoWithOpeningHours();
+        $form = $this->formFactory
+            ->createBuilder(ShopMasterType::class, $BaseInfo, ['csrf_protection' => false])
+            ->getForm();
+
+        $form->submit($this->formData);
+
+        $this->assertTrue($form->isValid());
+        $this->assertCount(0, $BaseInfo->getOpeningHours());
+    }
+
     public function testInValidOpeningHoursMissingDay(): void
     {
         $this->formData['OpeningHours'] = [
@@ -599,6 +637,19 @@ final class ShopMasterTypeTest extends AbstractTypeTestCase
         $this->assertTrue($form->isValid());
         $this->assertFalse($BaseInfo->isOrderPdfVisibleShopName());
         $this->assertTrue($BaseInfo->isOrderPdfVisibleBusinessHour());
+    }
+
+    private function createBaseInfoWithOpeningHours(): BaseInfo
+    {
+        $BaseInfo = new BaseInfo();
+        $BaseInfo->addOpeningHour(
+            (new OpeningHours())
+                ->setDayOfWeek(['Monday'])
+                ->setOpens(new \DateTime('09:00'))
+                ->setCloses(new \DateTime('18:00'))
+        );
+
+        return $BaseInfo;
     }
 
     /**

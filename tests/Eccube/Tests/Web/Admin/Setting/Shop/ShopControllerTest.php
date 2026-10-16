@@ -98,6 +98,8 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
             'option_point' => 1,
             'basic_point_rate' => 1,
             'option_sanitize_csv_formulas' => '0',
+            // 営業時間の欄が描画されたことを示すセンチネル（shop_master.twig が出力する）
+            'opening_hours_rendered' => '1',
         ];
     }
 
@@ -308,6 +310,47 @@ final class ShopControllerTest extends AbstractAdminWebTestCase
             [['Wednesday'], 0, '09:00', '18:00'],
             [['Friday'], 1, '10:00', '19:00'],
         ], $actual);
+    }
+
+    /**
+     * 営業時間の欄を描画していない画面（shop_master.twig の上書き等）から保存しても、既存の営業時間は残る.
+     * センチネル（opening_hours_rendered）も OpeningHours のキーも送られない送信で再現する.
+     */
+    #[Group(name: 'cache-clear')]
+    public function testSubmitKeepsOpeningHoursWhenFieldNotRendered(): void
+    {
+        // 標準のテンプレートは営業時間の欄と一緒にセンチネルを出力する
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl('admin_setting_shop'));
+        $this->assertSame('1', $crawler->filter('#opening-hours-group ~ input[name="shop_master[opening_hours_rendered]"]')->attr('value'));
+
+        $formData = $this->createFormData();
+        $formData['OpeningHours'] = [
+            0 => ['day_of_week' => ['Monday'], 'opens' => '09:00', 'closes' => '18:00'],
+        ];
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $formData = $this->createFormData();
+        unset($formData['opening_hours_rendered']);
+        $formData['shop_name'] = '営業時間の欄が無い画面から保存';
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop'),
+            ['shop_master' => $formData]
+        );
+        $this->assertTrue($this->client->getResponse()->isRedirection());
+
+        $this->entityManager->clear();
+        $BaseInfo = $this->entityManager->getRepository(BaseInfo::class)->find(1);
+        $this->assertInstanceOf(BaseInfo::class, $BaseInfo);
+        // 他の項目は保存され、営業時間は残る
+        $this->assertSame('営業時間の欄が無い画面から保存', $BaseInfo->getShopName());
+        $this->assertCount(1, $BaseInfo->getOpeningHours());
+        $this->assertSame(['Monday'], $BaseInfo->getOpeningHours()->first()->getDayOfWeek());
     }
 
     /**

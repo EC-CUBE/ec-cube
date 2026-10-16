@@ -27,6 +27,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -187,6 +188,15 @@ class ShopMasterType extends AbstractType
                     new Assert\Url(),
                 ],
             ])
+            // opening_hours_rendered は営業時間の欄が描画されたことを示すセンチネル。
+            // shop_master.twig が営業時間の欄と一緒に出力するため、テンプレートを上書きして
+            // 欄を描画していない場合だけ送信データから欠落する。
+            // 「上書きで未描画」と「画面で全行削除」はどちらも OpeningHours のキーが送られてこないため、
+            // このセンチネルが無いと両者を区別できない（PRE_SUBMIT の removeUnrenderedOpeningHours() を参照）。
+            ->add('opening_hours_rendered', HiddenType::class, [
+                'mapped' => false,
+                'data' => '1',
+            ])
             ->add('OpeningHours', CollectionType::class, [
                 'entry_type' => OpeningHoursType::class,
                 'allow_add' => true,
@@ -300,6 +310,7 @@ class ShopMasterType extends AbstractType
                 ->addEventSubscriber(new ConvertKanaListener('CV'))
         );
 
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, $this->removeUnrenderedOpeningHours(...));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, $this->reindexOpeningHours(...));
         // 営業時間の重複はフォームの子キーに紐づけたいので、クラス制約の Callback ではなく
         // POST_SUBMIT で検証する（詳細は validateOpeningHoursOverlap() のコメント参照）。
@@ -343,6 +354,21 @@ class ShopMasterType extends AbstractType
 
                 return;
             }
+        }
+    }
+
+    /**
+     * 営業時間の欄が描画されていない（テンプレートの上書き等）ときは、営業時間に一切触れない.
+     *
+     * CollectionType は送信キーが無いと空のコレクションとして扱い、allow_delete と
+     * BaseInfo::$OpeningHours の orphanRemoval により既存の営業時間を警告なしで全件削除してしまうため、
+     * フィールドごと取り除いて DataMapper が $OpeningHours に触れないようにする.
+     */
+    private function removeUnrenderedOpeningHours(FormEvent $event): void
+    {
+        $data = $event->getData();
+        if (!is_array($data) || empty($data['opening_hours_rendered'])) {
+            $event->getForm()->remove('OpeningHours');
         }
     }
 
