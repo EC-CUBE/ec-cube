@@ -57,4 +57,26 @@ class CheckoutSessionStatus extends AbstractMasterEntity
 
     /** 非同期決済の確定待ち (PSP の IPN/Webhook で completed へ遷移). */
     public const IN_PROGRESS = 7;
+
+    /**
+     * 終端ステータスの id. complete/cancel はここから遷移させない.
+     *
+     * DQL の条件 ({@link \Eccube\Repository\CheckoutSessionRepository::findExpired}) でも使うため、
+     * {@link isTerminal()} とは別に id の一覧として公開する。
+     *
+     * @var list<int>
+     */
+    public const TERMINAL_IDS = [
+        self::COMPLETED,
+        self::CANCELED,
+        self::EXPIRED,
+    ];
+
+    /**
+     * 終端ステータス (completed/canceled/expired) かどうか.
+     */
+    public function isTerminal(): bool
+    {
+        return in_array($this->id, self::TERMINAL_IDS, true);
+    }
 }

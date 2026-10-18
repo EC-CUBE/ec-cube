@@ -50,7 +50,7 @@ use Symfony\Component\Routing\Attribute\Route;
  * - POST   /acp/checkout_sessions/{id}       (update)   -> 200
  * - GET    /acp/checkout_sessions/{id}       (get)      -> 200
  * - POST   /acp/checkout_sessions/{id}/complete         -> 200 (order)
- * - POST   /acp/checkout_sessions/{id}/cancel           -> 200 (canceled) / 405 (確定済)
+ * - POST   /acp/checkout_sessions/{id}/cancel           -> 200 (canceled) / 405 (終端)
  *
  * 設計:
  * - セッションレスなエージェント向けに {@link CheckoutSession} で Cart/Order を束ねる。
@@ -191,10 +191,10 @@ class AcpCheckoutController extends AbstractController
         $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($session): array {
-            $statusId = $session->getStatus()?->getId();
-            if (in_array($statusId, [CheckoutSessionStatus::COMPLETED, CheckoutSessionStatus::CANCELED], true)) {
-                // 既に完了/取消済のセッションは取消不可 (ACP: 405 Not Allowed)。
-                return $this->protocolError(405, 'not_allowed', 'A completed or canceled checkout session cannot be canceled.');
+            if ($session->getStatus()?->isTerminal() === true) {
+                // 終端 (完了/取消/期限切れ) のセッションは取消不可 (ACP: 405 Not Allowed)。
+                // expired を canceled に書き換えると、期限切れと明示的な取消の区別が失われる。
+                return $this->protocolError(405, 'not_allowed', 'A completed, canceled, or expired checkout session cannot be canceled.');
             }
 
             $session->setStatus($this->findStatus(CheckoutSessionStatus::CANCELED));
