@@ -35,6 +35,7 @@ use Eccube\Repository\ProductTagRepository;
 use Eccube\Repository\TaxRuleRepository;
 use Eccube\Tests\Fixture\Generator;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Util\CacheUtil;
 use Eccube\Util\StringUtil;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DomCrawler\Crawler;
@@ -401,6 +402,31 @@ final class ProductControllerTest extends AbstractAdminWebTestCase
         $editedTimestamp = $EditedUpdateDate->getTimestamp();
 
         $this->assertNotSame($preTimestamp, $editedTimestamp);
+    }
+
+    /**
+     * return_link でリダイレクトする場合も Doctrine のキャッシュを消す.
+     *
+     * 編集画面は商品と商品タグを結果キャッシュ付きで読み込むため、消さないと続けて保存したときに
+     * 保存前の商品タグを元に削除・登録し、商品タグが重複する.
+     */
+    public function testEditWithReturnLinkClearsDoctrineCache(): void
+    {
+        $cacheUtil = $this->createMock(CacheUtil::class);
+        $cacheUtil->expects($this->once())->method('clearDoctrineCache');
+        static::getContainer()->set(CacheUtil::class, $cacheUtil);
+
+        $Product = $this->createProduct(null, 0);
+        $formData = $this->createFormData();
+        $formData['return_link'] = $this->generateUrl('admin_product_category');
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_product_edit', ['id' => $Product->getId()]),
+            ['admin_product' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($formData['return_link']));
     }
 
     /**

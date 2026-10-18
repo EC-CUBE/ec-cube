@@ -647,6 +647,9 @@ class ProductController extends AbstractController
 
                 $this->addSuccess('admin.common.save_complete', 'admin');
 
+                // return_link でリダイレクトする場合も、結果キャッシュに残った保存前の商品を読まないよう先に消す.
+                $this->cacheUtil->clearDoctrineCache();
+
                 if ($returnLink = $form->get('return_link')->getData()) {
                     try {
                         // $returnLinkはpathの形式で渡される. pathが存在するかをルータでチェックする.
@@ -663,8 +666,6 @@ class ProductController extends AbstractController
                         log_warning('URLの形式が不正です。');
                     }
                 }
-
-                $this->cacheUtil->clearDoctrineCache();
 
                 return $this->redirectToRoute('admin_product_product_edit', ['id' => $Product->getId()]);
             }
