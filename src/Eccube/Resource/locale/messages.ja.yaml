@@ -975,8 +975,6 @@ admin.order.shipping_status: 出荷状況
 admin.order.delivery: お届け先
 admin.order.not_payment: 未入金
 admin.order.unshipped: 未出荷
-admin.order.delete__confirm_title: 注文情報を削除します
-admin.order.delete__confirm_message: 注文情報を削除してよろしいですか？
 admin.order.delete_item__confirm_message: "明細は注文から削除されます。「%name%」を削除してよろしいですか？"
 admin.order.change_payment_method_message: お支払方法の変更に伴う手数料の変更は手動にてお願いします
 admin.order.non_member: 非会員

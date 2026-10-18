@@ -303,56 +303,6 @@ test.describe('Admin Order (EA04)', () => {
     expect(page.url()).toMatch(/\/admin\/order\/\d+\/edit$/);
   });
 
-  test('order_受注削除 (EA0401-UC08-T01)', async ({ page }) => {
-    // First create an order to delete, so we don't affect fixture data
-    await createOrderViaUI(page, '削除テスト', '太郎');
-
-    // Go to order list and search for it
-    await goOrderList(page);
-    await searchOrder(page, '削除テスト');
-    await expect(page.locator(searchResultMsg)).not.toContainText('検索結果：0件が該当しました');
-
-    // Get the order number for the first row
-    const orderNum = await page.locator('#search_result tbody tr:first-child a.action-edit').textContent();
-
-    // Select the first order
-    await page.locator('#search_result > tbody > tr:nth-child(1) > td > input[type=checkbox]').check();
-    await page.waitForTimeout(500);
-
-    // The bulk wrapper should become visible -- but the delete button is in bulkDeleteModal
-    // Open the delete modal via JS (there's no visible delete button in the bulk wrapper for orders,
-    // but the modal exists)
-    // Actually let's find the delete opener
-    const deleteOpener = page.locator('[data-bs-target="#bulkDeleteModal"]');
-    const openerCount = await deleteOpener.count();
-
-    if (openerCount > 0) {
-      await deleteOpener.click();
-    } else {
-      // If there's no opener button, trigger the modal directly
-      await page.evaluate(() => {
-        const modal = document.querySelector('#bulkDeleteModal') as HTMLElement;
-        if (modal) {
-          // @ts-ignore
-          const bsModal = new bootstrap.Modal(modal);
-          bsModal.show();
-        }
-      });
-    }
-    await page.waitForTimeout(500);
-
-    // Click confirm delete
-    await page.locator('#btn_bulk_delete').click();
-    await page.waitForLoadState('load');
-    await page.waitForTimeout(2000);
-
-    // Verify the deleted order is no longer at the top
-    await goOrderList(page);
-    await searchOrder(page, '削除テスト');
-    // After deletion, we expect 0 results for this search
-    await expect(page.locator(searchResultMsg)).toContainText('検索結果：0件が該当しました');
-  });
-
   test('order_受注メール通知 (EA0402-UC01-T01)', async ({ page }) => {
     // Go to order list and search
     await goOrderList(page);
