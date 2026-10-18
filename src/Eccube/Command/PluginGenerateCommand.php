@@ -108,6 +108,7 @@ class PluginGenerateCommand extends Command
         $this->createNav($pluginDir, $code);
         $this->createTwigBlock($pluginDir, $code);
         $this->createConfigController($pluginDir, $code);
+        $this->createPluginManager($pluginDir, $code);
         $this->createGithubActions($pluginDir);
         $this->createGitattributes($pluginDir);
 
@@ -304,6 +305,48 @@ EOL;
         $this->fs->dumpFile($pluginDir.'/Event.php', $source);
     }
 
+    /**
+     * 設定画面が読む初期レコード (id = 1) を有効化時に作る PluginManager を生成する.
+     */
+    protected function createPluginManager(string $pluginDir, string $code): void
+    {
+        $source = <<<EOL
+<?php
+
+namespace Plugin\\{$code};
+
+use Doctrine\\ORM\\EntityManagerInterface;
+use Eccube\\Plugin\\AbstractPluginManager;
+use Plugin\\{$code}\\Entity\\Config;
+use Psr\\Container\\ContainerInterface;
+
+class PluginManager extends AbstractPluginManager
+{
+    /**
+     * @param array{code:string, name:string, version:string, source:int} \$meta
+     */
+    public function enable(array \$meta, ContainerInterface \$container): void
+    {
+        /** @var EntityManagerInterface \$entityManager */
+        \$entityManager = \$container->get('doctrine.orm.entity_manager');
+
+        // ConfigRepository::get() が id = 1 を読むため, 無ければ作る.
+        if (null !== \$entityManager->find(Config::class, 1)) {
+            return;
+        }
+
+        \$Config = new Config();
+        \$Config->setName(\$meta['name']);
+
+        \$entityManager->persist(\$Config);
+        \$entityManager->flush();
+    }
+}
+
+EOL;
+        $this->fs->dumpFile($pluginDir.'/PluginManager.php', $source);
+    }
+
     protected function createConfigController(string $pluginDir, string $code): void
     {
         $snakecased = Container::underscore($code);
@@ -316,9 +359,10 @@ namespace Plugin\\{$code}\\Controller\\Admin;
 use Eccube\\Controller\\AbstractController;
 use Plugin\\{$code}\\Form\\Type\\Admin\\ConfigType;
 use Plugin\\{$code}\\Repository\\ConfigRepository;
-use Sensio\\Bundle\\FrameworkExtraBundle\\Configuration\\Template;
+use Symfony\\Bridge\\Twig\\Attribute\\Template;
 use Symfony\\Component\\HttpFoundation\\Request;
-use Symfony\\Component\\Routing\\Annotation\\Route;
+use Symfony\\Component\\HttpFoundation\\Response;
+use Symfony\\Component\\Routing\\Attribute\\Route;
 
 class ConfigController extends AbstractController
 {
@@ -337,9 +381,12 @@ class ConfigController extends AbstractController
         \$this->configRepository = \$configRepository;
     }
 
-     #[Route(path: '/%eccube_admin_route%/{$snakecased}/config', name: '{$snakecased}_admin_config', methods: ['GET', 'POST'])]
-     #[Template("@{$code}/admin/config.twig")]
-    public function index(Request \$request)
+    /**
+     * @return array<string, mixed>|Response
+     */
+    #[Route(path: '/%eccube_admin_route%/{$snakecased}/config', name: '{$snakecased}_admin_config', methods: ['GET', 'POST'])]
+    #[Template('@{$code}/admin/config.twig')]
+    public function index(Request \$request): array|Response
     {
         \$Config = \$this->configRepository->get();
         \$form = \$this->createForm(ConfigType::class, \$Config);
