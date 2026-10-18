@@ -23,6 +23,7 @@ use Eccube\Repository\Master\PrefRepository;
 use Eccube\Repository\ProductClassRepository;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageCode;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutResult;
@@ -166,12 +167,14 @@ class AgentCheckoutPurchaseFlowAdapter
         $context = new PurchaseContext(clone $Order, $member);
         $result = $flow($context);
 
+        // PurchaseFlow の結果は自由文のため理由を細分化できない。ItemHolder 由来のエラーは検証失敗の
+        // 総称 INVALID、ItemValidator 由来の警告は数量調整等の LIMITED_AVAILABILITY を付す。
         $messages = [];
         foreach ($result->getErrors() as $error) {
-            $messages[] = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, (string) $error->getMessage());
+            $messages[] = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, (string) $error->getMessage(), AgentCheckoutMessageCode::INVALID);
         }
         foreach ($result->getWarning() as $warning) {
-            $messages[] = new AgentCheckoutMessage(AgentCheckoutMessageLevel::WARNING, (string) $warning->getMessage());
+            $messages[] = new AgentCheckoutMessage(AgentCheckoutMessageLevel::WARNING, (string) $warning->getMessage(), AgentCheckoutMessageCode::LIMITED_AVAILABILITY);
         }
 
         return $messages;

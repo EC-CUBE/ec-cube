@@ -14,6 +14,7 @@
 namespace Eccube\Service\AgentCommerce\Acp;
 
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageCode;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 
 /**
@@ -100,15 +101,29 @@ class AcpMessageMapper
             'content' => $message->message,
         ];
 
-        // error/warning は code が必須。PurchaseFlow 由来は構造化できないため汎用の "invalid" を付す。
+        // error/warning は code が必須 (MessageError / MessageWarning の enum)。生成元の中立コードを
+        // ACP の語彙へ写し、無ければ汎用値 (error: invalid / warning: limited_availability) を付す。
         // update での再入力 (住所・数量変更等) で解消し得るため resolution は recoverable。
         if ($message->level === AgentCheckoutMessageLevel::ERROR) {
-            $entry['code'] = 'invalid';
+            $entry['code'] = self::toAcpErrorCode($message->code);
             $entry['resolution'] = 'recoverable';
         } elseif ($message->level === AgentCheckoutMessageLevel::WARNING) {
+            // warning 系の中立コードは現状 LIMITED_AVAILABILITY のみで ACP enum に同名がある。
             $entry['code'] = 'limited_availability';
         }
 
         return $entry;
+    }
+
+    /**
+     * 中立コード → ACP MessageError.code (enum: missing / invalid / out_of_stock / payment_declined / ...).
+     */
+    private static function toAcpErrorCode(?AgentCheckoutMessageCode $code): string
+    {
+        return match ($code) {
+            AgentCheckoutMessageCode::ADDRESS_REQUIRED => 'missing',
+            AgentCheckoutMessageCode::PAYMENT_FAILED => 'payment_declined',
+            default => 'invalid',
+        };
     }
 }

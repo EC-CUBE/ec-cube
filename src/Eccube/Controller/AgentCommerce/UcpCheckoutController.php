@@ -27,6 +27,7 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionResult;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageCode;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
@@ -34,6 +35,7 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
+use Eccube\Service\AgentCommerce\JsonObjectFieldNormalizer;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper;
@@ -67,6 +69,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UcpCheckoutController extends AbstractController
 {
+    /**
+     * 空でも JSON object ({}) で配信しなければならないフィールド (ドット区切り).
+     * ucp.json#/$defs/response_checkout_schema は capabilities / payment_handlers を object とする.
+     *
+     * @var list<string>
+     */
+    private const JSON_OBJECT_FIELDS = ['ucp.capabilities', 'ucp.payment_handlers'];
+
     public function __construct(
         private readonly BaseInfoRepository $baseInfoRepository,
         private readonly CheckoutSessionRepository $checkoutSessionRepository,
@@ -114,11 +124,11 @@ class UcpCheckoutController extends AbstractController
         $session = $this->findSession($sessionId);
 
         $order = $session->getOrder();
-        if ($order !== null) {
-            return new JsonResponse($this->mapper->buildResponseFromOrder($session, $order, []), Response::HTTP_OK);
-        }
+        $body = $order !== null
+            ? $this->mapper->buildResponseFromOrder($session, $order, [])
+            : $this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []);
 
-        return new JsonResponse($this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []), Response::HTTP_OK);
+        return $this->jsonResponse($body, Response::HTTP_OK);
     }
 
     #[Route(path: '/ucp/checkout-sessions/{sessionId}', name: 'ucp_checkout_update', methods: ['PUT'])]
@@ -170,7 +180,7 @@ class UcpCheckoutController extends AbstractController
                     // ハンドラが契約に反して例外を投げた。状態機械は未実行 = 在庫引当もステータス遷移も
                     // 起きていないため、セッションを据え置いたままビジネス系エラーで返し再試行を許す。
                     return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $this->messageMapper->toUcpMessages([
-                        new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'The payment credential could not be processed.'),
+                        new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'The payment credential could not be processed.', AgentCheckoutMessageCode::PAYMENT_FAILED),
                     ]))];
                 }
                 // complete は「中断→再開」状態機械 (#6777)。追加認証 (3DS/escalation) は
@@ -225,12 +235,14 @@ class UcpCheckoutController extends AbstractController
             $this->entityManager->persist($session);
             $this->entityManager->flush();
 
-            $messages = [[
-                'type' => 'error',
-                'severity' => 'recoverable',
-                'content' => 'Shipping address is required to calculate shipping and complete checkout.',
-                'content_type' => 'plain',
-            ]];
+            // 住所要求も他のビジネス系メッセージと同じ mapper を通し、code / severity の付与を一元化する。
+            $messages = $this->messageMapper->toUcpMessages([
+                new AgentCheckoutMessage(
+                    AgentCheckoutMessageLevel::ERROR,
+                    'Shipping address is required to calculate shipping and complete checkout.',
+                    AgentCheckoutMessageCode::ADDRESS_REQUIRED,
+                ),
+            ]);
 
             return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $messages);
         }
@@ -356,7 +368,21 @@ class UcpCheckoutController extends AbstractController
             return new JsonResponse(['code' => 'idempotency_conflict', 'content' => $e->getMessage()], Response::HTTP_CONFLICT);
         }
 
-        return new JsonResponse($result['body'], $result['status']);
+        return $this->jsonResponse($result['body'], $result['status']);
+    }
+
+    /**
+     * 応答本文を配信形に整えて JsonResponse を作る.
+     *
+     * 空でも object ({}) で出すべきレジストリ (ucp.capabilities / ucp.payment_handlers) を正規化する。
+     * Idempotency リプレイの本文は DB の json 列 (assoc decode) から戻り、mapper が stdClass を入れて
+     * いても [] に退行するため、初回・リプレイ・GET のすべてをこの 1 箇所で揃える。
+     *
+     * @param array<string, mixed> $body
+     */
+    private function jsonResponse(array $body, int $status): JsonResponse
+    {
+        return new JsonResponse(JsonObjectFieldNormalizer::normalize($body, self::JSON_OBJECT_FIELDS), $status);
     }
 
     /**
