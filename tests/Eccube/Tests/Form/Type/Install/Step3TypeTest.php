@@ -123,6 +123,17 @@ final class Step3TypeTest extends AbstractTypeTestCase
         $this->assertFalse($this->form->isValid());
     }
 
+    /**
+     * ラベルが「半角英数字・記号」を謳う根拠として, ASCII の記号を受け付けることを固定する.
+     */
+    public function testValidLoginIdSymbol()
+    {
+        $this->formData['login_id'] = 'admin-01_!@#.$';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
     public function testInvalidLoginPassBlank()
     {
         $this->formData['login_pass'] = '';
@@ -265,6 +276,28 @@ final class Step3TypeTest extends AbstractTypeTestCase
     public function testInvalidAdminDirHiragana()
     {
         $this->formData['admin_dir'] = str_repeat('あ', $this->eccubeConfig['eccube_id_max_len']);
+
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * ラベルが「アンダースコア」を謳う根拠として, アンダースコアを受け付けることを固定する.
+     */
+    public function testValidAdminDirUnderscore()
+    {
+        $this->formData['admin_dir'] = 'admin_01';
+
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    /**
+     * ラベルが「半角英数字・アンダースコア」を謳う根拠として, アンダースコア以外の記号を受け付けないことを固定する.
+     */
+    public function testInvalidAdminDirSymbol()
+    {
+        $this->formData['admin_dir'] = 'admin-01';
 
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
