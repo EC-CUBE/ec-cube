@@ -31,17 +31,20 @@ use Symfony\Component\Routing\Attribute\Route;
 /**
  * UCP Catalog capability (pull / REST transport) のエンドポイント.
  *
- * 一次仕様 (v2026-04-08) ではいずれも POST の RPC 形式 (GET ではない):
- *   - POST /catalog/search  (dev.ucp.shopping.catalog.search / search_catalog)
- *   - POST /catalog/lookup  (dev.ucp.shopping.catalog.lookup / lookup_catalog)
- *   - POST /catalog/product (dev.ucp.shopping.catalog.lookup / get_product)
+ * 一次仕様 (v2026-04-08) ではいずれも POST の RPC 形式 (GET ではない)。パスは discovery profile の
+ * `services["dev.ucp.shopping"][].endpoint` (本実装では `/ucp`) からの相対で定義される:
+ *   - POST {endpoint}/catalog/search  (dev.ucp.shopping.catalog.search / search_catalog)
+ *   - POST {endpoint}/catalog/lookup  (dev.ucp.shopping.catalog.lookup / lookup_catalog)
+ *   - POST {endpoint}/catalog/product (dev.ucp.shopping.catalog.lookup / get_product)
+ * checkout (`{endpoint}/checkout-sessions`) と同じ基底を共有するため、ルートは `/ucp` 配下に置く。
  *
  * UCP Catalog は公開商品データのため常時公開する (フラグで無効化しない)。
  * Catalog query は read-only のため RFC 9421 署名は OPTIONAL であり本実装では検証しない
  * (discovery の signing_keys は公開鍵のみ別途広告)。
  *
- * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/schemas/shopping/catalog_search.json
- * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/schemas/shopping/catalog_lookup.json
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/docs/specification/catalog/rest.md#L34 (services: dev.ucp.shopping の endpoint と相対パス)
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/shopping/catalog_search.json
+ * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/v2026-04-08/source/schemas/shopping/catalog_lookup.json
  */
 class UcpCatalogController extends AbstractController
 {
@@ -77,7 +80,7 @@ class UcpCatalogController extends AbstractController
     /**
      * POST /catalog/search — フリーテキスト / フィルタ + ページングで公開商品を返す.
      */
-    #[Route(path: '/catalog/search', name: 'agent_ucp_catalog_search', methods: ['POST'])]
+    #[Route(path: '/ucp/catalog/search', name: 'agent_ucp_catalog_search', methods: ['POST'])]
     public function search(Request $request): Response
     {
         // UCP Catalog は公開商品データのため常時公開 (discovery と同様)。
@@ -117,7 +120,7 @@ class UcpCatalogController extends AbstractController
     /**
      * POST /catalog/lookup — ids[] (product ID / variant ID / SKU) を解決して返す.
      */
-    #[Route(path: '/catalog/lookup', name: 'agent_ucp_catalog_lookup', methods: ['POST'])]
+    #[Route(path: '/ucp/catalog/lookup', name: 'agent_ucp_catalog_lookup', methods: ['POST'])]
     public function lookup(Request $request): Response
     {
         $rawBody = $request->getContent();
@@ -169,7 +172,7 @@ class UcpCatalogController extends AbstractController
      *
      * 必須の product が解決できない場合は 404 (Error) を返す。
      */
-    #[Route(path: '/catalog/product', name: 'agent_ucp_catalog_product', methods: ['POST'])]
+    #[Route(path: '/ucp/catalog/product', name: 'agent_ucp_catalog_product', methods: ['POST'])]
     public function product(Request $request): Response
     {
         $rawBody = $request->getContent();
