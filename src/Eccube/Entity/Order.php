@@ -272,7 +272,8 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
         // getShippingsではなくOrderItem経由でShippingを取得する.
         foreach ($this->getOrderItems() as $OrderItem) {
             if ($Shipping = $OrderItem->getShipping()) {
-                $id = $Shipping->getId();
+                // 未保存の出荷は ID を持たないため、オブジェクトで区別する
+                $id = spl_object_id($Shipping);
                 if (isset($Shippings[$id])) {
                     continue;
                 }

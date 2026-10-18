@@ -17,7 +17,9 @@ namespace Eccube\Tests\Web\Admin\Content;
 
 use Eccube\Entity\Page;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 final class PageControllerTest extends AbstractAdminWebTestCase
@@ -277,5 +279,28 @@ final class PageControllerTest extends AbstractAdminWebTestCase
         if (file_exists($templatePath.'/'.$Page->getFileName().'.twig')) {
             unlink($templatePath.'/'.$Page->getFileName().'.twig');
         }
+    }
+
+    /**
+     * 存在しないページ・範囲外の ID は 404 にする.
+     */
+    #[DataProvider(methodName: 'provideNotFoundId')]
+    public function testEditNotFound(string $id): void
+    {
+        $this->client->request(
+            Request::METHOD_GET,
+            $this->generateUrl('admin_content_page_edit', ['id' => $id])
+        );
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideNotFoundId(): \Iterator
+    {
+        yield 'not found' => ['2147483647'];
+        yield 'out of range' => ['2147483648'];
     }
 }

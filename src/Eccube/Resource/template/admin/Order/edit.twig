@@ -778,7 +778,7 @@ file that was distributed with this source code.
                                                 <p class="mb-0 fw-bold">
                                                     {# 商品とポイント値引きは名前変更できない #}
                                                     {% if OrderItem.isProduct or OrderItem.isPoint %}
-                                                        {% if OrderItem.isProduct %}
+                                                        {% if OrderItem.isProduct and OrderItem.ProductClass is not null %}
                                                             <a href="{{ url('admin_product_product_edit', {id: OrderItem.ProductClass.Product.id}) }}" target="_blank">
                                                                 {{ OrderItem.product_name }}
                                                             </a>
@@ -860,7 +860,7 @@ file that was distributed with this source code.
                                             <td class="align-middle">
                                                 <div class="col-12 col-xl-8">
                                                     {# 複数配送・ポイント明細・不課税明細は商品の税率を変更できない #}
-                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint or OrderItem.TaxType.id == constant('Eccube\\Entity\\Master\\TaxType::NON_TAXABLE') %}
+                                                    {% if (Order.isMultiple and OrderItem.isProduct) or OrderItem.isPoint or (OrderItem.TaxType is not null and OrderItem.TaxType.id == constant('Eccube\\Entity\\Master\\TaxType::NON_TAXABLE')) %}
                                                         {{ form_widget(orderItemForm.tax_rate, { 'attr': { 'readonly': 'readonly' } }) }}
                                                     {% else %}
                                                         {{ form_widget(orderItemForm.tax_rate) }}

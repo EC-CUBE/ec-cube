@@ -367,8 +367,11 @@ class OrderType extends AbstractType
             }
         } else {
             // 編集時は, mapped => falseで定義しているため, フォームから変更後データを取得する.
+            // 不正な値・空の値は OrderStatus の項目で入力エラーになるため, 元のステータスを残す (受注の処理に null を渡さない).
             $form = $event->getForm();
-            $Order->setOrderStatus($form['OrderStatus']->getData());
+            if (null !== $NewStatus = $form['OrderStatus']->getData()) {
+                $Order->setOrderStatus($NewStatus);
+            }
         }
 
         // 新規登録時は受注日を登録する.

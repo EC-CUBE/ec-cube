@@ -218,4 +218,22 @@ final class ContactControllerTest extends AbstractWebTestCase
         );
         $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('contact_complete')));
     }
+
+    /**
+     * 送信時に RFC 違反となるドメイン部のメールアドレスは、入力エラーにする.
+     */
+    public function testCompleteWithInvalidEmailDomain(): void
+    {
+        $formData = $this->createFormData();
+        $formData['email'] = "hoge@a.a'";
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('contact'),
+            ['contact' => $formData, 'mode' => 'complete']
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+        $this->assertEmailCount(0);
+    }
 }

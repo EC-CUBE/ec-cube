@@ -296,4 +296,22 @@ final class CustomerControllerTest extends AbstractAdminWebTestCase
         $content = $this->client->getInternalResponse()->getContent();
         $this->assertMatchesRegularExpression('/user-[0-9]@example.com/', $content);
     }
+
+    /**
+     * 定義されていないソートキーは、既定の並び順で検索する.
+     */
+    public function testSearchWithUnknownSortKey(): void
+    {
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_customer'),
+            ['admin_search_customer' => [
+                '_token' => 'dummy',
+                'sortkey' => 'unknown',
+                'sorttype' => 'a',
+            ]]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isSuccessful());
+    }
 }

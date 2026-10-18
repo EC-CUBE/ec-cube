@@ -40,6 +40,8 @@ enum AgentCheckoutErrorCode: string
     /** 指定された都道府県 (Pref) が見つからない. */
     case INVALID_PREF = 'invalid_pref';
 
+    case INVALID_ADDRESS = 'invalid_address';
+
     /** セッションが確定不能な状態 (期限切れ・取消済等). */
     case INVALID_SESSION_STATE = 'invalid_session_state';
 }

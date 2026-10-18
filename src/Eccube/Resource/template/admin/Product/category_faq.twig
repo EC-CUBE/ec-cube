@@ -32,7 +32,10 @@ file that was distributed with this source code.
                             <span class="card-title">{{ 'admin.content.faq.category_faq'|trans }}：{{ Category.name }}</span>
                         </div>
                         <div class="card-body">
-                            {% include '@admin/Content/faq_collection.twig' with {'faqs': form.faqs} only %}
+                            {# faqs_rendered を含まない送信では FormType が faqs を取り除くため、存在するときだけ描画する #}
+                            {% if form.faqs is defined %}
+                                {% include '@admin/Content/faq_collection.twig' with {'faqs': form.faqs} only %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>

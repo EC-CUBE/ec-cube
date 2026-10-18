@@ -20,6 +20,7 @@ use Eccube\Entity\Csv;
 use Eccube\Entity\Master\CsvType;
 use Eccube\Entity\Product;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -121,5 +122,54 @@ final class CsvControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->flush();
 
         return $Csv;
+    }
+
+    /**
+     * 整数でない ID・別の CSV 種別の項目は受け付けない.
+     *
+     * @param array<int, mixed> $csvOutput
+     */
+    #[DataProvider(methodName: 'provideInvalidCsvOutput')]
+    public function testSubmitWithInvalidId(array $csvOutput): void
+    {
+        $csvType = CsvType::CSV_TYPE_PRODUCT;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]),
+            ['form' => [
+                '_token' => 'dummy',
+                'csv_type' => $csvType,
+                'csv_output' => $csvOutput,
+            ]]
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{array<int, mixed>}>
+     */
+    public static function provideInvalidCsvOutput(): \Iterator
+    {
+        yield 'alpha' => [['abc']];
+        yield 'out of range' => [['2147483648']];
+        yield 'not found' => [['2147483647']];
+    }
+
+    public function testSubmitWithOtherCsvType(): void
+    {
+        $CsvOrder = $this->createCsv(CsvType::CSV_TYPE_ORDER);
+        $csvType = CsvType::CSV_TYPE_PRODUCT;
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_shop_csv', ['id' => $csvType]),
+            ['form' => [
+                '_token' => 'dummy',
+                'csv_type' => $csvType,
+                'csv_output' => [$CsvOrder->getId()],
+            ]]
+        );
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 }

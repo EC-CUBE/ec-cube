@@ -278,16 +278,17 @@ final class EmptyTextSubmitTest extends AbstractTypeTestCase
     }
 
     /**
-     * 識別子は制約を持たないため, 空送信でも TypeError にならず null になる.
+     * 識別子は空送信でも TypeError にならない.
+     * 送信値で主キーを書き換えないよう, エンティティには対応付けない.
      */
-    public function testSubmitEmptyIdentifierStoresNull(): void
+    public function testSubmitEmptyIdentifierKeepsId(): void
     {
         $Block = (new Block())->setId(5)->setName('ブロック名')->setFileName('block_file');
 
         $form = $this->formFactory->create(BlockType::class, $Block, ['csrf_protection' => false]);
         $form->submit(['id' => ''], false);
 
-        $this->assertNull($Block->getId());
+        $this->assertSame(5, $Block->getId());
     }
 
     /**

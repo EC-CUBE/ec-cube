@@ -21,6 +21,7 @@ use Eccube\Repository\Master\DeviceTypeRepository;
 use Eccube\Repository\TemplateRepository;
 use Eccube\Service\EnvFileService;
 use Eccube\Util\CacheUtil;
+use Eccube\Util\IdUtil;
 use Eccube\Util\StringUtil;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Filesystem\Filesystem;
@@ -30,6 +31,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -84,7 +86,17 @@ class TemplateController extends AbstractController
                 return $this->redirectToRoute('admin_store_template');
             }
 
-            $Template = $this->templateRepository->find($form['selected']->getData());
+            $Template = null;
+            $selectedId = IdUtil::toId($form['selected']->getData());
+            foreach ($Templates as $Candidate) {
+                if ($Candidate->getId() === $selectedId) {
+                    $Template = $Candidate;
+                    break;
+                }
+            }
+            if (null === $Template) {
+                throw new BadRequestHttpException();
+            }
 
             try {
                 // 書き込みは EnvFileService へ委譲する (file_put_contents の失敗を握り潰さない)

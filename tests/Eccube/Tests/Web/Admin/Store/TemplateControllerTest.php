@@ -22,11 +22,13 @@ use Eccube\Repository\TemplateRepository;
 use Eccube\Tests\EnvOverrideTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Eccube\Util\StringUtil;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class TemplateControllerTest extends AbstractAdminWebTestCase
 {
@@ -353,5 +355,31 @@ final class TemplateControllerTest extends AbstractAdminWebTestCase
         return [
             'file' => $this->file,
         ];
+    }
+
+    /**
+     * 選択できないテンプレートの ID は受け付けない.
+     */
+    #[DataProvider(methodName: 'provideInvalidSelected')]
+    public function testChangeTemplateWithInvalidSelected(string $selected): void
+    {
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_store_template'), [
+            'form' => [
+                '_token' => 'dummy',
+                'selected' => $selected,
+            ],
+        ]);
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+    }
+
+    /**
+     * @return \Iterator<string, array{string}>
+     */
+    public static function provideInvalidSelected(): \Iterator
+    {
+        yield 'alpha' => ['abc'];
+        yield 'out of range' => ['2147483648'];
+        yield 'not found' => ['2147483647'];
     }
 }

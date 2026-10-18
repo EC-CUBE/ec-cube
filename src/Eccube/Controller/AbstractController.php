@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Common\Constant;
 use Eccube\Common\EccubeConfig;
 use Eccube\Session\Session;
+use Eccube\Util\IdUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -24,6 +25,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -230,5 +232,32 @@ class AbstractController extends Controller
         }
 
         return true;
+    }
+
+    /**
+     * 並び順の変更で送信される「ID => 表示順」を検証して返す.
+     *
+     * @param int $maxSortNo 表示順の上限. sort_no カラムの型に合わせる (smallint の場合は IdUtil::SMALLINT_MAX)
+     *
+     * @return array<int, int>
+     *
+     * @throws BadRequestHttpException ID または表示順が整数でない、または範囲外の場合
+     */
+    protected function getSortNosFromRequest(Request $request, int $maxSortNo = IdUtil::INTEGER_MAX): array
+    {
+        $sortNos = [];
+        foreach ($request->request->all() as $id => $sortNo) {
+            if (Constant::TOKEN_NAME === $id) {
+                continue;
+            }
+            $id = IdUtil::toId($id);
+            $sortNo = IdUtil::toId($sortNo, $maxSortNo);
+            if (null === $id || null === $sortNo) {
+                throw new BadRequestHttpException();
+            }
+            $sortNos[$id] = $sortNo;
+        }
+
+        return $sortNos;
     }
 }
