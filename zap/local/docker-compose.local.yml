@@ -1,11 +1,9 @@
 # ローカル実行用 (zap/local/env.sh で docker-compose.owaspzap.ci.yml に重ねる)。
 # レーン同士や、開発用に起動している EC-CUBE とポートが衝突しないよう、ホストへポートを公開しない。
+# DB のサービスは DB ごとのファイル (docker-compose.local.<ZAP_DB>.yml) で上書きする。無い DB のサービスを
+# ここに書くと、image の無いサービスができて起動できないため
 services:
   ec-cube:
-    ports: !reset []
-  postgres:
-    ports: !reset []
-  mysql:
     ports: !reset []
   mailpit:
     ports: !reset []
