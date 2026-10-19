@@ -78,7 +78,7 @@ class MailController extends AbstractController
             // テンプレート変更の場合は. バリデーション前に内容差し替え.
             switch ($mode) {
                 case 'change':
-                    if ($form->get('template')->isValid()) {
+                    if ($form->isSubmitted() && $form->get('template')->isValid()) {
                         /** @var MailTemplate|null $MailTemplate */
                         $MailTemplate = $form->get('template')->getData();
 

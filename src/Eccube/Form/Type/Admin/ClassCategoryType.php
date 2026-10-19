@@ -19,6 +19,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,6 +41,7 @@ class ClassCategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
@@ -57,6 +61,16 @@ class ClassCategoryType extends AbstractType
                 'expanded' => false,
             ])
         ;
+
+        // 新規登録の画面は表示/非表示を送らず, ClassCategoryRepository::save() が表示にする.
+        // 登録済みの規格分類で表示/非表示を空にすると null のまま保存されるため, 入力エラーにする.
+        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event): void {
+            $ClassCategory = $event->getData();
+            $form = $event->getForm()->get('visible');
+            if ($ClassCategory instanceof ClassCategory && $ClassCategory->getId() && null === $form->getData()) {
+                $form->addError(new FormError(trans('This value should not be null.', [], 'validators')));
+            }
+        });
     }
 
     /**

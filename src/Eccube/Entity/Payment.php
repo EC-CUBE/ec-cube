@@ -248,7 +248,7 @@ class Payment extends AbstractEntity implements \Stringable
         return $this->visible;
     }
 
-    public function setVisible(bool $visible): Payment
+    public function setVisible(?bool $visible): Payment
     {
         $this->visible = $visible;
 

@@ -83,7 +83,7 @@ class CalendarController extends AbstractController
                 && (string) $Calendar->getId() === $request->get('calendar_id')
             ) {
                 $editCalendarForm->handleRequest($request);
-                if ($editCalendarForm->isValid()) {
+                if ($editCalendarForm->isSubmitted() && $editCalendarForm->isValid()) {
                     $calendarData = $editCalendarForm->getData();
 
                     $this->entityManager->persist($calendarData);

@@ -177,7 +177,7 @@ class FileController extends AbstractController
             ->getForm();
 
         $form->handleRequest($request);
-        if (!$form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             foreach ($form->getErrors(true) as $error) {
                 $this->errors[] = ['message' => $error->getMessage()];
             }
@@ -281,7 +281,7 @@ class FileController extends AbstractController
 
         $form->handleRequest($request);
 
-        if (!$form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             foreach ($form->getErrors(true) as $error) {
                 $this->errors[] = ['message' => $error->getMessage()];
             }

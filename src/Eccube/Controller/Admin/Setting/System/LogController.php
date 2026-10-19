@@ -56,7 +56,7 @@ class LogController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $formData = $form->getData();
             }
             $event = new EventArgs(

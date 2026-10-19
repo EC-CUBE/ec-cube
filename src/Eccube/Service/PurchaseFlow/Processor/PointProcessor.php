@@ -62,11 +62,11 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
         }
 
         /** @var Order $itemHolder */
-        $usePoint = $itemHolder->getUsePoint();
+        $usePoint = $itemHolder->getUsePoint() ?? '0';
         $discount = $this->pointHelper->pointToDiscount($usePoint);
 
         // 利用ポイントがある場合は割引明細を追加
-        if (bccomp((string) $usePoint, '0', 0) > 0) {
+        if (bccomp($usePoint, '0', 0) > 0) {
             $result = null;
 
             // 購入フロー実行時
@@ -83,7 +83,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
 
                 // 所有ポイント < 利用ポイント
                 $Customer = $itemHolder->getCustomer();
-                if (bccomp((string) $Customer->getPoint(), (string) $usePoint, 0) < 0) {
+                if (bccomp((string) $Customer->getPoint(), $usePoint, 0) < 0) {
                     // 利用ポイントが所有ポイントを上回っていた場合は所有ポイントで上書き
                     $usePoint = $Customer->getPoint();
                     $discount = $this->pointHelper->pointToDiscount($usePoint);

@@ -111,7 +111,7 @@ class TaxRuleController extends AbstractController
                 && (string) $TaxRule->getId() === $request->get('tax_rule_id')
             ) {
                 $editTaxRuleForm->handleRequest($request);
-                if ($editTaxRuleForm->isValid()) {
+                if ($editTaxRuleForm->isSubmitted() && $editTaxRuleForm->isValid()) {
                     $taxRuleData = $editTaxRuleForm->getData();
 
                     $this->entityManager->persist($taxRuleData);

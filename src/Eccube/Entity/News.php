@@ -206,7 +206,7 @@ class News extends AbstractEntity implements \Stringable
         return $this->visible;
     }
 
-    public function setVisible(bool $visible): News
+    public function setVisible(?bool $visible): News
     {
         $this->visible = $visible;
 

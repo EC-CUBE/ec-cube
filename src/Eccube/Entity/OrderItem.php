@@ -40,10 +40,10 @@ class OrderItem extends AbstractEntity implements ItemInterface
     {
         // 税表示区分が税込の場合は, priceに税込金額が入っている.
         if ($this->TaxDisplayType && $this->TaxDisplayType->getId() == TaxDisplayType::INCLUDED) {
-            return $this->price;
+            return $this->price ?? '0';
         }
 
-        return bcadd((string) $this->price, (string) $this->tax, 2);
+        return bcadd($this->price ?? '0', $this->tax ?? '0', 2);
     }
 
     public function getTotalPrice(): string
@@ -362,7 +362,7 @@ class OrderItem extends AbstractEntity implements ItemInterface
     #[\Override]
     public function getQuantity(): string
     {
-        return $this->quantity;
+        return $this->quantity ?? '0';
     }
 
     public function getTax(): string

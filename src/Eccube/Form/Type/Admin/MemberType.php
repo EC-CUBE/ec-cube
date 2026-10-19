@@ -138,7 +138,7 @@ class MemberType extends AbstractType
             $Member = $event->getData();
 
             // 編集時に, 非稼働で更新した場合にチェック.
-            if ($Member->getId() && $Member->getWork()->getId() == Work::NON_ACTIVE) {
+            if ($Member->getId() && $Member->getWork() && $Member->getWork()->getId() == Work::NON_ACTIVE) {
                 // 自身を除いた稼働メンバーの件数
                 $count = $this->memberRepository
                     ->createQueryBuilder('m')

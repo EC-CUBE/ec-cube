@@ -48,7 +48,7 @@ class CsvImportController extends AbstractCsvImportController
 
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $formFile = $form['import_file']->getData();
 
                 if (!empty($formFile)) {

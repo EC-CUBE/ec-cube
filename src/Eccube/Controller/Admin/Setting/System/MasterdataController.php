@@ -53,7 +53,7 @@ class MasterdataController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $event = new EventArgs(
                     [
                         'form' => $form,
@@ -135,7 +135,7 @@ class MasterdataController extends AbstractController
         if ('POST' === $request->getMethod()) {
             $form2->handleRequest($request);
 
-            if ($form2->isValid()) {
+            if ($form2->isSubmitted() && $form2->isValid()) {
                 $data = $form2->getData();
                 /** @var class-string $entityName */
                 $entityName = str_replace('-', '\\', $data['masterdata_name']);

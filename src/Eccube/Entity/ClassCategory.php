@@ -203,7 +203,7 @@ class ClassCategory extends AbstractEntity implements \Stringable
     /**
      * Set visible
      */
-    public function setVisible(bool $visible): ClassCategory
+    public function setVisible(?bool $visible): ClassCategory
     {
         $this->visible = $visible;
 
@@ -215,6 +215,6 @@ class ClassCategory extends AbstractEntity implements \Stringable
      */
     public function isVisible(): bool
     {
-        return $this->visible;
+        return (bool) $this->visible;
     }
 }

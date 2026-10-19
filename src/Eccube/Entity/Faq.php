@@ -82,7 +82,7 @@ class Faq extends AbstractEntity implements \Stringable
     private ?int $sort_no = 0;
 
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
-    private bool $visible = true;
+    private ?bool $visible = true;
 
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTime $create_date = null;
@@ -143,7 +143,7 @@ class Faq extends AbstractEntity implements \Stringable
         return $this->sort_no;
     }
 
-    public function setVisible(bool $visible): self
+    public function setVisible(?bool $visible): self
     {
         $this->visible = $visible;
 

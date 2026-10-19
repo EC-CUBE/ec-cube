@@ -127,7 +127,9 @@ class OrderController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
+        }
 
+        if ($searchForm->isSubmitted()) {
             if ($searchForm->isValid()) {
                 /**
                  * 検索が実行された場合は, セッションに検索条件を保存する.
@@ -595,7 +597,7 @@ class OrderController extends AbstractController
         $form->handleRequest($request);
 
         // Validation
-        if (!$form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             log_info('The parameter is invalid!');
 
             return $this->render('@admin/Order/order_pdf.twig', [
