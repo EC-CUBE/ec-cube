@@ -29,6 +29,7 @@ use Eccube\Repository\ProductRepository;
 use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Client;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -516,14 +517,14 @@ final class ProductControllerTest extends AbstractWebTestCase
             ['unrelated' => 'value']
         );
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 
     /**
      * 数量を空や配列にした POST では 500 にならず 404 を返す.
      */
-    #[TestWith([''])]
-    #[TestWith([['1']])]
+    #[TestWith(data: [''])]
+    #[TestWith(data: [['1']])]
     public function testAddCartWithInvalidQuantity(mixed $quantity): void
     {
         $Product = $this->createProduct('Product add cart with invalid quantity', 1);
@@ -539,6 +540,6 @@ final class ProductControllerTest extends AbstractWebTestCase
             ]
         );
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
     }
 }

@@ -21,6 +21,7 @@ use Eccube\Entity\News;
 use Eccube\Entity\TaxRule;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * 管理画面のフォームへ改ざんした値を送ったときに 500 にならないことを確かめる.
@@ -35,7 +36,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
      *
      * @param array<string, string> $parameters
      */
-    #[DataProvider('provideUnsubmittedFormRoutes')]
+    #[DataProvider(methodName: 'provideUnsubmittedFormRoutes')]
     public function testPostWithoutFormName(string $route, array $parameters = []): void
     {
         $this->client->request(
@@ -44,33 +45,31 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
             $parameters + ['unrelated' => 'value']
         );
 
-        $this->assertLessThan(500, $this->client->getResponse()->getStatusCode());
+        $this->assertLessThan(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
     }
 
     /**
-     * @return array<string, array{0: string, 1?: array<string, string>}>
+     * @return \Iterator<string, array{0: string, 1?: array<string, string>}>
      */
-    public static function provideUnsubmittedFormRoutes(): array
+    public static function provideUnsubmittedFormRoutes(): \Iterator
     {
-        return [
-            '商品一覧' => ['admin_product'],
-            '商品登録' => ['admin_product_product_new'],
-            '受注一覧' => ['admin_order'],
-            '帳票出力' => ['admin_order_pdf_download'],
-            '会員一覧' => ['admin_customer'],
-            '返品・返金申請一覧' => ['admin_refund_request'],
-            '出荷 CSV 登録' => ['admin_shipping_csv_import'],
-            '商品 CSV 登録' => ['admin_product_csv_import'],
-            'カテゴリ CSV 登録' => ['admin_product_category_csv_import'],
-            '規格 CSV 登録' => ['admin_product_class_name_csv_import'],
-            '規格分類 CSV 登録' => ['admin_product_class_category_csv_import'],
-            '配送方法登録' => ['admin_setting_shop_delivery_new'],
-            'マスタデータ管理' => ['admin_setting_system_masterdata'],
-            'マスタデータ編集' => ['admin_setting_system_masterdata_edit'],
-            'ログ表示' => ['admin_setting_system_log'],
-            'ファイル管理 (フォルダ作成)' => ['admin_content_file', ['mode' => 'create']],
-            'ファイル管理 (アップロード)' => ['admin_content_file', ['mode' => 'upload']],
-        ];
+        yield '商品一覧' => ['admin_product'];
+        yield '商品登録' => ['admin_product_product_new'];
+        yield '受注一覧' => ['admin_order'];
+        yield '帳票出力' => ['admin_order_pdf_download'];
+        yield '会員一覧' => ['admin_customer'];
+        yield '返品・返金申請一覧' => ['admin_refund_request'];
+        yield '出荷 CSV 登録' => ['admin_shipping_csv_import'];
+        yield '商品 CSV 登録' => ['admin_product_csv_import'];
+        yield 'カテゴリ CSV 登録' => ['admin_product_category_csv_import'];
+        yield '規格 CSV 登録' => ['admin_product_class_name_csv_import'];
+        yield '規格分類 CSV 登録' => ['admin_product_class_category_csv_import'];
+        yield '配送方法登録' => ['admin_setting_shop_delivery_new'];
+        yield 'マスタデータ管理' => ['admin_setting_system_masterdata'];
+        yield 'マスタデータ編集' => ['admin_setting_system_masterdata_edit'];
+        yield 'ログ表示' => ['admin_setting_system_log'];
+        yield 'ファイル管理 (フォルダ作成)' => ['admin_content_file', ['mode' => 'create']];
+        yield 'ファイル管理 (アップロード)' => ['admin_content_file', ['mode' => 'upload']];
     }
 
     public function testPostWithoutFormNameToProductEdit(): void
@@ -143,7 +142,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
     /**
      * 表示/非表示の選択を空や配列にしても 500 にならず, 入力エラーとして画面へ戻る.
      */
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testVisibleOfNews(mixed $value): void
     {
         $News = new News();
@@ -164,7 +163,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testVisibleOfNewNews(mixed $value): void
     {
         $this->submitTampered(
@@ -178,7 +177,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testVisibleOfDelivery(mixed $value): void
     {
         $this->submitTampered(
@@ -191,7 +190,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testVisibleOfPayment(mixed $value): void
     {
         $this->submitTampered(
@@ -204,7 +203,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testVisibleOfFaq(mixed $value): void
     {
         $this->submitTampered(
@@ -218,7 +217,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testVisibleOfCategoryFaq(mixed $value): void
     {
         $this->client->request(
@@ -237,7 +236,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testInlineEditOfClassCategory(mixed $value): void
     {
         $ClassName = $this->entityManager->getRepository(ClassName::class)->find(1);
@@ -257,6 +256,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
     public function testCreateClassCategoryWithoutVisible(): void
     {
         $ClassName = $this->entityManager->getRepository(ClassName::class)->find(1);
+        $this->assertInstanceOf(ClassName::class, $ClassName);
         $url = $this->generateUrl('admin_product_class_category', ['class_name_id' => $ClassName->getId()]);
 
         $this->client->request(Request::METHOD_POST, $url, [
@@ -266,10 +266,11 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect($url));
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testInlineEditOfClassName(mixed $value): void
     {
         $ClassName = $this->entityManager->getRepository(ClassName::class)->find(1);
+        $this->assertInstanceOf(ClassName::class, $ClassName);
         $formName = 'class_name_'.$ClassName->getId();
 
         $this->submitTampered(
@@ -282,7 +283,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testInlineEditOfTaxRule(mixed $value): void
     {
         $this->submitTampered(
@@ -295,7 +296,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testWorkOfMember(mixed $value): void
     {
         $Member = $this->createMember();
@@ -310,7 +311,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
         $this->assertTrue($this->client->getResponse()->isSuccessful());
     }
 
-    #[DataProvider('provideInvalidValues')]
+    #[DataProvider(methodName: 'provideInvalidValues')]
     public function testBodyOfOrderMail(mixed $value): void
     {
         $Order = $this->createOrder($this->createCustomer());
@@ -329,7 +330,7 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
     /**
      * 受注明細の数量・単価と利用ポイントを空や配列にしても 500 にならない.
      */
-    #[DataProvider('provideInvalidValuesForOrder')]
+    #[DataProvider(methodName: 'provideInvalidValuesForOrder')]
     public function testOrderEdit(string $mode, array $path, mixed $value): void
     {
         $Order = $this->createOrder($this->createCustomer());
