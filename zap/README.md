@@ -71,7 +71,7 @@ GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net
   | メールテンプレートの新規登録 | 2 → 434 件 |
   | テンプレートの追加 | 2 → 143 件 |
   | 定休日の新規登録 | 0 → 121 件 |
-- eccube-api4 の動的クライアント登録 (`/register`) のレート制限 (IP ごとに 1 時間 20 件) は、`bin/prepare_ec-cube.sh` で緩めています。
+- eccube-api4 の動的クライアント登録 (`/register`) のレート制限 (IP ごとに 1 時間 20 件) と、MCP のレート制限 (IP ごとに 1 分 60 件、クライアントごとに 1 分 300 件) は、`bin/prepare_ec-cube.sh` で緩めています。
 - ACP の商品フィードの push (`admin_agent_commerce`) は送り先 (`ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL`) を設定していないため、
   攻撃は送り先の設定の確認でエラーになり、フィードの生成や送信までは届きません。攻撃できる入力が `feed_id` だけで、
   ダミーの送り先を用意する手間に見合わないため、この状態のままにしています。

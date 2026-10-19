@@ -16,6 +16,8 @@ run sed -i \
     app/config/eccube/packages/eccube.yaml
 run rm -f app/config/eccube/packages/prod/eccube_rate_limiter.yaml
 run sed -i -e 's/30 min/1 min/g' app/config/eccube/packages/eccube_rate_limiter.yaml
+# MCP のレート制限 (IP ごとに 1 分 60 件、クライアントごとに 1 分 300 件) は、能動スキャンの攻撃の大半を 429 で止める
+run sed -i -e 's/limit: 60$/limit: 100000/' -e 's/limit: 300$/limit: 100000/' app/config/eccube/packages/mcp_rate_limiter.yaml
 # eccube-api4 の動的クライアント登録 (/register) は IP ごとに 1 時間 20 件までのため、攻撃が 429 で止まる
 API_CONFIG=app/Plugin/Api44/Resource/config/services.yaml
 if run test -f "${API_CONFIG}"; then
