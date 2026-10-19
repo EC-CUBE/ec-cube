@@ -473,28 +473,6 @@
       "index": 32,
       "enabled": true,
       "elementType": "ZestRequest"
-    },
-    {
-      "url": "https://ec-cube/admin/order/export/pdf?ids%5B%5D={{order-id}}",
-      "data": "",
-      "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1655449174124,
-      "cookies": [],
-      "index": 33,
-      "enabled": true,
-      "elementType": "ZestRequest"
     }
   ],
   "authentication": [],
