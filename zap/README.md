@@ -128,7 +128,7 @@ zap/local/batch.sh -p Smoke -l "1 2 3 4"
 zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 ```
 
-- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`・`params.tsv`・`param_counts.tsv`)。
+- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`・`params.tsv`・`param_counts.tsv`・`forms.tsv`)。
   CI では成果物 `zap-<target>-report` に同じものが入ります。
 - `attacks.tsv` は、シナリオのリクエストごとに EC-CUBE が受けたリクエストの件数と応答の内訳です (`zap/bin/attack_counts.sh`)。
   `Sequence` では、パラメータがあるのに正常な応答 (2xx/3xx) が数件しか無いリクエストを「攻撃が届いていない可能性」として通知します。
@@ -143,6 +143,12 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
   JSON の本文は葉の値ごとに数えます。2xx のうち応答に入力エラーがあったものは「入力エラー」の列に出します。
   「(元の値)」の行は、どの項目も書き換えていないリクエスト (再生) です。ここに入力エラーがあれば、元の値の時点で
   検証に弾かれており、そのリクエストへの攻撃はどの項目も処理に届いていません (新規登録の一意性の検証など)。
+- `forms.tsv` は、画面の HTML にあったフォームとクエリ文字列の付いたリンクです (`zap/scripts/record_forms.js`)。
+  `zap/bin/form_coverage.sh zap/local/out/Sequence/*/` で全ターゲットの `params.tsv` と突き合わせ、一度も送っていない
+  フォーム、送っていない項目、送っていない `mode`・ボタンの値を一覧にします (ルートの照合はメソッドと URL の一致だけを見るため)。
+  一覧には照合では見分けられないものも残ります。`mode` の値がどの case にも当たらないとき入力画面を返すだけの分岐
+  (会員登録・お問い合わせの「戻る」、受注の再計算など) は `mode` への攻撃で通っています。`disabled` の項目や、
+  JavaScript で送信先を切り替えるフォーム (会員一覧の削除、ファイル管理) も送らなくて構いません。
   `batch.sh` の一覧は `zap/local/out/<policy>/summary.tsv` です。
   条件を変えて同じターゲットを実行するときは、`ZAP_OUT=<出力先>` で結果の上書きを避けられます。
 - `run.sh` はターゲットごとに DB を準備直後の状態 (`eccubedb_clean`) へ戻します。前のターゲットが作ったデータの影響を受けません。
