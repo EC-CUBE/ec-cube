@@ -104,7 +104,7 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: unique_values
       file: /zap/wrk/scripts/unique_values.js
 
-  # 店舗設定で ON にしたときだけ現れる項目を足す (zap/scripts/option_fields.js。*_options のターゲットだけで動く)
+  # 店舗設定で ON にしたときだけ現れる項目を、OFF のターゲットでは取り除く (zap/scripts/option_fields.js)
   - type: script
     parameters:
       action: add
