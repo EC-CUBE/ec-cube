@@ -112,6 +112,14 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: record_params
       file: /zap/wrk/scripts/record_params.js
 
+  # 送っていない項目や通っていない分岐を見つけるため、画面のフォームを記録する (zap/scripts/record_forms.js)
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: record_forms
+      file: /zap/wrk/scripts/record_forms.js
+
 ${ZA_FORM_ERRORS_CONFIG}
   - type: script
     parameters:
