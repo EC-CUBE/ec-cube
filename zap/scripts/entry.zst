@@ -408,20 +408,20 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
-      "comment": "確認用のパスワードをわざと一致させない。再設定が成功すると再設定キーが消え、再生の後の攻撃がすべて 404 になるため",
+      "comment": "パスワードを再設定する。再設定キーはスキャン用のパッチ (forgot-reset-keep) で消さないため、再設定の後の攻撃も処理に届く",
       "index": 24,
       "enabled": true,
       "elementType": "ZestComment"
     },
     {
       "urlToken": "https://ec-cube/forgot/reset/{{reset-key}}",
-      "data": "_token={{csrf4}}&login_email=user-{{user-id}}%40example.com&password%5Bfirst%5D=EccubeE2ePassword1&password%5Bsecond%5D=EccubeE2ePassword2",
+      "data": "_token={{csrf4}}&login_email=user-{{user-id}}%40example.com&password%5Bfirst%5D=EccubeE2ePassword1&password%5Bsecond%5D=EccubeE2ePassword1",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Expect-Form-Error: 1\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
         {
           "rootExpression": {
-            "code": 200,
+            "code": 302,
             "not": false,
             "elementType": "ZestExpressionStatusCode"
           },

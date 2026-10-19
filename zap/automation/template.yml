@@ -96,6 +96,14 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: idempotency_key
       file: /zap/wrk/scripts/idempotency_key.js
 
+  # 一意でなければならない項目を、2 回目以降の送信で一意な値に置き換える (zap/scripts/unique_values.js)
+  - type: script
+    parameters:
+      action: add
+      type: httpsender
+      name: unique_values
+      file: /zap/wrk/scripts/unique_values.js
+
   # 攻撃が書き換えた項目を数えるため、送ったパラメータを記録する (zap/scripts/record_params.js)
   - type: script
     parameters:

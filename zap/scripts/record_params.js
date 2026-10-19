@@ -12,6 +12,7 @@
 // 出力はタブ区切り: <メソッド> <パス> <状態コード> <リダイレクト先> <名前=ハッシュ をスペースで区切ったもの>
 //                   <入力エラーがあれば E>
 // 名前は URL エンコードする。ハッシュは値の長さと String.hashCode の組。
+// unique_values.js が一意な値に置き換えた項目は、X-ZAP-Unique-Original ヘッダーの元の値で記録する。
 
 var OUT = Java.type('java.nio.file.Paths').get('/tmp/params.tsv');
 var Files = Java.type('java.nio.file.Files');
@@ -90,6 +91,14 @@ function responseReceived(msg, initiator, helper) {
             // 攻撃で JSON として読めなくなった本文は、本文全体を 1 つの値として記録する
             params.push(['(本文)', body]);
         }
+    }
+    var unique = header.getHeader('X-ZAP-Unique-Original');
+    if (unique) {
+        var originals = [];
+        addUrlEncoded(originals, String(unique));
+        originals.forEach(function (o) {
+            params.forEach(function (p) { if (p[0] == o[0]) { p[1] = o[1]; } });
+        });
     }
     var location = String(msg.getResponseHeader().getHeader('Location') || '');
     var line = [
