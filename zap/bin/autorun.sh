@@ -14,6 +14,8 @@
 # forms.tsv は画面のフォーム (zap/scripts/record_forms.js)。送っていない項目は zap/bin/form_coverage.sh で照合する。
 # 終了コードは check_results.sh の判定に従う。
 # docker compose は呼び出し元の環境変数 (COMPOSE_FILE / COMPOSE_PROJECT_NAME) で実行する。
+# ZAP_INJECTABLE で攻撃する場所 (scanner.injectable) を変えられる。省略時は ZAP の既定 (クエリ文字列と本文)。
+# クエリ文字列 1・本文 2・Cookie 4・ヘッダー 8・URL のパス 16 の和 (例: Cookie とヘッダーも攻撃する 15)
 
 set -uo pipefail
 
@@ -60,6 +62,7 @@ docker compose exec -T zap /zap/zap.sh -cmd \
     -config anticsrf.tokens.token.enabled=true \
     -config connection.httpStateEnabled=true \
     ${THREADS:+-config scanner.threadPerHost=${THREADS}} \
+    ${ZAP_INJECTABLE:+-config scanner.injectable=${ZAP_INJECTABLE}} \
     -configfile /zap/wrk/options.properties \
     -autorun /tmp/plan.yml < /dev/null 2>&1 | tee "${OUT}/zap.log"
 
