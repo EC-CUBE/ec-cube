@@ -2,10 +2,14 @@
 
 cd $(dirname $0)
 
-while getopts "t:c:b:n:p:o:" OPT
+# -s はシナリオ (zap/scripts/<scenario>.zst)。省略時はターゲットと同じ名前。
+# 同じシナリオを条件を変えて別のターゲットとして実行するときに使う (zap/targets.json の scenario)
+# -b は事前に実行するスクリプト。カンマで区切って複数を指定でき、書いた順に実行する
+while getopts "t:s:c:b:n:p:o:" OPT
 do
     case $OPT in
         t) ZA_TARGET=${OPTARG} ;;
+        s) ZA_SCENARIO=${OPTARG} ;;
         c) ZA_CONTEXT=${OPTARG} ;;
         b) ZA_BEFORE_SCRIPT=${OPTARG} ;;
         n) ZA_THREAD_PER_HOST=${OPTARG} ;;
@@ -15,12 +19,13 @@ do
 done
 
 ZA_THREAD_PER_HOST=${ZA_THREAD_PER_HOST:-10}
+ZA_SCENARIO=${ZA_SCENARIO:-${ZA_TARGET}}
 
 if [[ -z "${ZA_CONTEXT}" ]]; then
     # 名前に admin を含まないが、管理画面だけを操作するターゲットも admin コンテキストで実行する
-    if [[ ${ZA_TARGET} =~ 'admin' || ${ZA_TARGET} == plugin_related_product || ${ZA_TARGET} == plugin_sales_report ]]; then
+    if [[ ${ZA_SCENARIO} =~ 'admin' || ${ZA_SCENARIO} == plugin_related_product || ${ZA_SCENARIO} == plugin_sales_report ]]; then
         ZA_CONTEXT=admin
-    elif [[ ${ZA_TARGET} == mypage_* ]]; then
+    elif [[ ${ZA_SCENARIO} == mypage_* ]]; then
         # ユーザーを持たないコンテキストでは sequence-activeScan がセッションを引き継がないため,
         # 会員でログインした状態を ZAP の認証で維持する
         ZA_CONTEXT=front_login
@@ -64,6 +69,7 @@ CONTEXT: ${ZA_CONTEXT}
 USER: ${ZA_USER}
 THREAD_PER_HOST: ${ZA_THREAD_PER_HOST}
 TARGET: ${ZA_TARGET}
+SCENARIO: ${ZA_SCENARIO}
 BEFORE_SCRIPT: ${ZA_BEFORE_SCRIPT}
 POLICY: ${ZA_POLICY:-Sequence}
 "
@@ -85,20 +91,23 @@ if [[ ${ZA_POLICY} == Smoke ]]; then
       file: /zap/wrk/scripts/report_form_errors.js"
 fi
 
-if [[ -n ${ZA_BEFORE_SCRIPT} ]]; then
-    ZA_BEFORE_SCRIPT_CONFIG="
+ZA_BEFORE_SCRIPT_CONFIG=
+i=0
+for script in ${ZA_BEFORE_SCRIPT//,/ }; do
+    i=$((i + 1))
+    ZA_BEFORE_SCRIPT_CONFIG="${ZA_BEFORE_SCRIPT_CONFIG}
   - type: script
     parameters:
       action: add
       type: standalone
-      name: before_script
-      file: /zap/wrk/scripts/${ZA_BEFORE_SCRIPT}
+      name: before_script_${i}
+      file: /zap/wrk/scripts/${script}
   - type: script
     parameters:
       action: run
       type: standalone
-      name: before_script"
-fi
+      name: before_script_${i}"
+done
 
 TEMPLATE=$(sed 's/"/\\"/g' automation/template.yml)
 # -o で出力先を指定できる (省略時は automation/<target>.yml)。同じターゲットを並列に生成しても衝突しないように使う

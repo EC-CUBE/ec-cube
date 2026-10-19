@@ -126,7 +126,7 @@ ${ZA_FORM_ERRORS_CONFIG}
       action: add
       type: sequence
       name: target
-      file: /zap/wrk/scripts/${ZA_TARGET}.zst
+      file: /zap/wrk/scripts/${ZA_SCENARIO}.zst
 
   - type: sequence-activeScan
     parameters:

@@ -17,15 +17,15 @@ source "$(dirname "$0")/env.sh"
 
 # 空の項目を詰めないよう | 区切りで取り出す
 settings=$(jq -r --arg t "${TARGET}" \
-    '.[] | select(.target == $t) | [.before_script // "", .context // "", (.thread_per_host // "" | tostring)] | join("|")' \
+    '.[] | select(.target == $t) | [.scenario // "", .before_script // "", .context // "", (.thread_per_host // "" | tostring)] | join("|")' \
     zap/targets.json)
 if [[ -z ${settings} ]]; then
     echo "${TARGET} は zap/targets.json にありません" >&2
     exit 2
 fi
-IFS='|' read -r BEFORE CONTEXT THREADS <<< "${settings}"
+IFS='|' read -r SCENARIO BEFORE CONTEXT THREADS <<< "${settings}"
 
 "${ZAP_LOCAL}/restore.sh" || { echo "lane ${LANE}: DB を戻せませんでした" >&2; exit 1; }
 
-exec zap/bin/autorun.sh -t "${TARGET}" -o "${ZAP_OUT}/${POLICY}/${TARGET}" -p "${POLICY}" \
+exec zap/bin/autorun.sh -t "${TARGET}" -o "${ZAP_OUT}/${POLICY}/${TARGET}" -p "${POLICY}" ${SCENARIO:+-s "${SCENARIO}"} \
     ${BEFORE:+-b "${BEFORE}"} ${CONTEXT:+-c "${CONTEXT}"} ${THREADS:+-n "${THREADS}"}

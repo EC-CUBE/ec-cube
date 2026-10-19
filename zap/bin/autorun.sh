@@ -2,7 +2,9 @@
 #
 # 1 つのターゲットについて、自動化プランを生成して ZAP で実行し、レポートを回収して結果を判定する。
 #
-# usage: autorun.sh -t <target> -o <出力先> [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]
+# usage: autorun.sh -t <target> -o <出力先> [-s <scenario>] [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]
+#   -s  シナリオ (zap/scripts/<scenario>.zst)。省略時はターゲットと同じ名前
+#   -b  事前に実行するスクリプト。カンマで区切って複数を指定できる
 #   -p  Sequence (既定) または Smoke
 #
 # 出力先には plan.yml / zap.log / ZAP-Report-<target>.html / alerts.json / access.log / attacks.tsv /
@@ -15,10 +17,11 @@
 
 set -uo pipefail
 
-TARGET='' OUT='' BEFORE='' CONTEXT='' THREADS='' POLICY=Sequence
-while getopts "t:o:b:c:n:p:" OPT; do
+TARGET='' SCENARIO='' OUT='' BEFORE='' CONTEXT='' THREADS='' POLICY=Sequence
+while getopts "t:s:o:b:c:n:p:" OPT; do
     case ${OPT} in
         t) TARGET=${OPTARG} ;;
+        s) SCENARIO=${OPTARG} ;;
         o) OUT=${OPTARG} ;;
         b) BEFORE=${OPTARG} ;;
         c) CONTEXT=${OPTARG} ;;
@@ -28,17 +31,18 @@ while getopts "t:o:b:c:n:p:" OPT; do
     esac
 done
 if [[ -z ${TARGET} || -z ${OUT} ]]; then
-    echo "usage: $0 -t <target> -o <出力先> [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]" >&2
+    echo "usage: $0 -t <target> -o <出力先> [-s <scenario>] [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]" >&2
     exit 2
 fi
 OUT=$(realpath -m "${OUT}")
+SCENARIO=${SCENARIO:-${TARGET}}
 cd "$(dirname "$0")/../.." || exit 1
 mkdir -p "${OUT}"
 
 # Sequence は、同梱の Sequence ポリシーから一部のルールを OFF にした EC-CUBE ポリシー (prepare_zap.sh が作る) で実行する
 POLICY_ARG=${POLICY}
 [[ ${POLICY} == Sequence ]] && POLICY_ARG=EC-CUBE
-zap/generate_automation_config.sh -t "${TARGET}" -o "${OUT}/plan.generated.yml" \
+zap/generate_automation_config.sh -t "${TARGET}" -s "${SCENARIO}" -o "${OUT}/plan.generated.yml" \
     ${BEFORE:+-b "${BEFORE}"} ${CONTEXT:+-c "${CONTEXT}"} ${POLICY_ARG:+-p "${POLICY_ARG}"} || exit 1
 
 # zst はコンテナ内へコピーしてから読ませる (Docker Desktop のバインドマウント越しに読むと遅いため)。
@@ -65,7 +69,7 @@ docker compose cp zap:/tmp/params.tsv "${OUT}/params.tsv" > /dev/null 2>&1 \
     && zap/bin/param_counts.sh "${OUT}/params.tsv" > "${OUT}/param_counts.tsv"
 docker compose cp zap:/tmp/forms.tsv "${OUT}/forms.tsv" > /dev/null 2>&1
 docker compose logs --since "${SINCE}" --no-log-prefix ec-cube > "${OUT}/access.log" 2> /dev/null
-if zap/bin/attack_counts.sh "zap/scripts/${TARGET}.zst" "${OUT}/access.log" > "${OUT}/attacks.tsv" \
+if zap/bin/attack_counts.sh "zap/scripts/${SCENARIO}.zst" "${OUT}/access.log" > "${OUT}/attacks.tsv" \
     && [[ ${POLICY} == Sequence ]]; then
     # パラメータがあるのに正常な応答 (2xx/3xx) が再生の分程度しか無いリクエストは、攻撃が画面の処理まで届いていない。
     # 3xx の大半がログイン画面・購入エラー画面・2 段階認証の画面へ戻されているものも同じ (ログインのリクエスト自身は除く)
