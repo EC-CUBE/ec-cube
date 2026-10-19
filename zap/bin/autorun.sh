@@ -16,8 +16,11 @@
 # forms.tsv は画面のフォーム (zap/scripts/record_forms.js)。送っていない項目は zap/bin/form_coverage.sh で照合する。
 # 終了コードは check_results.sh の判定に従う。
 # docker compose は呼び出し元の環境変数 (COMPOSE_FILE / COMPOSE_PROJECT_NAME) で実行する。
-# ZAP_INJECTABLE で攻撃する場所 (scanner.injectable) を変えられる。省略時は ZAP の既定 (クエリ文字列と本文)。
+# ZAP_INJECTABLE で攻撃する場所 (scanner.injectable) を変えられる。省略時は ZAP の既定 (クエリ文字列と本文の 3)。
 # クエリ文字列 1・本文 2・Cookie 4・ヘッダー 8・URL のパス 16 の和 (例: Cookie とヘッダーも攻撃する 15)
+# ZAP は -config の値を設定ファイル (~/.ZAP/config.xml) に保存し、次の起動でも使う。同じ ZAP で続けて実行すると
+# 前のターゲットの値が残るため、並列数 (-n、省略時は 8) と攻撃する場所は省略時も毎回渡す。
+# 並列数の 8 は、GitHub Actions のランナー (4 コア) での ZAP の既定 (コア数の 2 倍) に合わせたもの
 
 set -uo pipefail
 
@@ -78,8 +81,8 @@ docker compose exec -T zap /zap/zap.sh -cmd \
     -config anticsrf.tokens.token.name=_csrf_token \
     -config anticsrf.tokens.token.enabled=true \
     -config connection.httpStateEnabled=true \
-    ${THREADS:+-config scanner.threadPerHost=${THREADS}} \
-    ${ZAP_INJECTABLE:+-config scanner.injectable=${ZAP_INJECTABLE}} \
+    -config scanner.threadPerHost="${THREADS:-8}" \
+    -config scanner.injectable="${ZAP_INJECTABLE:-3}" \
     -configfile /zap/wrk/options.properties \
     -autorun /tmp/plan.yml < /dev/null 2>&1 | tee "${OUT}/zap.log"
 
