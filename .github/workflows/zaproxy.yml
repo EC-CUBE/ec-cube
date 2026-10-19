@@ -98,7 +98,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
-      COMPOSE_FILE: docker-compose.yml:docker-compose.${{ inputs.database || 'pgsql' }}.yml:docker-compose.owaspzap.ci.yml
+      # MySQL のときは、初回の起動を待つ healthcheck (docker-compose.owaspzap.mysql.yml) も重ねる
+      COMPOSE_FILE: docker-compose.yml:docker-compose.${{ inputs.database || 'pgsql' }}.yml:docker-compose.owaspzap.ci.yml${{ inputs.database == 'mysql' && ':docker-compose.owaspzap.mysql.yml' || '' }}
       POLICY: ${{ inputs.policy || 'Sequence' }}
       TARGET: ${{ matrix.target }}
       PATCHES: ${{ inputs.patches }}

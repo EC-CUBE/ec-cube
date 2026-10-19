@@ -1,0 +1,10 @@
+# OWASP ZAP のスキャンを MySQL で行うときに docker-compose.mysql.yml に重ねる
+# (.github/workflows/zaproxy.yml の database: mysql、ローカルは zap/local/env.sh の ZAP_DB=mysql)。
+# docker-compose.mysql.yml の healthcheck (3 秒ごとに 3 回) では、初回の起動で DB を初期化する間に unhealthy になる
+services:
+  mysql:
+    healthcheck:
+      interval: 3s
+      timeout: 3s
+      retries: 60
+      start_period: 60s

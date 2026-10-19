@@ -19,5 +19,8 @@ else
     export COMPOSE_PROJECT_NAME=eccube-zap-${ZAP_DB}-${LANE}
 fi
 export COMPOSE_FILE=${ZAP_ROOT}/docker-compose.yml:${ZAP_ROOT}/docker-compose.${ZAP_DB}.yml:${ZAP_ROOT}/docker-compose.owaspzap.ci.yml:${ZAP_LOCAL}/docker-compose.local.yml:${ZAP_LOCAL}/docker-compose.local.${ZAP_DB}.yml
+if [[ ${ZAP_DB} == mysql ]]; then
+    COMPOSE_FILE=${COMPOSE_FILE}:${ZAP_ROOT}/docker-compose.owaspzap.mysql.yml
+fi
 
 cd "${ZAP_ROOT}" || exit 1
