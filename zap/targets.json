@@ -24,6 +24,7 @@
   {"target": "admin_member_edit"},
   {"target": "admin_member_setting", "context": "default"},
   {"target": "admin_news"},
+  {"target": "admin_news_persistent"},
   {"target": "admin_order_edit"},
   {"target": "admin_order_edit_search", "before_script": "admin_create_customers.zst"},
   {"target": "admin_order_list"},
