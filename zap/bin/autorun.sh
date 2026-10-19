@@ -5,6 +5,8 @@
 # usage: autorun.sh -t <target> -o <出力先> [-s <scenario>] [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]
 #   -s  シナリオ (zap/scripts/<scenario>.zst)。省略時はターゲットと同じ名前
 #   -b  事前に実行するスクリプト。カンマで区切って複数を指定できる
+#   -e  Web サーバーの APP_ENV (インストーラは install)。スキャンの間だけ Apache の SetEnv で切り替え、終わったら戻す。
+#       コンテナを作り直すと導入したプラグインやパッチが消えるため、環境変数ではなく Apache の設定で切り替える
 #   -p  Sequence (既定) または Smoke
 #
 # 出力先には plan.yml / zap.log / ZAP-Report-<target>.html / alerts.json / access.log / attacks.tsv /
@@ -19,9 +21,10 @@
 
 set -uo pipefail
 
-TARGET='' SCENARIO='' OUT='' BEFORE='' CONTEXT='' THREADS='' POLICY=Sequence
-while getopts "t:s:o:b:c:n:p:" OPT; do
+TARGET='' SCENARIO='' APP_ENV_OVERRIDE='' OUT='' BEFORE='' CONTEXT='' THREADS='' POLICY=Sequence
+while getopts "t:s:e:o:b:c:n:p:" OPT; do
     case ${OPT} in
+        e) APP_ENV_OVERRIDE=${OPTARG} ;;
         t) TARGET=${OPTARG} ;;
         s) SCENARIO=${OPTARG} ;;
         o) OUT=${OPTARG} ;;
@@ -54,6 +57,20 @@ rm -f "${OUT}/plan.generated.yml"
 docker compose exec -T -u 0:0 zap sh -c \
     'rm -rf /tmp/scripts /tmp/report /tmp/alerts.json /tmp/params.tsv /tmp/forms.tsv && cp -r /zap/wrk/scripts /tmp/scripts && chown -R zap /tmp/scripts' || exit 1
 docker compose exec -T zap sh -c 'cat > /tmp/plan.yml' < "${OUT}/plan.yml" || exit 1
+
+if [[ -n ${APP_ENV_OVERRIDE} ]]; then
+    set_app_env() {
+        local conf=/etc/apache2/conf-enabled/zz-zap-app-env.conf
+        if [[ -n $1 ]]; then
+            docker compose exec -T -u 0:0 ec-cube sh -c "echo 'SetEnv APP_ENV $1' > ${conf} && apache2ctl -k graceful"
+        else
+            docker compose exec -T -u 0:0 ec-cube sh -c "rm -f ${conf} && apache2ctl -k graceful"
+        fi
+        sleep 3
+    }
+    trap 'set_app_env ""' EXIT
+    set_app_env "${APP_ENV_OVERRIDE}" || exit 1
+fi
 
 SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 # connection.httpStateEnabled: before_script (standalone) でログインしたセッションをシナリオの再生へ引き継ぐ
@@ -89,4 +106,6 @@ if zap/bin/attack_counts.sh "zap/scripts/${SCENARIO}.zst" "${OUT}/access.log" > 
         }' "${OUT}/attacks.tsv"
 fi
 
-exec zap/bin/check_results.sh "${OUT}/zap.log" "${POLICY}" "${TARGET}"
+# exec にすると -e で切り替えた APP_ENV を戻す trap が動かないため、終了コードを引き継いで終わる
+zap/bin/check_results.sh "${OUT}/zap.log" "${POLICY}" "${TARGET}"
+exit $?

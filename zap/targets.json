@@ -68,6 +68,7 @@
   {"target": "guest_shopping_customer_edit"},
   {"target": "guest_shopping_shipping_edit"},
   {"target": "guest_shopping_shipping_multiple"},
+  {"target": "install", "app_env": "install"},
   {"target": "mypage_change"},
   {"target": "mypage_delivery", "before_script": "admin_create_customer.zst"},
   {"target": "mypage_favorite"},
