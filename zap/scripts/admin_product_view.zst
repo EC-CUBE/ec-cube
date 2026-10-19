@@ -56,6 +56,35 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
+      "comment": "チェックボックスの検索条件 (在庫) は元の検索で送っていないため、条件を足した検索を前に送る。元の検索が後で検索条件を上書きするため、後続のステップには影響しない",
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/product",
+      "urlToken": "https://ec-cube/admin/product",
+      "data": "admin_search_product%5B_token%5D={{csrf1}}&admin_search_product%5Bid%5D=&admin_search_product%5Bcategory_id%5D=&admin_search_product%5Bstatus%5D%5B%5D=1&admin_search_product%5Bstatus%5D%5B%5D=2&admin_search_product%5Btag_id%5D=&admin_search_product%5Bcreate_datetime_start%5D=&admin_search_product%5Bcreate_datetime_end%5D=&admin_search_product%5Bupdate_datetime_start%5D=&admin_search_product%5Bupdate_datetime_end%5D=&admin_search_product%5Bsortkey%5D=&admin_search_product%5Bsorttype%5D=&admin_search_product%5Bstock%5D%5B%5D=1&admin_search_product%5Bstock%5D%5B%5D=2",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 524\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655355581243,
+      "cookies": [],
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/product",
       "urlToken": "https://ec-cube/admin/product",
       "data": "admin_search_product%5B_token%5D={{csrf1}}&admin_search_product%5Bid%5D=&admin_search_product%5Bcategory_id%5D=&admin_search_product%5Bstatus%5D%5B%5D=1&admin_search_product%5Bstatus%5D%5B%5D=2&admin_search_product%5Btag_id%5D=&admin_search_product%5Bcreate_datetime_start%5D=&admin_search_product%5Bcreate_datetime_end%5D=&admin_search_product%5Bupdate_datetime_start%5D=&admin_search_product%5Bupdate_datetime_end%5D=&admin_search_product%5Bsortkey%5D=&admin_search_product%5Bsorttype%5D=",
@@ -74,7 +103,7 @@
       "followRedirects": false,
       "timestamp": 1655355581243,
       "cookies": [],
-      "index": 4,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -85,7 +114,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 5,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -107,7 +136,7 @@
       "followRedirects": false,
       "timestamp": 1655355591797,
       "cookies": [],
-      "index": 6,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -129,7 +158,7 @@
       "followRedirects": false,
       "timestamp": 1655355596539,
       "cookies": [],
-      "index": 7,
+      "index": 9,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -151,7 +180,7 @@
       "followRedirects": false,
       "timestamp": 1655355615128,
       "cookies": [],
-      "index": 8,
+      "index": 10,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -173,7 +202,7 @@
       "followRedirects": false,
       "timestamp": 1655355615201,
       "cookies": [],
-      "index": 9,
+      "index": 11,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -184,7 +213,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 10,
+      "index": 12,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -206,7 +235,7 @@
       "followRedirects": false,
       "timestamp": 1655355617406,
       "cookies": [],
-      "index": 11,
+      "index": 13,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -217,7 +246,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 12,
+      "index": 14,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -239,7 +268,7 @@
       "followRedirects": false,
       "timestamp": 1655355904632,
       "cookies": [],
-      "index": 13,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -261,7 +290,7 @@
       "followRedirects": false,
       "timestamp": 1655355904658,
       "cookies": [],
-      "index": 14,
+      "index": 16,
       "enabled": true,
       "elementType": "ZestRequest"
     }

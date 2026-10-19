@@ -238,6 +238,35 @@
       "elementType": "ZestComment"
     },
     {
+      "comment": "チェックボックスの検索条件 (性別) は元の検索で送っていないため、条件を足した検索を前に送る。元の検索が後で検索条件を上書きするため、後続のステップには影響しない",
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/plugin/mail_magazine",
+      "urlToken": "https://ec-cube/admin/plugin/mail_magazine",
+      "data": "mail_magazine%5B_token%5D={{csrf10}}&mail_magazine%5Bmulti%5D=%E5%A7%93+%E5%90%8D&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_end%5D=&mail_magazine%5Bsex%5D%5B%5D=1&mail_magazine%5Bsex%5D%5B%5D=2",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 833\r\nsec-ch-ua: \"Not_A Brand\";v=\"99\", \"Google Chrome\";v=\"109\", \"Chromium\";v=\"109\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"macOS\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1675679235590,
+      "cookies": [],
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/plugin/mail_magazine",
       "urlToken": "https://ec-cube/admin/plugin/mail_magazine",
       "data": "mail_magazine%5B_token%5D={{csrf10}}&mail_magazine%5Bmulti%5D=%E5%A7%93+%E5%90%8D&mail_magazine%5Bcustomer_status%5D%5B%5D=1&mail_magazine%5Bcustomer_status%5D%5B%5D=2&mail_magazine%5Bbuy_product_name%5D=&mail_magazine%5Bbuy_total_start%5D=&mail_magazine%5Bbuy_total_end%5D=&mail_magazine%5Bbirth_month%5D=&mail_magazine%5Bbuy_times_start%5D=&mail_magazine%5Bbuy_times_end%5D=&mail_magazine%5Bbirth_start%5D=&mail_magazine%5Bbirth_end%5D=&mail_magazine%5Bcreate_date_start%5D=&mail_magazine%5Bcreate_date_end%5D=&mail_magazine%5Bpref%5D=&mail_magazine%5Bupdate_date_start%5D=&mail_magazine%5Bupdate_date_end%5D=&mail_magazine%5Bphone_number%5D=&mail_magazine%5Blast_buy_start%5D=&mail_magazine%5Blast_buy_end%5D=",
@@ -256,7 +285,7 @@
       "followRedirects": false,
       "timestamp": 1675679235590,
       "cookies": [],
-      "index": 16,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -267,13 +296,13 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf10",
-      "index": 17,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
       "comment": "ユーザページ切替",
-      "index": 18,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -295,7 +324,7 @@
       "followRedirects": false,
       "timestamp": 1675680264343,
       "cookies": [],
-      "index": 19,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -306,19 +335,19 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf12",
-      "index": 20,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
       "comment": "配信作成",
-      "index": 21,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestComment"
     },
     {
       "comment": "配信作成",
-      "index": 22,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -340,7 +369,7 @@
       "followRedirects": false,
       "timestamp": 1675680414382,
       "cookies": [],
-      "index": 23,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -349,7 +378,7 @@
       "postfix": "\"",
       "location": "BODY",
       "variableName": "template-id",
-      "index": 24,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -360,7 +389,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf11",
-      "index": 25,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -382,7 +411,7 @@
       "followRedirects": false,
       "timestamp": 1675680417434,
       "cookies": [],
-      "index": 26,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -393,7 +422,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf13",
-      "index": 27,
+      "index": 29,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -415,7 +444,7 @@
       "followRedirects": false,
       "timestamp": 1675680420632,
       "cookies": [],
-      "index": 28,
+      "index": 30,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -426,7 +455,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf14",
-      "index": 29,
+      "index": 31,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -448,7 +477,7 @@
       "followRedirects": false,
       "timestamp": 1675680426291,
       "cookies": [],
-      "index": 30,
+      "index": 32,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -470,7 +499,7 @@
       "followRedirects": false,
       "timestamp": 1675680431395,
       "cookies": [],
-      "index": 31,
+      "index": 33,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -492,7 +521,7 @@
       "followRedirects": false,
       "timestamp": 1675680432374,
       "cookies": [],
-      "index": 32,
+      "index": 34,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -501,7 +530,7 @@
       "postfix": "/preview",
       "location": "BODY",
       "variableName": "history-id",
-      "index": 33,
+      "index": 35,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -512,13 +541,13 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf15",
-      "index": 34,
+      "index": 36,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
       "message": "history-id: {{history-id}}",
-      "index": 35,
+      "index": 37,
       "enabled": false,
       "elementType": "ZestActionPrint"
     },
@@ -540,7 +569,7 @@
       "followRedirects": false,
       "timestamp": 1675680433172,
       "cookies": [],
-      "index": 36,
+      "index": 38,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -562,7 +591,7 @@
       "followRedirects": false,
       "timestamp": 1675680439968,
       "cookies": [],
-      "index": 37,
+      "index": 39,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -573,13 +602,13 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf16",
-      "index": 38,
+      "index": 40,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
     {
       "comment": "ヒストリー操作",
-      "index": 39,
+      "index": 41,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -601,7 +630,7 @@
       "followRedirects": false,
       "timestamp": 1675681644783,
       "cookies": [],
-      "index": 40,
+      "index": 42,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -612,7 +641,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf17",
-      "index": 41,
+      "index": 43,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -634,7 +663,7 @@
       "followRedirects": false,
       "timestamp": 1675681649834,
       "cookies": [],
-      "index": 42,
+      "index": 44,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -656,7 +685,7 @@
       "followRedirects": false,
       "timestamp": 1675681654635,
       "cookies": [],
-      "index": 43,
+      "index": 45,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -678,7 +707,7 @@
       "followRedirects": false,
       "timestamp": 1675681658568,
       "cookies": [],
-      "index": 44,
+      "index": 46,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -700,7 +729,7 @@
       "followRedirects": false,
       "timestamp": 1675681664174,
       "cookies": [],
-      "index": 45,
+      "index": 47,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -722,7 +751,7 @@
       "followRedirects": false,
       "timestamp": 1675681671226,
       "cookies": [],
-      "index": 46,
+      "index": 48,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -733,7 +762,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf21",
-      "index": 47,
+      "index": 49,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -755,7 +784,7 @@
       "followRedirects": false,
       "timestamp": 1675681678972,
       "cookies": [],
-      "index": 48,
+      "index": 50,
       "enabled": true,
       "elementType": "ZestRequest"
     }

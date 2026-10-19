@@ -251,6 +251,34 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
+      "comment": "チェックボックスの検索条件 (性別・公開状態) は元の検索で送っていないため、条件を足した検索を前に送る。元の検索が後で検索条件を上書きするため、後続のステップには影響しない",
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/product_review/",
+      "data": "product_review_search%5B_token%5D={{csrf3}}&product_review_search%5Bmulti%5D={{product-review-random}}&product_review_search%5Bproduct_name%5D=&product_review_search%5Bproduct_code%5D=&product_review_search%5Brecommend_level%5D=&product_review_search%5Breview_start%5D=&product_review_search%5Breview_end%5D=&product_review_search%5Bsex%5D%5B%5D=1&product_review_search%5Bsex%5D%5B%5D=2&product_review_search%5Bstatus%5D%5B%5D=1&product_review_search%5Bstatus%5D%5B%5D=2",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 412\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1674807235824,
+      "cookies": [],
+      "index": 17,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/product_review/",
       "data": "product_review_search%5B_token%5D={{csrf3}}&product_review_search%5Bmulti%5D={{product-review-random}}&product_review_search%5Bproduct_name%5D=&product_review_search%5Bproduct_code%5D=&product_review_search%5Brecommend_level%5D=&product_review_search%5Breview_start%5D=&product_review_search%5Breview_end%5D=",
       "method": "POST",
@@ -268,7 +296,7 @@
       "followRedirects": false,
       "timestamp": 1674807235824,
       "cookies": [],
-      "index": 16,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -277,19 +305,19 @@
       "postfix": "\" tabindex=\"-1\"",
       "location": "BODY",
       "variableName": "product-review-id",
-      "index": 17,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "message": "product-review-id: {{product-review-id}}",
-      "index": 18,
+      "index": 20,
       "enabled": false,
       "elementType": "ZestActionPrint"
     },
     {
       "comment": "検索したレビュー内容の更新",
-      "index": 19,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -311,7 +339,7 @@
       "followRedirects": false,
       "timestamp": 1674802748850,
       "cookies": [],
-      "index": 20,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -322,7 +350,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 21,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -344,7 +372,7 @@
       "followRedirects": false,
       "timestamp": 1674802753350,
       "cookies": [],
-      "index": 22,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -366,7 +394,7 @@
       "followRedirects": false,
       "timestamp": 1674802753409,
       "cookies": [],
-      "index": 23,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -388,13 +416,13 @@
       "followRedirects": false,
       "timestamp": 1674802758801,
       "cookies": [],
-      "index": 24,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "管理画面処理 編集したレビューの検索\n",
-      "index": 25,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -416,7 +444,7 @@
       "followRedirects": false,
       "timestamp": 1674802742545,
       "cookies": [],
-      "index": 26,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -427,7 +455,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf3",
-      "index": 27,
+      "index": 29,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -449,7 +477,7 @@
       "followRedirects": false,
       "timestamp": 1674807235824,
       "cookies": [],
-      "index": 28,
+      "index": 30,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -458,7 +486,7 @@
       "postfix": "'\\s+data-method=\"delete\">",
       "location": "BODY",
       "variableName": "delete-token",
-      "index": 29,
+      "index": 31,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
@@ -467,19 +495,19 @@
       "postfix": "\" tabindex=\"-1\"",
       "location": "BODY",
       "variableName": "product-review-id",
-      "index": 30,
+      "index": 32,
       "enabled": true,
       "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "message": "product-review-id: {{delete-token}}",
-      "index": 31,
+      "index": 33,
       "enabled": false,
       "elementType": "ZestActionPrint"
     },
     {
       "comment": "検索したレビューを削除",
-      "index": 32,
+      "index": 34,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -501,13 +529,13 @@
       "followRedirects": false,
       "timestamp": 1674814344928,
       "cookies": [],
-      "index": 33,
+      "index": 35,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "レビューのCSVダウンロード (直前の検索条件で出力する)",
-      "index": 34,
+      "index": 36,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -529,13 +557,13 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 35,
+      "index": 37,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "プラグインの設定",
-      "index": 36,
+      "index": 38,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -557,7 +585,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 37,
+      "index": 39,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -568,7 +596,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf-config",
-      "index": 38,
+      "index": 40,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -590,7 +618,7 @@
       "followRedirects": false,
       "timestamp": 0,
       "cookies": [],
-      "index": 39,
+      "index": 41,
       "enabled": true,
       "elementType": "ZestRequest"
     }

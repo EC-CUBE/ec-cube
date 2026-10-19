@@ -57,7 +57,7 @@
     },
     {
       "url": "https://ec-cube/admin/setting/system/log",
-      "data": "admin_system_log%5B_token%5D={{csrf1}}&admin_system_log%5Bfiles%5D={{log-file}}&admin_system_log%5Bline_max%5D=50",
+      "data": "admin_system_log%5B_token%5D={{csrf1}}&admin_system_log%5Bfiles%5D={{log-file}}&admin_system_log%5Bline_max%5D=50&admin_system_log%5Blog_level%5D=&admin_system_log%5Bkeyword%5D=",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 154\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [

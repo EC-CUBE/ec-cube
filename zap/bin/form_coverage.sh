@@ -14,7 +14,8 @@
 #   種類: フォーム (送信先へ一度も送っていない) / 項目 (送っていない項目) / 値 (mode・ボタンの値を送っていない)
 #   クエリ文字列の付いたリンクは、フォームのメソッドを LINK として GET の送信と照合し、種類に「リンク」を付ける
 # CSRF トークン (名前に _csrf か [_token] を含む項目) は比べない。
-# 行ごとに番号の付いた項目 (一覧の行ごとの編集フォームの class_category_100[name]、明細の [0]) は、番号を {n} にまとめて比べる
+# 行ごとに番号の付いた項目 (一覧の行ごとの編集フォームの class_category_100[name]、明細の [0]、行を足す JavaScript が
+# uniqid で付ける [62bec91e21aa2]) は、番号を {n} にまとめて比べる
 # (price01 のように名前の一部の数字は別の項目のため、まとめない)。
 
 set -euo pipefail
@@ -40,6 +41,7 @@ fi
     function rows(name) {
         gsub(/_[0-9]+%5[Bb]/, "_{n}%5B", name)
         gsub(/%5[Bb][0-9]+%5[Dd]/, "%5B{n}%5D", name)
+        gsub(/%5[Bb][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]%5[Dd]/, "%5B{n}%5D", name)
         return name
     }
     function skip(name) {
