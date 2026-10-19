@@ -361,6 +361,55 @@ final class ContentsCommandTest extends EccubeTestCase
         );
     }
 
+    /**
+     * --prune は, アーカイブに含まれる user_data ファイルを削除対象にしてはならない.
+     *
+     * 削除判定のキー (list() の path は先頭に / が付く) とアーカイブのキー
+     * (Finder の相対パスで先頭に / が付かない) の表記が揃っていないと, アーカイブに
+     * 含まれるファイルまで削除対象になり, 取り込んだ内容が消える.
+     */
+    public function testPruneKeepsArchivedUserDataButRemovesStray(): void
+    {
+        // アーカイブを書き出す (この時点の user_data がアーカイブの中身になる).
+        $this->export(['--include' => ContentsArchive::SECTION_USER_DATA]);
+
+        $archived = [];
+        foreach (Finder::create()->in($this->dir.'/'.ContentsArchive::SECTION_USER_DATA)->files() as $file) {
+            $archived[] = str_replace('\\', '/', $file->getRelativePathname());
+        }
+        $this->assertNotEmpty($archived, 'user_data がアーカイブに書き出されていること');
+
+        // アーカイブに無い stray ファイルを live 側へ置く (prune で消える側).
+        $stray = $this->eccubeConfig->get('eccube_html_dir').'/user_data/audit_stray_'.bin2hex(random_bytes(4)).'.css';
+        file_put_contents($stray, 'stray');
+        $this->createdFiles[] = $stray;
+        $strayName = basename($stray);
+
+        $tester = $this->import([
+            '--include' => ContentsArchive::SECTION_USER_DATA,
+            '--prune' => true,
+            '--dry-run' => true,
+        ]);
+        $this->assertSame(0, $tester->getStatusCode(), $tester->getDisplay());
+        $display = $tester->getDisplay();
+
+        // 残す方向: アーカイブに含まれるファイルは削除対象にならない (本バグの修正点).
+        foreach ($archived as $relative) {
+            $this->assertDoesNotMatchRegularExpression(
+                '#/?'.preg_quote($relative, '#').'\s+removed#u',
+                $display,
+                $relative.' はアーカイブに含まれるのに削除対象になっている'
+            );
+        }
+
+        // 消す方向: アーカイブに無いファイルは従来どおり削除対象に出る (過修正の検知).
+        $this->assertMatchesRegularExpression(
+            '#/?'.preg_quote($strayName, '#').'\s+removed#u',
+            $display,
+            'アーカイブに無いファイルが prune の削除対象になっていない'
+        );
+    }
+
     public function testUnknownSectionIsRejected(): void
     {
         $tester = $this->export(['--only' => 'nope']);
