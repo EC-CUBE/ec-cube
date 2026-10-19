@@ -7,7 +7,7 @@ name: OWASP ZAP
 # 3. 「Run workflow」ボタンをクリックします。
 # 4. 必要に応じて、表示される入力フォームでパラメータを指定し、「Run workflow」を再度クリックして実行します。
 #
-# ターゲットの一覧と個別の設定 (scenario / app_env / before_script / context / thread_per_host) は zap/targets.json で管理します。
+# ターゲットの一覧と個別の設定 (scenario / app_env / injectable / before_script / context / thread_per_host) は zap/targets.json で管理します。
 on:
   workflow_dispatch:
     inputs:
@@ -170,6 +170,8 @@ jobs:
           ZAP_CONTEXT: ${{ matrix.context }}
           ZAP_SCENARIO: ${{ matrix.scenario }}
           ZAP_APP_ENV: ${{ matrix.app_env }}
+          # 攻撃する場所 (scanner.injectable)。zap/bin/autorun.sh が読む
+          ZAP_INJECTABLE: ${{ matrix.injectable }}
           ZAP_BEFORE_SCRIPT: ${{ matrix.before_script }}
           THREAD_PER_HOST: ${{ matrix.thread_per_host }}
         run: |

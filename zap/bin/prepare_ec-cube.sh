@@ -21,6 +21,10 @@ API_CONFIG=app/Plugin/Api44/Resource/config/services.yaml
 if run test -f "${API_CONFIG}"; then
     run sed -i -e 's/limit: 20$/limit: 100000/' -e 's/limit: 200$/limit: 100000/' "${API_CONFIG}"
 fi
+# インストール後のプラグインの有効化 (/install/plugin*) は、インストーラが書き出すトランザクションのファイルの
+# トークンで認可する。install_plugins.zst が ECCUBE-CSRF-TOKEN に入れて送るトークンで置く (期限は 2100 年)。
+# ローカルでは、ターゲットごとに zap/local/restore.sh が置き直す
+run sh -c 'echo "4102444800:zap-install-plugin-token" > var/.httransaction'
 run bin/console cache:clear > /dev/null
 run bin/console debug:container --parameter eccube_login_throttling_max_attempts
 run bin/console debug:container --parameter eccube_login_throttling_interval

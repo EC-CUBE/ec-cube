@@ -23,7 +23,7 @@
       "url": "https://ec-cube/ucp/checkout-sessions",
       "data": "{\"currency\":\"JPY\",\"line_items\":[{\"item\":{\"id\":\"10\"},\"quantity\":1}],\"buyer\":{\"first_name\":\"\\u592a\\u90ce\",\"last_name\":\"\\u5c71\\u7530\",\"email\":\"zap-agent@example.com\",\"phone_number\":\"0612345678\"},\"fulfillment\":{\"destinations\":[{\"id\":\"dest-1\",\"last_name\":\"\\u5c71\\u7530\",\"first_name\":\"\\u592a\\u90ce\",\"postal_code\":\"5300001\",\"address_region\":\"\\u5927\\u962a\\u5e9c\",\"address_locality\":\"\\u5927\\u962a\\u5e02\\u5317\\u533a\",\"street_address\":\"\\u6885\\u75301-1-1\",\"phone_number\":\"0612345678\"}]}}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -53,7 +53,7 @@
     {
       "data": "",
       "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -75,7 +75,7 @@
     {
       "data": "{\"line_items\":[{\"item\":{\"id\":\"10\"},\"quantity\":2}]}",
       "method": "PUT",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -97,7 +97,7 @@
     {
       "data": "{\"payment\":{\"instruments\":[{\"credential\":{\"type\":\"zap\"}}]}}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -126,7 +126,7 @@
       "url": "https://ec-cube/ucp/checkout-sessions",
       "data": "{\"currency\":\"JPY\",\"line_items\":[{\"item\":{\"id\":\"10\"},\"quantity\":1}],\"buyer\":{\"first_name\":\"\\u592a\\u90ce\",\"last_name\":\"\\u5c71\\u7530\",\"email\":\"zap-agent@example.com\",\"phone_number\":\"0612345678\"},\"fulfillment\":{\"destinations\":[{\"id\":\"dest-1\",\"last_name\":\"\\u5c71\\u7530\",\"first_name\":\"\\u592a\\u90ce\",\"postal_code\":\"5300001\",\"address_region\":\"\\u5927\\u962a\\u5e9c\",\"address_locality\":\"\\u5927\\u962a\\u5e02\\u5317\\u533a\",\"street_address\":\"\\u6885\\u75301-1-1\",\"phone_number\":\"0612345678\"}]}}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -156,7 +156,7 @@
     {
       "data": "{}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v\u003d\"99\", \"Chromium\";v\u003d\"102\", \"Google Chrome\";v\u003d\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nContent-Type: application/json\r\nAccept: application/json\r\nIdempotency-Key: ZAP_RANDOM\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -174,6 +174,34 @@
       "enabled": true,
       "elementType": "ZestRequest",
       "urlToken": "https://ec-cube/ucp/checkout-sessions/{{cancel-session-id}}/cancel"
+    },
+    {
+      "comment": "discovery のメタデータ (パラメータが無いため攻撃はされず、パッシブスキャンの対象になる)",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/.well-known/ucp",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655279449042,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
     }
   ],
   "authentication": [],

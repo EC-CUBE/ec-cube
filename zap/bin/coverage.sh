@@ -48,10 +48,10 @@ rows=$(jq -r --argjson reqs "${requests}" --argjson excludes "${excludes}" '
     # 変数の候補値。数値の ID、英字のコード、cart_key のような「英数字_英数字」を試す
     ["1", "a", "a_1"] as $cands
     | to_entries[]
-    | select((.key | startswith("_")) | not)
+    # Symfony の内部のルート (/_wdt・/_profiler・/_error・/_fragment など) は外す。
+    # ルート名が _ で始まっても、パスが /_ で始まらないもの (MCP の /admin/mcp) と /.well-known は外さない
     | .value as $r
-    | ($r.path | test("^/(_|\\.well-known)")) as $internal
-    | select($internal | not)
+    | select($r.path | test("^/_") | not)
     # pathRegex は PCRE の {^...$}sDu 形式。jq (Oniguruma) は (?P<name>) を解釈しないため (?<name>) に直す
     | ($r.pathRegex | capture("^\\{(?<re>.*)\\}[a-zA-Z]*$").re | gsub("\\(\\?P<"; "(?<")) as $re
     | ($r.method | if . == "ANY" then null else split("|") end) as $methods
