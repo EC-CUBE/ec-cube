@@ -9,7 +9,7 @@
 # リクエストはメソッドとパスでまとめる (数字だけの階層は {id}、20 文字以上の英数字の階層は {token} にまとめる)。
 # まとめたリクエストの中で項目ごとに最も多い値を元の値とみなし、値が異なる項目を攻撃された項目とする。
 # 同じパスに複数のステップがある場合 (確認と完了の mode が違うなど) は、ステップ 1 の元の値と 2 項目以上違う
-# リクエストから、ステップ 2 の元の値を求める (3 まで)。各リクエストは、違う項目が最も少ないステップに数える。
+# リクエストから、ステップ 2 の元の値を求める (8 まで)。各リクエストは、違う項目が最も少ないステップに数える。
 # 異なる項目が無いリクエストは再生 (または攻撃の対象外の項目への攻撃) として「(元の値)」に数える。
 # 2 つ以上の項目が異なるリクエストは、それぞれの項目に数え、件数を「複数」の列に出す。
 # CSRF トークン (名前に _csrf か [_token] を含む項目) は再生のたびに値が変わり、攻撃もされないため比べない。
@@ -22,7 +22,12 @@ set -euo pipefail
 
 TSV=${1:?usage: param_counts.sh <params.tsv>}
 
-LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
+# 1〜STEPS 回目でステップごとの元の値を求め、最後にもう 1 回読んで数える
+STEPS=8
+FILES=()
+for ((i = 0; i <= STEPS; i++)); do FILES+=("${TSV}"); done
+
+LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS="${STEPS}" '
     # 階層ごとに置き換える (数字で始まるトークンの先頭だけを {id} にしないため)
     function norm(path,    n, i, seg, out) {
         n = split(path, seg, "/"); out = ""
@@ -49,6 +54,14 @@ LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
         }
         return m
     }
+    # 項目の名前の組でリクエストを分ける。攻撃は項目を足したり消したりしないため、名前の組が違えば別のステップ
+    # (同じ /api に引数の違う GraphQL のクエリを送るなど)。値だけが違うステップ (確認と完了の mode) は、この中で分ける
+    function group(base, m,    i, sig) {
+        sig = ""
+        for (i = 1; i <= m; i++) sig = sig "," nm[i]
+        if (!((base, sig) in gid)) { gid[base, sig] = ++ngroups[base] }
+        return base "#" gid[base, sig]
+    }
     # ステップ t の元の値と違う項目の数 (ステップに無い項目、ステップにあってリクエストに無い項目も数える)
     function dist(k, t, m,    i, dd, found) {
         dd = 0; found = 0
@@ -71,14 +84,14 @@ LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
     FNR == 1 { pass++ }
     # 1〜STEPS 回目: 前のどのステップとも 2 項目以上違うリクエストから、次のステップの元の値を求める
     pass <= STEPS {
-        k = key($1, $2); m = parse($5)
+        m = parse($5); k = group(key($1, $2), m)
         for (t = 1; t < pass; t++) if (has[k, t] && dist(k, t, m) < 2) next
         tally(k, pass, m)
         next
     }
     # 最後: 違う項目が最も少ないステップに割り当て、そのステップの元の値と異なる項目に数える
     {
-        k = key($1, $2); m = parse($5)
+        m = parse($5); base = key($1, $2); k = group(base, m)
         bt = 1; bd = -1
         for (t = 1; t <= STEPS; t++) if (has[k, t]) { dd = dist(k, t, m); if (bd < 0 || dd < bd) { bd = dd; bt = t } }
         nd = 0
@@ -104,7 +117,9 @@ LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
     END {
         for (x = 1; x <= nr; x++) {
             r = order[x]
-            split(r, kp, SUBSEP); split(kp[1], mp, " ")
+            split(r, kp, SUBSEP); split(kp[1], mp, " "); split(mp[2], pg, "#")
+            # ステップは、名前の組が 1 つなら値で分けた番号、複数なら <名前の組>-<値で分けた番号>
+            label = (ngroups[mp[1] " " pg[1]] > 1 ? pg[2] "-" : "") kp[2]
             top = ""
             for (t = 1; t <= 3; t++) {
                 b = 0
@@ -120,7 +135,7 @@ LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
                 ch = sprintf("%c", (index("0123456789abcdef", substr(hx, 1, 1)) - 1) * 16 + index("0123456789abcdef", substr(hx, 2, 1)) - 1)
                 name = substr(name, 1, RSTART - 1) ch substr(name, RSTART + 3)
             }
-            print c[r], mp[1], mp[2], kp[2], name, (s[r, 2] + 0) "/" (s[r, 3] + 0) "/" (s[r, 4] + 0) "/" (s[r, 5] + 0), fe[r] + 0, multi[r] + 0, top
+            print c[r], mp[1], pg[1], label, name, (s[r, 2] + 0) "/" (s[r, 3] + 0) "/" (s[r, 4] + 0) "/" (s[r, 5] + 0), fe[r] + 0, multi[r] + 0, top
         }
     }
-' "${TSV}" "${TSV}" "${TSV}" "${TSV}" | sort -t$'\t' -k2,4 -k1,1nr
+' "${FILES[@]}" | sort -t$'\t' -k2,4 -k1,1nr
