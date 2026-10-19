@@ -5,8 +5,10 @@
 # usage: autorun.sh -t <target> -o <出力先> [-b <before_script>] [-c <context>] [-n <thread_per_host>] [-p <policy>]
 #   -p  Sequence (既定) または Smoke
 #
-# 出力先には plan.yml / zap.log / ZAP-Report-<target>.html / alerts.json / access.log / attacks.tsv を置く。
+# 出力先には plan.yml / zap.log / ZAP-Report-<target>.html / alerts.json / access.log / attacks.tsv /
+# params.tsv / param_counts.tsv を置く。
 # attacks.tsv はシナリオのリクエストごとに EC-CUBE が受けたリクエストの件数 (zap/bin/attack_counts.sh)。
+# param_counts.tsv は攻撃が書き換えた項目ごとの件数 (zap/bin/param_counts.sh)。
 # 終了コードは check_results.sh の判定に従う。
 # docker compose は呼び出し元の環境変数 (COMPOSE_FILE / COMPOSE_PROJECT_NAME) で実行する。
 
@@ -43,7 +45,7 @@ zap/generate_automation_config.sh -t "${TARGET}" -o "${OUT}/plan.generated.yml" 
 sed 's#/zap/wrk/scripts/#/tmp/scripts/#' "${OUT}/plan.generated.yml" > "${OUT}/plan.yml"
 rm -f "${OUT}/plan.generated.yml"
 docker compose exec -T -u 0:0 zap sh -c \
-    'rm -rf /tmp/scripts /tmp/report /tmp/alerts.json && cp -r /zap/wrk/scripts /tmp/scripts && chown -R zap /tmp/scripts' || exit 1
+    'rm -rf /tmp/scripts /tmp/report /tmp/alerts.json /tmp/params.tsv && cp -r /zap/wrk/scripts /tmp/scripts && chown -R zap /tmp/scripts' || exit 1
 docker compose exec -T zap sh -c 'cat > /tmp/plan.yml' < "${OUT}/plan.yml" || exit 1
 
 SINCE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
@@ -58,6 +60,8 @@ docker compose exec -T zap /zap/zap.sh -cmd \
 
 docker compose cp zap:/tmp/report/. "${OUT}/" > /dev/null 2>&1
 docker compose cp zap:/tmp/alerts.json "${OUT}/alerts.json" > /dev/null 2>&1
+docker compose cp zap:/tmp/params.tsv "${OUT}/params.tsv" > /dev/null 2>&1 \
+    && zap/bin/param_counts.sh "${OUT}/params.tsv" > "${OUT}/param_counts.tsv"
 docker compose logs --since "${SINCE}" --no-log-prefix ec-cube > "${OUT}/access.log" 2> /dev/null
 if zap/bin/attack_counts.sh "zap/scripts/${TARGET}.zst" "${OUT}/access.log" > "${OUT}/attacks.tsv" \
     && [[ ${POLICY} == Sequence ]]; then
