@@ -153,7 +153,7 @@
     },
     {
       "url": "https://ec-cube/install/step3",
-      "data": "install_step3%5B_token%5D={{csrf3}}&install_step3%5Bshop_name%5D=EC-CUBE+SHOP&install_step3%5Bemail%5D=admin%40example.com&install_step3%5Blogin_id%5D=admin&install_step3%5Blogin_pass%5D=EccubeE2ePassword1&install_step3%5Badmin_dir%5D=admin&install_step3%5Badmin_allow_hosts%5D=&install_step3%5Bsmtp_host%5D=mailpit&install_step3%5Bsmtp_port%5D=1025&install_step3%5Bsmtp_username%5D=&install_step3%5Bsmtp_password%5D=",
+      "data": "install_step3%5B_token%5D={{csrf3}}&install_step3%5Bshop_name%5D=EC-CUBE+SHOP&install_step3%5Bemail%5D=admin%40example.com&install_step3%5Blogin_id%5D=admin&install_step3%5Blogin_pass%5D=EccubeE2ePassword1&install_step3%5Badmin_dir%5D=zapadmin&install_step3%5Badmin_allow_hosts%5D=&install_step3%5Bsmtp_host%5D=mailpit&install_step3%5Bsmtp_port%5D=1025&install_step3%5Bsmtp_username%5D=&install_step3%5Bsmtp_password%5D=",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [
