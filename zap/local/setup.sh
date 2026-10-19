@@ -14,7 +14,7 @@
 # 5. この時点の DB を eccubedb_clean として保存する (restore.sh でターゲットごとに戻す)
 # 6. スキャン中に作られたデータとファイルの定期削除を起動する
 #
-# ログは zap/local/out/setup-<レーン番号>.log に出力する。
+# ログは zap/local/out/setup-<レーン番号>.log (ZAP_DB=mysql のときは setup-mysql-<レーン番号>.log) に出力する。
 
 set -uo pipefail
 
@@ -34,6 +34,9 @@ fi
 
 source "$(dirname "$0")/env.sh"
 mkdir -p "${ZAP_LOCAL}/out"
+# 同じ番号の PostgreSQL と MySQL のレーンでログを上書きし合わないよう、MySQL は名前を分ける
+LOG_PREFIX=
+[[ ${ZAP_DB} != pgsql ]] && LOG_PREFIX=${ZAP_DB}-
 
 # 並列に clone しないよう、先に 1 回だけ clone する
 zap/bin/install_plugins.sh -c "${ZAP_LOCAL}/repos" || exit 1
@@ -59,7 +62,7 @@ setup_lane() {
 lanes=("$@")
 pids=()
 for lane in "${lanes[@]}"; do
-    ( setup_lane "${lane}" ) > "${ZAP_LOCAL}/out/setup-${lane}.log" 2>&1 &
+    ( setup_lane "${lane}" ) > "${ZAP_LOCAL}/out/setup-${LOG_PREFIX}${lane}.log" 2>&1 &
     pids+=($!)
 done
 
@@ -68,7 +71,7 @@ for i in "${!lanes[@]}"; do
     if wait "${pids[$i]}"; then
         echo "lane ${lanes[$i]}: ok"
     else
-        echo "lane ${lanes[$i]}: 失敗 (zap/local/out/setup-${lanes[$i]}.log を参照)"
+        echo "lane ${lanes[$i]}: 失敗 (zap/local/out/setup-${LOG_PREFIX}${lanes[$i]}.log を参照)"
         status=1
     fi
 done
