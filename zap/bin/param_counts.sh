@@ -11,8 +11,9 @@
 # 異なる項目が無いリクエストは再生 (または攻撃の対象外の項目への攻撃) として「(元の値)」に数える。
 # 2 つ以上の項目が異なるリクエストは、それぞれの項目に数え、件数を「複数」の列に出す。
 # CSRF トークン (名前に _csrf か [_token] を含む項目) は再生のたびに値が変わり、攻撃もされないため比べない。
+# 2xx のうち、応答に入力エラーがあったもの (入力の検証で止まり、処理に届いていない) を「入力エラー」の列に出す。
 #
-# 出力はタブ区切り: <件数> <メソッド> <パス> <項目> <応答の内訳 2xx/3xx/4xx/5xx> <複数>
+# 出力はタブ区切り: <件数> <メソッド> <パス> <項目> <応答の内訳 2xx/3xx/4xx/5xx> <入力エラー> <複数>
 #                   <3xx の行き先 (多い順に 3 件)>
 
 set -euo pipefail
@@ -63,6 +64,7 @@ LC_ALL=C awk -F'\t' -v OFS='\t' '
             r = k SUBSEP diff[i]
             if (!(r in c)) order[++nr] = r
             c[r]++; s[r, st]++
+            if (st == 2 && $6 == "E") fe[r]++
             if (nd > 1) multi[r]++
             if (dest != "") { if (!((r, dest) in d)) { ndest[r]++; dn[r, ndest[r]] = dest } d[r, dest]++ }
         }
@@ -86,7 +88,7 @@ LC_ALL=C awk -F'\t' -v OFS='\t' '
                 ch = sprintf("%c", (index("0123456789abcdef", substr(hx, 1, 1)) - 1) * 16 + index("0123456789abcdef", substr(hx, 2, 1)) - 1)
                 name = substr(name, 1, RSTART - 1) ch substr(name, RSTART + 3)
             }
-            print c[r], mp[1], mp[2], name, (s[r, 2] + 0) "/" (s[r, 3] + 0) "/" (s[r, 4] + 0) "/" (s[r, 5] + 0), multi[r] + 0, top
+            print c[r], mp[1], mp[2], name, (s[r, 2] + 0) "/" (s[r, 3] + 0) "/" (s[r, 4] + 0) "/" (s[r, 5] + 0), fe[r] + 0, multi[r] + 0, top
         }
     }
 ' "${TSV}" "${TSV}" | sort -t$'\t' -k2,3 -k1,1nr

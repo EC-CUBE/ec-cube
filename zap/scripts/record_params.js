@@ -7,7 +7,10 @@
 // クエリ文字列、application/x-www-form-urlencoded、multipart/form-data、JSON の本文を対象にする。
 // JSON は葉の値ごとに、キーを . (配列は [番号]) でつないだ名前で記録する。
 //
+// 入力エラーの画面 (200) に止まった攻撃は処理に届いていないため、応答に入力エラーがあれば印を付ける。
+//
 // 出力はタブ区切り: <メソッド> <パス> <状態コード> <リダイレクト先> <名前=ハッシュ をスペースで区切ったもの>
+//                   <入力エラーがあれば E>
 // 名前は URL エンコードする。ハッシュは値の長さと String.hashCode の組。
 
 var OUT = Java.type('java.nio.file.Paths').get('/tmp/params.tsv');
@@ -15,6 +18,8 @@ var Files = Java.type('java.nio.file.Files');
 var StandardOpenOption = Java.type('java.nio.file.StandardOpenOption');
 var JString = Java.type('java.lang.String');
 var StandardCharsets = Java.type('java.nio.charset.StandardCharsets');
+// report_form_errors.js と同じ。フロントは form_div_layout.twig、管理画面は bootstrap_4_layout.html.twig の form_errors
+var ERROR_PATTERN = /class="(?:ec-errorMessage|form-error-message)">/;
 
 function hash(v) {
     var s = String(v);
@@ -92,7 +97,8 @@ function responseReceived(msg, initiator, helper) {
         uri.getEscapedPath() || '/',
         msg.getResponseHeader().getStatusCode(),
         location.replace(/[\t\r\n]/g, ' '),
-        params.map(function (p) { return encodeURIComponent(p[0]) + '=' + hash(p[1]); }).join(' ')
+        params.map(function (p) { return encodeURIComponent(p[0]) + '=' + hash(p[1]); }).join(' '),
+        ERROR_PATTERN.test(msg.getResponseBody().toString()) ? 'E' : ''
     ].join('\t') + '\n';
     Files.write(OUT, new JString(line).getBytes(StandardCharsets.UTF_8),
         StandardOpenOption.CREATE, StandardOpenOption.WRITE, StandardOpenOption.APPEND);
