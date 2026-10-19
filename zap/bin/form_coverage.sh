@@ -12,7 +12,10 @@
 #
 # 出力はタブ区切り: <種類> <フォームのメソッド> <送信先> <項目> <フォームのある画面 (1 つ)>
 #   種類: フォーム (送信先へ一度も送っていない) / 項目 (送っていない項目) / 値 (mode・ボタンの値を送っていない)
+#   クエリ文字列の付いたリンクは、フォームのメソッドを LINK として GET の送信と照合し、種類に「リンク」を付ける
 # CSRF トークン (名前に _csrf か [_token] を含む項目) は比べない。
+# 行ごとに番号の付いた項目 (一覧の行ごとの編集フォームの class_category_100[name]、明細の [0]) は、番号を {n} にまとめて比べる
+# (price01 のように名前の一部の数字は別の項目のため、まとめない)。
 
 set -euo pipefail
 
@@ -34,6 +37,11 @@ fi
         }
         return out == "" ? "/" : out
     }
+    function rows(name) {
+        gsub(/_[0-9]+%5[Bb]/, "_{n}%5B", name)
+        gsub(/%5[Bb][0-9]+%5[Dd]/, "%5B{n}%5D", name)
+        return name
+    }
     function skip(name) {
         return tolower(name) ~ /(_csrf|%5b_token%5d)/
     }
@@ -52,27 +60,29 @@ fi
         n = split($6, ps, " ")
         for (i = 1; i <= n; i++) {
             j = index(ps[i], "=")
-            names[k, substr(ps[i], 1, j - 1)] = 1
-            values[k, ps[i]] = 1
+            names[k, rows(substr(ps[i], 1, j - 1))] = 1
+            values[k, rows(substr(ps[i], 1, j - 1)) substr(ps[i], j)] = 1
         }
         next
     }
     # フォーム: <画面のメソッド> <画面のパス> <フォームのメソッド> <送信先のパス> <項目 ...>
     $1 == "F" {
-        k = $4 " " $5
+        link = $4 == "LINK"
+        k = (link ? "GET" : $4) " " $5
+        kind = link ? "リンク" : "フォーム"
         if (!(k in sent)) {
-            if (!((k, "form") in done)) { done[k, "form"] = 1; print "フォーム", $4, $5, "", $2 " " $3 }
+            if (!((k, "form") in done)) { done[k, "form"] = 1; print kind, $4, $5, "", $2 " " $3 }
             next
         }
         n = split($6, fs, " ")
         for (i = 1; i <= n; i++) {
-            j = index(fs[i], "="); name = j ? substr(fs[i], 1, j - 1) : fs[i]
-            t = index(fs[i], "~"); item = t ? substr(fs[i], 1, t - 1) : fs[i]; value = t ? substr(fs[i], t + 1) : ""
+            j = index(fs[i], "="); name = rows(j ? substr(fs[i], 1, j - 1) : fs[i])
+            t = index(fs[i], "~"); item = name (j ? substr(fs[i], j, (t ? t : length(fs[i]) + 1) - j) : ""); value = t ? substr(fs[i], t + 1) : ""
             if (skip(name)) continue
             if (!((k, name) in names)) {
-                if (!((k, name) in done)) { done[k, name] = 1; print "項目", $4, $5, decode(name), $2 " " $3 }
+                if (!((k, name) in done)) { done[k, name] = 1; print (link ? "リンクの項目" : "項目"), $4, $5, decode(name), $2 " " $3 }
             } else if (j && !((k, item) in values)) {
-                if (!((k, item) in done)) { done[k, item] = 1; print "値", $4, $5, decode(name) "=" decode(value), $2 " " $3 }
+                if (!((k, item) in done)) { done[k, item] = 1; print (link ? "リンクの値" : "値"), $4, $5, decode(name) "=" decode(value), $2 " " $3 }
             }
         }
     }

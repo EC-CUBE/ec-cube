@@ -5,6 +5,9 @@
 // 攻撃の応答も含めてすべてを解析すると重いため、同じメソッドとパスの画面は最初の LIMIT 回だけ解析し、
 // 同じ内容のフォームは 1 回だけ書き出す。
 //
+// クエリ文字列の付いたリンク (並べ替え・表示件数・ページ送りなど) も、フォームのメソッドを LINK として記録する。
+// リンクの値は、分岐に関わる名前 (LINK_VALUES) だけを比べ、ID やページ番号は名前だけを比べる。
+//
 // 出力はタブ区切り: <画面のメソッド> <画面のパス> <フォームのメソッド> <送信先のパス> <項目>
 // 項目は名前 (URL エンコード) をスペースで区切ったもの。値で分岐する項目 (mode・ボタン・hidden の _method) は
 // 名前=値のハッシュ (record_params.js と同じ)~値 (URL エンコード) を付ける。
@@ -18,6 +21,7 @@ var ConcurrentHashMap = Java.type('java.util.concurrent.ConcurrentHashMap');
 var AtomicInteger = Java.type('java.util.concurrent.atomic.AtomicInteger');
 
 var LIMIT = 5;
+var LINK_VALUES = /^(mode|orderby|disp_number|sort|order|type|resume)$/;
 var parsed = new ConcurrentHashMap();
 var written = new ConcurrentHashMap();
 
@@ -92,6 +96,36 @@ function responseReceived(msg, initiator, helper) {
         var line = [header.getMethod(), normalize(page), method, normalize(target), Object.keys(fields).sort().join(' ')].join('\t');
         if (written.putIfAbsent(line, true) === null) {
             lines += line + '\n';
+        }
+    }
+    var linkRe = /<a\b[^>]*\shref\s*=\s*"([^"]*\?[^"]*)"/gi;
+    var a;
+    while ((a = linkRe.exec(html)) !== null) {
+        var href = a[1].replace(/&amp;/g, '&');
+        var lm = /^(?:https?:\/\/([^\/]+))?([^?#]*)\?([^#]*)/.exec(href);
+        if (lm === null || (lm[1] && lm[1] != 'ec-cube')) {
+            continue;
+        }
+        var lpath = lm[2] === '' ? page : (lm[2].charAt(0) == '/' ? lm[2] : page.replace(/[^\/]*$/, '') + lm[2]);
+        var items = {};
+        lm[3].split('&').forEach(function (pair) {
+            if (pair === '') {
+                return;
+            }
+            var i = pair.indexOf('=');
+            var name;
+            var value;
+            try {
+                name = decodeURIComponent((i < 0 ? pair : pair.substring(0, i)).replace(/\+/g, ' '));
+                value = i < 0 ? '' : decodeURIComponent(pair.substring(i + 1).replace(/\+/g, ' '));
+            } catch (e) {
+                return;
+            }
+            items[encodeURIComponent(name) + (LINK_VALUES.test(name) ? '=' + hash(value) + '~' + encodeURIComponent(value) : '')] = true;
+        });
+        var link = [header.getMethod(), normalize(page), 'LINK', normalize(lpath), Object.keys(items).sort().join(' ')].join('\t');
+        if (written.putIfAbsent(link, true) === null) {
+            lines += link + '\n';
         }
     }
     if (lines !== '') {
