@@ -54,10 +54,18 @@ docker compose exec -T zap sh -c "sed \
     -e '/<statsId>/d' -e '/<readonly>/d' -e '/<locked>/d' \
     /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/Smoke.policy"
 
-# EC-CUBE ポリシー。OFF にするルール: 40026 Cross Site Scripting (DOM Based)
+# EC-CUBE ポリシー。OFF にするルール: 40026 Cross Site Scripting (DOM Based)。足すルールは EXTRA_RULES
 # <locked> は残す。locked のポリシーは列挙していないルールを無効にするが、外すと既定で有効になり、同梱の Sequence に無いルールまで動く
+# 足すルール: 同梱の Sequence に無いルールのうち、EC-CUBE に効果のあるもの (zap/README.md 参照)。
+# ZAP_EXTRA_RULES (カンマ区切りのルール ID) で上書きできる
+EXTRA_RULES=${ZAP_EXTRA_RULES-}
+extra=
+for id in ${EXTRA_RULES//,/ }; do
+    extra="${extra}<p${id}><enabled>true</enabled></p${id}>"
+done
 docker compose exec -T zap sh -c "sed \
     -e 's#<policy>Sequence</policy>#<policy>EC-CUBE</policy>#' \
     -e '/<p40026>/,/<\/p40026>/s#<enabled>true</enabled>#<enabled>false</enabled><level>OFF</level>#' \
+    -e 's#</plugins>#${extra}</plugins>#' \
     -e '/<statsId>/d' -e '/<readonly>/d' \
     /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/EC-CUBE.policy"
