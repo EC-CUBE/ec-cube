@@ -57,7 +57,7 @@ class Delivery extends AbstractEntity implements \Stringable
     private ?int $sort_no = null;
 
     #[ORM\Column(name: 'visible', type: Types::BOOLEAN, options: ['default' => true])]
-    private bool $visible = true;
+    private ?bool $visible = true;
 
     #[ORM\Column(name: 'create_date', type: Types::DATETIMETZ_MUTABLE)]
     private ?\DateTime $create_date = null;
@@ -365,7 +365,7 @@ class Delivery extends AbstractEntity implements \Stringable
     /**
      * Set visible
      */
-    public function setVisible(bool $visible): Delivery
+    public function setVisible(?bool $visible): Delivery
     {
         $this->visible = $visible;
 
@@ -377,6 +377,6 @@ class Delivery extends AbstractEntity implements \Stringable
      */
     public function isVisible(): bool
     {
-        return $this->visible;
+        return (bool) $this->visible;
     }
 }

@@ -62,7 +62,7 @@ class PointProcessor implements DiscountProcessor, PurchaseProcessor
         }
 
         /** @var Order $itemHolder */
-        $usePoint = $itemHolder->getUsePoint();
+        $usePoint = $itemHolder->getUsePoint() ?? '0';
         $discount = $this->pointHelper->pointToDiscount($usePoint);
 
         // 利用ポイントがある場合は割引明細を追加

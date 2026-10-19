@@ -83,6 +83,9 @@ class CustomerController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
+        }
+
+        if ($searchForm->isSubmitted()) {
             if ($searchForm->isValid()) {
                 $searchData = $searchForm->getData();
                 $page_no = 1;

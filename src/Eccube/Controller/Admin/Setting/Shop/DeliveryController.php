@@ -177,7 +177,7 @@ class DeliveryController extends AbstractController
         if ($request->getMethod() === 'POST') {
             $form->handleRequest($request);
 
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $DeliveryData = $form->getData();
 
                 // 配送時間の登録

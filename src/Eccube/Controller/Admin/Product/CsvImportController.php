@@ -119,7 +119,7 @@ class CsvImportController extends AbstractCsvImportController
         $headers = $this->getProductCsvHeader();
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $this->isSplitCsv = $form['is_split_csv']->getData();
                 $this->csvFileNo = $form['csv_file_no']->getData();
 
@@ -653,7 +653,7 @@ class CsvImportController extends AbstractCsvImportController
         $headers = $this->getCategoryCsvHeader();
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $formFile = $form['import_file']->getData();
                 if (!empty($formFile)) {
                     log_info('カテゴリCSV登録開始');
@@ -809,7 +809,7 @@ class CsvImportController extends AbstractCsvImportController
         $headers = $this->getClassNameCsvHeader();
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $formFile = $form['import_file']->getData();
                 if (!empty($formFile)) {
                     log_info('規格CSV登録開始');
@@ -922,7 +922,7 @@ class CsvImportController extends AbstractCsvImportController
         $headers = $this->getClassCategoryCsvHeader();
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $formFile = $form['import_file']->getData();
                 if (!empty($formFile)) {
                     log_info('規格分類CSV登録開始');

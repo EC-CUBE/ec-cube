@@ -81,6 +81,9 @@ class PaymentRegisterType extends AbstractType
                 'choices' => ['admin.common.show' => true, 'admin.common.hide' => false],
                 'required' => true,
                 'expanded' => false,
+                'constraints' => [
+                    new Assert\NotNull(),
+                ],
             ])
             ->add('charge', PriceType::class, [
             ])

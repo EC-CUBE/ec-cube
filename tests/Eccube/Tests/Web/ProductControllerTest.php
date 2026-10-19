@@ -26,6 +26,7 @@ use Eccube\Repository\BaseInfoRepository;
 use Eccube\Repository\ClassCategoryRepository;
 use Eccube\Repository\CustomerFavoriteProductRepository;
 use Eccube\Repository\ProductRepository;
+use PHPUnit\Framework\Attributes\TestWith;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Client;
@@ -500,5 +501,44 @@ final class ProductControllerTest extends AbstractWebTestCase
         $this->assertTrue($this->client->getResponse()->isRedirect(
             $this->generateUrl('mypage_login')
         ));
+    }
+
+    /**
+     * カートに入れるフォームの項目を含まない POST では 500 にならず 404 を返す.
+     */
+    public function testAddCartWithoutFormFields(): void
+    {
+        $Product = $this->createProduct('Product add cart without form fields', 1);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('product_add_cart', ['id' => $Product->getId()]),
+            ['unrelated' => 'value']
+        );
+
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * 数量を空や配列にした POST では 500 にならず 404 を返す.
+     */
+    #[TestWith([''])]
+    #[TestWith([['1']])]
+    public function testAddCartWithInvalidQuantity(mixed $quantity): void
+    {
+        $Product = $this->createProduct('Product add cart with invalid quantity', 1);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('product_add_cart', ['id' => $Product->getId()]),
+            [
+                'ProductClass' => $Product->getProductClasses()->first()->getId(),
+                'quantity' => $quantity,
+                'product_id' => $Product->getId(),
+                '_token' => 'dummy',
+            ]
+        );
+
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 }

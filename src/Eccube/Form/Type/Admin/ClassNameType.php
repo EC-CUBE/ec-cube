@@ -42,6 +42,7 @@ class ClassNameType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
+                'empty_data' => '',
                 'constraints' => [
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),

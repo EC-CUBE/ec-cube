@@ -364,7 +364,7 @@ class ProductController extends AbstractController
         $form = $builder->getForm();
         $form->handleRequest($request);
 
-        if (!$form->isValid()) {
+        if (!$form->isSubmitted() || !$form->isValid()) {
             throw new NotFoundHttpException();
         }
 

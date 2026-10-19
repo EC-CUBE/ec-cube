@@ -130,7 +130,7 @@ class TaxRule extends AbstractEntity
      */
     public function getTaxRate(): string
     {
-        return $this->tax_rate;
+        return $this->tax_rate ?? '0';
     }
 
     /**

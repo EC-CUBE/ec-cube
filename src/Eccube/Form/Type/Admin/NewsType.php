@@ -85,6 +85,9 @@ class NewsType extends AbstractType
                 'choices' => ['admin.content.news.display_status__show' => true, 'admin.content.news.display_status__hide' => false],
                 'required' => true,
                 'expanded' => false,
+                'constraints' => [
+                    new Assert\NotNull(),
+                ],
             ]);
     }
 

@@ -130,7 +130,9 @@ class ProductController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
+        }
 
+        if ($searchForm->isSubmitted()) {
             if ($searchForm->isValid()) {
                 /**
                  * 検索が実行された場合は, セッションに検索条件を保存する.
@@ -477,7 +479,7 @@ class ProductController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $form->handleRequest($request);
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 log_info('商品登録開始', [$id]);
                 $Product = $form->getData();
 

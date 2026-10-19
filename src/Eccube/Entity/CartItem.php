@@ -39,7 +39,7 @@ class CartItem extends AbstractEntity implements ItemInterface
     private ?string $price = '0';
 
     #[ORM\Column(name: 'quantity', type: Types::DECIMAL, precision: 10, scale: 0, options: ['default' => 0])]
-    private string $quantity = '0';
+    private ?string $quantity = '0';
 
     #[ORM\ManyToOne(targetEntity: ProductClass::class)]
     #[ORM\JoinColumn(name: 'product_class_id', referencedColumnName: 'id')]
@@ -94,7 +94,7 @@ class CartItem extends AbstractEntity implements ItemInterface
     #[\Override]
     public function getQuantity(): string
     {
-        return $this->quantity;
+        return $this->quantity ?? '0';
     }
 
     public function getTotalPrice(): string

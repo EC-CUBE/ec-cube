@@ -82,7 +82,9 @@ class RefundRequestController extends AbstractController
 
         if ('POST' === $request->getMethod()) {
             $searchForm->handleRequest($request);
+        }
 
+        if ($searchForm->isSubmitted()) {
             if ($searchForm->isValid()) {
                 $page_no = 1;
                 $searchData = $searchForm->getData();

@@ -31,6 +31,7 @@ final class PaymentRegisterTypeTest extends AbstractTypeTestCase
         'charge' => '10000',
         'rule_min' => '100',
         'rule_max' => '10000',
+        'visible' => '1',
     ];
 
     protected function setUp(): void

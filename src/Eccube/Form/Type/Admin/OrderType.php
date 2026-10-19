@@ -153,6 +153,7 @@ class OrderType extends AbstractType
             ->add('use_point', NumberType::class, [
                 'required' => true,
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Regex(
                         pattern: "/^\d+$/u",
                         message: 'form_error.numeric_only'
