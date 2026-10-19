@@ -38,7 +38,8 @@ GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net
   `admin_security` への攻撃で管理画面から締め出されません。`TRUSTED_HOSTS` は画面で必須のため、すべてのホストに一致する `.*` にしています。
 - 2 段階認証のコードは `scripts/totp.js` (httpsender スクリプト) が送信の直前に計算します。シナリオでは `device_token` に
   `ZAP_TOTP` を入れて送ります。ログイン後の認証の画面 (`/admin/two_factor_auth`) は、設定・変更で付く認証済みの cookie を
-  ZAP が保持して付け直すため表示されず、シナリオで通していません。
+  ZAP が保持して付け直すため、そのままでは表示されません。スキャン用のパッチ `two-factor-auth-unauthed` で、
+  `X-ZAP-2FA-Unauthed` ヘッダーの付いたリクエストでは cookie を無視させ、鍵は `X-ZAP-TOTP-Key` ヘッダーで渡します (`admin_member_setting`)。
 - エージェントコマースの API (ACP / UCP のチェックアウト) は、同じ `Idempotency-Key` で内容の異なるリクエストを 422 で拒否します。
   シナリオでは `Idempotency-Key: ZAP_RANDOM` を送り、`scripts/idempotency_key.js` (httpsender スクリプト) が送信のたびに新しい値へ置き換えます。
   固定のキーのままだと、本文を書き換えた攻撃がすべて 422 で止まります。
@@ -317,6 +318,7 @@ jq -r '.[] | select(.risk >= 3) | "\(.ruleid) \(.method) \(.url) \(.param)"' zap
 | `product-csv-split-keep` | 商品 CSV の分割登録で、取り込みに分割ファイルの複製を渡す。取り込みが分割ファイルを移動するため、最初の取り込みの後は `file_no` への攻撃も 400 になっていた (1 → 116 件。残りは `file_name` への攻撃をファイルの一覧との照合で弾く 400) |
 | `product-image-keep` | 商品の登録で、アップロードした一時ファイルを移動せずに複製する。最初の保存で一時ファイルが移動され、同じ画像を送る後続の攻撃が画像のパスの検証で弾かれていた (`/admin/product/product/new` の処理に届いた攻撃 2,484 → 3,934 件) |
 | `forgot-reset-keep` | パスワードの再設定で、再設定キーを消さない。最初の再設定でキーが消え、後続の攻撃が 404 になるのを防ぐ。これまで `entry` は確認用のパスワードをわざと一致させずに送っており、入力の検証を通らないため会員の検索まで届いていなかった (再生が再設定に成功 0 → 13 件。攻撃はメールアドレスの形式とパスワードの一致の検証で止まる) |
+| `two-factor-auth-unauthed` | 2 段階認証で、`X-ZAP-2FA-Unauthed` ヘッダーの付いたリクエストでは認証済みの cookie を無視する。ZAP は cookie を保持して送信のたびに付け直し、スクリプトからは外せないため、ログイン後の認証の画面 (`/admin/two_factor_auth`) をスキャンできなかった |
 | `shopping-error-keep-order` | 購入エラー画面で、カートと受注の紐付けを外さない。`redirect_to` への攻撃が購入エラー画面へリダイレクトされ、ZAP がたどると以降の攻撃が受注を見つけられず、非会員の配送先の変更・複数配送・クーポンの購入手続きへの攻撃がすべて購入エラー画面へ戻されていた (`redirect_to` の 2xx 0 → 416 件、`shipping_edit` 0 → 765 件、`shipping_multiple_edit` 0 → 784 件) |
 
 doc4 のパッチのうち次のものは、当てても `attacks.tsv` の正常な応答が増えなかったため収録していません。
