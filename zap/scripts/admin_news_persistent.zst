@@ -14,10 +14,32 @@
   },
   "statements": [
     {
-      "comment": "格納型 XSS の検証用 (Persistent ポリシー)。既存の新着情報 (ID 1) を編集し、値が出る一覧を表示する。新規登録を含めると、目印を書き込んだ後の攻撃でもレコードが作られ、新しい順の一覧から目印が押し出されるため、編集だけにする。公開日は一覧の先頭に来るよう新しくする",
+      "comment": "格納型 XSS の検証用 (Persistent ポリシー)。既存の新着情報 (ID 1) を編集し、値が出る一覧を表示する。新規登録を含めると、目印を書き込んだ後の攻撃でもレコードが作られ、新しい順の一覧から目印が押し出されるため、編集だけにする。公開日は一覧の先頭に来るよう新しくする。一覧は編集の前にも開く (編集のステップを攻撃する時点で、目印を探すルールが一覧を知っている必要がある)",
       "index": 1,
       "enabled": true,
       "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/content/news",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656640419083,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
     },
     {
       "urlToken": "https://ec-cube/admin/content/news/1/edit",
@@ -37,7 +59,7 @@
       "followRedirects": false,
       "timestamp": 1656640450616,
       "cookies": [],
-      "index": 2,
+      "index": 3,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -48,7 +70,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf2",
-      "index": 3,
+      "index": 4,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -70,7 +92,7 @@
       "followRedirects": false,
       "timestamp": 1656640456417,
       "cookies": [],
-      "index": 4,
+      "index": 5,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -92,7 +114,7 @@
       "followRedirects": false,
       "timestamp": 1656640419083,
       "cookies": [],
-      "index": 5,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     }
