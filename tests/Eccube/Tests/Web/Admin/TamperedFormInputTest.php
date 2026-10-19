@@ -17,7 +17,9 @@ namespace Eccube\Tests\Web\Admin;
 
 use Eccube\Entity\Calendar;
 use Eccube\Entity\ClassName;
+use Eccube\Entity\Faq;
 use Eccube\Entity\News;
+use Eccube\Entity\Payment;
 use Eccube\Entity\TaxRule;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -248,6 +250,59 @@ final class TamperedFormInputTest extends AbstractAdminWebTestCase
             $this->submitTampered($url, $formName, [$formName, $field], $value);
             $this->assertTrue($this->client->getResponse()->isSuccessful(), $field);
         }
+    }
+
+    /**
+     * 新規登録の画面のフォームの値で, 表示/非表示を選んだとおりに保存できる.
+     *
+     * @param class-string $entityClass
+     * @param array<string, mixed> $input
+     */
+    #[DataProvider(methodName: 'provideNewEntityForms')]
+    public function testCreateWithVisible(string $route, string $formName, string $entityClass, array $input, string $visible): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, $this->generateUrl($route));
+        $form = $crawler->filter(sprintf('[name^="%s["]', $formName))->first()->closest('form')->form();
+        $values = $form->getPhpValues();
+        $values[$formName] = array_replace($values[$formName], $input, ['visible' => $visible]);
+
+        $this->client->request(Request::METHOD_POST, $form->getUri(), $values);
+
+        $this->assertTrue($this->client->getResponse()->isRedirect());
+        $this->entityManager->clear();
+        $Entity = $this->entityManager->getRepository($entityClass)->findOneBy([], ['id' => 'DESC']);
+        $this->assertSame('1' === $visible, $Entity->isVisible());
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: string, 2: class-string, 3: array<string, mixed>, 4: string}>
+     */
+    public static function provideNewEntityForms(): array
+    {
+        $forms = [
+            '新着情報' => ['admin_content_news_new', 'admin_news', News::class, [
+                'publish_date' => date('Y-m-d').'T00:00',
+                'title' => '新着情報',
+                'description' => '本文',
+            ]],
+            'FAQ' => ['admin_content_faq_new', 'admin_faq', Faq::class, [
+                'question' => '質問',
+                'answer' => '回答',
+            ]],
+            '支払方法' => ['admin_setting_shop_payment_new', 'payment_register', Payment::class, [
+                'method' => '支払方法',
+                'charge' => '0',
+            ]],
+        ];
+
+        $cases = [];
+        foreach ($forms as $label => $form) {
+            foreach (['表示' => '1', '非表示' => '0'] as $visibleLabel => $visible) {
+                $cases[$label.'/'.$visibleLabel] = [...$form, $visible];
+            }
+        }
+
+        return $cases;
     }
 
     /**

@@ -152,7 +152,7 @@ class Faq extends AbstractEntity implements \Stringable
 
     public function isVisible(): bool
     {
-        return (bool) $this->visible;
+        return $this->visible;
     }
 
     public function setCreateDate(\DateTime $createDate): self

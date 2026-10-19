@@ -203,7 +203,7 @@ class News extends AbstractEntity implements \Stringable
 
     public function isVisible(): bool
     {
-        return (bool) $this->visible;
+        return $this->visible;
     }
 
     public function setVisible(?bool $visible): News
