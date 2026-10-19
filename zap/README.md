@@ -110,7 +110,7 @@ zap/local/batch.sh -p Smoke -l "1 2 3 4"
 zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
 ```
 
-- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`)。
+- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`・`params.tsv`・`param_counts.tsv`)。
   CI では成果物 `zap-<target>-report` に同じものが入ります。
 - `attacks.tsv` は、シナリオのリクエストごとに EC-CUBE が受けたリクエストの件数と応答の内訳です (`zap/bin/attack_counts.sh`)。
   `Sequence` では、パラメータがあるのに正常な応答 (2xx/3xx) が数件しか無いリクエストを「攻撃が届いていない可能性」として通知します。
@@ -118,6 +118,13 @@ zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
   (最後の列の 3xx の行き先は、アクセスログに記録したリダイレクト先から数えます。`zap/apache-access-log.conf`)。
   正常な応答が数件を超えるが大半が 4xx のもの (前の手順で取り出した ID が空になっている等) は拾えません。
   `attacks.tsv` の応答の内訳もあわせて確かめてください。
+- `param_counts.tsv` は、攻撃が値を書き換えた項目ごとの件数と応答の内訳です (`zap/bin/param_counts.sh`)。
+  `attacks.tsv` はリクエスト単位のため、2xx が多くても特定の項目への攻撃がすべて弾かれていることを見分けられません。
+  `zap/scripts/record_params.js` が送ったパラメータの名前と値のハッシュを `params.tsv` に記録し、同じリクエストの中で
+  最も多い値を元の値として、値が異なる項目を攻撃された項目として数えます (攻撃は 1 回に 1 項目だけを書き換えます)。
+  JSON の本文は葉の値ごとに数えます。2xx のうち応答に入力エラーがあったものは「入力エラー」の列に出します。
+  「(元の値)」の行は、どの項目も書き換えていないリクエスト (再生) です。ここに入力エラーがあれば、元の値の時点で
+  検証に弾かれており、そのリクエストへの攻撃はどの項目も処理に届いていません (新規登録の一意性の検証など)。
   `batch.sh` の一覧は `zap/local/out/<policy>/summary.tsv` です。
   条件を変えて同じターゲットを実行するときは、`ZAP_OUT=<出力先>` で結果の上書きを避けられます。
 - `run.sh` はターゲットごとに DB を準備直後の状態 (`eccubedb_clean`) へ戻します。前のターゲットが作ったデータの影響を受けません。
@@ -186,6 +193,12 @@ ZAP の能動スキャンは、記録したリクエストのパラメータの�
 | `/admin/authorize`・`/token` (eccube-api4) | `client_id`・`redirect_uri` の照合で 400、クライアント認証で 401 |
 | ログイン (`/admin/login`・`/mypage/login`) | 認証に失敗してログイン画面へ戻される |
 | メールマガジンの配信の準備 (`prepare`) | 入力エラーは 400 |
+
+**型の決まった項目**
+
+`param_counts.tsv` で見ると、都道府県・カナ・電話番号・郵便番号・日付・金額・選択肢の ID への攻撃は、入力エラーの画面 (200) か 400 で止まります。
+同じリクエストの自由入力の項目 (氏名・住所・本文など) への攻撃は処理に届いています。2026-10-19 に全ターゲットで集計した結果、
+攻撃を受けた 1,629 項目のうち 532 項目がこれに当たります。
 
 **3xx でも届いているもの**
 

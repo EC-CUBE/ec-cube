@@ -18,8 +18,8 @@ var Files = Java.type('java.nio.file.Files');
 var StandardOpenOption = Java.type('java.nio.file.StandardOpenOption');
 var JString = Java.type('java.lang.String');
 var StandardCharsets = Java.type('java.nio.charset.StandardCharsets');
-// report_form_errors.js と同じ。フロントは form_div_layout.twig、管理画面は bootstrap_4_layout.html.twig の form_errors
-var ERROR_PATTERN = /class="(?:ec-errorMessage|form-error-message)">/;
+// report_form_errors.js と同じ
+var ERROR_PATTERN = /<p class="ec-errorMessage">\s*[^<\s]|<span class="form-error-message">\s*[^<\s]/;
 
 function hash(v) {
     var s = String(v);
