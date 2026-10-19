@@ -8,7 +8,12 @@
 set -euo pipefail
 source "$(dirname "$0")/env.sh"
 
-docker compose exec -T -e PGUSER=dbuser postgres psql -d postgres -v ON_ERROR_STOP=1 -q \
-    -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'eccubedb' AND pid <> pg_backend_pid()" \
-    -c "DROP DATABASE IF EXISTS eccubedb_clean" \
-    -c "CREATE DATABASE eccubedb_clean TEMPLATE eccubedb" < /dev/null > /dev/null
+if [[ ${ZAP_DB} == mysql ]]; then
+    docker compose exec -T -e MYSQL_PWD=root mysql sh -c \
+        'mysql -u root -e "DROP DATABASE IF EXISTS eccubedb_clean; CREATE DATABASE eccubedb_clean" && mysqldump -u root --single-transaction --routines eccubedb | mysql -u root eccubedb_clean' < /dev/null > /dev/null
+else
+    docker compose exec -T -e PGUSER=dbuser postgres psql -d postgres -v ON_ERROR_STOP=1 -q \
+        -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = 'eccubedb' AND pid <> pg_backend_pid()" \
+        -c "DROP DATABASE IF EXISTS eccubedb_clean" \
+        -c "CREATE DATABASE eccubedb_clean TEMPLATE eccubedb" < /dev/null > /dev/null
+fi

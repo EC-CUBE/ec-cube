@@ -26,6 +26,13 @@ on:
         description: 'スキャン用のパッチ (zap/patches/ のファイル名から .patch を除いたものを空白区切り。all (既定) ですべて。空なら当てない)'
         type: string
         default: 'all'
+      database:
+        description: 'DB (DB に依存して処理が変わる箇所があるため、MySQL でもスキャンする)'
+        type: choice
+        options:
+          - pgsql
+          - mysql
+        default: pgsql
 
 permissions:
   contents: read
@@ -91,7 +98,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
-      COMPOSE_FILE: docker-compose.yml:docker-compose.pgsql.yml:docker-compose.owaspzap.ci.yml
+      COMPOSE_FILE: docker-compose.yml:docker-compose.${{ inputs.database || 'pgsql' }}.yml:docker-compose.owaspzap.ci.yml
       POLICY: ${{ inputs.policy || 'Sequence' }}
       TARGET: ${{ matrix.target }}
       PATCHES: ${{ inputs.patches }}

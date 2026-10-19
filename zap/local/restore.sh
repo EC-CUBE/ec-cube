@@ -9,8 +9,13 @@
 set -euo pipefail
 source "$(dirname "$0")/env.sh"
 
-docker compose exec -T -e PGUSER=dbuser postgres psql -d postgres -v ON_ERROR_STOP=1 -q \
-    -c "DROP DATABASE IF EXISTS eccubedb WITH (FORCE)" \
-    -c "CREATE DATABASE eccubedb TEMPLATE eccubedb_clean" < /dev/null > /dev/null
+if [[ ${ZAP_DB} == mysql ]]; then
+    docker compose exec -T -e MYSQL_PWD=root mysql sh -c \
+        'mysql -u root -e "DROP DATABASE IF EXISTS eccubedb; CREATE DATABASE eccubedb" && mysqldump -u root --single-transaction --routines eccubedb_clean | mysql -u root eccubedb' < /dev/null > /dev/null
+else
+    docker compose exec -T -e PGUSER=dbuser postgres psql -d postgres -v ON_ERROR_STOP=1 -q \
+        -c "DROP DATABASE IF EXISTS eccubedb WITH (FORCE)" \
+        -c "CREATE DATABASE eccubedb TEMPLATE eccubedb_clean" < /dev/null > /dev/null
+fi
 docker compose exec -T -u www-data:www-data ec-cube \
     sh -c 'rm -f .maintenance && bin/console cache:pool:clear --all > /dev/null' < /dev/null

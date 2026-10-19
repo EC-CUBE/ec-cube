@@ -5,5 +5,7 @@ services:
     ports: !reset []
   postgres:
     ports: !reset []
+  mysql:
+    ports: !reset []
   mailpit:
     ports: !reset []
