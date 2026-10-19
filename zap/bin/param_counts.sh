@@ -23,10 +23,18 @@ set -euo pipefail
 TSV=${1:?usage: param_counts.sh <params.tsv>}
 
 LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
+    # 階層ごとに置き換える (数字で始まるトークンの先頭だけを {id} にしないため)
+    function norm(path,    n, i, seg, out) {
+        n = split(path, seg, "/"); out = ""
+        for (i = 2; i <= n; i++) {
+            if (seg[i] ~ /^[0-9]+$/) seg[i] = "{id}"
+            else if (length(seg[i]) >= 20 && seg[i] ~ /^[A-Za-z0-9_-]+$/) seg[i] = "{token}"
+            out = out "/" seg[i]
+        }
+        return out == "" ? "/" : out
+    }
     function key(method, path) {
-        gsub(/\/[0-9]+/, "/{id}", path)
-        gsub(/\/[A-Za-z0-9_-]{20,}/, "/{token}", path)
-        return method " " path
+        return method " " norm(path)
     }
     function skip(name) {
         return tolower(name) ~ /(_csrf|%5b_token%5d)/
@@ -82,7 +90,7 @@ LC_ALL=C awk -F'\t' -v OFS='\t' -v STEPS=3 '
             dest = $4
             sub(/^https?:\/\/[^\/]+/, "", dest)
             sub(/\?.*/, "", dest)
-            gsub(/\/[0-9]+/, "/{id}", dest)
+            dest = norm(dest)
         }
         for (i = 1; i <= nd; i++) {
             r = k SUBSEP bt SUBSEP diff[i]
