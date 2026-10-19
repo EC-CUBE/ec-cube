@@ -16,9 +16,19 @@ GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net
 
   | 項目 | 内容 |
   |---|---|
-  | `before_script` | スキャンの前に実行する Zest スクリプト (会員の作成など)。管理画面のターゲットで省略すると `admin_login.zst` |
-  | `context` | 省略時は名前から決める。管理画面は `admin`、`mypage_*` は会員でログインした `front_login`、それ以外は `default` |
+  | `scenario` | シナリオ (`scripts/<scenario>.zst`)。省略時はターゲットと同じ名前。同じシナリオを条件を変えて別のターゲットとして実行するときに使う (`*_options`) |
+  | `before_script` | スキャンの前に実行するスクリプト (会員の作成など)。カンマで区切って複数を書け、書いた順に実行する。管理画面のターゲットで省略すると `admin_login.zst` |
+  | `context` | 省略時はシナリオの名前から決める。管理画面は `admin`、`mypage_*` は会員でログインした `front_login`、それ以外は `default` |
   | `thread_per_host` | 能動スキャンの並列数。状態が壊れやすいターゲットは 1 |
+  | `app_env` | スキャンの間だけ、Web サーバーの `APP_ENV` を切り替える (インストーラの `install`)。Apache の `SetEnv` で切り替え、終わったら戻す |
+  | `injectable` | 攻撃する場所 (`scanner.injectable`)。クエリ文字列 1・本文 2・Cookie 4・ヘッダー 8 の和。ヘッダーの値を使う画面 (User-Agent を保存・受け渡す画面、ACP・UCP、インストール後のプラグインの有効化) では 15 にして、ヘッダーと Cookie も攻撃する。全ターゲットで有効にすると EC-CUBE が受けるリクエストが 2〜4 倍になるため、ヘッダーの値を使わない画面では既定のまま |
+
+- 既定で OFF の店舗設定 (在庫切れ商品の非表示・商品ごとの送料・商品ごとの税率・納品書の営業時間と英語の店名) は、
+  `admin_enable_options.zst` で ON にした状態でも、影響を受けるシナリオを `*_options` として実行します。
+  ON のときだけ現れる項目 (商品ごとの `tax_rate`・`delivery_fee`) はシナリオに書き、OFF のターゲットでは
+  `scripts/option_fields.js` が送信の直前に取り除きます (OFF のときに送ると余分な項目として入力エラーになるため)。
+- DB は PostgreSQL が既定です。MySQL でもスキャンします (workflow の入力 `database`、ローカルは `ZAP_DB=mysql`)。
+  インストーラ (`install`) はステップ 4 で PostgreSQL の接続先を送るため、MySQL では対象から外します。
 
 - 自動化プランは `automation/template.yml` から `generate_automation_config.sh` で生成します。
 - スキャンポリシーは 2 種類です。
@@ -185,7 +195,10 @@ ZAP の能動スキャンは、記録したリクエストのパラメータの�
   ZAP の設定 (`scanner.injectable`) で対象に加えられますが、攻撃するパス要素を絞れません。`entry` で試すと、EC-CUBE が受けた
   リクエストは 5,291 件から 8,564 件に増え、増えた分の大半は固定の文字列のパス要素 (`/entry` など) への 404 でした。
   ID のルートは `\d+` の制約があり、ID への攻撃もルーティングで 404 になります。このため全体では有効にしていません (2026-10-05)。
-- ヘッダーと Cookie は攻撃していません (ZAP の既定のまま。対象に加えた場合の効果は確かめていません)。
+- ヘッダーと Cookie は、ヘッダーの値を使う画面のターゲットだけで攻撃します (`targets.json` の `injectable`)。
+  2026-10-19 に `front_contact`・`admin_tax` で全ターゲット向けに有効にして比べると、EC-CUBE が受けたリクエストは
+  1.8 倍・4 倍になり、新しいアラートは出ませんでした。本文は元の値のままなので、ヘッダーへの攻撃は保存の処理まで届きます
+  (`admin_tax` の保存の成功が 18 → 981 件)。セッションの cookie への攻撃でログインが切れることはありませんでした。
 - パラメータの無いリクエストは攻撃されません。
 - `options.properties` に anti-CSRF トークンとして登録した名前のパラメータは攻撃しません。
 
