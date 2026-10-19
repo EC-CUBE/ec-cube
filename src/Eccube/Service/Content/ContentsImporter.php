@@ -622,7 +622,7 @@ class ContentsImporter
 
         if ($prune) {
             foreach ($this->userDataFileService->list(null, true) as $entry) {
-                if ($entry['is_dir'] || isset($keys[$entry['path']])) {
+                if ($entry['is_dir'] || isset($keys[ltrim($entry['path'], '/')])) {
                     continue;
                 }
                 $results[] = $this->remove(
