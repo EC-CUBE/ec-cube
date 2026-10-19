@@ -17,7 +17,7 @@ var JString = Java.type('java.lang.String');
 var LATIN1 = Java.type('java.nio.charset.StandardCharsets').ISO_8859_1;
 
 // kind: suffix (末尾に連番を付ける。max を超える場合は末尾を連番に置き換える) / email (@ の前に連番を付ける) /
-//       date (yyyy-MM-dd の日付を連番の日数だけ進める)
+//       date (yyyy-MM-dd の日付を offset + 連番の日数だけ進める。シナリオが編集で使う近くの日付とぶつからないよう離す)
 // step: 同じパスに複数のステップがある場合に、ステップを見分ける項目。値ごとに最初の送信を元の値のまま送る
 var RULES = [
     {path: /^\/admin\/customer\/new$/, kind: 'email', names: ['admin_customer[email]']},
@@ -28,7 +28,7 @@ var RULES = [
     {path: /^\/admin\/content\/block\/new$/, kind: 'suffix', max: 255, names: ['block[file_name]']},
     {path: /^\/admin\/setting\/shop\/mail$/, kind: 'suffix', max: 255, names: ['mail[file_name]']},
     {path: /^\/admin\/store\/template\/install$/, kind: 'suffix', max: 255, names: ['admin_template[code]']},
-    {path: /^\/admin\/setting\/shop\/calendar\/new$/, kind: 'date', names: ['calendar[holiday]']}
+    {path: /^\/admin\/setting\/shop\/calendar\/new$/, kind: 'date', offset: 3650, names: ['calendar[holiday]']}
 ];
 
 var seen = new ConcurrentHashMap();
@@ -53,7 +53,7 @@ function unique(rule, value, n) {
     }
     if (rule.kind == 'date') {
         try {
-            return String(LocalDate.parse(value).plusDays(n).toString());
+            return String(LocalDate.parse(value).plusDays((rule.offset || 0) + n).toString());
         } catch (e) {
             return value;
         }
