@@ -53,6 +53,7 @@
   {"target": "api_oauth", "before_script": "admin_login.zst"},
   {"target": "api_ucp_checkout", "before_script": "admin_enable_agent_checkout.zst", "injectable": 15},
   {"target": "entry", "thread_per_host": 1},
+  {"target": "entry_activate_off", "scenario": "entry", "before_script": "admin_disable_customer_activate.zst", "thread_per_host": 1},
   {"target": "front_block"},
   {"target": "front_contact"},
   {"target": "front_cookie_consent", "before_script": "admin_enable_cookie_consent.zst", "injectable": 15},
