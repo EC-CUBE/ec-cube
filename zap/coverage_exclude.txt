@@ -6,3 +6,5 @@
 ^/[^/]+/store/plugin	ストア・プラグイン管理
 # ページ管理に表示するためのダミーのルートで、空の応答を返すだけ
 ^/product_review/display$	商品レビューのページ管理用のダミー
+# インストーラの完了の画面は GET で .env を書き出してキャッシュを消すため、送ると以降のスキャンの環境が壊れる (zap/scripts/install.zst)
+^/install/complete$	インストーラの完了の画面

@@ -58,7 +58,7 @@ docker compose exec -T zap sh -c "sed \
 # <locked> は残す。locked のポリシーは列挙していないルールを無効にするが、外すと既定で有効になり、同梱の Sequence に無いルールまで動く
 # 足すルール: 同梱の Sequence に無いルールのうち、EC-CUBE に効果のあるもの (zap/README.md 参照)。
 # ZAP_EXTRA_RULES (カンマ区切りのルール ID) で上書きできる
-EXTRA_RULES=${ZAP_EXTRA_RULES-}
+EXTRA_RULES=${ZAP_EXTRA_RULES-0,10058,20017,20018,30002,40008,40009,40032,40034,40035,40044,90034}
 extra=
 for id in ${EXTRA_RULES//,/ }; do
     extra="${extra}<p${id}><enabled>true</enabled></p${id}>"

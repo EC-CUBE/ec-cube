@@ -18,4 +18,4 @@ else
         -c "CREATE DATABASE eccubedb TEMPLATE eccubedb_clean" < /dev/null > /dev/null
 fi
 docker compose exec -T -u www-data:www-data ec-cube \
-    sh -c 'rm -f .maintenance && echo "4102444800:zap-install-plugin-token" > var/.httransaction && bin/console cache:pool:clear --all > /dev/null' < /dev/null
+    sh -c 'rm -f .maintenance && printf %s 4102444800:zap-install-plugin-token > var/.httransaction && bin/console cache:pool:clear --all > /dev/null' < /dev/null

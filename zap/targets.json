@@ -20,7 +20,7 @@
   {"target": "admin_mail", "thread_per_host": 1},
   {"target": "admin_mail_edit"},
   {"target": "admin_masterdata", "thread_per_host": 1},
-  {"target": "admin_mcp", "before_script": "admin_login.zst"},
+  {"target": "admin_mcp", "before_script": "admin_enable_mcp.zst"},
   {"target": "admin_member_edit"},
   {"target": "admin_member_setting", "context": "default"},
   {"target": "admin_news"},

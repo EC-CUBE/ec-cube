@@ -14,7 +14,7 @@
   },
   "statements": [
     {
-      "comment": "インストーラ。APP_ENV=install で実行する (zap/targets.json の app_env)。ステップ 5 の送信はテーブルを作り直して .env を書き換え、入力も「アップデートしない」のチェックボックスだけのため、表示だけにする",
+      "comment": "インストーラ。APP_ENV=install で実行する (zap/targets.json の app_env)。ステップ 5 の送信はテーブルを作り直して .env を書き換え、入力も「アップデートしない」のチェックボックスだけのため、表示だけにする。完了の画面 (/install/complete) も、GET で .env を書き出してキャッシュを消すため送らない (同じレーンの以降のターゲットが壊れる)",
       "index": 1,
       "enabled": true,
       "elementType": "ZestComment"
@@ -247,28 +247,6 @@
       "timestamp": 1655279449042,
       "cookies": [],
       "index": 13,
-      "enabled": true,
-      "elementType": "ZestRequest"
-    },
-    {
-      "url": "https://ec-cube/install/complete",
-      "data": "",
-      "method": "GET",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
-      "assertions": [
-        {
-          "rootExpression": {
-            "code": 200,
-            "not": false,
-            "elementType": "ZestExpressionStatusCode"
-          },
-          "elementType": "ZestAssertion"
-        }
-      ],
-      "followRedirects": false,
-      "timestamp": 1655279449042,
-      "cookies": [],
-      "index": 14,
       "enabled": true,
       "elementType": "ZestRequest"
     }
