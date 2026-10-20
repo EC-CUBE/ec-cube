@@ -17,6 +17,7 @@ namespace Eccube\Tests\Web\Admin\Setting\System;
 
 use Eccube\Tests\EnvOverrideTrait;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
+use Eccube\Util\CacheUtil;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -141,6 +142,37 @@ final class SecurityControllerTest extends AbstractAdminWebTestCase
             // 反映される TRUSTED_HOSTS は保存される
             $this->assertStringContainsString('TRUSTED_HOSTS='.$formData['trusted_hosts'], (string) $content);
         });
+    }
+
+    /**
+     * キャッシュ（ルーティング）を再生成できない環境では ECCUBE_ADMIN_ROUTE を書き換えず,
+     * CLI での変更を案内する. 他のキーは保存される.
+     */
+    public function testSubmitKeepsAdminRouteWhenBuildCacheIsNotRebuildable(): void
+    {
+        $session = $this->createSession($this->client);
+        $formData = $this->createFormData();
+
+        // CacheUtil を差し替えるため, リクエスト毎の kernel 再起動を止める
+        $this->client->disableReboot();
+        $cacheUtil = $this->createMock(CacheUtil::class);
+        $cacheUtil->method('canClearBuildCache')->willReturn(false);
+        self::getContainer()->set(CacheUtil::class, $cacheUtil);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_setting_system_security'),
+            ['admin_security' => $formData]
+        );
+
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_setting_system_security')));
+
+        $errors = $session->getFlashBag()->get('eccube.admin.error');
+        $this->assertContains('admin.setting.system.security.admin_url_not_rebuildable', $errors);
+
+        $content = (string) file_get_contents($this->envFile);
+        $this->assertDoesNotMatchRegularExpression('/ECCUBE_ADMIN_ROUTE='.$formData['admin_route_dir'].'/', $content);
+        $this->assertStringContainsString('TRUSTED_HOSTS='.$formData['trusted_hosts'], $content);
     }
 
     /**

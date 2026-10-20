@@ -120,6 +120,15 @@ class SecurityController extends AbstractController
             // 管理画面URLの更新. 上書きされておらず変更されている場合はログアウトし再ログインさせる.
             $adminRoute = $this->eccubeConfig['eccube_admin_route'];
             if ($adminRoute !== $data['admin_route_dir'] && !in_array('ECCUBE_ADMIN_ROUTE', $overriddenKeys, true)) {
+                // ルーティングはビルド時に固まるため, 作り直せない環境で .env だけを書き換えると
+                // ルーティングと firewall で管理画面のパスが食い違う. CLI での変更を案内する.
+                if (!$this->cacheUtil->canClearBuildCache()) {
+                    $this->addError('admin.setting.system.security.admin_url_not_rebuildable', 'admin');
+                    $this->cacheUtil->clearCache();
+
+                    return $this->redirectToRoute('admin_setting_system_security');
+                }
+
                 try {
                     $this->envFileService->set(['ECCUBE_ADMIN_ROUTE' => $data['admin_route_dir']]);
                 } catch (ContentWriteException $e) {

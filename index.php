@@ -41,11 +41,12 @@ if (!isset($_SERVER['APP_ENV'])) {
     }
 } elseif (class_exists(Dotenv::class) && $dotenvExists) {
     // OS 環境変数 APP_ENV が設定済みの環境（Docker など）でも .env を読み込む。
-    // 第2引数 false = 既存の OS 環境変数（Docker で設定済みのもの）は上書きしない。
+    // 既存の OS 環境変数（Docker で設定済みのもの）は上書きしない。
     // OS 環境変数を保護しつつ、.env 側の非 OS 変数（ECCUBE_TEMPLATE_CODE 等）は反映される。
     // これにより管理画面からのテンプレート切り替えが .env への書き込みで反映される。
     // putenv は使わない（スレッド安全性のため）ので、env() 関数（$_ENV / $_SERVER 優先）と整合する。
-    boot_env(__DIR__.'/.env', false);
+    // bin/console と同じ関数で読み込み、CLI で生成したキャッシュと設定値を一致させる。
+    boot_env_keeping_os_vars(__DIR__.'/.env', true);
 }
 // umask はコンテナ生成より前に決める必要があるため, 環境変数 ECCUBE_UMASK から読み込む.
 apply_umask();

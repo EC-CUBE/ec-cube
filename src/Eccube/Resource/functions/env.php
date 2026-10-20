@@ -39,6 +39,39 @@ function boot_env(string $path, bool $overrideExistingVars = false): void
 }
 
 /**
+ * OS 環境変数 APP_ENV が設定済みの環境（Docker など）で .env 系ファイルを読み込む.
+ *
+ * 既存の OS 環境変数は上書きせず, .env 側にだけある変数（ECCUBE_ADMIN_ROUTE 等）を反映する.
+ * index.php と bin/console は必ずこの関数で読み込むこと. 読み方が食い違うと,
+ * bin/console で生成したキャッシュ（ルーティング等）と Web のリクエスト処理で
+ * 設定値が一致しなくなる.
+ *
+ * $loadAppDebug が false の場合, OS 環境変数に無い APP_DEBUG を .env から取り込まない.
+ * EC-CUBE の .env は APP_ENV=prod かつ APP_DEBUG=0 を含むため, bin/console で
+ * `APP_ENV=dev bin/console cache:warmup --env=dev` のように OS 環境変数で env を切り替えた際,
+ * APP_DEBUG=0 が反映されて dev の debug コンテナが生成されなくなるのを避ける.
+ *
+ * @param string $path .env ファイルのパス
+ * @param bool $loadAppDebug .env の APP_DEBUG を取り込む場合は true
+ */
+function boot_env_keeping_os_vars(string $path, bool $loadAppDebug): void
+{
+    $hasOsAppDebug = isset($_SERVER['APP_DEBUG']) || isset($_ENV['APP_DEBUG']);
+
+    boot_env($path, false);
+
+    if ($loadAppDebug || $hasOsAppDebug) {
+        return;
+    }
+
+    unset($_SERVER['APP_DEBUG'], $_ENV['APP_DEBUG']);
+
+    // .env から読み込んだ変数の一覧からも除き, EnvFileService の判定と実際の値を一致させる
+    $dotenvVars = array_diff(explode(',', (string) ($_SERVER['SYMFONY_DOTENV_VARS'] ?? '')), ['APP_DEBUG']);
+    $_SERVER['SYMFONY_DOTENV_VARS'] = $_ENV['SYMFONY_DOTENV_VARS'] = implode(',', $dotenvVars);
+}
+
+/**
  * ECCUBE_UMASK が設定されている場合に umask を適用する.
  *
  * umask はコンテナを生成するより前に決める必要があるため, コンテナのパラメータではなく

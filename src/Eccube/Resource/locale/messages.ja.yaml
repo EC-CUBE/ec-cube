@@ -1485,6 +1485,7 @@ admin.setting.system.security_connect_card_title: 接続設定
 admin.setting.system.security.admin_url: 管理画面URL
 admin.setting.system.security.admin_url_description: 推測されにくいURLを設定することを推奨します。
 admin.setting.system.security.admin_url_changed: 管理画面のURLを変更しました。再度ログインを行ってください。
+admin.setting.system.security.admin_url_not_rebuildable: 'キャッシュを再生成できない環境のため、管理画面のURLは変更していません（その他の設定は保存しました）。サーバー上で bin/console eccube:env:set ECCUBE_ADMIN_ROUTE=<値> を実行してください。'
 admin.setting.system.security.ip_limit: IP制限(許可リスト)
 admin.setting.system.security.ip_limit_description: |
   管理機能へのアクセスを特定のIPアドレスからの接続のみに制限します。
