@@ -178,7 +178,9 @@ fi
 # compose 等で与えた環境変数を Web サーバー (mod_php) 側にも渡す。
 # DATABASE_URL が渡らないと Web だけ .env の値 (既定は SQLite) を読み、
 # CLI と Web で接続先が食い違う。
-echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS DATABASE_URL DATABASE_SERVER_VERSION DATABASE_CHARSET MAILER_DSN" > /etc/apache2/conf-enabled/eccube_env.conf
+# ECCUBE_ADMIN_ROUTE も同様で、渡らないと CLI で生成したルーティングと Web の firewall で
+# 管理画面のパスが食い違う。
+echo "PassEnv APP_ENV APP_DEBUG TRUSTED_PROXIES TRUSTED_HOSTS DATABASE_URL DATABASE_SERVER_VERSION DATABASE_CHARSET MAILER_DSN ECCUBE_ADMIN_ROUTE" > /etc/apache2/conf-enabled/eccube_env.conf
 
 # first arg is `-f` or `--some-option`
 if [ "${1#-}" != "$1" ]; then

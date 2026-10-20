@@ -313,6 +313,44 @@ jobs:
           curl -fsS -k -o /dev/null "${BASE_URL}/"
           curl -fsS -k -o /dev/null "${BASE_URL}/${ADMIN_ROUTE}/login"
 
+      ## 管理画面のパスは .env にだけ書かれ、 OS 環境変数には無い。 CLI が .env を読まずに
+      ## キャッシュを作ると、 ルーティング (CLI で生成) と firewall (Web が実行時に .env から読む) で
+      ## パスが食い違う。 CLI で変更した後、 新しいパスが管理画面として保護され、 古いパスが
+      ## 残らないことを固定する
+      - name: Change the admin route from the CLI
+        run: |
+          set -e
+          NEW_ADMIN_ROUTE=lanesadmin
+          expect() {  # $1=path $2=期待するステータスコード
+            ACTUAL=$(curl -s -k -o /dev/null -w '%{http_code}' "${BASE_URL}$1")
+            [ "${ACTUAL}" = "$2" ] || { echo "::error::$1 が ${ACTUAL} を返しました (期待値 $2)"; exit 1; }
+          }
+          ok3() { [ "$1" -eq 0 ] || [ "$1" -eq 3 ] || { echo "::error::$2 が終了コード $1 で終わりました"; exit 1; }; }
+
+          ## この構成は DATABASE_URL を compose で渡すため .env が作られない。
+          ## eccube:env:set は既存の .env へ書き込むので、空のファイルを用意する
+          docker compose exec -T -u "${CLI_USER}" ec-cube touch .env
+
+          set +e
+          docker compose exec -T -u "${CLI_USER}" ec-cube \
+            bin/console eccube:env:set "ECCUBE_ADMIN_ROUTE=${NEW_ADMIN_ROUTE}"
+          STATUS=$?
+          set -e
+          ok3 "${STATUS}" 'eccube:env:set'
+          expect "/${NEW_ADMIN_ROUTE}/" 302
+          expect "/${ADMIN_ROUTE}/" 404
+
+          ## 手順書どおり CLI でキャッシュを作り直しても変わらない
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:cache:build
+          expect "/${NEW_ADMIN_ROUTE}/" 302
+          expect "/${ADMIN_ROUTE}/" 404
+
+          ## 後続の E2E のために .env の無い状態へ戻す
+          docker compose exec -T -u "${CLI_USER}" ec-cube rm .env
+          docker compose exec -T -u "${CLI_USER}" ec-cube bin/console eccube:cache:build
+          expect "/${ADMIN_ROUTE}/login" 200
+          expect "/${NEW_ADMIN_ROUTE}/" 404
+
       ## 管理画面からは作れないページを CLI で作っておき、 Playwright から
       ## 「反映されること」と「削除操作が無効化されていること」を確認する。
       ## 削除の UI はユーザーが作成したページ (EDIT_TYPE_USER) にしか出ないため、

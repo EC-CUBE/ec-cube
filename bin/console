@@ -18,13 +18,6 @@ $dotenvExists = file_exists(__DIR__.'/../.env')
     || file_exists(__DIR__.'/../.env.local')
     || file_exists(__DIR__.'/../.env.local.php');
 
-// OS 環境変数 APP_ENV が設定済みの場合は .env を読み込まない（従来の bin/console の挙動）。
-// これにより、rector CI のように `APP_ENV=dev bin/console cache:warmup --env=dev` と
-// OS 環境変数で env を切り替える際、.env（prod）の APP_DEBUG=0 が読み込まれて
-// debug=false になり、dev の debug コンテナ（Eccube_KernelDevDebugContainer.xml）が
-// 生成されない問題を避ける。
-// 注: CLI 引数 --env のみ（OS 環境変数 APP_ENV なし）では $_SERVER['APP_ENV'] は
-// セットされずこの分岐に入らないため、.env は読み込まれる。
 if (!isset($_SERVER['APP_ENV'])) {
     // OS 環境変数 APP_ENV が未設定の環境: .env を設定の源泉として読み込む。
     // 第2引数 true = .env 系の値が既存値より優先（従来の overload 相当）。
@@ -33,6 +26,15 @@ if (!isset($_SERVER['APP_ENV'])) {
     } else {
         (new Dotenv())->overload(__DIR__.'/../.env.install');
     }
+} elseif ($dotenvExists) {
+    // OS 環境変数 APP_ENV が設定済みの環境（Docker など）でも、index.php と同じく .env を読み込む。
+    // 読み込まないと、.env にだけある値（ECCUBE_ADMIN_ROUTE 等）がキャッシュ（ルーティング等）に
+    // 反映されず、Web のリクエスト処理と設定値が食い違う。
+    // ただし .env の APP_DEBUG は取り込まない。rector CI のように
+    // `APP_ENV=dev bin/console cache:warmup --env=dev` と OS 環境変数で env を切り替える際、
+    // .env（prod）の APP_DEBUG=0 で debug=false になり、dev の debug コンテナ
+    // （Eccube_KernelDevDebugContainer.xml）が生成されなくなるため。
+    boot_env_keeping_os_vars(__DIR__.'/../.env', false);
 }
 
 // umask はコンテナ生成より前に決める必要があるため, 環境変数 ECCUBE_UMASK から読み込む.
