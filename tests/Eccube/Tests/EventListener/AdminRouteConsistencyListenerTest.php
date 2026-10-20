@@ -51,6 +51,18 @@ final class AdminRouteConsistencyListenerTest extends EccubeTestCase
     }
 
     /**
+     * ルーティングはデコードしたパスで照合するため, パーセントエンコードしたパスも止める.
+     */
+    public function testRejectsPercentEncodedStaleAdminPath(): void
+    {
+        $listener = $this->createListener('/admin/', 'newadmin');
+
+        $this->expectException(ServiceUnavailableHttpException::class);
+
+        $listener->onKernelRequest($this->createEvent('/%61dmin/product'));
+    }
+
+    /**
      * ベース URL 配下に設置した場合も, ベース URL を除いたパスで比較する.
      */
     public function testRejectsStaleAdminPathUnderBaseUrl(): void

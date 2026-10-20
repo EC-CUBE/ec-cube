@@ -69,7 +69,8 @@ class AdminRouteConsistencyListener implements EventSubscriberInterface
             return;
         }
 
-        if (!str_starts_with($event->getRequest()->getPathInfo(), $routedPrefix)) {
+        // ルーティングと firewall はデコードしたパスで照合するため, 同じくデコードしてから比較する
+        if (!str_starts_with(rawurldecode($event->getRequest()->getPathInfo()), $routedPrefix)) {
             return;
         }
 
