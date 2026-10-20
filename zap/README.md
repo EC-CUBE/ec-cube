@@ -173,8 +173,15 @@ High と Medium は、ZAP の判定によらず、レーンで攻撃を送り直
 | SameSite=None (10054) | 仕様 | セッションの Cookie の設定 (`app/config/eccube/packages/framework.yaml`) |
 | Timestamp Disclosure (10096) | 仕様 | 応答の数値が Unix 時刻の範囲にあるもの |
 | Cross-Domain JavaScript Source File Inclusion (10017) | 仕様 | 郵便番号から住所を入れる YubinBango を外部から読み込む |
+| Big Redirect Detected (10044) | 誤検知 | 本文は Symfony の標準のリダイレクトのページで、移動先の URL しか含まない。ZAP の基準 (Location の長さ + 300 バイト) を数バイト超えるだけ |
+| GET for POST (10058) | 誤検知 | GET でも同じ画面を返すだけで、処理は POST のフォームでしか進まない。退会・キャッシュの削除は、正しいトークンを付けた GET でも処理されないことを確かめた |
+| User Controllable HTML Element Attribute (10031) | 誤検知 | ACP のクライアントの登録で入力値が value 属性に出るが、エスケープされる |
 
-判断していないもの: Big Redirect Detected (10044、Low) と Informational のルール。
+判断していないもの: Re-examine Cache-control Directives (10015) と、ZAP が仕組みを見つけたことを知らせるだけの Informational のルール
+(セッション管理の応答 10112、認証のリクエスト 10111、モダンな Web アプリ 10109)。
+
+受動スキャンのルール (10202 など) のフィルターは、同じ条件のアラートでも ZAP が外すものと外さないものがあります (原因は未調査)。
+能動スキャンのルールでは当てはまるものがすべて外れ、CI の合否 (High) には影響しません。`bin/review_alerts.py` は今のフィルターで判定し直します。
 新しく判断したものは、該当する方へ足し、この表も直してください。
 
 ## GitHub Actions で実行する
