@@ -52,6 +52,9 @@ jobs:
       - name: Lint zst
         run: zap/bin/lint_zst.sh
 
+      - name: Lint options.properties
+        run: zap/bin/lint_options.sh
+
       - name: Build matrix
         id: matrix
         env:
