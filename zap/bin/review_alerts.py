@@ -12,10 +12,11 @@ usage: review_alerts.py -o review.html [-f zap/options.properties] [-k zap/known
   zap/bin/review_alerts.py -o out/review.html pgsql=out/pgsql
 
   - 全レベル (Informational まで) のアラートを、ルールごとに URL (ID を {id} に正規化) とパラメータでまとめる
-  - 除外は ZAP が付けた判定 (options.properties のフィルターで confidence が False Positive になったもの) と、
-    check_results.sh と同じく根拠の無い Path Traversal。フィルターに当てはまるのに ZAP が外していないものは
-    「フィルター #N が効いていない」と出す。除外の理由は、フィルターの直前のコメント
-  - zap/known_alerts.tsv に当てはまるもの (仕様・誤検知と判断済み) は「既知」として理由を出す
+  - 各箇所を「要確認」「除外」「既知」に分け、要確認が残るルールを先に並べる
+  - 除外は、今の options.properties のフィルターに当てはまるもの (ZAP が False Positive にしたものを含む) と、
+    check_results.sh と同じく根拠の無い Path Traversal。理由はフィルターの直前のコメント。
+    スキャンの時点で ZAP がまだ外していなかったものには「スキャンの時点では ZAP で未適用」と添える
+  - 既知は、zap/known_alerts.tsv に当てはまるもの (仕様・誤検知と判断済み)
   - ルール名・説明・対処法は HTML レポートから取る
   - 判定とメモはブラウザの localStorage に保存し、CSV で書き出せる
   - 攻撃の値はエスケープして出力する。外部のファイルは読み込まない
@@ -182,7 +183,7 @@ def main():
     known = load_known(args.known)
     rules = {}   # ruleid -> {variants: {ref: info}}
     instances = collections.defaultdict(lambda: collections.defaultdict(lambda: {
-        'count': 0, 'targets': set(), 'labels': set(), 'risk': set(), 'conf': set(),
+        'count': 0, 'open': 0, 'targets': set(), 'labels': set(), 'risk': set(), 'conf': set(),
         'filtered': collections.Counter(), 'notes': collections.Counter(), 'known': collections.Counter(), 'samples': [], 'raw_urls': set()}))
     targets = collections.defaultdict(set)
     risk_counts = collections.defaultdict(collections.Counter)
@@ -221,17 +222,18 @@ def main():
                 rid = int(a.get('ruleid'))
                 rules.setdefault(rid, {'variants': {}})
                 fid = filtered_by(filters, a)
-                # 除外は ZAP が実際に付けた判定で決める (フィルターが効くと confidence が False Positive になる)。
+                # 除外: ZAP が外したもの (フィルターが効くと confidence が False Positive になる) と、今の
+                # options.properties のフィルターに当てはまるもの。スキャンの後で足したフィルターも判断に使うため。
                 # check_results.sh と同じく、根拠の無い Path Traversal も High の判定から外している
-                if a.get('confidence') == 0:
-                    comment = dict(filters).get(fid, {}).get('comment') if fid is not None else ''
+                comment = dict(filters).get(fid, {}).get('comment', '') if fid is not None else ''
+                if a.get('confidence') == 0 or fid is not None:
                     excluded = 'フィルター #%s%s' % (fid if fid is not None else '?', ': ' + comment if comment else '')
                 elif rid == 6 and not a.get('evidence'):
                     excluded = '根拠なしの Path Traversal'
                 else:
                     excluded = None
                 if fid is not None and a.get('confidence') != 0:
-                    ins_note = 'フィルター #%d が効いていない' % fid
+                    ins_note = 'スキャンの時点では ZAP で未適用 (フィルター #%d)' % fid
                 else:
                     ins_note = None
                 key = (a.get('method') or '', norm_url(a.get('url')), a.get('param') or '')
@@ -249,12 +251,16 @@ def main():
                 kn = known_as(known, a)
                 if kn:
                     ins['known'][kn] += 1
+                settled = bool(excluded or kn)
+                if not settled:
+                    ins['open'] += 1
                 if len(ins['samples']) < 2 and (a.get('attack') or a.get('evidence')):
                     sample = (a.get('attack') or '', a.get('evidence') or '')
                     if sample not in ins['samples']:
                         ins['samples'].append(sample)
-                risk_counts[label]['ex' if excluded else a.get('risk')] += 1
-                tcount['ex' if excluded else a.get('risk')] += 1
+                risk_counts[label][(a.get('risk'), settled)] += 1
+                tcount[a.get('risk')] += 0 if settled else 1
+                tcount['settled'] += 1 if settled else 0
 
     labels = [s.partition('=')[0] for s in args.sources]
     rows = []
@@ -262,12 +268,25 @@ def main():
         variants = rules.get(rid, {}).get('variants', {})
         risk = max(r for i in ins.values() for r in i['risk'])
         total = sum(i['count'] for i in ins.values())
-        unfiltered = sum(i['count'] - sum(i['filtered'].values()) for i in ins.values())
-        nknown = sum(sum(i['known'].values()) for i in ins.values())
-        rows.append((risk, total, rid, variants, ins, unfiltered, nknown))
-    rows.sort(key=lambda r: (-r[0], -r[5], r[2]))
+        nopen = sum(i['open'] for i in ins.values())
+        open_places = sum(1 for i in ins.values() if i['open'])
+        rows.append({'risk': risk, 'total': total, 'rid': rid, 'variants': variants, 'ins': ins,
+                     'open': nopen, 'open_places': open_places})
+    # 要確認が残るルールを先に、リスクの高い順に並べる
+    rows.sort(key=lambda r: (r['open'] == 0, -r['risk'], -r['open'], r['rid']))
 
     e = html.escape
+
+    def state_of(i):
+        """箇所の状態: (CSS のクラス, 表示, 理由の一覧)"""
+        reasons = [k for k in i['known']] + [k for k in i['filtered']]
+        if i['open']:
+            return 'open', '要確認' if i['open'] == i['count'] else '要確認 (一部)', reasons
+        if i['known']:
+            kinds = sorted({k.split(':', 1)[0] for k in i['known']})
+            return 'known', '既知・' + '/'.join(kinds), reasons
+        return 'excluded', '除外', reasons
+
     out = []
     w = out.append
     w('<!doctype html><html lang="ja"><head><meta charset="utf-8">')
@@ -276,41 +295,58 @@ def main():
     w('<header><h1>%s</h1>' % e(args.title))
     w('<p class="meta">入力: %s</p>' % ' / '.join(
         '%s (%d ターゲット)' % (e(l), len(targets[l])) for l in labels))
-    w('<table class="sum"><tr><th>リスク</th>%s<th>ルール数</th></tr>' % ''.join('<th>%s</th>' % e(l) for l in labels))
+    w('<div class="sumwrap"><table class="sum"><tr><th rowspan="2">リスク</th>%s<th colspan="2">ルール数</th></tr><tr>%s<th>要確認あり</th><th>判断済み</th></tr>' % (
+        ''.join('<th colspan="2">%s</th>' % e(l) for l in labels),
+        ''.join('<th class="st-open">要確認</th><th>判断済み</th>' for _ in labels)))
     for rk in (3, 2, 1, 0, -1):
-        nrules = sum(1 for r in rows if r[0] == rk)
-        if not nrules and not any(risk_counts[l][rk] for l in labels):
+        rr = [r for r in rows if r['risk'] == rk]
+        if not rr and not any(risk_counts[l][(rk, x)] for l in labels for x in (True, False)):
             continue
-        w('<tr><td><span class="risk r%d">%s</span></td>%s<td>%d</td></tr>' % (
-            rk if rk >= 0 else 9, RISK[rk], ''.join('<td>%d</td>' % risk_counts[l][rk] for l in labels), nrules))
-    w('<tr><td>除外</td>%s<td></td></tr>' % ''.join('<td>%d</td>' % risk_counts[l]['ex'] for l in labels))
-    w('</table>')
-    w('<p class="meta">件数は ZAP が出したアラートの件数 (同じ画面・項目で重複を含む)。'
-      '「除外」は zap/options.properties の誤検知フィルター、または check_results.sh が High の判定から外すもの。'
-      '「既知」は zap/known_alerts.tsv で仕様・誤検知と判断済みのもの (理由は zap/README.md の「既知のアラート」)。'
-      '判定とメモはこのブラウザの localStorage に保存され、「CSV で書き出す」で取り出せます。</p>')
+        w('<tr><td><span class="risk r%d">%s</span></td>%s<td class="st-open">%d</td><td>%d</td></tr>' % (
+            rk if rk >= 0 else 9, RISK[rk],
+            ''.join('<td class="st-open">%s</td><td>%d</td>' % (risk_counts[l][(rk, False)] or '—', risk_counts[l][(rk, True)]) for l in labels),
+            sum(1 for r in rr if r['open']), sum(1 for r in rr if not r['open'])))
+    w('</table></div>')
+    w('<p class="meta">件数は ZAP が出したアラートの件数 (同じ画面・項目の重複を含む)。'
+      '<span class="chip open">要確認</span> まだ判断していないもの。'
+      '<span class="chip excluded">除外</span> zap/options.properties の誤検知フィルター、または check_results.sh が High の判定から外すもの。'
+      '<span class="chip known">既知</span> zap/known_alerts.tsv で仕様・誤検知と判断済みのもの (zap/README.md の「既知のアラート」)。'
+      '判定とメモはこのブラウザの localStorage に保存され、「CSV で書き出す」で取り出せます。</p></header>')
     w('<div class="controls"><label>リスク <select id="frisk"><option value="0">Informational 以上</option>'
       '<option value="1">Low 以上</option><option value="2">Medium 以上</option><option value="3">High</option></select></label>'
-      '<label><input type="checkbox" id="fhide"> 除外・既知の行を隠す</label>'
-      '<label><input type="checkbox" id="fundecided"> 未判定のルールだけ (すべて既知のルールを除く)</label>'
+      '<label><input type="checkbox" id="fhide"> 要確認だけを表示 (除外・既知を隠す)</label>'
+      '<label><input type="checkbox" id="fundecided"> 判定を付けていないルールだけ</label>'
       '<input type="search" id="fq" placeholder="ルール名・URL・ターゲットで絞り込み">'
       '<button id="expand">すべて開く</button><button id="collapse">すべて閉じる</button>'
-      '<button id="csv">CSV で書き出す</button></div></header><main>')
+      '<button id="csv">CSV で書き出す</button></div><main>')
 
-    for risk, total, rid, variants, ins, unfiltered, nknown in rows:
+    w('<h2 class="sec">要確認が残るルール (%d)</h2>' % sum(1 for r in rows if r['open']))
+    settled_header = False
+    for r in rows:
+        risk, total, rid, variants, ins = r['risk'], r['total'], r['rid'], r['variants'], r['ins']
+        if not r['open'] and not settled_header:
+            w('<h2 class="sec settled-sec">判断済みのルール (%d)。すべて除外・既知</h2>' % sum(1 for x in rows if not x['open']))
+            settled_header = True
         names = sorted({v['name'] for v in variants.values() if v['name']}) or ['(名前不明: ルール %d)' % rid]
         v0 = next(iter(variants.values()), {})
-        allknown = nknown == total
-        w('<details class="rule" data-risk="%d" data-rule="%d" data-known="%d">' % (risk, rid, 1 if allknown else 0))
-        w('<summary><span class="risk r%d">%s</span> <b>%s</b> <span class="rid">%d</span>'
-          ' <span class="cnt">%d 件 / %d 箇所%s</span>'
+        n_ex = sum(1 for i in ins.values() if state_of(i)[0] == 'excluded')
+        n_kn = sum(1 for i in ins.values() if state_of(i)[0] == 'known')
+        if r['open']:
+            badge = '<span class="chip open">要確認 %d 箇所</span>' % r['open_places']
+        else:
+            badge = '<span class="chip done">判断済み</span>'
+        extra = ''.join(x for x in (
+            ' <span class="chip excluded">除外 %d</span>' % n_ex if n_ex else '',
+            ' <span class="chip known">既知 %d</span>' % n_kn if n_kn else ''))
+        w('<details class="rule %s" data-risk="%d" data-rule="%d" data-settled="%d">' % (
+            'is-open' if r['open'] else 'is-settled', risk, rid, 0 if r['open'] else 1))
+        w('<summary><span class="risk r%d">%s</span> <b>%s</b> <span class="rid">%d</span> %s%s'
+          ' <span class="cnt">%d 箇所 / %d 件</span>'
           ' <select class="verdict" data-rule="%d" onclick="event.stopPropagation()">'
-          '<option value="">未判定</option><option>対応要</option><option>要調査</option>'
+          '<option value="">判定なし</option><option>対応要</option><option>要調査</option>'
           '<option>誤検知</option><option>許容</option><option>情報のみ</option></select></summary>' % (
-              risk if risk >= 0 else 9, RISK.get(risk, risk), e(' / '.join(names)), rid, total, len(ins),
-              ''.join(x for x in (
-                  '' if unfiltered == total else ' (うち除外 %d 件)' % (total - unfiltered),
-                  '' if not nknown else (' すべて既知' if allknown else ' (うち既知 %d 件)' % nknown))), rid))
+              risk if risk >= 0 else 9, RISK.get(risk, risk), e(' / '.join(names)), rid, badge, extra,
+              len(ins), total, rid))
         w('<div class="body">')
         if v0:
             w('<details class="info"><summary>ルールの説明と対処法</summary>')
@@ -321,33 +357,35 @@ def main():
             w('</details>')
             meta = []
             refs = sorted({v['ref'] for v in variants.values() if v['ref']})
-            meta += ['<a href="https://www.zaproxy.org/docs/alerts/%s/" rel="noreferrer">%s</a>' % (e(r), e(r)) for r in refs]
+            meta += ['<a href="https://www.zaproxy.org/docs/alerts/%s/" rel="noreferrer">%s</a>' % (e(x), e(x)) for x in refs]
             if v0.get('cwe'):
                 meta.append('CWE-%s' % e(v0['cwe']))
             if v0.get('wasc'):
                 meta.append('WASC-%s' % e(v0['wasc']))
             w('<p class="meta">%s</p>' % ' · '.join(meta))
         w('<textarea class="memo" data-rule="%d" placeholder="メモ"></textarea>' % rid)
-        w('<table class="ins"><thead><tr><th>メソッド</th><th>URL (正規化)</th><th>パラメータ</th><th>件数</th>'
-          '<th>%s</th><th>ターゲット</th><th>除外</th><th>既知 (zap/known_alerts.tsv)</th><th>攻撃 / 根拠 (例)</th></tr></thead><tbody>' % '/'.join(e(l) for l in labels))
-        for (method, url, param), i in sorted(ins.items(), key=lambda kv: (-kv[1]['count'], kv[0])):
-            fcount = sum(i['filtered'].values())
-            settled = fcount + sum(i['known'].values()) >= i['count']
+        w('<table class="ins"><thead><tr><th>状態</th><th>メソッド</th><th>URL (正規化)</th><th>パラメータ</th><th>件数</th>'
+          '<th>%s</th><th>ターゲット</th><th>理由</th><th>攻撃 / 根拠 (例)</th></tr></thead><tbody>' % '/'.join(e(l) for l in labels))
+        # 要確認の箇所を先に
+        order = {'open': 0, 'known': 1, 'excluded': 2}
+        for (method, url, param), i in sorted(ins.items(), key=lambda kv: (order[state_of(kv[1])[0]], -kv[1]['count'], kv[0])):
+            cls, text, reasons = state_of(i)
             tg = sorted(i['targets'])
             tgs = ', '.join(e(t) for t in tg[:6]) + (' ほか %d' % (len(tg) - 6) if len(tg) > 6 else '')
             samples = ''.join('<div><code>%s</code>%s</div>' % (
                 e(a[:300]) or '—', (' → <code>%s</code>' % e(ev[:300])) if ev else '') for a, ev in i['samples'])
-            w('<tr class="%s" data-text="%s"><td>%s</td><td class="url">%s</td><td>%s</td><td>%d</td><td>%s</td>'
-              '<td>%s</td><td>%s</td><td>%s</td><td class="sample">%s</td></tr>' % (
-                  'fonly' if settled else '', e(' '.join([url, param] + tg).lower()), e(method), e(url), e(param),
-                  i['count'], ' '.join('●' if l in i['labels'] else '·' for l in labels), tgs,
-                  e(', '.join('%s %d' % kv for kv in list(i['filtered'].items()) + list(i['notes'].items()))),
-                  e(' / '.join(k for k in i['known'])) + ('' if sum(i['known'].values()) in (0, i['count']) else ' (一部)'), samples))
+            why = ''.join('<div>%s</div>' % e(x) for x in reasons)
+            why += ''.join('<div class="note">%s</div>' % e(x) for x in i['notes'])
+            w('<tr class="st-%s" data-text="%s"><td><span class="chip %s">%s</span></td><td>%s</td><td class="url">%s</td><td>%s</td>'
+              '<td>%d</td><td>%s</td><td>%s</td><td class="why">%s</td><td class="sample">%s</td></tr>' % (
+                  cls, e(' '.join([url, param] + tg).lower()), cls, e(text), e(method), e(url), e(param),
+                  i['count'], ' '.join('●' if l in i['labels'] else '·' for l in labels), tgs, why, samples))
         w('</tbody></table></div></details>')
-    w('<details class="rule"><summary><b>ターゲット別の結果</b> <span class="cnt">%d ターゲット</span></summary><div class="body">' % len(status))
-    w('<p class="meta">再生の失敗は check_results.sh と同じ数え方 (passed = false / Assign: failed / Form error)。High〜Info は除外を除いた件数。</p>')
+    w('<h2 class="sec">ターゲット別の結果</h2>')
+    w('<details class="rule tgt-table"><summary><b>ターゲット別の結果</b> <span class="cnt">%d ターゲット</span></summary><div class="body">' % len(status))
+    w('<p class="meta">再生の失敗は check_results.sh と同じ数え方 (passed = false / Assign: failed / Form error)。High〜Info は要確認の件数。</p>')
     w('<table class="ins"><thead><tr><th>ターゲット</th>%s</tr></thead><tbody>' % ''.join(
-        '<th>%s: プラン</th><th>再生の失敗</th><th>High / Med / Low / Info / 除外</th>' % e(l) for l in labels))
+        '<th>%s: プラン</th><th>再生の失敗</th><th>要確認 High / Med / Low / Info・判断済み</th>' % e(l) for l in labels))
     for tgt in sorted(status):
         cells = ''
         for l in labels:
@@ -356,32 +394,46 @@ def main():
                 continue
             plan, fails, total, c = status[tgt][l]
             cells += '<td>%s</td><td>%d / %d</td><td>%d / %d / %d / %d / %d</td>' % (
-                e(plan), fails, total, c[3], c[2], c[1], c[0], c['ex'])
-        w('<tr data-text="%s"><td>%s</td>%s</tr>' % (e(tgt), e(tgt), cells))
+                e(plan), fails, total, c[3], c[2], c[1], c[0], c['settled'])
+        w('<tr class="tgt" data-text="%s"><td>%s</td>%s</tr>' % (e(tgt), e(tgt), cells))
     w('</tbody></table></div></details>')
     w('</main><script>%s</script></body></html>' % JS)
     with open(args.output, 'w', encoding='utf-8') as fh:
         fh.write('\n'.join(out))
-    print('%s: %d rules, %d instances' % (args.output, len(rows), sum(len(r[4]) for r in rows)))
+    print('%s: %d rules, %d instances' % (args.output, len(rows), sum(len(r['ins']) for r in rows)))
 
 
 CSS = r'''
-:root{--bg:#fff;--fg:#1d1d1f;--mut:#6b6b70;--line:#e2e2e6;--card:#f7f7f9;--hi:#c62828;--md:#e8710a;--lo:#c9a400;--in:#1a73e8;--fp:#888;--code:#f1f1f4}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17171a;--fg:#e8e8ea;--mut:#9a9aa2;--line:#33333a;--card:#1f1f24;--code:#26262c}}
-:root[data-theme="dark"]{--bg:#17171a;--fg:#e8e8ea;--mut:#9a9aa2;--line:#33333a;--card:#1f1f24;--code:#26262c}
+:root{--bg:#fff;--fg:#1d1d1f;--mut:#6b6b70;--line:#e2e2e6;--card:#f7f7f9;--hi:#c62828;--md:#e8710a;--lo:#c9a400;--in:#1a73e8;--fp:#888;--code:#f1f1f4;
+--open-bg:#fdecea;--open-fg:#b3261e;--open-bd:#e8a29c;--ex-bg:#ececef;--ex-fg:#55555c;--kn-bg:#e6f4ea;--kn-fg:#1e6b34;--done-bg:#e6f4ea;--done-fg:#1e6b34;--note:#9a5b00}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17171a;--fg:#e8e8ea;--mut:#9a9aa2;--line:#33333a;--card:#1f1f24;--code:#26262c;
+--open-bg:#4a1e1b;--open-fg:#ffb4ab;--open-bd:#8c3a33;--ex-bg:#2c2c32;--ex-fg:#b5b5bd;--kn-bg:#173a24;--kn-fg:#9fd8ad;--done-bg:#173a24;--done-fg:#9fd8ad;--note:#f0b45a}}
+:root[data-theme="dark"]{--bg:#17171a;--fg:#e8e8ea;--mut:#9a9aa2;--line:#33333a;--card:#1f1f24;--code:#26262c;
+--open-bg:#4a1e1b;--open-fg:#ffb4ab;--open-bd:#8c3a33;--ex-bg:#2c2c32;--ex-fg:#b5b5bd;--kn-bg:#173a24;--kn-fg:#9fd8ad;--done-bg:#173a24;--done-fg:#9fd8ad;--note:#f0b45a}
+:root{color-scheme:light dark;--link:#0b57d0}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--link:#8ab4f8}}:root[data-theme="dark"]{--link:#8ab4f8}a{color:var(--link)}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.55 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
-header{position:sticky;top:0;background:var(--bg);border-bottom:1px solid var(--line);padding:12px 16px;z-index:2}
+header{padding:12px 16px 0}.sumwrap{overflow-x:auto}
 h1{font-size:18px;margin:0 0 4px}main{padding:12px 16px}.meta{color:var(--mut);font-size:12px;margin:4px 0}
+h2.sec{font-size:15px;margin:18px 0 6px;padding-bottom:4px;border-bottom:2px solid var(--line)}
 table.sum{border-collapse:collapse;margin:6px 0}table.sum td,table.sum th{border:1px solid var(--line);padding:2px 10px;text-align:right}
-.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:6px}.controls input[type=search]{flex:1;min-width:200px;padding:4px 8px}
+table.sum .st-open{background:var(--open-bg);color:var(--open-fg);font-weight:600}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 16px}.controls input[type=search]{flex:1;min-width:200px;padding:4px 8px}
 details.rule{border:1px solid var(--line);border-radius:6px;margin:6px 0;background:var(--card)}
+details.rule.is-open{border-left:5px solid var(--open-fg)}
+details.rule.is-settled{opacity:.72}details.rule.is-settled[open]{opacity:1}
 details.rule>summary{cursor:pointer;padding:6px 10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .body{padding:0 10px 10px;overflow-x:auto}.rid{color:var(--mut);font-size:12px}.cnt{color:var(--mut);font-size:12px;margin-left:auto}
 .risk{display:inline-block;min-width:92px;text-align:center;border-radius:4px;color:#fff;font-size:12px;padding:1px 6px}
 .r3{background:var(--hi)}.r2{background:var(--md)}.r1{background:var(--lo);color:#222}.r0{background:var(--in)}.r9{background:var(--fp)}
+.chip{display:inline-block;border-radius:999px;font-size:11.5px;padding:0 8px;white-space:nowrap;border:1px solid transparent}
+.chip.open{background:var(--open-bg);color:var(--open-fg);border-color:var(--open-bd);font-weight:700}
+.chip.excluded{background:var(--ex-bg);color:var(--ex-fg)}.chip.known{background:var(--kn-bg);color:var(--kn-fg)}
+.chip.done{background:var(--done-bg);color:var(--done-fg);font-weight:700}
 table.ins{border-collapse:collapse;width:100%;font-size:12px}table.ins th,table.ins td{border-bottom:1px solid var(--line);padding:3px 6px;text-align:left;vertical-align:top}
-td.url{word-break:break-all;min-width:240px}td.sample{max-width:420px;word-break:break-all}code{background:var(--code);padding:0 3px;border-radius:3px}
-tr.fonly{opacity:.5}textarea.memo{width:100%;min-height:2.2em;margin:4px 0;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
+tr.st-open td{background:var(--open-bg)}tr.st-excluded,tr.st-known{color:var(--mut)}
+td.url{word-break:break-all;min-width:220px}td.sample{max-width:380px;word-break:break-all}td.why{min-width:220px;max-width:420px}
+td.why .note{color:var(--note)}code{background:var(--code);padding:0 3px;border-radius:3px}
+textarea.memo{width:100%;min-height:2.2em;margin:4px 0;background:var(--bg);color:var(--fg);border:1px solid var(--line)}
 .desc,.sol{margin:6px 0}details.info>summary{cursor:pointer;color:var(--mut);font-size:12px;margin:4px 0}.hidden{display:none}
 '''
 
@@ -392,16 +444,18 @@ document.querySelectorAll('select.verdict').forEach(s=>{const r=s.dataset.rule;s
 document.querySelectorAll('textarea.memo').forEach(t=>{const r=t.dataset.rule;t.value=(st[r]||{}).m||'';t.oninput=()=>{(st[r]=st[r]||{}).m=t.value;save()}});
 const $=id=>document.getElementById(id);
 function apply(){const min=+$('frisk').value,hide=$('fhide').checked,und=$('fundecided').checked,q=$('fq').value.trim().toLowerCase();
-document.querySelectorAll('details.rule').forEach(d=>{let ok=+d.dataset.risk>=min||+d.dataset.risk<0&&min==0;
-if(und&&((st[d.dataset.rule]||{}).v||d.dataset.known=='1'))ok=false;
+document.querySelectorAll('details.rule[data-rule]').forEach(d=>{let ok=+d.dataset.risk>=min||+d.dataset.risk<0&&min==0;
+if(hide&&d.dataset.settled=='1')ok=false;
+if(und&&(st[d.dataset.rule]||{}).v)ok=false;
 const name=d.querySelector('summary b').textContent.toLowerCase();let any=false;
-d.querySelectorAll('tbody tr').forEach(tr=>{let v=!(hide&&tr.classList.contains('fonly'));if(v&&q&&!name.includes(q)&&!tr.dataset.text.includes(q))v=false;tr.classList.toggle('hidden',!v);any=any||v});
-d.classList.toggle('hidden',!ok||!any)})}
+d.querySelectorAll('tbody tr').forEach(tr=>{let v=!(hide&&!tr.classList.contains('st-open'));if(v&&q&&!name.includes(q)&&!tr.dataset.text.includes(q))v=false;tr.classList.toggle('hidden',!v);any=any||v});
+d.classList.toggle('hidden',!ok||!any)});
+const sec=document.querySelector('h2.settled-sec');if(sec)sec.classList.toggle('hidden',hide)}
 ['frisk','fhide','fundecided','fq'].forEach(i=>$(i).addEventListener('input',apply));
 $('expand').onclick=()=>document.querySelectorAll('details.rule:not(.hidden)').forEach(d=>d.open=true);
 $('collapse').onclick=()=>document.querySelectorAll('details.rule').forEach(d=>d.open=false);
-$('csv').onclick=()=>{const q=s=>'"'+String(s).replace(/"/g,'""')+'"';const rows=[['rule','name','risk','verdict','memo']];
-document.querySelectorAll('details.rule').forEach(d=>{const r=d.dataset.rule;rows.push([r,d.querySelector('summary b').textContent,d.querySelector('.risk').textContent,(st[r]||{}).v||'',(st[r]||{}).m||''])});
+$('csv').onclick=()=>{const q=s=>'"'+String(s).replace(/"/g,'""')+'"';const rows=[['rule','name','risk','state','verdict','memo']];
+document.querySelectorAll('details.rule[data-rule]').forEach(d=>{const r=d.dataset.rule;rows.push([r,d.querySelector('summary b').textContent,d.querySelector('.risk').textContent,d.dataset.settled=='1'?'判断済み':'要確認',(st[r]||{}).v||'',(st[r]||{}).m||''])});
 const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['﻿'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='zap-review.csv';a.click()};
 apply();
 '''
