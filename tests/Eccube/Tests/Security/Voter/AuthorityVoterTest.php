@@ -79,5 +79,10 @@ final class AuthorityVoterTest extends EccubeTestCase
         yield [['/content'], '/content', VoterInterface::ACCESS_GRANTED];
         yield [['/content'], '/admin', VoterInterface::ACCESS_GRANTED];
         yield [['/content'], '/admin/product', VoterInterface::ACCESS_GRANTED];
+
+        // D1-8: 正規表現として不正な deny_url でも拒否が効く(フェイルクローズ)
+        yield [['/content/(file'], '/admin/content/(file', VoterInterface::ACCESS_DENIED];
+        // 不正な deny_url が無関係なパスまで拒否しないこと
+        yield [['/content/(file'], '/admin/product', VoterInterface::ACCESS_GRANTED];
     }
 }
