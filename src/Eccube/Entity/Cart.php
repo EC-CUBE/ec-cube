@@ -68,11 +68,18 @@ class Cart extends AbstractEntity implements PurchaseInterface, ItemHolderInterf
     #[ORM\Column(name: 'pre_order_id', type: Types::STRING, length: 255, nullable: true)]
     private ?string $pre_order_id = null;
 
+    /**
+     * 合計金額. 購入フローが計算して設定する.
+     * 購入フローを通さずに保存される経路もあるため, 初期値は DB の既定値と同じ 0 にする.
+     */
     #[ORM\Column(name: 'total_price', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-    private ?string $total_price = null;
+    private ?string $total_price = '0';
 
+    /**
+     * 送料合計. 合計金額と同じく, 初期値は DB の既定値と同じ 0 にする.
+     */
     #[ORM\Column(name: 'delivery_fee_total', type: Types::DECIMAL, precision: 12, scale: 2, options: ['unsigned' => true, 'default' => 0])]
-    private ?string $delivery_fee_total = null;
+    private ?string $delivery_fee_total = '0';
 
     #[ORM\Column(name: 'sort_no', type: Types::SMALLINT, nullable: true, options: ['unsigned' => true])]
     private ?int $sort_no = null;
