@@ -78,7 +78,7 @@
       "urlToken": "https://ec-cube/admin/content/news/1/edit",
       "data": "admin_news%5B_token%5D={{csrf2}}&admin_news%5Bpublish_date%5D=2030-01-01T00%3A00%3A00&admin_news%5Btitle%5D=%E3%81%8A%E7%9F%A5%E3%82%89%E3%81%9B&admin_news%5Burl%5D=http%3A%2F%2Fexample.com&admin_news%5Blink_method%5D=1&admin_news%5Bdescription%5D=%E6%96%B0%E3%81%97%E3%81%84%E3%81%8A%E7%9F%A5%E3%82%89%E3%81%9B%E3%81%A7%E3%81%99&admin_news%5Bvisible%5D=1",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 598\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 598\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Sink: https://ec-cube/admin/content/news, https://ec-cube/\r\n",
       "assertions": [
         {
           "rootExpression": {

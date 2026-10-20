@@ -128,6 +128,14 @@ ${ZA_BEFORE_SCRIPT_CONFIG}
       name: record_forms
       file: /zap/wrk/scripts/record_forms.js
 
+  # 別の画面にだけ値が出る格納型 XSS を、シナリオの X-ZAP-Sink の画面で調べる (zap/scripts/stored_xss_sink.js)
+  - type: script
+    parameters:
+      action: add
+      type: active
+      name: stored_xss_sink
+      file: /zap/wrk/scripts/stored_xss_sink.js
+
 ${ZA_FORM_ERRORS_CONFIG}
   - type: script
     parameters:
