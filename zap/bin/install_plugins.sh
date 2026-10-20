@@ -26,6 +26,9 @@ for p in "${PLUGINS[@]}"; do
     src="${owner:-EC-CUBE}/${repo}@${branch:-${BRANCH}} $(git ls-remote "${url}" "refs/heads/${branch:-${BRANCH}}" | cut -c1-10)"
     # 同じ取得元を clone 済みなら触らない (複数のレーンが同時に導入するため、clone 先へは書き込まない)
     if [[ -d ${REPOS}/${repo} && $(cat "${REPOS}/.${repo}.source" 2> /dev/null) == "${src}" ]]; then continue; fi
+    # レーンの導入 (-c なし) では clone し直さない。-c の後に取得元のブランチが進むと、
+    # 並列に準備している複数のレーンが同時に clone し直して壊れるため
+    if [[ -z ${CLONE_ONLY} && -d ${REPOS}/${repo} ]]; then continue; fi
     rm -rf "${REPOS:?}/${repo}" "${REPOS:?}/${repo}.tmp"
     git clone --quiet --depth 1 --branch "${branch:-${BRANCH}}" "${url}" "${REPOS}/${repo}.tmp"
     # extra.id が無いと eccube:composer:require が失敗する
