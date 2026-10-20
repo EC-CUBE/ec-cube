@@ -71,10 +71,11 @@ docker compose exec -T zap sh -c "sed \
     /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/EC-CUBE.policy"
 
 # Persistent ポリシー。格納型 XSS のルール (40014・40016・40017) と、スクリプトのルール (50000。stored_xss_sink.js) だけを有効にする (zap/README.md の「検知できることの検証」)。
-# 新規登録で作られるレコードに目印が押し出されないよう、既存のレコードを編集するだけのシナリオ (*_persistent) で使う
+# 新規登録で作られるレコードに目印が押し出されないよう、既存のレコードを編集するだけのシナリオ (*_persistent) で使う。
+# 50000 は同梱の Sequence にあるため、無効にしない (後ろに足すと同じ ID が 2 つになり、先にある無効の設定が効く)
 docker compose exec -T zap sh -c "sed \
     -e 's#<policy>Sequence</policy>#<policy>Persistent</policy>#' \
-    -e 's#<enabled>true</enabled>#<enabled>false</enabled>#g' \
-    -e 's#</plugins>#<p40014><enabled>true</enabled></p40014><p40016><enabled>true</enabled></p40016><p40017><enabled>true</enabled></p40017><p50000><enabled>true</enabled></p50000></plugins>#' \
+    -e '/<p50000>/,/<\/p50000>/!s#<enabled>true</enabled>#<enabled>false</enabled>#g' \
+    -e 's#</plugins>#<p40014><enabled>true</enabled></p40014><p40016><enabled>true</enabled></p40016><p40017><enabled>true</enabled></p40017></plugins>#' \
     -e '/<statsId>/d' -e '/<readonly>/d' \
     /home/zap/.ZAP/policies/Sequence.policy > /home/zap/.ZAP/policies/Persistent.policy"

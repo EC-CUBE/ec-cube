@@ -94,7 +94,7 @@
       "urlToken": "https://ec-cube/admin/product/category/1",
       "data": "------webkitformboundaryk7vy6vyvoel3jjaz\r\nContent-Disposition: form-data; name=\"admin_category[_token]\"\r\n\r\n{{csrf5}}\r\n------webkitformboundaryk7vy6vyvoel3jjaz\r\nContent-Disposition: form-data; name=\"admin_category[name]\"\r\n\r\ntest\r\n------webkitformboundaryk7vy6vyvoel3jjaz--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 307\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryk7vy6vyvoel3jjaz\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 307\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryk7vy6vyvoel3jjaz\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Sink: https://ec-cube/, https://ec-cube/admin/product/category\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -196,7 +196,7 @@
       "url": "https://ec-cube/admin/product/category/1",
       "data": "------webkitformboundaryzwilr69pbi98at8s\r\nContent-Disposition: form-data; name=\"category_{{category-id}}[_token]\"\r\n\r\n{{category-token}}\r\n------webkitformboundaryzwilr69pbi98at8s\r\nContent-Disposition: form-data; name=\"category_{{category-id}}[name]\"\r\n\r\ntest\r\n------webkitformboundaryzwilr69pbi98at8s--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 299\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryzwilr69pbi98at8s\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 299\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryzwilr69pbi98at8s\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Sink: https://ec-cube/, https://ec-cube/admin/product/category\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -278,7 +278,7 @@
     {
       "data": "------webkitformboundaryzapaddedroute01\r\nContent-Disposition: form-data; name=\"admin_category[_token]\"\r\n\r\n{{csrf-edit}}\r\n------webkitformboundaryzapaddedroute01\r\nContent-Disposition: form-data; name=\"admin_category[name]\"\r\n\r\ntest\r\n------webkitformboundaryzapaddedroute01--\r\n",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryzapaddedroute01\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nContent-Type: multipart/form-data; boundary=----webkitformboundaryzapaddedroute01\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nX-ZAP-Sink: https://ec-cube/, https://ec-cube/admin/product/category\r\n",
       "assertions": [
         {
           "rootExpression": {

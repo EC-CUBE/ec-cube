@@ -93,7 +93,7 @@
       "url": "https://ec-cube/product_review/2/review",
       "data": "product_review%5B_token%5D={{csrf2}}&product_review%5Breviewer_name%5D={{product-review-random}}&product_review%5Breviewer_url%5D=http%3A%2F%2Flocalhost&product_review%5Bsex%5D=4&product_review%5Brecommend_level%5D=5&product_review%5Btitle%5D=%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB&product_review%5Bcomment%5D=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88&mode=complete",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 469\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 469\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\nX-ZAP-Sink: https://ec-cube/products/detail/2\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -358,7 +358,7 @@
       "urlToken": "https://ec-cube/admin/product_review/{{product-review-id}}/edit",
       "data": "product_review%5B_token%5D={{csrf4}}&product_review%5Breviewer_name%5D={{product-review-random}}&product_review%5Breviewer_url%5D=http%3A%2F%2Flocalhost&product_review%5Bsex%5D=4&product_review%5Brecommend_level%5D=5&product_review%5Btitle%5D=%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB&product_review%5Bcomment%5D=%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88&product_review%5BStatus%5D=2",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 475\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 475\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: http://192.168.111.235:8000\r\nContent-Type: application/x-www-form-urlencoded\r\nX-ZAP-Sink: https://ec-cube/admin/product_review/, https://ec-cube/products/detail/2\r\n",
       "assertions": [
         {
           "rootExpression": {
