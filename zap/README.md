@@ -131,6 +131,22 @@ Shell Shock、React2Shell、パディングオラクル、Swagger、HTTP のみ�
   URL 末尾の文字列をファイル名として送るチェックが、比較用の長いファイル名で入力欄の文字数上限に
   かかるだけで High を出すためです。ファイルを読み取れた本来の検知は根拠を持ちます。
 
+### 結果のレビュー
+
+`bin/review_alerts.py` は、全ターゲットの結果を、Informational までの全レベルでルールごとにまとめた HTML にします。
+同じルールが多数のターゲットで出るため、URL (ID を `{id}` に正規化) とパラメータの組で重複をまとめ、出たターゲットと DB を並べます。
+誤検知のフィルターや根拠の無い Path Traversal で除外したものは、除外の理由を付けて残します。
+フィルターに当てはまるのに ZAP が外していないものは「フィルター #N が効いていない」と出します。
+ルールごとの判定とメモはブラウザに保存され、CSV で書き出せます。
+
+```bash
+gh run download <pgsql の run-id> -D out/pgsql -p 'zap-*-report'
+gh run download <mysql の run-id> -D out/mysql -p 'zap-*-report'
+zap/bin/review_alerts.py -o out/review.html pgsql=out/pgsql mysql=out/mysql
+# ローカルの結果なら
+zap/bin/review_alerts.py -o out/review.html pgsql=zap/local/out/Sequence
+```
+
 ## GitHub Actions で実行する
 
 `.github/workflows/zaproxy.yml` を手動で実行します (Actions タブ → OWASP ZAP → Run workflow)。
