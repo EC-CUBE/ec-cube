@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ZAP のスキャン結果 (alerts.json と HTML レポート) を、ルールごとにまとめたレビュー用の HTML にする。
 
-usage: review_alerts.py -o review.html [-f zap/options.properties] [-t タイトル] <ラベル>=<結果のディレクトリ> ...
+usage: review_alerts.py -o review.html [-f zap/options.properties] [-k zap/known_alerts.tsv] [-t タイトル] <ラベル>=<結果のディレクトリ> ...
 
   結果のディレクトリの下を再帰的に探し、alerts.json のあるディレクトリを 1 ターゲットとして扱う。
   ターゲット名はディレクトリ名 (CI の artifact の zap-<target>-report なら <target>)。
@@ -14,7 +14,8 @@ usage: review_alerts.py -o review.html [-f zap/options.properties] [-t タイト
   - 全レベル (Informational まで) のアラートを、ルールごとに URL (ID を {id} に正規化) とパラメータでまとめる
   - 除外は ZAP が付けた判定 (options.properties のフィルターで confidence が False Positive になったもの) と、
     check_results.sh と同じく根拠の無い Path Traversal。フィルターに当てはまるのに ZAP が外していないものは
-    「フィルター #N が効いていない」と出す
+    「フィルター #N が効いていない」と出す。除外の理由は、フィルターの直前のコメント
+  - zap/known_alerts.tsv に当てはまるもの (仕様・誤検知と判断済み) は「既知」として理由を出す
   - ルール名・説明・対処法は HTML レポートから取る
   - 判定とメモはブラウザの localStorage に保存し、CSV で書き出せる
   - 攻撃の値はエスケープして出力する。外部のファイルは読み込まない
@@ -41,10 +42,21 @@ def load_filters(path):
     filters = collections.defaultdict(dict)
     if not path:
         return []
+    comment, in_comment = [], False
     for line in open(path, encoding='utf-8'):
-        m = re.match(r'globalalertfilter\.filters\.filter\\\((\d+)\\\)\.(\w+)=(.*)$', line.rstrip('\n'))
+        line = line.rstrip('\n')
+        if line.startswith('#'):
+            if not in_comment:
+                comment, in_comment = [], True
+            comment.append(line.lstrip('# '))
+            continue
+        in_comment = False
+        m = re.match(r'globalalertfilter\.filters\.filter\\\((\d+)\\\)\.(\w+)=(.*)$', line)
         if m:
-            filters[int(m.group(1))][m.group(2)] = m.group(3)
+            # フィルターの直前のコメントを理由として表示する
+            f = filters[int(m.group(1))]
+            f.setdefault('comment', ' '.join(comment))
+            f[m.group(2)] = m.group(3)
     out = []
     for i, f in sorted(filters.items()):
         if f.get('enabled', 'true') != 'true' or f.get('newrisk') != '-1':
@@ -72,6 +84,40 @@ def filtered_by(filters, a):
             continue
         if all(field_match(f, k, a.get(k)) for k in ('url', 'param', 'attack', 'evidence')):
             return i
+    return None
+
+
+def load_known(path):
+    """既知のアラートの一覧 (zap/known_alerts.tsv) を読む。列はルール ID・URL・パラメータ・根拠・区分・理由。
+    URL・パラメータは正規表現の完全一致、根拠は正規表現の部分一致で、空は何にでも当てはまる。"""
+    known = []
+    if not path or not os.path.exists(path):
+        return known
+    for n, line in enumerate(open(path, encoding='utf-8'), 1):
+        line = line.rstrip('\n')
+        if not line.strip() or line.startswith('#'):
+            continue
+        cols = line.split('\t')
+        if len(cols) != 6:
+            sys.exit('%s:%d: 列が 6 つではありません' % (path, n))
+        rid, url, param, evidence, kind, reason = cols
+        known.append({'ruleid': int(rid), 'url': re.compile(url) if url else None,
+                      'param': re.compile(param) if param else None,
+                      'evidence': re.compile(evidence) if evidence else None, 'kind': kind, 'reason': reason})
+    return known
+
+
+def known_as(known, a):
+    for k in known:
+        if k['ruleid'] != int(a.get('ruleid')):
+            continue
+        if k['url'] and not k['url'].fullmatch(a.get('url') or ''):
+            continue
+        if k['param'] and not k['param'].fullmatch(a.get('param') or ''):
+            continue
+        if k['evidence'] and not k['evidence'].search(a.get('evidence') or ''):
+            continue
+        return '%s: %s' % (k['kind'], k['reason'])
     return None
 
 
@@ -127,15 +173,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('-o', '--output', required=True)
     ap.add_argument('-f', '--filters', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'options.properties'))
+    ap.add_argument('-k', '--known', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'known_alerts.tsv'))
     ap.add_argument('-t', '--title', default='ZAP スキャン結果のレビュー')
     ap.add_argument('sources', nargs='+')
     args = ap.parse_args()
 
     filters = load_filters(args.filters)
+    known = load_known(args.known)
     rules = {}   # ruleid -> {variants: {ref: info}}
     instances = collections.defaultdict(lambda: collections.defaultdict(lambda: {
         'count': 0, 'targets': set(), 'labels': set(), 'risk': set(), 'conf': set(),
-        'filtered': collections.Counter(), 'notes': collections.Counter(), 'samples': [], 'raw_urls': set()}))
+        'filtered': collections.Counter(), 'notes': collections.Counter(), 'known': collections.Counter(), 'samples': [], 'raw_urls': set()}))
     targets = collections.defaultdict(set)
     risk_counts = collections.defaultdict(collections.Counter)
     status = collections.defaultdict(dict)  # target -> label -> (plan, replay failures, total, Counter)
@@ -176,7 +224,8 @@ def main():
                 # 除外は ZAP が実際に付けた判定で決める (フィルターが効くと confidence が False Positive になる)。
                 # check_results.sh と同じく、根拠の無い Path Traversal も High の判定から外している
                 if a.get('confidence') == 0:
-                    excluded = 'フィルター #%s' % (fid if fid is not None else '?')
+                    comment = dict(filters).get(fid, {}).get('comment') if fid is not None else ''
+                    excluded = 'フィルター #%s%s' % (fid if fid is not None else '?', ': ' + comment if comment else '')
                 elif rid == 6 and not a.get('evidence'):
                     excluded = '根拠なしの Path Traversal'
                 else:
@@ -197,6 +246,9 @@ def main():
                     ins['filtered'][excluded] += 1
                 if ins_note:
                     ins['notes'][ins_note] += 1
+                kn = known_as(known, a)
+                if kn:
+                    ins['known'][kn] += 1
                 if len(ins['samples']) < 2 and (a.get('attack') or a.get('evidence')):
                     sample = (a.get('attack') or '', a.get('evidence') or '')
                     if sample not in ins['samples']:
@@ -211,7 +263,8 @@ def main():
         risk = max(r for i in ins.values() for r in i['risk'])
         total = sum(i['count'] for i in ins.values())
         unfiltered = sum(i['count'] - sum(i['filtered'].values()) for i in ins.values())
-        rows.append((risk, total, rid, variants, ins, unfiltered))
+        nknown = sum(sum(i['known'].values()) for i in ins.values())
+        rows.append((risk, total, rid, variants, ins, unfiltered, nknown))
     rows.sort(key=lambda r: (-r[0], -r[5], r[2]))
 
     e = html.escape
@@ -234,26 +287,30 @@ def main():
     w('</table>')
     w('<p class="meta">件数は ZAP が出したアラートの件数 (同じ画面・項目で重複を含む)。'
       '「除外」は zap/options.properties の誤検知フィルター、または check_results.sh が High の判定から外すもの。'
+      '「既知」は zap/known_alerts.tsv で仕様・誤検知と判断済みのもの (理由は zap/README.md の「既知のアラート」)。'
       '判定とメモはこのブラウザの localStorage に保存され、「CSV で書き出す」で取り出せます。</p>')
     w('<div class="controls"><label>リスク <select id="frisk"><option value="0">Informational 以上</option>'
       '<option value="1">Low 以上</option><option value="2">Medium 以上</option><option value="3">High</option></select></label>'
-      '<label><input type="checkbox" id="fhide"> 除外のみの行を隠す</label>'
-      '<label><input type="checkbox" id="fundecided"> 未判定のルールだけ</label>'
+      '<label><input type="checkbox" id="fhide"> 除外・既知の行を隠す</label>'
+      '<label><input type="checkbox" id="fundecided"> 未判定のルールだけ (すべて既知のルールを除く)</label>'
       '<input type="search" id="fq" placeholder="ルール名・URL・ターゲットで絞り込み">'
       '<button id="expand">すべて開く</button><button id="collapse">すべて閉じる</button>'
       '<button id="csv">CSV で書き出す</button></div></header><main>')
 
-    for risk, total, rid, variants, ins, unfiltered in rows:
+    for risk, total, rid, variants, ins, unfiltered, nknown in rows:
         names = sorted({v['name'] for v in variants.values() if v['name']}) or ['(名前不明: ルール %d)' % rid]
         v0 = next(iter(variants.values()), {})
-        w('<details class="rule" data-risk="%d" data-rule="%d" data-unfiltered="%d">' % (risk, rid, unfiltered))
+        allknown = nknown == total
+        w('<details class="rule" data-risk="%d" data-rule="%d" data-known="%d">' % (risk, rid, 1 if allknown else 0))
         w('<summary><span class="risk r%d">%s</span> <b>%s</b> <span class="rid">%d</span>'
           ' <span class="cnt">%d 件 / %d 箇所%s</span>'
           ' <select class="verdict" data-rule="%d" onclick="event.stopPropagation()">'
           '<option value="">未判定</option><option>対応要</option><option>要調査</option>'
           '<option>誤検知</option><option>許容</option><option>情報のみ</option></select></summary>' % (
               risk if risk >= 0 else 9, RISK.get(risk, risk), e(' / '.join(names)), rid, total, len(ins),
-              '' if unfiltered == total else ' (うち除外 %d 件)' % (total - unfiltered), rid))
+              ''.join(x for x in (
+                  '' if unfiltered == total else ' (うち除外 %d 件)' % (total - unfiltered),
+                  '' if not nknown else (' すべて既知' if allknown else ' (うち既知 %d 件)' % nknown))), rid))
         w('<div class="body">')
         if v0:
             w('<details class="info"><summary>ルールの説明と対処法</summary>')
@@ -272,19 +329,20 @@ def main():
             w('<p class="meta">%s</p>' % ' · '.join(meta))
         w('<textarea class="memo" data-rule="%d" placeholder="メモ"></textarea>' % rid)
         w('<table class="ins"><thead><tr><th>メソッド</th><th>URL (正規化)</th><th>パラメータ</th><th>件数</th>'
-          '<th>%s</th><th>ターゲット</th><th>除外</th><th>攻撃 / 根拠 (例)</th></tr></thead><tbody>' % '/'.join(e(l) for l in labels))
+          '<th>%s</th><th>ターゲット</th><th>除外</th><th>既知 (zap/known_alerts.tsv)</th><th>攻撃 / 根拠 (例)</th></tr></thead><tbody>' % '/'.join(e(l) for l in labels))
         for (method, url, param), i in sorted(ins.items(), key=lambda kv: (-kv[1]['count'], kv[0])):
             fcount = sum(i['filtered'].values())
-            only_filtered = fcount == i['count']
+            settled = fcount + sum(i['known'].values()) >= i['count']
             tg = sorted(i['targets'])
             tgs = ', '.join(e(t) for t in tg[:6]) + (' ほか %d' % (len(tg) - 6) if len(tg) > 6 else '')
             samples = ''.join('<div><code>%s</code>%s</div>' % (
                 e(a[:300]) or '—', (' → <code>%s</code>' % e(ev[:300])) if ev else '') for a, ev in i['samples'])
             w('<tr class="%s" data-text="%s"><td>%s</td><td class="url">%s</td><td>%s</td><td>%d</td><td>%s</td>'
-              '<td>%s</td><td>%s</td><td class="sample">%s</td></tr>' % (
-                  'fonly' if only_filtered else '', e(' '.join([url, param] + tg).lower()), e(method), e(url), e(param),
+              '<td>%s</td><td>%s</td><td>%s</td><td class="sample">%s</td></tr>' % (
+                  'fonly' if settled else '', e(' '.join([url, param] + tg).lower()), e(method), e(url), e(param),
                   i['count'], ' '.join('●' if l in i['labels'] else '·' for l in labels), tgs,
-                  e(', '.join('%s %d' % kv for kv in list(i['filtered'].items()) + list(i['notes'].items()))), samples))
+                  e(', '.join('%s %d' % kv for kv in list(i['filtered'].items()) + list(i['notes'].items()))),
+                  e(' / '.join(k for k in i['known'])) + ('' if sum(i['known'].values()) in (0, i['count']) else ' (一部)'), samples))
         w('</tbody></table></div></details>')
     w('<details class="rule"><summary><b>ターゲット別の結果</b> <span class="cnt">%d ターゲット</span></summary><div class="body">' % len(status))
     w('<p class="meta">再生の失敗は check_results.sh と同じ数え方 (passed = false / Assign: failed / Form error)。High〜Info は除外を除いた件数。</p>')
@@ -335,7 +393,7 @@ document.querySelectorAll('textarea.memo').forEach(t=>{const r=t.dataset.rule;t.
 const $=id=>document.getElementById(id);
 function apply(){const min=+$('frisk').value,hide=$('fhide').checked,und=$('fundecided').checked,q=$('fq').value.trim().toLowerCase();
 document.querySelectorAll('details.rule').forEach(d=>{let ok=+d.dataset.risk>=min||+d.dataset.risk<0&&min==0;
-if(und&&(st[d.dataset.rule]||{}).v)ok=false;
+if(und&&((st[d.dataset.rule]||{}).v||d.dataset.known=='1'))ok=false;
 const name=d.querySelector('summary b').textContent.toLowerCase();let any=false;
 d.querySelectorAll('tbody tr').forEach(tr=>{let v=!(hide&&tr.classList.contains('fonly'));if(v&&q&&!name.includes(q)&&!tr.dataset.text.includes(q))v=false;tr.classList.toggle('hidden',!v);any=any||v});
 d.classList.toggle('hidden',!ok||!any)})}
