@@ -138,7 +138,7 @@ class FileController extends AbstractController
     /**
      * @throws NotFoundHttpException
      */
-    #[Route(path: '/%eccube_admin_route%/content/file_view', name: 'admin_content_file_view', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_manager/view', name: 'admin_content_file_view', methods: ['GET'])]
     public function view(Request $request): BinaryFileResponse
     {
         $file = $this->userDataFileService->tryResolve($this->convertStrToServer((string) $request->get('file')));
@@ -212,7 +212,7 @@ class FileController extends AbstractController
         }
     }
 
-    #[Route(path: '/%eccube_admin_route%/content/file_delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_manager/delete', name: 'admin_content_file_delete', methods: ['DELETE'])]
     public function delete(Request $request): RedirectResponse
     {
         $this->isTokenValid();
@@ -238,7 +238,7 @@ class FileController extends AbstractController
     /**
      * @throws NotFoundHttpException
      */
-    #[Route(path: '/%eccube_admin_route%/content/file_download', name: 'admin_content_file_download', methods: ['GET'])]
+    #[Route(path: '/%eccube_admin_route%/content/file_manager/download', name: 'admin_content_file_download', methods: ['GET'])]
     public function download(Request $request): BinaryFileResponse
     {
         $file = $this->userDataFileService->tryResolve($this->convertStrToServer((string) $request->get('select_file')));

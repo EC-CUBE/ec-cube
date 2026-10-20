@@ -71,6 +71,24 @@ final class AuthorityVoterTest extends EccubeTestCase
         $this->assertEquals($expected, $voter->vote($token, null, []));
     }
 
+    /**
+     * D1-1 回帰: ファイル管理の表示/DL/削除ルートは file_manager の配下に置き、
+     * deny_url(/content/file_manager) の前方一致で一括拒否できるようにする。
+     */
+    public function testFileManagementRoutesAreUnderFileManagerPrefix(): void
+    {
+        $router = static::getContainer()->get('router');
+        $base = $router->generate('admin_content_file');
+        foreach (['admin_content_file_view', 'admin_content_file_download', 'admin_content_file_delete'] as $name) {
+            $path = $router->generate($name);
+            $this->assertStringStartsWith(
+                $base.'/',
+                $path,
+                $name.' は '.$base.' 配下に無いと deny_url で一括拒否できない'
+            );
+        }
+    }
+
     public static function voteProvider(): \Iterator
     {
         yield [[], '/admin/content', VoterInterface::ACCESS_GRANTED];
@@ -79,5 +97,10 @@ final class AuthorityVoterTest extends EccubeTestCase
         yield [['/content'], '/content', VoterInterface::ACCESS_GRANTED];
         yield [['/content'], '/admin', VoterInterface::ACCESS_GRANTED];
         yield [['/content'], '/admin/product', VoterInterface::ACCESS_GRANTED];
+
+        // D1-1: ファイル管理を deny すると、配下の表示/DL/削除も拒否される
+        yield [['/content/file_manager'], '/admin/content/file_manager/view', VoterInterface::ACCESS_DENIED];
+        yield [['/content/file_manager'], '/admin/content/file_manager/download', VoterInterface::ACCESS_DENIED];
+        yield [['/content/file_manager'], '/admin/content/file_manager/delete', VoterInterface::ACCESS_DENIED];
     }
 }
