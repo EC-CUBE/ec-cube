@@ -1,0 +1,140 @@
+{
+  "about": "This is a Zest script. For more details about Zest visit https://developer.mozilla.org/en-US/docs/Zest",
+  "zestVersion": "0.6",
+  "generatedBy": "Sequence Script Template",
+  "title": "admin_enable_cookie_consent.zst",
+  "description": "Cookie 同意 (店舗設定) を ON にする。front_cookie_consent の before_script",
+  "prefix": "",
+  "type": "Active",
+  "parameters": {
+    "tokenStart": "{{",
+    "tokenEnd": "}}",
+    "tokens": {},
+    "elementType": "ZestVariables"
+  },
+  "statements": [
+    {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 1655292281770,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{csrf1}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 88\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655292289492,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \".Not/A)Brand\";v=\"99\", \"Google Chrome\";v=\"103\", \"Chromium\";v=\"103\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1656670296690,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "shop_master__token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "csrf1",
+      "index": 5,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/setting/shop",
+      "data": "shop_master%5B_token%5D={{csrf1}}&shop_master%5Bcompany_name%5D=&shop_master%5Bcompany_kana%5D=&shop_master%5Bshop_name%5D=EC-CUBE+SHOP&shop_master%5Bshop_kana%5D=&shop_master%5Bshop_name_eng%5D=&shop_master%5Bpostal_code%5D=&shop_master%5Baddress%5D%5Bpref%5D=&shop_master%5Baddress%5D%5Baddr01%5D=&shop_master%5Baddress%5D%5Baddr02%5D=&shop_master%5Bphone_number%5D=&shop_master%5Bbusiness_hour%5D=&shop_master%5Bemail01%5D=admin%40example.com&shop_master%5Bemail03%5D=admin%40example.com&shop_master%5Bemail04%5D=admin%40example.com&shop_master%5Bemail02%5D=admin%40example.com&shop_master%5Bgood_traded%5D=&shop_master%5Bmessage%5D=&shop_master%5Bdelivery_free_amount%5D=&shop_master%5Bdelivery_free_quantity%5D=&shop_master%5Boption_customer_activate%5D=1&shop_master%5Boption_mypage_order_status_display%5D=1&shop_master%5Boption_favorite_product%5D=1&shop_master%5Boption_remember_me%5D=1&shop_master%5Boption_mail_notifier%5D=1&shop_master%5Binvoice_registration_number%5D=&shop_master%5Boption_point%5D=1&shop_master%5Bbasic_point_rate%5D=1&shop_master%5Bpoint_conversion_rate%5D=1&shop_master%5Boption_guest_purchase%5D=1&shop_master%5Boption_sanitize_csv_formulas%5D=1&shop_master%5Border_pdf_visible_shop_name%5D=1&shop_master%5Border_pdf_visible_address%5D=1&shop_master%5Border_pdf_visible_company_name%5D=1&shop_master%5Border_pdf_visible_phone_number%5D=1&shop_master%5Border_pdf_visible_email%5D=1&shop_master%5Border_pdf_visible_invoice_number%5D=1&shop_master%5Boption_cookie_consent%5D=1",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \"Not.A/Brand\";v=\"8\", \"Chromium\";v=\"114\", \"Google Chrome\";v=\"114\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "response": {
+        "url": "https://ec-cube/admin/setting/shop",
+        "headers": "HTTP/1.1 302 Found\nDate: Mon, 05 Jun 2023 10:32:20 GMT\nServer: Apache/2.4.56 (Debian)\nX-Frame-Options: SAMEORIGIN\nX-Powered-By: PHP/8.1.19\nCache-Control: max-age=0, must-revalidate, private\nLocation: /admin/setting/shop\nX-Debug-Token: e20b54\nX-Debug-Token-Link: https://ec-cube/_profiler/e20b54\nX-Robots-Tag: noindex\nExpires: Mon, 05 Jun 2023 10:32:20 GMT\nSet-Cookie: maintenance_token=deleted; expires=Sun, 05-Jun-2022 10:32:19 GMT; Max-Age=0; path=/; httponly\nSet-Cookie: sf_redirect=%7B%22token%22%3A%22e20b54%22%2C%22route%22%3A%22admin_setting_shop%22%2C%22method%22%3A%22POST%22%2C%22controller%22%3A%7B%22class%22%3A%22Eccube%5C%5CController%5C%5CAdmin%5C%5CSetting%5C%5CShop%5C%5CShopController%22%2C%22method%22%3A%22index%22%2C%22file%22%3A%22%5C%2Fvar%5C%2Fwww%5C%2Fhtml%5C%2Fsrc%5C%2FEccube%5C%2FController%5C%2FAdmin%5C%2FSetting%5C%2FShop%5C%2FShopController.php%22%2C%22line%22%3A62%7D%2C%22status_code%22%3A302%2C%22status_text%22%3A%22Found%22%7D; path=/; httponly; samesite=lax\nX-XSS-Protection: 1; mode=block\nX-Content-Type-Options: nosniff\nContent-Type: text/html; charset=UTF-8\n\n",
+        "body": "<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\" />\n        <meta http-equiv=\"refresh\" content=\"0;url='/admin/setting/shop'\" />\n\n        <title>Redirecting to /admin/setting/shop</title>\n    </head>\n    <body>\n        Redirecting to <a href=\"/admin/setting/shop\">/admin/setting/shop</a>.\n    </body>\n</html>",
+        "statusCode": 302,
+        "responseTimeInMs": 153,
+        "elementType": "ZestResponse"
+      },
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1685961140199,
+      "cookies": [],
+      "index": 6,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    }
+  ],
+  "authentication": [],
+  "index": 0,
+  "enabled": true,
+  "elementType": "ZestScript"
+}

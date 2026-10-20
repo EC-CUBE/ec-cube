@@ -20,6 +20,62 @@
       "elementType": "ZestComment"
     },
     {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 1655292281770,
+      "cookies": [],
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "admin_login_csrf",
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{admin_login_csrf}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 88\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655292289492,
+      "cookies": [],
+      "index": 4,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/plugin/coupon",
       "data": "",
       "method": "GET",
@@ -45,7 +101,7 @@
       "followRedirects": false,
       "timestamp": 1675429891436,
       "cookies": [],
-      "index": 2,
+      "index": 5,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -75,7 +131,7 @@
       "followRedirects": false,
       "timestamp": 1675429893571,
       "cookies": [],
-      "index": 3,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -84,7 +140,7 @@
       "postfix": "\"\u003e",
       "location": "BODY",
       "variableName": "eccube-csrf-token",
-      "index": 4,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestAssignStringDelimiters"
     },
@@ -95,7 +151,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf1",
-      "index": 5,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -125,7 +181,7 @@
       "followRedirects": false,
       "timestamp": 1675429963841,
       "cookies": [],
-      "index": 6,
+      "index": 9,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -155,7 +211,7 @@
       "followRedirects": false,
       "timestamp": 1675429963945,
       "cookies": [],
-      "index": 7,
+      "index": 10,
       "enabled": true,
       "elementType": "ZestRequest"
     }

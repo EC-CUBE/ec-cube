@@ -1,0 +1,4 @@
+# ZAP_DB=pgsql (既定) のときに docker-compose.local.yml に重ねる (zap/local/env.sh)。
+services:
+  postgres:
+    ports: !reset []

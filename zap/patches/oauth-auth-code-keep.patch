@@ -1,0 +1,13 @@
+OAuth の認可コードを使用済みにしない。再生で認可コードが使用済みになり、/token への攻撃が invalid_grant で止まるのを防ぐ
+
+--- a/vendor/league/oauth2-server-bundle/src/Repository/AuthCodeRepository.php
++++ b/vendor/league/oauth2-server-bundle/src/Repository/AuthCodeRepository.php
+@@ -49,7 +49,7 @@
+             return;
+         }
+ 
+-        $authorizationCode->revoke();
++        // ZAP: $authorizationCode->revoke();
+ 
+         $this->authorizationCodeManager->save($authorizationCode);
+     }

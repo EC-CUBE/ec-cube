@@ -1,0 +1,15 @@
+商品の登録で、アップロードした一時ファイルを移動せずに複製する。最初の保存で一時ファイルが消え、同じ画像を送る後続の攻撃が画像のパスの検証で弾かれるのを防ぐ
+
+--- a/src/Eccube/Controller/Admin/Product/ProductController.php
++++ b/src/Eccube/Controller/Admin/Product/ProductController.php
+@@ -565,7 +565,9 @@
+ 
+                     // 移動
+                     $file = new File($this->eccubeConfig['eccube_temp_image_dir'].'/'.$add_image);
+-                    $file->move($this->eccubeConfig['eccube_save_image_dir']);
++                    // ZAP: 一時ファイルを移動すると、同じ画像を送る後続の攻撃が画像のパスの検証で弾かれるため、複製する
++                    // $file->move($this->eccubeConfig['eccube_save_image_dir']);
++                    copy($file->getPathname(), $this->eccubeConfig['eccube_save_image_dir'].'/'.$file->getFilename());
+                 }
+ 
+                 // 画像の削除

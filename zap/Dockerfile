@@ -1,4 +1,4 @@
-FROM owasp/zap2docker-stable
+FROM ghcr.io/zaproxy/zaproxy:stable
 
 USER root
 RUN apt-get update \
