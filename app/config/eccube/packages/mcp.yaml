@@ -11,6 +11,15 @@ mcp:
                 stdio: true
             http:
                 path: '/%eccube_admin_route%/mcp'
+                # mcp/sdk の DNS リバインディング対策 (DnsRebindingProtectionMiddleware) を外す。
+                # 未設定 (null) だと SDK 既定の localhost / 127.0.0.1 / [::1] だけが許可され、 独自ドメインや
+                # Docker のホスト名では全リクエストが 403 (Forbidden: Invalid Host header.) になる。
+                # 店舗ごとに異なるホスト名をここへ列挙させる代わりに、 次の 3 点で同等以上の防御を担保している:
+                #   - Origin / Content-Type の検査は EC-CUBE 側の Eccube\EventListener\Mcp\OriginContentTypeListener が行う
+                #     (prod では許可リスト ECCUBE_MCP_ALLOWED_ORIGINS に無い Origin 付き = ブラウザ発のリクエストを 403)
+                #   - MCP は Bearer トークン必須で、 ブラウザが自動で付与する Cookie 等の認証情報では到達できない
+                #   - Host の検証は TRUSTED_HOSTS (Request::setTrustedHosts) で全リクエストに掛けられる
+                allowed_hosts: false
             session:
                 store: file
                 # MCP セッションはリクエスト処理中に書き込まれるため, ランタイムディレクトリへ置く.
