@@ -17,6 +17,7 @@ namespace Eccube\Tests\Form\Type\Install;
 
 use Eccube\Form\Type\Install\Step3Type;
 use Eccube\Tests\Form\Type\AbstractTypeTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Form\FormInterface;
 
 final class Step3TypeTest extends AbstractTypeTestCase
@@ -312,5 +313,54 @@ final class Step3TypeTest extends AbstractTypeTestCase
         $this->formData['admin_dir'] = 'admin';
         $this->form->submit($this->formData);
         $this->assertFalse($this->form->isValid());
+    }
+
+    /**
+     * ファイアウォールの認証除外パスと同じ名前は, 管理画面に認証が掛からなくなるため使えない.
+     */
+    #[DataProvider(methodName: 'unsecuredAdminDirParams')]
+    public function testInvalidAdminDirUnsecured(string $adminDir): void
+    {
+        $this->formData['admin_dir'] = $adminDir;
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+        $this->assertAdminDirError('form_error.admin_route_dir_unsecured');
+    }
+
+    /**
+     * css / js は最小文字数 (eccube_id_min_len) の制限で先に拒否されるため, ここでは扱わない.
+     */
+    public static function unsecuredAdminDirParams(): \Iterator
+    {
+        yield ['_profiler'];
+        yield ['_wdt'];
+        yield ['images'];
+    }
+
+    /**
+     * 除外パスと大文字・小文字だけが違う名前は, ファイアウォールが区別するため使える.
+     */
+    public function testValidAdminDirUnsecuredCaseDiffers(): void
+    {
+        $this->formData['admin_dir'] = 'IMAGES';
+        $this->form->submit($this->formData);
+        $this->assertTrue($this->form->isValid());
+    }
+
+    public function testInvalidAdminDirFrontRoute(): void
+    {
+        $this->formData['admin_dir'] = 'contact';
+        $this->form->submit($this->formData);
+        $this->assertFalse($this->form->isValid());
+        $this->assertAdminDirError('form_error.admin_route_dir_front_route');
+    }
+
+    private function assertAdminDirError(string $messageTemplate): void
+    {
+        $templates = [];
+        foreach ($this->form['admin_dir']->getErrors() as $error) {
+            $templates[] = $error->getMessageTemplate();
+        }
+        $this->assertContains($messageTemplate, $templates);
     }
 }

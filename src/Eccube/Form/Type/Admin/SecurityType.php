@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Admin;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Validator\AdminRouteDir;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,7 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -31,7 +31,7 @@ class SecurityType extends AbstractType
     /**
      * SecurityType constructor.
      */
-    public function __construct(protected EccubeConfig $eccubeConfig, protected ValidatorInterface $validator, protected RequestStack $requestStack, protected RouterInterface $router)
+    public function __construct(protected EccubeConfig $eccubeConfig, protected ValidatorInterface $validator, protected RequestStack $requestStack)
     {
     }
 
@@ -49,7 +49,6 @@ class SecurityType extends AbstractType
         $denyHosts = $this->eccubeConfig->get('eccube_admin_deny_hosts');
         $denyHosts = implode("\n", $denyHosts);
 
-        $routes = $this->getRouteCollection();
         $allowFrontHosts = $this->eccubeConfig->get('eccube_front_allow_hosts');
         $allowFrontHosts = implode("\n", $allowFrontHosts);
 
@@ -62,7 +61,7 @@ class SecurityType extends AbstractType
                     new Assert\NotBlank(),
                     new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
                     new Assert\Regex(pattern: '/\A\w+\z/'),
-                    new Assert\Regex(pattern: "/^(?!($routes)$).*$/"),
+                    new AdminRouteDir(),
                 ],
                 'data' => $this->eccubeConfig->get('eccube_admin_route'),
             ])
@@ -193,33 +192,6 @@ class SecurityType extends AbstractType
                 }
             })
         ;
-    }
-
-    /**
-     * フロントURL一覧を取得
-     */
-    private function getRouteCollection(): string
-    {
-        $frontRoutesUrlList = [];
-        $routes = $this->router->getRouteCollection();
-        foreach ($routes as $routeName => $route) {
-            $path = $route->getPath();
-            // 管理画面以外
-            if (false === stripos($routeName, 'admin')
-                && false === stripos($path, '/_')
-                && false === stripos($path, 'admin')
-            ) {
-                $arr = explode('/', $path);
-                foreach ($arr as $target) {
-                    if (!empty($target)) {
-                        $target = preg_quote($target);
-                        $frontRoutesUrlList[$target] = $target;
-                    }
-                }
-            }
-        }
-
-        return implode('|', $frontRoutesUrlList);
     }
 
     /**

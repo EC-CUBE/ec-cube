@@ -17,15 +17,19 @@ namespace Eccube\Tests\Command\Env;
 
 use Eccube\Command\Env\EnvGetCommand;
 use Eccube\Command\Env\EnvSetCommand;
+use Eccube\Common\EccubeConfig;
 use Eccube\Service\EnvFileService;
 use Eccube\Tests\EffectiveUserTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Validator\Validation;
 
 /**
  * 一時ディレクトリを projectDir にしてコマンドを直接組み立てるため, 実際の .env には触れない.
+ *
+ * ECCUBE_ADMIN_ROUTE の検証はコンテナの validator が要るため EnvSetCommandAdminRouteTest で扱う.
  */
 final class EnvCommandTest extends TestCase
 {
@@ -244,7 +248,7 @@ final class EnvCommandTest extends TestCase
      */
     private function set(array $input): CommandTester
     {
-        $tester = new CommandTester(new EnvSetCommand($this->envFileService, $this->projectDir));
+        $tester = new CommandTester(new EnvSetCommand($this->envFileService, $this->projectDir, Validation::createValidator(), $this->createStub(EccubeConfig::class)));
         $tester->execute($input);
 
         return $tester;

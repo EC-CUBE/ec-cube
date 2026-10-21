@@ -41,6 +41,8 @@ form_error.float_only: Entry must be numbers and decimal points.
 form_error.same_password: Please enter the same password.
 form_error.same_email: Please enter the same email address.
 form_error.admin_is_not_available: Do not use "admin" as the directory name.
+form_error.admin_route_dir_unsecured: This directory name cannot be used because it is excluded from authentication.
+form_error.admin_route_dir_front_route: This directory name cannot be used because it overlaps with a storefront URL.
 form_error.member_already_exists: This ID is already registered.
 form_error.customer_already_exists:  This email address can not be used.
 form_error.password_pattern_invalid: It contains characters that cannot be used (such as control characters).

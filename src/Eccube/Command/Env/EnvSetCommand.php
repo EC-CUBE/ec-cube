@@ -15,7 +15,9 @@ declare(strict_types=1);
 
 namespace Eccube\Command\Env;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Exception\ContentWriteException;
+use Eccube\Form\Validator\AdminRouteDir;
 use Eccube\Service\EnvFileService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -26,6 +28,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\ExceptionInterface as ProcessExceptionInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * .env の値を書き換える.
@@ -59,6 +63,8 @@ final class EnvSetCommand extends Command
     public function __construct(
         private readonly EnvFileService $envFileService,
         private readonly string $projectDir,
+        private readonly ValidatorInterface $validator,
+        private readonly EccubeConfig $eccubeConfig,
     ) {
         parent::__construct();
     }
@@ -91,6 +97,13 @@ final class EnvSetCommand extends Command
             $values = self::parseAssignments($assignments);
         } catch (\InvalidArgumentException $e) {
             $io->error($e->getMessage());
+
+            return Command::INVALID;
+        }
+
+        $errors = $this->validate($values);
+        if ([] !== $errors) {
+            $io->error($errors);
 
             return Command::INVALID;
         }
@@ -218,6 +231,36 @@ final class EnvSetCommand extends Command
 
             return false;
         }
+    }
+
+    /**
+     * 管理画面から設定するときと同じ検証を通す.
+     *
+     * 管理画面の URL は, 不正な値を書き込むと管理画面に認証が掛からなくなる場合があるため検証する.
+     *
+     * @param array<string, string> $values
+     *
+     * @return list<string> エラーメッセージ
+     */
+    private function validate(array $values): array
+    {
+        if (!array_key_exists('ECCUBE_ADMIN_ROUTE', $values)) {
+            return [];
+        }
+
+        $violations = $this->validator->validate($values['ECCUBE_ADMIN_ROUTE'], [
+            new Assert\NotBlank(),
+            new Assert\Length(max: $this->eccubeConfig['eccube_stext_len']),
+            new Assert\Regex(pattern: '/\A\w+\z/'),
+            new AdminRouteDir(),
+        ]);
+
+        $errors = [];
+        foreach ($violations as $violation) {
+            $errors[] = sprintf('ECCUBE_ADMIN_ROUTE: %s', $violation->getMessage());
+        }
+
+        return $errors;
     }
 
     /**

@@ -14,6 +14,7 @@
 namespace Eccube\Form\Type\Install;
 
 use Eccube\Common\EccubeConfig;
+use Eccube\Form\Validator\AdminRouteDir;
 use Eccube\Form\Validator\Email;
 use Eccube\Form\Validator\PasswordBlocklist;
 use Eccube\Util\PasswordNormalizer;
@@ -109,6 +110,7 @@ class Step3Type extends AbstractType
                     new Assert\Length(min: $this->eccubeConfig['eccube_id_min_len'], max: $this->eccubeConfig['eccube_id_max_len']),
                     new Assert\Regex(pattern: '/\A\w+\z/'),
                     new Assert\NotEqualTo(value: 'admin', message: 'form_error.admin_is_not_available'),
+                    new AdminRouteDir(),
                 ],
             ])
             ->add('admin_force_ssl', CheckboxType::class, [

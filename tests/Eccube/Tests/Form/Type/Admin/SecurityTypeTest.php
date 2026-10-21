@@ -119,6 +119,15 @@ final class SecurityTypeTest extends AbstractTypeTestCase
     {
         yield ['admin', true];
         yield ['ADMIN', true];
+        // ファイアウォールの認証除外パスと同じ名前は, 管理画面に認証が掛からなくなるため使えない
+        yield ['_profiler', false];
+        yield ['_wdt', false];
+        yield ['css', false];
+        yield ['images', false];
+        yield ['js', false];
+        // 大文字・小文字はファイアウォールが区別するため使える
+        yield ['IMAGES', true];
+        yield ['images_admin', true];
         yield ['12345', true];
         yield ['adminADMIN123', true];
         yield ['admin_admin', true];
