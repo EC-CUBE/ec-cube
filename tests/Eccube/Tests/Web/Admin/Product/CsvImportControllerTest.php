@@ -1351,6 +1351,48 @@ final class CsvImportControllerTest extends AbstractAdminWebTestCase
         $this->assertSame('2行目〜2行目を登録しました', $json['success_message']);
     }
 
+    /**
+     * 販売価格の誤りで分割インポートがエラーになっても, エラー内容を JSON で返す.
+     *
+     * @see https://github.com/EC-CUBE/ec-cube/issues/7261
+     */
+    #[DataProvider(methodName: 'dataInvalidPrice02Provider')]
+    public function testImportCsvWithInvalidPrice02(string $price02, string $expectedError): void
+    {
+        $fileName = 'product.csv';
+        $fileNo = 1;
+
+        $csv = $this->createCsvAsArray();
+        $csv[1][array_search('販売価格', $csv[0], true)] = $price02;
+        $this->filepath = $this->createCsvFromArray($csv);
+        copy($this->filepath, $this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$fileName);
+
+        $this->client->request(
+            Request::METHOD_POST,
+            $this->generateUrl('admin_product_csv_split_import'),
+            [
+                'file_name' => $fileName,
+                'file_no' => $fileNo,
+            ],
+            [],
+            ['HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']
+        );
+
+        $response = $this->client->getResponse();
+        $this->assertTrue($response->isSuccessful());
+
+        $json = \json_decode($response->getContent(), true);
+        $this->assertFalse($json['success']);
+        $this->assertContains($expectedError, $json['errors']);
+        $this->assertSame('エラーが発生しました。2行目以降の登録処理はキャンセルされました', $json['error_message']);
+    }
+
+    public static function dataInvalidPrice02Provider(): \Iterator
+    {
+        yield ['', '2行目の販売価格が設定されていません'];
+        yield ['-1', '2行目の販売価格は0以上の数値を設定してください。'];
+    }
+
     public function testCleanupCsv()
     {
         $fileName = 'product.csv';

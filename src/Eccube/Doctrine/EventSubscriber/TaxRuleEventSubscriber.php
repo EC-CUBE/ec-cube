@@ -48,7 +48,7 @@ class TaxRuleEventSubscriber
         if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() ?? '0',
                 $entity->getProduct(), $entity));
         }
     }
@@ -63,7 +63,7 @@ class TaxRuleEventSubscriber
         if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() ?? '0',
                 $entity->getProduct(), $entity));
         }
     }
@@ -78,7 +78,7 @@ class TaxRuleEventSubscriber
         if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() ?? '0',
                 $entity->getProduct(), $entity));
         }
     }
@@ -93,7 +93,7 @@ class TaxRuleEventSubscriber
         if ($entity instanceof ProductClass) {
             $entity->setPrice01IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice01() ?? '0',
                 $entity->getProduct(), $entity));
-            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02(),
+            $entity->setPrice02IncTax($this->getTaxRuleService()->getPriceIncTax($entity->getPrice02() ?? '0',
                 $entity->getProduct(), $entity));
         }
     }
