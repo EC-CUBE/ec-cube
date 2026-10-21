@@ -41,7 +41,7 @@ class AdminRouteDirValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, AdminRouteDir::class);
         }
 
-        if (null === $value || '' === $value) {
+        if (null === $value) {
             return;
         }
 
@@ -50,6 +50,9 @@ class AdminRouteDirValidator extends ConstraintValidator
         }
 
         $value = (string) $value;
+        if ('' === $value) {
+            return;
+        }
 
         // security.yaml の定義そのものに照合する. 認証を掛けない (security: false) ファイアウォールに
         // 管理画面配下のパスが一致する名前は拒否する. 照合は大文字・小文字を区別する (PathRequestMatcher).
