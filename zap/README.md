@@ -176,7 +176,7 @@ High と Medium は、ZAP の判定によらず、レーンで攻撃を送り直
 | Big Redirect Detected (10044) | 誤検知 | 本文は Symfony の標準のリダイレクトのページで、移動先の URL しか含まない。ZAP の基準 (Location の長さ + 300 バイト) を数バイト超えるだけ |
 | GET for POST (10058) | 誤検知 | GET でも同じ画面を返すだけで、処理は POST のフォームでしか進まない。退会・キャッシュの削除は、正しいトークンを付けた GET でも処理されないことを確かめた |
 | User Controllable HTML Element Attribute (10031) | 誤検知 | ACP のクライアントの登録で入力値が value 属性に出るが、エスケープされる |
-| Re-examine Cache-control Directives (10015) | 仕様 | セッションを使う応答の `Cache-Control` は Symfony の既定 (`private, max-age=0, must-revalidate`)。共有キャッシュには残らず、ブラウザは再検証する。`no-store` は付けていない (付けると、共用の端末のディスクキャッシュに個人情報を含む画面が残らなくなる。改善の候補) |
+| Re-examine Cache-control Directives (10015) | 仕様 | セッションを使う応答の `Cache-Control` は Symfony の既定 (`private, max-age=0, must-revalidate`)。共有キャッシュには残らず、ブラウザは再検証する。`no-store` は付けていない (付けると、共用の端末のディスクキャッシュに個人情報を含む画面が残らなくなる。改善は #7266) |
 | Session Management Response Identified (10112)・Authentication Request Identified (10111)・Modern Web Application (10109) | 情報 | ZAP がセッションの Cookie・ログインのフォーム・JavaScript の画面を見つけたことの通知。Cookie の HttpOnly・Secure の欠落のルール (10010・10011) は出ていない |
 
 2026-10-20 の全ターゲットの結果は、これですべて判断済みです。

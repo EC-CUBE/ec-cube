@@ -14,7 +14,7 @@
 10054				仕様	セッションの Cookie を SameSite=None にしている (app/config/eccube/packages/framework.yaml)
 10096				仕様	応答に含まれる数値が Unix 時刻の範囲にあるもの。時刻の表示であり、内部の情報の露見ではない
 10017			yubinbango\.github\.io	仕様	郵便番号から住所を入れる YubinBango を外部から読み込む
-10015				仕様	セッションを使う応答の Cache-Control は Symfony の既定 (private, max-age=0, must-revalidate)。共有キャッシュには残らず、ブラウザは再検証する。no-store は付けない
+10015				仕様	セッションを使う応答の Cache-Control は Symfony の既定 (private, max-age=0, must-revalidate)。共有キャッシュには残らず、ブラウザは再検証する。no-store を付ける改善は EC-CUBE/ec-cube#7266
 
 # 誤検知
 6			^$	誤検知	根拠 (読めたファイルの中身) が無い。比較用の長いファイル名が入力欄の文字数の上限で入力エラーになり、応答が変わるだけ
