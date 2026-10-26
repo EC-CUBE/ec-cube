@@ -1,0 +1,4 @@
+# ZAP_DB=mysql のときに docker-compose.local.yml に重ねる (zap/local/env.sh)。
+services:
+  mysql:
+    ports: !reset []

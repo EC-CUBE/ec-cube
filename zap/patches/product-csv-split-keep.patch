@@ -1,0 +1,14 @@
+商品 CSV の分割登録で、取り込みに分割ファイルの複製を渡す。取り込みが分割ファイルを移動するため、最初の取り込みでファイルが消え、後続の攻撃が 400 になるのを防ぐ
+
+--- a/src/Eccube/Controller/Admin/Product/CsvImportController.php
++++ b/src/Eccube/Controller/Admin/Product/CsvImportController.php
+@@ -1945,6 +1945,9 @@
+         }
+ 
+         $path = $this->eccubeConfig['eccube_csv_temp_realdir'].'/'.$filename;
++        // ZAP: 取り込みは分割ファイルを移動するため、複製を渡して分割ファイルを残す
++        copy($path, $path.'.zap');
++        $path .= '.zap';
+         $request->files->set('admin_csv_import', ['import_file' => new UploadedFile(
+             $path,
+             'import.csv',

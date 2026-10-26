@@ -4,3 +4,590 @@
 必ずローカル環境の Docker でのみ使用し、稼動中のサイトには決して使用しないでください。
 意図せずデータが更新されたり、削除される場合があります。
 テストは自己責任で実施し、株式会社イーシーキューブ及び、関連する開発コミュニティは一切の責任を負いかねますのであらかじめご了承ください。
+
+GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net/penetration-testing/quick_start) を参照してください。
+ここでは、Zest スクリプト (`scripts/*.zst`) を自動化フレームワークで実行する手順を説明します。
+
+## 実行からレビューまでの流れ
+
+全ターゲットをスキャンし、結果を Informational まで含めてレビューするまでの手順です。各手順の詳細は、それぞれの節にあります。
+
+### 1. 実行する
+
+CI (「GitHub Actions で実行する」) とローカル (「ローカルで実行する」) のどちらでも同じ結果が出ます。
+全ターゲットは CI の方が手軽です (1 ターゲット 1 ジョブで並列に動き、2〜3 時間で終わります)。
+DB に依存する箇所があるため、PostgreSQL と MySQL の両方で実行します。
+
+```bash
+# CI (Actions タブ → OWASP ZAP → Run workflow でも同じ)。fork では push で起動しないため、--ref でブランチを指定する
+gh workflow run zaproxy.yml -f database=pgsql
+gh workflow run zaproxy.yml -f database=mysql
+gh run list --workflow zaproxy.yml --limit 5      # run-id を確かめる
+
+# ローカル (詳細は「ローカルで実行する」)
+docker compose build ec-cube
+zap/local/setup.sh 1 2 3 4
+zap/local/batch.sh -l "1 2 3 4"
+ZAP_DB=mysql zap/local/setup.sh 1 2
+ZAP_DB=mysql ZAP_OUT=zap/local/out/mysql zap/local/batch.sh -l "1 2"
+```
+
+### 2. 結果を集める
+
+CI では、ターゲットごとの成果物 `zap-<target>-report` に、ローカルの `zap/local/out/<policy>/<target>/` と同じファイルが入っています。
+まとめには、この成果物を DB ごとに別のディレクトリへ落とします (`all_alerts` はアラートだけで、ルールの説明が無いため使いません)。
+
+```bash
+gh run download <pgsql の run-id> -D zap/local/out/ci/pgsql -p 'zap-*-report'
+gh run download <mysql の run-id> -D zap/local/out/ci/mysql -p 'zap-*-report'
+```
+
+- 失敗したジョブは `gh run view <run-id>` で分かります。ZAP のアドオンの取得に失敗するなど、スキャンの前に止まったものは
+  そのターゲットだけを流し直し (`-f targets='admin_tax|mypage_order'`)、成果物を同じディレクトリへ上書きします。
+  High で失敗したものも、レビューの対象としてそのまま集めます (合否の判定は「結果の判定」)。
+- `zap/local/out` は git の管理外です。
+
+### 3. まとめる
+
+```bash
+zap/bin/review_alerts.py -t 'ZAP レビュー 2026-10-20' -o zap/local/out/ci/review.html \
+    pgsql=zap/local/out/ci/pgsql mysql=zap/local/out/ci/mysql
+# ローカルの結果なら
+zap/bin/review_alerts.py -o zap/local/out/review.html pgsql=zap/local/out/Sequence mysql=zap/local/out/mysql/Sequence
+```
+
+全ターゲットの全レベルのアラートを、ルールごとにまとめた 1 枚の HTML ができます (「結果のレビュー」)。
+`python3` だけで動き、外部のファイルは読み込みません。ブラウザで開いてレビューします。
+
+### 4. レビューする
+
+1. 「要確認だけを表示」にチェックを入れ、判断していないものだけを見ます。除外 (誤検知フィルター) と既知 (仕様・誤検知と判断済み) は、
+   理由が付いて隠れます。
+2. 要確認が残ったルールは、攻撃が成立するかを確かめます。ZAP の判定 (High / Medium) は根拠にせず、攻撃の値を送り直して応答を見ます。
+   レーンの ZAP のコンテナから EC-CUBE へ送れます (自己署名の証明書のため `-k`)。管理者は `admin` / `password`、
+   会員 (`admin_create_customer.zst` が作る) は `user@example.com` / `EccubeE2ePassword1` です。
+
+   ```bash
+   LANE=1 zap/local/compose.sh exec zap curl -sk -o /dev/null -w '%{http_code}\n' https://ec-cube/products/detail/1
+   LANE=1 zap/local/restore.sh    # 確かめた後は DB を初期状態に戻す
+   ```
+
+3. 判断した結果を記録し、次回から要確認に出ないようにします (「既知のアラート」)。
+   - 画面ごとの誤検知: `options.properties` にフィルターを足す (番号は末尾の次。直前のコメントに理由を書き、`zap/bin/lint_options.sh` を通す)
+   - ルール全体の仕様・情報、根拠の無い Path Traversal: `known_alerts.tsv` に足し、「既知のアラート」の表にも書く
+   - 改善として扱うもの: issue にして、`known_alerts.tsv` の理由に issue 番号を書く
+   - **脆弱性だったもの: 公開の場 (issue・PR・この README・`known_alerts.tsv`) に書かず、GitHub Security Advisory で非公開に扱う**
+4. もう一度 `review_alerts.py` を実行し、要確認が 0 になったことを確かめます。スキャンし直す必要はありません
+   (今の `options.properties` と `known_alerts.tsv` で判定し直します)。足したフィルターを ZAP 自体が外すことは、
+   そのターゲットを CI で流し直して確かめます (`zap-<target>-report` の `zap.log` の `High risk alert count`)。
+
+## 仕組み
+
+- 1 つのターゲットは、画面操作を記録した Zest スクリプト `scripts/<target>.zst` です。
+  ZAP の `sequence-activeScan` がこのスクリプトを再生し、各リクエストへ能動スキャンをかけます。
+- ターゲットの一覧と個別の設定は `targets.json` で管理します。
+
+  | 項目 | 内容 |
+  |---|---|
+  | `scenario` | シナリオ (`scripts/<scenario>.zst`)。省略時はターゲットと同じ名前。同じシナリオを条件を変えて別のターゲットとして実行するときに使う (`*_options`) |
+  | `before_script` | スキャンの前に実行するスクリプト (会員の作成など)。カンマで区切って複数を書け、書いた順に実行する。管理画面のターゲットで省略すると `admin_login.zst` |
+  | `context` | 省略時はシナリオの名前から決める。管理画面は `admin`、`mypage_*` は会員でログインした `front_login`、それ以外は `default` |
+  | `thread_per_host` | 能動スキャンの並列数。状態が壊れやすいターゲットは 1 |
+  | `app_env` | スキャンの間だけ、Web サーバーの `APP_ENV` を切り替える (インストーラの `install`)。Apache の `SetEnv` で切り替え、終わったら戻す |
+  | `injectable` | 攻撃する場所 (`scanner.injectable`)。クエリ文字列 1・本文 2・Cookie 4・ヘッダー 8 の和。ヘッダーの値を使う画面 (User-Agent を保存・受け渡す画面、ACP・UCP、インストール後のプラグインの有効化) では 15 にして、ヘッダーと Cookie も攻撃する。全ターゲットで有効にすると EC-CUBE が受けるリクエストが 2〜4 倍になるため、ヘッダーの値を使わない画面では既定のまま |
+
+- 既定で OFF の店舗設定 (在庫切れ商品の非表示・商品ごとの送料・商品ごとの税率・納品書の営業時間と英語の店名) は、
+  `admin_enable_options.zst` で ON にした状態でも、影響を受けるシナリオを `*_options` として実行します。
+  ON のときだけ現れる項目 (商品ごとの `tax_rate`・`delivery_fee`) はシナリオに書き、OFF のターゲットでは
+  `scripts/option_fields.js` が送信の直前に取り除きます (OFF のときに送ると余分な項目として入力エラーになるため)。
+- DB は PostgreSQL が既定です。MySQL でもスキャンします (workflow の入力 `database`、ローカルは `ZAP_DB=mysql`)。
+  インストーラ (`install`) はステップ 4 で PostgreSQL の接続先を送るため、MySQL では対象から外します。
+
+- 自動化プランは `automation/template.yml` から `generate_automation_config.sh` で生成します。
+- スキャンポリシーは 2 種類です。
+
+  | ポリシー | 内容 |
+  |---|---|
+  | `Sequence` (既定) | 能動スキャンを行う。ZAP 同梱の `Sequence` ポリシーから一部のルールを OFF にした `EC-CUBE` ポリシーを使う (下の「OFF にしているルール」) |
+  | `Smoke` | `Sequence` の全ルールを OFF にしたもの。スクリプトの再生だけを確認する。画面の変更でスクリプトが壊れていないかを短時間で確かめるときに使う |
+
+  どちらも `bin/prepare_zap.sh` が作ります。同梱のポリシーは読み取り専用のため、書き換えずに別のファイルとして作っています。
+
+- 前提とするバンドル版プラグインは `plugins.txt` で管理します。4.4 対応版のリリースが無いため、各リポジトリの `4.4` ブランチから導入します。
+  行の末尾に GitHub のアカウントとブランチを書くと、そこから導入します。未マージの修正を当てた状態でスキャンするときに使います。
+- EC-CUBE は `APP_ENV=prod` で起動します (`docker-compose.owaspzap.ci.yml`)。
+- セキュリティ設定 (IP 制限・SSL の強制・`TRUSTED_HOSTS`・管理画面のパス) は、既定値のまま環境変数で固定しています
+  (`docker-compose.owaspzap.ci.yml`)。環境変数で上書きされた項目は画面から保存しても `.env` に書き込まれないため、
+  `admin_security` への攻撃で管理画面から締め出されません。`TRUSTED_HOSTS` は画面で必須のため、すべてのホストに一致する `.*` にしています。
+- 2 段階認証のコードは `scripts/totp.js` (httpsender スクリプト) が送信の直前に計算します。シナリオでは `device_token` に
+  `ZAP_TOTP` を入れて送ります。ログイン後の認証の画面 (`/admin/two_factor_auth`) は、設定・変更で付く認証済みの cookie を
+  ZAP が保持して付け直すため、そのままでは表示されません。スキャン用のパッチ `two-factor-auth-unauthed` で、
+  `X-ZAP-2FA-Unauthed` ヘッダーの付いたリクエストでは cookie を無視させ、鍵は `X-ZAP-TOTP-Key` ヘッダーで渡します (`admin_member_setting`)。
+- エージェントコマースの API (ACP / UCP のチェックアウト) は、同じ `Idempotency-Key` で内容の異なるリクエストを 422 で拒否します。
+  シナリオでは `Idempotency-Key: ZAP_RANDOM` を送り、`scripts/idempotency_key.js` (httpsender スクリプト) が送信のたびに新しい値へ置き換えます。
+  固定のキーのままだと、本文を書き換えた攻撃がすべて 422 で止まります。
+- 一意でなければならない項目 (メールアドレス・ログイン ID・クーポンコード・ページの URL・ファイル名・テンプレートのコード・定休日) は、
+  `scripts/unique_values.js` (httpsender スクリプト) が、同じ値の 2 回目以降の送信で一意な値に置き換えます。
+  シナリオの値は実行ごとに 1 回だけ作られ、再生のたびに同じ値が送られるため、最初の送信で登録された後は重複で弾かれ、
+  新規登録への攻撃がどの項目も処理に届いていませんでした (会員の新規登録では 8,338 件中 4 件)。最初の送信は元の値のまま送り、
+  後続のステップが参照するデータは変えません。置き換える項目を足すときは、`param_counts.tsv` の「(元の値)」に入力エラーが
+  出ていないかで確かめます。
+
+  | リクエスト | 処理に届いた攻撃 (置き換える前 → 後) |
+  |---|---|
+  | 会員の新規登録 (`/admin/customer/new`) | 4 → 1,524 件 |
+  | 会員登録の完了 (`/entry` の `mode=complete`) | 0 → 380 件 |
+  | メンバーの新規登録 | 134 → 558 件 |
+  | クーポンの新規登録 | 2 → 421 件 |
+  | ページの新規登録 | 0 → 680 件 |
+  | ブロックの新規登録 | 110 → 416 件 |
+  | メールテンプレートの新規登録 | 2 → 434 件 |
+  | テンプレートの追加 | 2 → 143 件 |
+  | 定休日の新規登録 | 0 → 121 件 |
+- eccube-api4 の動的クライアント登録 (`/register`) のレート制限 (IP ごとに 1 時間 20 件) と、MCP のレート制限 (IP ごとに 1 分 60 件、クライアントごとに 1 分 300 件) は、`bin/prepare_ec-cube.sh` で緩めています。
+- ACP の商品フィードの push (`admin_agent_commerce`) は送り先 (`ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL`) を設定していないため、
+  攻撃は送り先の設定の確認でエラーになり、フィードの生成や送信までは届きません。攻撃できる入力が `feed_id` だけで、
+  ダミーの送り先を用意する手間に見合わないため、この状態のままにしています。
+
+### OFF にしているルール
+
+`EC-CUBE` ポリシーでは、次のルールを OFF にしています。
+
+- 40026 Cross Site Scripting (DOM Based)
+  - ZAP がブラウザ (headless の Firefox) でページを開き、URL の `#` 以降とクエリ文字列に入れた値で `alert()` が実行されるかを見るルールです。
+    POST の本文は攻撃せず、シナリオのステップの Cookie や状態も引き継ぎません。
+    EC-CUBE の JavaScript は `location.hash` / `location.search` を読んでおらず、検出の見込みがほぼありません。
+  - ページ内のすべての `div` をクリックしては開き直すため、1 ステップで ZAP の待ち時間の上限 (600 秒。設定では変えられない) に
+    達することがあります。上限に達してもルールの処理は止まらず、次のルール (Server Side Code Injection) の所要時間も延びていました。
+  - 全ターゲットのスキャンで 1 件も検出しておらず、ログが残っていた 98 ステップだけで合計約 3 時間かかっていました。
+    OFF にすると、`plugin_mailmagazine_send` は 3 時間 3 分から 18 分に、`admin_payment` は 11 分から 2 分 20 秒になりました (攻撃の件数はほぼ同じ)。
+
+### 足しているルール
+
+同梱の `Sequence` ポリシーに入っていないルールが 30 本あります (2026-10-19 に ZAP 2.17 で確認)。このうち EC-CUBE に関係する
+次の 12 本を `EC-CUBE` ポリシーに足しています (`bin/prepare_zap.sh`。`ZAP_EXTRA_RULES` で変えられる)。
+
+| ID | ルール |
+|---|---|
+| 0 / 40032 / 40034 / 40035 | ディレクトリブラウジング、`.htaccess`・`.env`・隠しファイル (`.git` など) の露出 |
+| 20017 / 20018 | PHP-CGI の CVE-2012-1823 (ソースコードの露見、リモートコード実行) |
+| 40008 | パラメーター改ざん (想定外の値でのエラーの露出) |
+| 40009 / 30002 | サーバーサイドインクルード、書式文字列 |
+| 40044 | XML の指数関数的エンティティ展開 |
+| 10058 | GET for POST (POST の処理を GET でも受け付けるか) |
+| 90034 | クラウドのメタデータの露出 |
+
+`front_contact`・`admin_customer_edit` で比べると、EC-CUBE が受けたリクエストは 2.1〜2.5 倍、能動スキャンの所要時間は 1.6〜1.8 倍になり、
+管理画面のログインが切れることはありませんでした (以前、全ルールをまとめて有効にしたときはログインが切れた)。
+格納型 XSS (40014 / 40016 / 40017) は下の「検知できることの検証」のとおり、目印が一覧の 1 ページ目から押し出されて検知できないため入れていません。
+代わりに、値が別の画面にだけ出る格納型 XSS は、スクリプトのルール (50000。`scripts/stored_xss_sink.js`) で調べます。
+50000 は同梱の `Sequence` に入っているため、`Sequence` / `EC-CUBE` のどちらでも動きます。
+足していないのは、EC-CUBE の技術に当てはまらないもの (Java の WEB-INF・Log4Shell・Spring、.NET の ELMAH・Trace.axd、Heartbleed、
+Shell Shock、React2Shell、パディングオラクル、Swagger、HTTP のみ・HTTPS の HTTP 経由、バッファオーバーフロー、User Agent Fuzzer) です。
+
+### 結果の判定
+
+`bin/check_results.sh` が ZAP の実行ログから判定します。
+
+- High のアラートがある、または自動化プランのジョブが失敗した場合は失敗です。
+- 再生の失敗 (`passed = false` / `Assign: failed`) は、`Smoke` では失敗、`Sequence` では警告です。
+  能動スキャンの攻撃が前のステップの状態を変え、以降の再生が失敗することがあるためです。
+  ZAP の自動化プランは再生に失敗しても成功扱いになるため、ログで判定しています。
+- `Smoke` では、再生で入力エラーの画面が返った POST を `Form error: <URL> <最初のエラーメッセージ>` としてログに出し
+  (`scripts/report_form_errors.js`)、再生の失敗として数えます。入力エラーの画面は 200 で返るため ZAP は成功とみなしますが、
+  確認画面などの後続の画面に攻撃が届きません。再生と攻撃は ZAP の中で区別できないため、攻撃を送らない `Smoke` に限っています。
+- 誤検知は `options.properties` のアラートのフィルター (`globalalertfilter.filters.filter\(N\)`) で外します。
+  番号はファイルの中で 0 から順に並べてください。ZAP はまだ無い番号を末尾の次の番号として作るため、番号が前後すると
+  フィルターの項目が混ざり、それ以降のフィルターが読み込まれません。`~/.ZAP` に以前の設定が残るローカルのレーンでは
+  起きないため、`zap/bin/lint_options.sh` で確かめます (CI でも実行します)。
+- Path Traversal (ルール 6) のうち根拠 (evidence) が空のものは、High の件数から除外します (レポートには残ります)。
+  URL 末尾の文字列をファイル名として送るチェックが、比較用の長いファイル名で入力欄の文字数上限に
+  かかるだけで High を出すためです。ファイルを読み取れた本来の検知は根拠を持ちます。
+
+### 結果のレビュー
+
+`bin/review_alerts.py` は、全ターゲットの結果を、Informational までの全レベルでルールごとにまとめた HTML にします。
+同じルールが多数のターゲットで出るため、URL (ID を `{id}` に正規化) とパラメータの組で重複をまとめ、出たターゲットと DB を並べます。
+各箇所には状態の印を付け、要確認が残るルールを先に、すべて判断済みのルールを後ろにまとめます。
+
+- 要確認: まだ判断していないもの
+- 除外: `options.properties` の誤検知フィルターに当てはまるもの (理由はフィルターの直前のコメント)、または根拠の無い Path Traversal。
+  今のフィルターで判定するため、スキャンの後で足したフィルターも効きます。スキャンの時点で ZAP がまだ外していなかったものには、その旨を添えます
+- 既知: `known_alerts.tsv` で仕様・誤検知と判断済みのもの (下の「既知のアラート」)
+
+ルールごとの判定とメモはブラウザに保存され、CSV で書き出せます。
+
+```bash
+gh run download <pgsql の run-id> -D out/pgsql -p 'zap-*-report'
+gh run download <mysql の run-id> -D out/mysql -p 'zap-*-report'
+zap/bin/review_alerts.py -o out/review.html pgsql=out/pgsql mysql=out/mysql
+# ローカルの結果なら
+zap/bin/review_alerts.py -o out/review.html pgsql=zap/local/out/Sequence
+```
+
+### 既知のアラート
+
+レビューで判断が済んだアラートは、毎回確かめなくてよいよう、次の 2 か所に理由と一緒に記録しています。
+`bin/review_alerts.py` は両方を読み、該当するアラートに理由を表示します。
+
+- 画面ごとの誤検知: `options.properties` のフィルターで外します (ZAP のレポートでは False Positive)。理由はフィルターの直前のコメントに書きます。
+- ルール全体を EC-CUBE の仕様とするものと、根拠の無い Path Traversal: `known_alerts.tsv` に書きます。ZAP のレポートには残します。
+
+High と Medium は、ZAP の判定によらず、レーンで攻撃を送り直して確かめました (2026-10-20)。
+
+| ルール | 区分 | 判断 |
+|---|---|---|
+| Path Traversal (6) | 誤検知 | 出るのは名前・住所などの入力欄で、根拠 (読めたファイルの中身) を持たない。ファイルを扱う画面 (ファイル管理の表示・ダウンロード、ログ) に `../` などを直接送っても読めない |
+| SQL Injection (40018) | 誤検知 | クーポンの新規登録 (`unique_values.js` の置き換えによる差。真偽の組を送っても応答に差が無い) と、納品書の発行日 (日付として PDF に書くだけ) |
+| Anti-CSRF Tokens (10202) | 誤検知 | フォームに `_token` があるもの (ZAP は `_token` をトークンとして扱わない。トークンが無いか不正なら拒否されることを確かめた)、送り先が状態を変えないもの、外部のサイトへのフォーム |
+| Anti-CSRF Tokens (10202) | 仕様 | 商品詳細のお気に入り。未ログインの状態からお気に入りに登録できるよう、ログインの後に GET で戻して登録する |
+| CSP (10038)・HSTS (10035) | 仕様 | EC-CUBE はこれらのヘッダーを付けない。HSTS は Web サーバーやリバースプロキシで設定する |
+| Server (10036)・X-Powered-By (10037) | 仕様 | Web サーバー・PHP の設定で決まる |
+| SameSite=None (10054) | 仕様 | セッションの Cookie の設定 (`app/config/eccube/packages/framework.yaml`) |
+| Timestamp Disclosure (10096) | 仕様 | 応答の数値が Unix 時刻の範囲にあるもの |
+| Cross-Domain JavaScript Source File Inclusion (10017) | 仕様 | 郵便番号から住所を入れる YubinBango を外部から読み込む |
+| Big Redirect Detected (10044) | 誤検知 | 本文は Symfony の標準のリダイレクトのページで、移動先の URL しか含まない。ZAP の基準 (Location の長さ + 300 バイト) を数バイト超えるだけ |
+| GET for POST (10058) | 誤検知 | GET でも同じ画面を返すだけで、処理は POST のフォームでしか進まない。退会・キャッシュの削除は、正しいトークンを付けた GET でも処理されないことを確かめた |
+| User Controllable HTML Element Attribute (10031) | 誤検知 | ACP のクライアントの登録で入力値が value 属性に出るが、エスケープされる |
+| Re-examine Cache-control Directives (10015) | 仕様 | セッションを使う応答の `Cache-Control` は Symfony の既定 (`private, max-age=0, must-revalidate`)。共有キャッシュには残らず、ブラウザは再検証する。`no-store` は付けていない (付けると、共用の端末のディスクキャッシュに個人情報を含む画面が残らなくなる。改善は #7266) |
+| Session Management Response Identified (10112)・Authentication Request Identified (10111)・Modern Web Application (10109) | 情報 | ZAP がセッションの Cookie・ログインのフォーム・JavaScript の画面を見つけたことの通知。Cookie の HttpOnly・Secure の欠落のルール (10010・10011) は出ていない |
+
+2026-10-20 の全ターゲットの結果は、これですべて判断済みです。
+
+受動スキャンのルール (10202 など) のフィルターは、同じ条件のアラートでも ZAP が外すものと外さないものがあります (原因は未調査)。
+能動スキャンのルールでは当てはまるものがすべて外れ、CI の合否 (High) には影響しません。`bin/review_alerts.py` は今のフィルターで判定し直します。
+新しく判断したものは、該当する方へ足し、この表も直してください。
+
+## GitHub Actions で実行する
+
+`.github/workflows/zaproxy.yml` を手動で実行します (Actions タブ → OWASP ZAP → Run workflow)。
+
+| 入力 | 内容 |
+|---|---|
+| `policy` | `Sequence` または `Smoke` |
+| `targets` | 実行するターゲットの正規表現 (target 名全体に一致させる)。例: `admin_tax\|mypage_order` |
+| `patches` | 当てるスキャン用のパッチ (`zap/patches/` のファイル名から `.patch` を除いたものを空白区切り)。`all` (既定) ですべて、空なら当てない |
+| `database` | `pgsql` (既定) または `mysql`。`mysql` ではインストーラ (`install`) を外す |
+
+ジョブは、イメージのビルド (`build`) → ターゲットごとのスキャン (`scan`、`targets.json` から作る matrix で並列) → アラートの結合 (`merge`) の順です。
+ターゲットごとのレポート (`zap-<target>-report`: HTML レポート・実行ログ・生成したプラン・`alerts.json` など、ローカルの出力と同じもの) と、
+全ターゲットのアラートをまとめた `all_alerts` をアーティファクトとして保存します。
+CLI からは `gh workflow run zaproxy.yml -f database=mysql -f targets='admin_tax'` のように起動できます。
+
+## ローカルで実行する
+
+レーン (`LANE=<n>`) ごとに EC-CUBE・PostgreSQL・ZAP を独立して起動するため、複数のターゲットを並列に実行できます。
+1 レーンあたりメモリを 0.7GB 程度使います (10 レーンのスキャン中に計測)。レーンはホストへポートを公開しません。
+
+必要なもの: Docker (Compose v2。override の `!reset` を使います)、bash、jq、git、flock、python3 (結果のまとめ)
+
+```bash
+# EC-CUBE のイメージをビルドする (作業ツリーのコードで実行するため)
+docker compose build ec-cube
+
+# レーン 1〜4 を準備する (初回は 5 分程度。プラグインは zap/local/repos に clone する)
+zap/local/setup.sh 1 2 3 4
+
+# 1 つだけ実行する
+LANE=1 zap/local/run.sh -p Smoke admin_tax
+LANE=1 zap/local/run.sh admin_tax
+
+# 全ターゲットを 4 レーンで実行する (正規表現で絞り込める)
+zap/local/batch.sh -p Smoke -l "1 2 3 4"
+zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
+
+# MySQL でも実行する。レーンは PostgreSQL のレーンと別に作られ (同じ番号で共存できる)、インストーラは自動で外れる。
+# 出力先は既定では PostgreSQL と同じになるため、ZAP_OUT で分ける
+ZAP_DB=mysql zap/local/setup.sh 1 2
+ZAP_DB=mysql ZAP_OUT=zap/local/out/mysql zap/local/batch.sh -l "1 2"
+```
+
+- 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`・`params.tsv`・`param_counts.tsv`・`forms.tsv`)。
+  CI では成果物 `zap-<target>-report` に同じものが入ります。
+- `attacks.tsv` は、シナリオのリクエストごとに EC-CUBE が受けたリクエストの件数と応答の内訳です (`zap/bin/attack_counts.sh`)。
+  `Sequence` では、パラメータがあるのに正常な応答 (2xx/3xx) が数件しか無いリクエストを「攻撃が届いていない可能性」として通知します。
+  3xx の 9 割以上がログイン画面・購入エラー画面・2 段階認証の画面へ戻されているリクエストも通知します
+  (最後の列の 3xx の行き先は、アクセスログに記録したリダイレクト先から数えます。`zap/apache-access-log.conf`)。
+  正常な応答が数件を超えるが大半が 4xx のもの (前の手順で取り出した ID が空になっている等) は拾えません。
+  `attacks.tsv` の応答の内訳もあわせて確かめてください。
+- `param_counts.tsv` は、攻撃が値を書き換えた項目ごとの件数と応答の内訳です (`zap/bin/param_counts.sh`)。
+  `attacks.tsv` はリクエスト単位のため、2xx が多くても特定の項目への攻撃がすべて弾かれていることを見分けられません。
+  `zap/scripts/record_params.js` が送ったパラメータの名前と値のハッシュを `params.tsv` に記録し、同じリクエストの中で
+  最も多い値を元の値として、値が異なる項目を攻撃された項目として数えます (攻撃は 1 回に 1 項目だけを書き換えます)。
+  JSON の本文は葉の値ごとに数えます。2xx のうち応答に入力エラーがあったものは「入力エラー」の列に出します。
+  「(元の値)」の行は、どの項目も書き換えていないリクエスト (再生) です。ここに入力エラーがあれば、元の値の時点で
+  検証に弾かれており、そのリクエストへの攻撃はどの項目も処理に届いていません (新規登録の一意性の検証など)。
+- `forms.tsv` は、画面の HTML にあったフォームとクエリ文字列の付いたリンクです (`zap/scripts/record_forms.js`)。
+  `zap/bin/form_coverage.sh zap/local/out/Sequence/*/` で全ターゲットの `params.tsv` と突き合わせ、一度も送っていない
+  フォーム、送っていない項目、送っていない `mode`・ボタンの値を一覧にします (ルートの照合はメソッドと URL の一致だけを見るため)。
+  一覧には照合では見分けられないものも残ります。`mode` の値がどの case にも当たらないとき入力画面を返すだけの分岐
+  (会員登録・お問い合わせの「戻る」、受注の再計算など) は `mode` への攻撃で通っています。`disabled` の項目や、
+  JavaScript で送信先を切り替えるフォーム (会員一覧の削除、ファイル管理) も送らなくて構いません。
+  `batch.sh` の一覧は `zap/local/out/<policy>/summary.tsv` です。
+  条件を変えて同じターゲットを実行するときは、`ZAP_OUT=<出力先>` で結果の上書きを避けられます。
+- `run.sh` はターゲットごとに DB を準備直後の状態 (`eccubedb_clean`) へ戻します。前のターゲットが作ったデータの影響を受けません。
+- レーンの操作は `LANE=<n> zap/local/compose.sh <サブコマンド>` で行えます (例: `logs ec-cube`)。
+- Docker を再起動した後は `zap/local/setup.sh -r <レーン番号>...` で作り直してください。
+  データとファイルの定期削除 (`delete_data.sh` / `delete_files.sh`) はコンテナ内のバックグラウンド処理のため、再起動で止まります。
+- 片付けるときは `LANE=<n> zap/local/compose.sh down -v` を実行します。
+
+## 既知の再生の失敗
+
+`Sequence` で全ターゲットを実行すると、次のターゲットで再生の失敗 (警告) が出ます。いずれもスクリプトの不備ではありません。
+
+- 能動スキャンの攻撃で前のステップの状態が変わるもの: 後続のステップが前提とするデータが変わる、または削除される
+- `delete_data.sh` の定期削除と競合するもの: タグ (`dtb_tag`) は作成日時を持たないため、10 秒ほど経ったものから削除する。
+  ページ (`dtb_page`)・支払方法 (`dtb_payment`)・テンプレート (`dtb_template`) は作成の 30 分後に削除する
+  (1 分以下だと能動スキャンの途中で消え、後続のステップが 404 になっていた。DB はターゲットごとに戻すため積み上がらない)
+- アプリケーションが 500 を返すもの: 想定外の入力で 500 になる箇所がある (本体は EC-CUBE/ec-cube#7192、プラグインは各リポジトリの issue)
+
+再生に失敗したステップは、能動スキャンの攻撃が画面に届いていない可能性があります。
+
+再生に成功していても、攻撃が処理まで届かないリクエストがあります (次の節)。
+
+## ZAP の制約で攻撃が処理まで届かないもの
+
+`attacks.tsv` で正常な応答 (2xx) が少ないリクエストのうち、次のものはシナリオやスキャン用のパッチでは直せません。
+ZAP の能動スキャンは、記録したリクエストのパラメータの値を 1 つずつ攻撃の文字列に置き換えて送るだけのためです。
+値の形が決まっている項目は、攻撃の文字列が入った時点で入力の検証で弾かれます。
+2026-10-15 に全ターゲットを `Sequence` で実行し、2xx が半分未満のリクエストを分類した結果です。
+
+**攻撃される場所の制約**
+
+- URL のパスの値 (`/admin/order/{id}/edit` の `{id}` など) は攻撃していません。アクセスログでも、攻撃はすべて記録した ID のまま送られています。
+  ZAP の設定 (`scanner.injectable`) で対象に加えられますが、攻撃するパス要素を絞れません。`entry` で試すと、EC-CUBE が受けた
+  リクエストは 5,291 件から 8,564 件に増え、増えた分の大半は固定の文字列のパス要素 (`/entry` など) への 404 でした。
+  ID のルートは `\d+` の制約があり、ID への攻撃もルーティングで 404 になります。このため全体では有効にしていません (2026-10-05)。
+- ヘッダーと Cookie は、ヘッダーの値を使う画面のターゲットだけで攻撃します (`targets.json` の `injectable`)。
+  2026-10-19 に `front_contact`・`admin_tax` で全ターゲット向けに有効にして比べると、EC-CUBE が受けたリクエストは
+  1.8 倍・4 倍になり、新しいアラートは出ませんでした。本文は元の値のままなので、ヘッダーへの攻撃は保存の処理まで届きます
+  (`admin_tax` の保存の成功が 18 → 981 件)。セッションの cookie への攻撃でログインが切れることはありませんでした。
+- パラメータの無いリクエストは攻撃されません。
+- `options.properties` に anti-CSRF トークンとして登録した名前のパラメータは攻撃しません。
+
+**攻撃できるパラメータが実質ないもの**
+
+- パラメータが CSRF トークンと `_method` だけのリクエストです。トークンを壊すと 403 か 400、`_method` を壊すと Symfony が 400 を返し、処理には届きません。
+  - 削除のリクエスト全般
+  - 表示・非表示の切り替え (`visibility`・`visible`)
+  - 管理者の並び順 (`up`)、商品の複製、会員への仮登録メールの再送
+  - カートの数量変更・削除 (`/cart/up`・`down`・`remove`)
+  - キャッシュの削除、期限切れトークンの削除、MCP トークンの失効、クーポンの有効化
+  - `/shopping/checkout`、`/shopping/restore_preferred`、`/admin/content/cache`
+- 返品・返金申請の確認 (`/mypage/refund_request/.../confirm`) はパラメータが CSRF トークンだけで、攻撃は申請の画面へ戻されます。
+
+**値が ID や決まった値で、入力の検証で弾かれるもの**
+
+攻撃は検証の処理には届いていますが、その後の保存などの処理には届きません。
+
+| リクエスト | 弾かれ方 |
+|---|---|
+| `/products/add_cart/{id}` | カートに入れるフォームが不正なら 404 |
+| `/shopping/customer` (非会員のお客様情報の変更) | 入力エラーは 400 |
+| 並べ替え (`*/sort_no/move`) | 値が ID と並び順の数値でなければ 400 |
+| 受注一覧の出荷の更新 (`tracking_number`・`order_status` の PUT) | 入力エラーは 400 |
+| CSV 出力項目の設定 (`/admin/setting/shop/csv`) | 項目の ID が選択中の CSV 種別のものでなければ 400 |
+| マスターデータの編集 | マスターデータのエンティティ名でなければ 400 |
+| ファイル管理の表示・ダウンロード、商品・支払方法の画像の読み込み・取り消し | ファイルが無ければ 404 |
+| ブロックの表示 (`view_block`)、受注登録の会員の取得 (`search/customer/id`)、`/catalog/product` | パラメータが ID だけで、無ければ 400 か 404 |
+| ACP の checkout session の更新 | `line_items` の検証で 400 |
+| `/admin/authorize`・`/token` (eccube-api4) | `client_id`・`redirect_uri` の照合で 400、クライアント認証で 401 |
+| ログイン (`/admin/login`・`/mypage/login`) | 認証に失敗してログイン画面へ戻される |
+| メールマガジンの配信の準備 (`prepare`) | 入力エラーは 400 |
+
+**型の決まった項目**
+
+`param_counts.tsv` で見ると、都道府県・カナ・電話番号・郵便番号・日付・金額・選択肢の ID への攻撃は、入力エラーの画面 (200) か 400 で止まります。
+同じリクエストの自由入力の項目 (氏名・住所・本文など) への攻撃は処理に届いています。2026-10-19 に全ターゲットで集計した結果、
+攻撃を受けた 1,756 項目 (同じパスの複数のステップを分けて数えたもの) のうち 621 項目がこれに当たります。
+税率の新規登録は、項目がすべて型の決まった項目 (税率・端数処理・適用日時) のため、攻撃は検証で止まります。
+
+**3xx でも届いているもの**
+
+保存に成功した後に編集画面へリダイレクトする画面 (PRG) は、3xx が多くても攻撃は届いています。
+`attacks.tsv` の最後の列の 3xx の行き先が自分の画面か一覧なら、保存まで届いています。
+
+**ZAP では検査できないもの**
+
+CSRF トークンの検証漏れ、認可漏れ (他人のデータへのアクセス)、業務ロジックの不備は、能動スキャンでは検出できません。
+
+## シナリオが通らない画面を調べる
+
+`zap/bin/coverage.sh` は、EC-CUBE のルートのうち、どのシナリオのリクエストも一致しないものを一覧にします。
+シナリオを追加したときや、本体にルートが増えたときに確認してください。
+
+```bash
+LANE=1 zap/local/compose.sh exec -T ec-cube bin/console debug:router --format=json | zap/bin/coverage.sh -
+```
+
+- 「通る」はリクエストの URL とメソッドが一致したというだけで、能動スキャンの攻撃が効いたことは意味しません。
+  パラメータの無いリクエストは攻撃されず、再生に失敗したステップも攻撃が届いていない可能性があります。
+- 対象外にするルートは、理由と一緒に `zap/coverage_exclude.txt` に書きます (インストーラ、ストアのプラグイン管理、ページ管理用のダミー)。
+
+## 検知できることの検証
+
+シナリオが再生できてスキャンが完走しても、脆弱性を検知できるとは限りません。本体に既知の脆弱性を一時的に仕込み、
+仕込む前 (base) と後 (seeded) を同じ条件の `Sequence` で実行して、アラートの差を比べます。
+仕込んだ変更はコミットせず、検証用のイメージにだけ含めます。
+
+```bash
+# 仕込む前のイメージを作る
+docker build -t local/eccube-zap-base:8.2-apache .
+# 作業ツリーに脆弱性を仕込んでから、仕込んだイメージを作る
+docker build -t local/eccube-zap-seeded:8.2-apache .
+git checkout -- src/                                 # 仕込みはすぐ戻してよい (イメージに入っている)
+
+# レーンごとにイメージを切り替える
+REGISTRY=local IMAGE_NAME=eccube-zap-base   zap/local/setup.sh -r 1 2
+REGISTRY=local IMAGE_NAME=eccube-zap-seeded zap/local/setup.sh -r 3 4
+REGISTRY=local IMAGE_NAME=eccube-zap-base   ZAP_OUT=zap/local/out/seed/base   zap/local/batch.sh -l "1 2" '<ターゲット>'
+REGISTRY=local IMAGE_NAME=eccube-zap-seeded ZAP_OUT=zap/local/out/seed/seeded zap/local/batch.sh -l "3 4" '<ターゲット>'
+
+# 差を比べる
+jq -r '.[] | select(.risk >= 3) | "\(.ruleid) \(.method) \(.url) \(.param)"' zap/local/out/seed/*/Sequence/<ターゲット>/alerts.json
+```
+
+これまでに確かめた結果です (2026-10-02、2026-10-13、2026-10-20)。
+
+| 種類 | 仕込んだ画面 | 結果 | ルール |
+|---|---|---|---|
+| パストラバーサル | ファイル管理の閲覧・ダウンロード、ログのダウンロード | 検知 | 6 |
+| SQL インジェクション | 商品・会員・受注の検索 (管理画面) | 検知 (根拠は 500 の応答) | 40018 |
+| 反射型 XSS | 商品検索、お問い合わせ確認、会員登録確認 | 検知 (入力側の変換も外した場合) | 40012 |
+| 格納型 XSS (登録した値が POST の応答に出る) | タグ管理 | 検知 | 40012 |
+| 格納型 XSS (登録した値が別の画面にだけ出る) | 新着情報の一覧 | 検知 (`X-ZAP-Sink` を書いたステップ) | 50000 |
+| オープンリダイレクト | 受注登録・編集の `return_link` | 検知 | 20019 |
+| CSRF トークンの検証の欠落 | 各種の削除 | 検知できない | — |
+
+- 反射型 XSS: フロントの入力は受け取り時に `< > &` を全角に変換するため (`HTMLPurifierListener`)、テンプレートの `|raw` だけを
+  仕込んでも検知されません。変換も外すと検知されます。本体の入力側の防御が効いていることの裏付けでもあります。
+- 格納型 XSS: 登録した値が別の画面 (一覧など) にだけ出る形は、Persistent XSS のルール (40014 / 40016 / 40017) を
+  ポリシーに足しても検知できませんでした。ルール 40016 が書き込んだ目印 (`zApPX<n>sS`) が出る画面をルール 40017 が見つけて
+  初めて 40014 が攻撃しますが、目印を書き込んだ後の攻撃でもレコードが作られ、新しい順に並ぶ一覧の 1 ページ目から目印が押し出されます
+  (新着情報では 671 件中 241 番目と 576 番目)。同じ ZAP で `sequence-activeScan` を 2 回続けて実行しても同じでした。
+  既存のレコードを編集するだけのシナリオ (`admin_news_persistent`) で、同梱のルールと 50000 だけを有効にした `Persistent` ポリシー
+  (`-p Persistent`) で実行しても、40014 / 40016 / 40017 は検知しませんでした。編集のフォームでは、次の項目への攻撃で前の項目の目印が
+  元の値に戻るためです。このため `EC-CUBE` ポリシーには Persistent XSS のルールを入れていません。
+  代わりの `stored_xss_sink.js` は、シナリオのリクエストのヘッダー `X-ZAP-Sink` に書いた画面 (カンマ区切りで複数) を、
+  項目ごとに目印 (`<zapsk<n>>`) を送った直後に開き、目印がエスケープされずに出ていれば High にします。
+  新着情報の一覧に `|raw` を仕込むと、`Sequence` の `admin_news` (新規登録と編集) と `Persistent` の `admin_news_persistent` の
+  どちらでも `admin_news[title]` で検知し、仕込む前は検知しませんでした。新規登録でも、目印を送った直後に開くため押し出されません。
+  1 項目ごとに書かれた画面を開くため、リクエストは画面の数だけ増えます (商品登録で約 1,400 件)。
+- CSRF トークンの検証の欠落: ZAP のルール (10202 / 20012) は、フォームにトークンがあるかと、トークンが変わるかを見るだけで、
+  トークンを外して処理が成功するかは試しません。サーバー側の検証だけを外しても差は出ないため、PHPUnit の負のテストで確かめます。
+- SQL インジェクション: 根拠は 500 の応答で、結果の違いを突いたものではありません。
+  500 を返さない形の SQL インジェクションを検知できるかは確かめていません。
+- 商品編集 (`admin_product_edit`) の `return_link` にオープンリダイレクトを仕込むと、スキャンが終わらなくなりました。
+  商品のタグ (`dtb_product_tag`) が保存のたびに増え続けたためです。本体の不具合で、仕込みはそれを毎回踏むきっかけでした。
+  商品編集は結果キャッシュ (10 秒) を使って商品とタグを読み込み、保存の後にキャッシュを消しますが、`return_link` で
+  リダイレクトするときは消しません。10 秒以内に次の保存が来ると、消し済みの古いタグの行を消そうとし、今あるタグの行が残ります。
+  仕込まない場合も、正しいルートの `return_link` を付けて 10 秒以内に続けて保存すると増えます。
+
+## スキャン用のパッチ
+
+能動スキャンの攻撃で状態が消費されると (登録済み、削除済み、使用済みの URL、ログアウトなど)、後続の攻撃は
+画面の処理まで届かずに弾かれます。`zap/patches/*.patch` は、こうした保存や削除の処理を無効にするパッチです
+([doc4 の「テストが止まらないようにするための設定」](https://doc4.ec-cube.net/penetration-testing/testing/apply_patch) を 4.4 向けに作り直したもの)。
+
+既定のスキャン (CI・`setup.sh`) では、すべてのパッチを当てます。パッチなしとすべて当てた場合を全ターゲットで比べ、
+パッチを当てると正常な応答が減るリクエストは無く、下の表のリクエストで増えることを確かめています (2026-10-14。`shopping-error-keep-order` と管理画面のお届け先は 2026-10-15、`product-image-keep` と `forgot-reset-keep` は 2026-10-19)。
+スキャンする対象はリリースするコードと変わり、パッチで無効にした処理 (お届け先の登録上限、認可コードの使用済みの判定など) は
+検査できません。
+
+| パッチ | 内容 |
+|---|---|
+| `mypage-delivery-keep` | お届け先の登録上限 (マイページ・管理画面の会員) と削除を無効にする。`mypage_delivery`・`mypage_shopping_shipping` で、お届け先の新規登録への攻撃が上限到達の 4xx で弾かれなくなる (正常な応答 78 → 1,102 件)。管理画面の `admin_customer_delivery` も同じ (2xx 58 → 762 件、404 992 → 0 件) |
+| `oauth-auth-code-keep` | eccube-api4 の `/token` で、認可コードを使用済みにしない。再生で使用済みになり invalid_grant で止まっていた攻撃が、`redirect_uri` の照合とトークンの発行まで届く (1 → 16 件。残りは照合で弾かれる 400 とクライアント認証の 401) |
+| `product-csv-split-keep` | 商品 CSV の分割登録で、取り込みに分割ファイルの複製を渡す。取り込みが分割ファイルを移動するため、最初の取り込みの後は `file_no` への攻撃も 400 になっていた (1 → 116 件。残りは `file_name` への攻撃をファイルの一覧との照合で弾く 400) |
+| `product-image-keep` | 商品の登録で、アップロードした一時ファイルを移動せずに複製する。最初の保存で一時ファイルが移動され、同じ画像を送る後続の攻撃が画像のパスの検証で弾かれていた (`/admin/product/product/new` の処理に届いた攻撃 2,484 → 3,934 件) |
+| `forgot-reset-keep` | パスワードの再設定で、再設定キーを消さない。最初の再設定でキーが消え、後続の攻撃が 404 になるのを防ぐ。これまで `entry` は確認用のパスワードをわざと一致させずに送っており、入力の検証を通らないため会員の検索まで届いていなかった (再生が再設定に成功 0 → 13 件。攻撃はメールアドレスの形式とパスワードの一致の検証で止まる) |
+| `two-factor-auth-unauthed` | 2 段階認証で、`X-ZAP-2FA-Unauthed` ヘッダーの付いたリクエストでは認証済みの cookie を無視する。ZAP は cookie を保持して送信のたびに付け直し、スクリプトからは外せないため、ログイン後の認証の画面 (`/admin/two_factor_auth`) をスキャンできなかった |
+| `shopping-error-keep-order` | 購入エラー画面で、カートと受注の紐付けを外さない。`redirect_to` への攻撃が購入エラー画面へリダイレクトされ、ZAP がたどると以降の攻撃が受注を見つけられず、非会員の配送先の変更・複数配送・クーポンの購入手続きへの攻撃がすべて購入エラー画面へ戻されていた (`redirect_to` の 2xx 0 → 416 件、`shipping_edit` 0 → 765 件、`shipping_multiple_edit` 0 → 784 件) |
+
+doc4 のパッチのうち次のものは、当てても `attacks.tsv` の正常な応答が増えなかったため収録していません。
+
+- 削除の処理を無効にするもの: 削除のリクエストのパラメータは `_token` と `_method` だけで、`_method` への攻撃は
+  Symfony が 400 を返す。パスの ID は攻撃されないため、削除済みかどうかに関わらず攻撃は処理まで届かない
+- カートを残すもの: `/shopping/checkout` のパラメータは CSRF トークンだけで、攻撃されない
+- 会員登録で会員を保存しないもの: `entry` の有効化とパスワード再設定の再生が壊れる
+- パスワード再設定のキーを使用済みにしないもの: シナリオ側で対応した (`entry` は最新のメールからキーを読み、
+  再設定は確認用のパスワードを一致させずに送る)
+
+```bash
+zap/local/setup.sh -n 1                              # パッチを当てずにレーンを作る
+LANE=7 zap/local/patch.sh                            # すべて当てる
+LANE=7 zap/local/patch.sh -R mypage-delivery-keep    # 1 つだけ外す
+```
+
+GitHub Actions では、`workflow_dispatch` の `patches` に `all` (既定)、パッチ名 (空白区切り)、または空 (当てない) を指定します。
+パッチは `restore.sh` では戻りません。外すか、`setup.sh -r` でレーンを作り直してください。
+
+## シナリオを追加・修正するとき
+
+- ZAP の GUI で記録した Zest スクリプトを `scripts/` に置き、`targets.json` に追加します。
+- 画面操作の途中で変わる値 (CSRF トークン・作成したレコードの ID) は、直前のレスポンスから `ZestAssignStringDelimiters` で取り出して `{{変数}}` で参照します。
+  - prefix / postfix には `{{変数}}` が展開されません。前後の値に依存する場合は `ZestAssignRegexDelimiters` を使い、
+    `/shopping/shipping_edit/\d+/` や `refund_request/(?=\d+/edit)` のように正規表現で位置を絞ります。
+  - 取り出しに失敗すると、URL やパラメータに `{{変数}}` がそのまま残って送られます。
+    検索フォームのように CSRF トークンを持たないフォームへ未定義の変数を送ると、余分な項目として検証エラーになります。
+  - `ZestActionPrint` は `sequence-activeScan` では出力されません。変数の中身を確かめたいときは、変数を埋めた URL へのリクエストを一時的に足すと、ログの `Response:` 行に出ます。
+- 会員登録のように一意であるべき値は、`ZestAssignRandomInteger` で作った乱数を埋めます。
+  `before_script` や能動スキャンの再生で同じ値が繰り返し送られ、2 回目以降が失敗するためです。
+- `formIndex` はページ内の `<form>` の順番です。購入フローやマイページの一部の画面にはヘッダーの検索フォームがありません。
+  ずれていても取り出しの失敗としてログに出ないことがあるため、実際の HTML で順番を確かめてください。
+- `before_script` (standalone で実行する) に制御文字を含む値 (画像のバイナリなど) があると、ZAP が
+  `JacksonYAMLParseException: special characters are not allowed` で読み込みに失敗します。添付が必要なら、
+  `GIF89a;` のようにマジックナンバーだけで形式が判定される ASCII の内容にしてください。
+- 手で書く `ZestRequest` に `response` を含めないでください。`elementType` の無い `response` があると読み込みに失敗し、
+  ログには `認識できないシーケンス: target` とだけ出ます。
+- admin コンテキストのターゲットの `before_script` で会員としてログインすると、セッション ID が変わって以降の管理画面の
+  リクエストが未ログイン扱いになります。会員の操作の後に管理画面を操作する場合は、管理画面にログインし直してください
+  (`admin_create_refund_request.zst`)。
+- `multipart/form-data` のリクエストは、boundary を小文字だけにし、boundary の行の前の改行を CRLF にしてください。
+  ZAP は Content-Type を小文字にしてから boundary を取り出すため、ブラウザが付ける `----WebKitFormBoundary...` のように
+  大文字を含むと本文を分割できず、能動スキャンの攻撃が 1 件も送られません (ZAP のログ `/home/zap/.ZAP/zap.log` に
+  `VariantMultipartFormParameters.setParameter` の `IndexOutOfBoundsException` が出ます)。
+  また ZAP は改行を CRLF として本文を分割するため、手で編集して LF だけになった箇所があると値の範囲がずれます。
+  `zap/bin/lint_zst.sh` で確かめられます (CI でも実行します)。
+- ZAP は anti-CSRF トークン名を部分一致 (大文字小文字を区別しない) で判定し、該当するパラメータを攻撃しません。
+  `options.properties` のトークン名に `_token` を有効のまま置くと、`mcp_token[label]` や `device_token` のような項目まで
+  攻撃されなくなります。フォームのトークンは `[_token]` で外しています。トークン名を足すときは、ほかの項目名に含まれないか確かめてください。
+- POST の値と送り先は、現在の画面がブラウザから送るものに揃えてください。古い版で記録したシナリオは、次のような食い違いで
+  入力エラーになり、確認画面などに攻撃が届かないことがあります。`Smoke` の `Form error:` で見つけられます。
+  - 後から増えた項目が無い: プラグインが足す必須項目 (会員登録の `entry[mailmaga_flg]`) や、hidden の項目
+    (商品登録の `admin_product[faqs_rendered]`。無いと入力エラーの画面の再表示が 500 になる。EC-CUBE/ec-cube#7192)
+  - 項目の形が変わった: 日付が年・月・日の 3 項目から 1 項目 (`single_text`) になった (受注登録のお届け日)
+  - 記録した環境にしか無い ID を送っている: テンプレートなどはシナリオの中で作り、ID は応答から取り出す
+  - JavaScript が送り先を変えている: メルマガのテンプレート選択は `/select/{id}` へ送る
+  - 送り方が違う: 添付ファイルのあるフォーム (返品・返金申請) を `multipart/form-data` でなく urlencoded で送っている
+- 一度しか使えない値 (再設定キーなど) を使うステップは、再生の時点で値が消費され、その後の攻撃がすべて 404 などになります。
+  - 攻撃を受けるステップは、処理が完了しない値で送ります。`entry` のパスワード再設定は確認用のパスワードを一致させずに送り、
+    再設定キーを残したまま入力エラーの画面へ攻撃を届けます。入力エラーを意図したリクエストには、`Form error:` の対象から外すため
+    ヘッダー `X-ZAP-Expect-Form-Error: 1` を付けます
+  - eccube-api4 の `/token` (`api_oauth`) は認可コードが再生で使用済みになり、攻撃は invalid_grant で止まります。
+    スキャン用のパッチ `oauth-auth-code-keep` で使用済みにしないようにしています
+  - 前のステップへの攻撃で値が作り直されることがあります。メールから読む値は、宛先で絞った最新のメールから読みます
+    (`POST /forgot` への攻撃が成功するたびに再設定キーが作り直される)。メールは mailpit で受け、
+    `http://mailpit:8025/view/latest.txt?query=to:<宛先>` で本文を取得します。URL は Zest がエンコードするため、エンコードせずに書きます
+- 攻撃を受けるステップの再生で、以降のリクエストが別の画面へ飛ばされる状態にしないでください。`admin_member_setting` では、
+  ログイン中のメンバー自身の 2 段階認証を有効にする編集が再生された時点で、以降の管理画面のリクエストが 2 段階認証の設定画面へ
+  リダイレクトされ、編集への攻撃がすべて届いていませんでした。2 段階認証を有効にしない編集のステップを前に足し、攻撃はそちらで届けます。
+- ZAP の攻撃はリダイレクトをたどります。購入手続きの `redirect_to` への攻撃が購入エラー画面へリダイレクトされると、
+  購入エラー画面がカートと受注の紐付けを外すため、以降の攻撃は受注が見つからずにすべて購入エラー画面へ戻されていました
+  (スキャン用のパッチ `shopping-error-keep-order`)。
+- 検索の結果から取り出す値は、検索の POST の応答から取り出します。検索条件はセッションに残るため、POST への攻撃の後は
+  続くページ送り (`/page/1` の GET) の一覧が空になり、そこから取り出した ID が空のまま後続のステップに渡ります
+  (受注登録の会員検索、受注一覧)。
+- 商品画像の一時ファイル (`html/upload/temp_image`) は、`delete_files.sh` が 60 分残します。他の `html/` 配下の新しいファイルは
+  十数秒以内に消すため、画像のアップロードを能動スキャンしている間に、次の商品登録のステップが使う一時ファイルが消えていました。
+  なお一時ファイルは最初に登録が成功した攻撃で移動するため、商品登録のステップへの以降の攻撃は画像の入力エラーになります。
+  登録の処理まで届く攻撃は、続く編集のステップで行われます。
+- `mode=confirm` / `mode=complete` のように POST の値だけが違う遷移も、ダミーのパラメータで区別する必要はありません。
+  ZAP の Sites ツリーはパラメータの名前が同じ POST を 1 つのノードにまとめますが、`sequence-activeScan` はノードではなく
+  シナリオのステップごとに攻撃するためです。区別のために足したパラメータは、それ自体が攻撃されるだけです
+  (`front_contact` と `entry` で `mode2=dummy` を外しても、完了画面のステップへの攻撃の件数は変わりませんでした)。
+- 送った値が別の画面 (一覧・詳細・メール) に出るステップには、その画面の URL をヘッダー `X-ZAP-Sink` に書きます
+  (カンマ区切りで複数。`{{変数}}` も使えます)。能動スキャンが項目ごとに目印を送った直後にその画面を開き、
+  格納型 XSS を調べます (`scripts/stored_xss_sink.js`)。メールは `http://mailpit:8025/view/latest.html` を書きます。
+  画面は送ったリクエストと同じ Cookie で開くため、会員の操作の値が管理画面にだけ出る形は調べられません。
+- 変更したら `Smoke` で再生を確かめてから、`Sequence` で実行してください。

@@ -14,6 +14,62 @@
   },
   "statements": [
     {
+      "url": "https://ec-cube/admin/login",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: none\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": true,
+      "timestamp": 1655292281770,
+      "cookies": [],
+      "index": 1,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "fieldDefinition": {
+        "formIndex": 0,
+        "fieldName": "_csrf_token",
+        "elementType": "ZestFieldDefinition"
+      },
+      "variableName": "admin_login_csrf",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignFieldValue"
+    },
+    {
+      "url": "https://ec-cube/admin/login",
+      "urlToken": "https://ec-cube/admin/login",
+      "data": "_csrf_token={{admin_login_csrf}}&login_id=admin&password=password",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 88\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 302,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655292289492,
+      "cookies": [],
+      "index": 3,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "set": {
         "start": 0,
         "end": 5,
@@ -64,7 +120,7 @@
         },
         {
           "url": "https://ec-cube/admin/customer/new",
-          "data": "admin_customer%5B_token%5D={{csrf2}}&admin_customer%5Bname%5D%5Bname01%5D=%E5%A7%93&admin_customer%5Bname%5D%5Bname02%5D=%E5%90%8D&admin_customer%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&admin_customer%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&admin_customer%5Bcompany_name%5D=&admin_customer%5Bpostal_code%5D=5300001&admin_customer%5Baddress%5D%5Bpref%5D=27&admin_customer%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&admin_customer%5Baddress%5D%5Baddr02%5D=1-2-3&admin_customer%5Bemail%5D=user-{{customer-id}}%40example.com&admin_customer%5Bphone_number%5D=08012345678&admin_customer%5Bplain_password%5D%5Bfirst%5D=password1234&admin_customer%5Bplain_password%5D%5Bsecond%5D=password1234&admin_customer%5Bsex%5D=1&admin_customer%5Bjob%5D=&admin_customer%5Bbirth%5D=&admin_customer%5Bpoint%5D=0&admin_customer%5Bmailmaga_flg%5D=1&admin_customer%5Bnote%5D=&admin_customer%5Bstatus%5D=2",
+          "data": "admin_customer%5B_token%5D={{csrf2}}&admin_customer%5Bname%5D%5Bname01%5D=%E5%A7%93&admin_customer%5Bname%5D%5Bname02%5D=%E5%90%8D&admin_customer%5Bkana%5D%5Bkana01%5D=%E3%82%BB%E3%82%A4&admin_customer%5Bkana%5D%5Bkana02%5D=%E3%83%A1%E3%82%A4&admin_customer%5Bcompany_name%5D=&admin_customer%5Bpostal_code%5D=5300001&admin_customer%5Baddress%5D%5Bpref%5D=27&admin_customer%5Baddress%5D%5Baddr01%5D=%E5%A4%A7%E9%98%AA%E5%B8%82%E5%8C%97%E5%8C%BA%E6%A2%85%E7%94%B0&admin_customer%5Baddress%5D%5Baddr02%5D=1-2-3&admin_customer%5Bemail%5D=user-{{customer-id}}%40example.com&admin_customer%5Bphone_number%5D=08012345678&admin_customer%5Bplain_password%5D%5Bfirst%5D=EccubeE2ePassword1&admin_customer%5Bplain_password%5D%5Bsecond%5D=EccubeE2ePassword1&admin_customer%5Bsex%5D=1&admin_customer%5Bjob%5D=&admin_customer%5Bbirth%5D=&admin_customer%5Bpoint%5D=0&admin_customer%5Bmailmaga_flg%5D=1&admin_customer%5Bnote%5D=&admin_customer%5Bstatus%5D=2",
           "method": "POST",
           "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 891\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
           "response": {
@@ -94,7 +150,7 @@
         }
       ],
       "variableName": "customer-id",
-      "index": 1,
+      "index": 4,
       "enabled": true,
       "elementType": "ZestLoopInteger"
     }

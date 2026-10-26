@@ -36,13 +36,22 @@
       "elementType": "ZestRequest"
     },
     {
+      "prefix": "<meta name=\"eccube-csrf-token\" content=\"",
+      "postfix": "\">",
+      "location": "BODY",
+      "variableName": "eccube-csrf-token",
+      "index": 2,
+      "enabled": true,
+      "elementType": "ZestAssignStringDelimiters"
+    },
+    {
       "fieldDefinition": {
         "formIndex": 2,
         "fieldName": "_token1",
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf4",
-      "index": 2,
+      "index": 3,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -64,7 +73,7 @@
       "followRedirects": false,
       "timestamp": 1655279397161,
       "cookies": [],
-      "index": 3,
+      "index": 4,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -75,7 +84,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf5",
-      "index": 4,
+      "index": 5,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -97,7 +106,7 @@
       "followRedirects": false,
       "timestamp": 1655280163431,
       "cookies": [],
-      "index": 5,
+      "index": 6,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -106,7 +115,7 @@
       "urlToken": "https://ec-cube/products/add_cart/1",
       "data": "classcategory_id1=1&classcategory_id2=4&quantity=1&product_id=1&ProductClass=10&_token={{csrf5}}",
       "method": "POST",
-      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 130\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: RxHiFcniqxb54Y2XKrGEvS2WNCMA4dMFbdBdFLTxz18\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 130\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nContent-Type: application/x-www-form-urlencoded; charset=UTF-8\r\nX-Requested-With: XMLHttpRequest\r\nsec-ch-ua-platform: \"Linux\"\r\nOrigin: https://ec-cube\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
       "assertions": [
         {
           "rootExpression": {
@@ -120,7 +129,7 @@
       "followRedirects": false,
       "timestamp": 1655280304662,
       "cookies": [],
-      "index": 6,
+      "index": 7,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -142,7 +151,7 @@
       "followRedirects": false,
       "timestamp": 1655279933453,
       "cookies": [],
-      "index": 7,
+      "index": 8,
       "enabled": true,
       "elementType": "ZestRequest"
     }

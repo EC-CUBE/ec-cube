@@ -141,6 +141,62 @@
       "elementType": "ZestAssignFieldValue"
     },
     {
+      "comment": "売上グラフ (管理画面トップの Ajax)",
+      "index": 11,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/sale_chart",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nECCUBE-CSRF-TOKEN: {{eccube-csrf-token}}\r\nX-Requested-With: XMLHttpRequest\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: cors\r\nSec-Fetch-Dest: empty\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 0,
+      "cookies": [],
+      "index": 12,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "チェックボックスの検索条件 (受注の状態・支払方法・出荷メール) は元の検索で送っていないため、条件を足した検索を前に送る。元の検索が後で検索条件を上書きするため、後続のステップには影響しない",
+      "index": 13,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/order",
+      "data": "admin_search_order%5B_token%5D={{csrf2}}&admin_search_order%5Bmulti%5D=&admin_search_order%5Bname%5D=&admin_search_order%5Bkana%5D=&admin_search_order%5Border_datetime_start%5D=&admin_search_order%5Border_datetime_end%5D=&admin_search_order%5Bcompany_name%5D=&admin_search_order%5Bpayment_datetime_start%5D=&admin_search_order%5Bpayment_datetime_end%5D=&admin_search_order%5Bemail%5D=&admin_search_order%5Bupdate_datetime_start%5D=&admin_search_order%5Bupdate_datetime_end%5D=&admin_search_order%5Bphone_number%5D=&admin_search_order%5Bshipping_delivery_datetime_start%5D=&admin_search_order%5Bshipping_delivery_datetime_end%5D=&admin_search_order%5Border_no%5D=&admin_search_order%5Bpayment_total_start%5D=&admin_search_order%5Bpayment_total_end%5D=&admin_search_order%5Btracking_number%5D=&admin_search_order%5Bbuy_product_name%5D=&admin_search_order%5Bsortkey%5D=&admin_search_order%5Bsorttype%5D=&admin_search_order%5Bstatus%5D%5B%5D=1&admin_search_order%5Bpayment%5D%5B%5D=1&admin_search_order%5Bshipping_mail%5D%5B%5D=1&admin_search_order%5Bshipping_mail%5D%5B%5D=2",
+      "method": "POST",
+      "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 934\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655432920069,
+      "cookies": [],
+      "index": 14,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
       "url": "https://ec-cube/admin/order",
       "data": "admin_search_order%5B_token%5D={{csrf2}}&admin_search_order%5Bmulti%5D=&admin_search_order%5Bname%5D=&admin_search_order%5Bkana%5D=&admin_search_order%5Border_datetime_start%5D=&admin_search_order%5Border_datetime_end%5D=&admin_search_order%5Bcompany_name%5D=&admin_search_order%5Bpayment_datetime_start%5D=&admin_search_order%5Bpayment_datetime_end%5D=&admin_search_order%5Bemail%5D=&admin_search_order%5Bupdate_datetime_start%5D=&admin_search_order%5Bupdate_datetime_end%5D=&admin_search_order%5Bphone_number%5D=&admin_search_order%5Bshipping_delivery_datetime_start%5D=&admin_search_order%5Bshipping_delivery_datetime_end%5D=&admin_search_order%5Border_no%5D=&admin_search_order%5Bpayment_total_start%5D=&admin_search_order%5Bpayment_total_end%5D=&admin_search_order%5Btracking_number%5D=&admin_search_order%5Bbuy_product_name%5D=&admin_search_order%5Bsortkey%5D=&admin_search_order%5Bsorttype%5D=",
       "method": "POST",
@@ -158,9 +214,18 @@
       "followRedirects": false,
       "timestamp": 1655432920069,
       "cookies": [],
-      "index": 11,
+      "index": 15,
       "enabled": true,
       "elementType": "ZestRequest"
+    },
+    {
+      "prefix": "id=\"check_\\d+\" data-id=\"",
+      "postfix": "\" name=\"ids\\[\\]\"",
+      "location": "BODY",
+      "variableName": "order-id",
+      "index": 16,
+      "enabled": true,
+      "elementType": "ZestAssignRegexDelimiters"
     },
     {
       "url": "https://ec-cube/admin/order/page/1",
@@ -180,22 +245,13 @@
       "followRedirects": false,
       "timestamp": 1655432942882,
       "cookies": [],
-      "index": 12,
+      "index": 17,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
-      "prefix": "id=\"check_\\d+\" data-id=\"",
-      "postfix": "\" name=\"ids\\[\\]\"",
-      "location": "BODY",
-      "variableName": "order-id",
-      "index": 13,
-      "enabled": true,
-      "elementType": "ZestAssignRegexDelimiters"
-    },
-    {
       "comment": "受注CSVダウンロード",
-      "index": 14,
+      "index": 18,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -217,13 +273,13 @@
       "followRedirects": false,
       "timestamp": 1655432964922,
       "cookies": [],
-      "index": 15,
+      "index": 19,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "出荷CSVダウンロード",
-      "index": 16,
+      "index": 20,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -245,13 +301,13 @@
       "followRedirects": false,
       "timestamp": 1655432969014,
       "cookies": [],
-      "index": 17,
+      "index": 21,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "受注ステータス更新",
-      "index": 18,
+      "index": 22,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -274,13 +330,13 @@
       "followRedirects": false,
       "timestamp": 1655432987112,
       "cookies": [],
-      "index": 19,
+      "index": 23,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "お問い合わせ番号設定",
-      "index": 20,
+      "index": 24,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -303,13 +359,13 @@
       "followRedirects": false,
       "timestamp": 1655432995250,
       "cookies": [],
-      "index": 21,
+      "index": 25,
       "enabled": true,
       "elementType": "ZestRequest"
     },
     {
       "comment": "納品書出力",
-      "index": 22,
+      "index": 26,
       "enabled": true,
       "elementType": "ZestComment"
     },
@@ -331,7 +387,7 @@
       "followRedirects": false,
       "timestamp": 1655433008941,
       "cookies": [],
-      "index": 23,
+      "index": 27,
       "enabled": true,
       "elementType": "ZestRequest"
     },
@@ -342,7 +398,7 @@
         "elementType": "ZestFieldDefinition"
       },
       "variableName": "csrf9",
-      "index": 24,
+      "index": 28,
       "enabled": true,
       "elementType": "ZestAssignFieldValue"
     },
@@ -364,7 +420,57 @@
       "followRedirects": false,
       "timestamp": 1655433020281,
       "cookies": [],
-      "index": 25,
+      "index": 29,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "comment": "画面のリンクにあるクエリ文字列の条件を送る (パラメータの無いリクエストは攻撃されないため)",
+      "index": 30,
+      "enabled": true,
+      "elementType": "ZestComment"
+    },
+    {
+      "url": "https://ec-cube/admin/order?order_status_id=1",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655449174124,
+      "cookies": [],
+      "index": 31,
+      "enabled": true,
+      "elementType": "ZestRequest"
+    },
+    {
+      "url": "https://ec-cube/admin/order?resume=1",
+      "data": "",
+      "method": "GET",
+      "headers": "Proxy-Connection: keep-alive\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
+      "assertions": [
+        {
+          "rootExpression": {
+            "code": 200,
+            "not": false,
+            "elementType": "ZestExpressionStatusCode"
+          },
+          "elementType": "ZestAssertion"
+        }
+      ],
+      "followRedirects": false,
+      "timestamp": 1655449174124,
+      "cookies": [],
+      "index": 32,
       "enabled": true,
       "elementType": "ZestRequest"
     }

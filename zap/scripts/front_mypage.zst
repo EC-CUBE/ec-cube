@@ -115,7 +115,7 @@
     {
       "url": "https://ec-cube/mypage/login",
       "urlToken": "https://ec-cube/mypage/login",
-      "data": "login_email=hoge%40a.a&login_pass=password&login_memory=1&_csrf_token={{csrf8}}",
+      "data": "login_email=hoge%40a.a&login_pass=password&login_memory=1&_csrf_token={{csrf8}}&_target_path=&_failure_path=",
       "method": "POST",
       "headers": "Proxy-Connection: keep-alive\r\nContent-Length: 113\r\nsec-ch-ua: \" Not A;Brand\";v=\"99\", \"Chromium\";v=\"102\", \"Google Chrome\";v=\"102\"\r\nsec-ch-ua-mobile: ?0\r\nsec-ch-ua-platform: \"Linux\"\r\nUpgrade-Insecure-Requests: 1\r\nOrigin: https://ec-cube\r\nContent-Type: application/x-www-form-urlencoded\r\nSec-Fetch-Site: same-origin\r\nSec-Fetch-Mode: navigate\r\nSec-Fetch-User: ?1\r\nSec-Fetch-Dest: document\r\n",
       "assertions": [

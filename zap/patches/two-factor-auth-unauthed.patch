@@ -1,0 +1,14 @@
+2 段階認証で、X-ZAP-2FA-Unauthed の付いたリクエストでは認証済みの cookie を無視する。ZAP は cookie を保持して送信のたびに付け直し、スクリプトからは外せないため、ログイン後の認証の画面が表示されないのを防ぐ
+
+--- a/src/Eccube/Service/TwoFactorAuthService.php
++++ b/src/Eccube/Service/TwoFactorAuthService.php
+@@ -70,7 +70,8 @@
+         // テスト環境ではコンストラクタ時点でリクエストが存在しない場合があるため、
+         // requestStackから現在のリクエストを再取得する
+         $request = $this->request ?? $this->requestStack->getCurrentRequest();
+-        if ($request && $json = $request->cookies->get($this->cookieName)) {
++        // ZAP: ログイン後の認証の画面をスキャンするため、X-ZAP-2FA-Unauthed の付いたリクエストでは認証済みの cookie を無視する
++        if ($request && !$request->headers->has('X-ZAP-2FA-Unauthed') && $json = $request->cookies->get($this->cookieName)) {
+             $configs = json_decode($json);
+             $hasher = $this->passwordHasherFactory->getPasswordHasher($Member);
+ 
