@@ -59,9 +59,12 @@ jobs:
         id: matrix
         env:
           TARGETS: ${{ inputs.targets || '.*' }}
+          DATABASE: ${{ inputs.database || 'pgsql' }}
         run: |
           set -euo pipefail
-          matrix=$(jq -c --arg re "^(${TARGETS})$" '[.[] | select(.target | test($re))]' zap/targets.json)
+          # インストーラ (install) はステップ 4 で PostgreSQL の接続先を送るため、MySQL では外す
+          matrix=$(jq -c --arg re "^(${TARGETS})$" --arg db "${DATABASE}" \
+            '[.[] | select(.target | test($re)) | select($db != "mysql" or .target != "install")]' zap/targets.json)
           if [[ $(jq length <<< "${matrix}") == 0 ]]; then
             echo "::error::'${TARGETS}' に一致するターゲットがありません"
             exit 1

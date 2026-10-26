@@ -33,7 +33,9 @@ QUEUE=${OUT}/queue.txt
 SUMMARY=${OUT}/summary.tsv
 mkdir -p "${OUT}"
 
-jq -r --arg re "^(${RE})$" '.[] | select(.target | test($re)) | .target' zap/targets.json > "${QUEUE}"
+# インストーラ (install) はステップ 4 で PostgreSQL の接続先を送るため、MySQL では外す
+jq -r --arg re "^(${RE})$" --arg db "${ZAP_DB}" \
+    '.[] | select(.target | test($re)) | select($db != "mysql" or .target != "install") | .target' zap/targets.json > "${QUEUE}"
 echo "$(wc -l < "${QUEUE}") targets, lanes: ${LANES}"
 : > "${SUMMARY}"
 

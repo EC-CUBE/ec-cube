@@ -8,6 +8,79 @@
 GUI で手動探索する手順は [ドキュメント](https://doc4.ec-cube.net/penetration-testing/quick_start) を参照してください。
 ここでは、Zest スクリプト (`scripts/*.zst`) を自動化フレームワークで実行する手順を説明します。
 
+## 実行からレビューまでの流れ
+
+全ターゲットをスキャンし、結果を Informational まで含めてレビューするまでの手順です。各手順の詳細は、それぞれの節にあります。
+
+### 1. 実行する
+
+CI (「GitHub Actions で実行する」) とローカル (「ローカルで実行する」) のどちらでも同じ結果が出ます。
+全ターゲットは CI の方が手軽です (1 ターゲット 1 ジョブで並列に動き、2〜3 時間で終わります)。
+DB に依存する箇所があるため、PostgreSQL と MySQL の両方で実行します。
+
+```bash
+# CI (Actions タブ → OWASP ZAP → Run workflow でも同じ)。fork では push で起動しないため、--ref でブランチを指定する
+gh workflow run zaproxy.yml -f database=pgsql
+gh workflow run zaproxy.yml -f database=mysql
+gh run list --workflow zaproxy.yml --limit 5      # run-id を確かめる
+
+# ローカル (詳細は「ローカルで実行する」)
+docker compose build ec-cube
+zap/local/setup.sh 1 2 3 4
+zap/local/batch.sh -l "1 2 3 4"
+ZAP_DB=mysql zap/local/setup.sh 1 2
+ZAP_DB=mysql ZAP_OUT=zap/local/out/mysql zap/local/batch.sh -l "1 2"
+```
+
+### 2. 結果を集める
+
+CI では、ターゲットごとの成果物 `zap-<target>-report` に、ローカルの `zap/local/out/<policy>/<target>/` と同じファイルが入っています。
+まとめには、この成果物を DB ごとに別のディレクトリへ落とします (`all_alerts` はアラートだけで、ルールの説明が無いため使いません)。
+
+```bash
+gh run download <pgsql の run-id> -D zap/local/out/ci/pgsql -p 'zap-*-report'
+gh run download <mysql の run-id> -D zap/local/out/ci/mysql -p 'zap-*-report'
+```
+
+- 失敗したジョブは `gh run view <run-id>` で分かります。ZAP のアドオンの取得に失敗するなど、スキャンの前に止まったものは
+  そのターゲットだけを流し直し (`-f targets='admin_tax|mypage_order'`)、成果物を同じディレクトリへ上書きします。
+  High で失敗したものも、レビューの対象としてそのまま集めます (合否の判定は「結果の判定」)。
+- `zap/local/out` は git の管理外です。
+
+### 3. まとめる
+
+```bash
+zap/bin/review_alerts.py -t 'ZAP レビュー 2026-10-20' -o zap/local/out/ci/review.html \
+    pgsql=zap/local/out/ci/pgsql mysql=zap/local/out/ci/mysql
+# ローカルの結果なら
+zap/bin/review_alerts.py -o zap/local/out/review.html pgsql=zap/local/out/Sequence mysql=zap/local/out/mysql/Sequence
+```
+
+全ターゲットの全レベルのアラートを、ルールごとにまとめた 1 枚の HTML ができます (「結果のレビュー」)。
+`python3` だけで動き、外部のファイルは読み込みません。ブラウザで開いてレビューします。
+
+### 4. レビューする
+
+1. 「要確認だけを表示」にチェックを入れ、判断していないものだけを見ます。除外 (誤検知フィルター) と既知 (仕様・誤検知と判断済み) は、
+   理由が付いて隠れます。
+2. 要確認が残ったルールは、攻撃が成立するかを確かめます。ZAP の判定 (High / Medium) は根拠にせず、攻撃の値を送り直して応答を見ます。
+   レーンの ZAP のコンテナから EC-CUBE へ送れます (自己署名の証明書のため `-k`)。管理者は `admin` / `password`、
+   会員 (`admin_create_customer.zst` が作る) は `user@example.com` / `EccubeE2ePassword1` です。
+
+   ```bash
+   LANE=1 zap/local/compose.sh exec zap curl -sk -o /dev/null -w '%{http_code}\n' https://ec-cube/products/detail/1
+   LANE=1 zap/local/restore.sh    # 確かめた後は DB を初期状態に戻す
+   ```
+
+3. 判断した結果を記録し、次回から要確認に出ないようにします (「既知のアラート」)。
+   - 画面ごとの誤検知: `options.properties` にフィルターを足す (番号は末尾の次。直前のコメントに理由を書き、`zap/bin/lint_options.sh` を通す)
+   - ルール全体の仕様・情報、根拠の無い Path Traversal: `known_alerts.tsv` に足し、「既知のアラート」の表にも書く
+   - 改善として扱うもの: issue にして、`known_alerts.tsv` の理由に issue 番号を書く
+   - **脆弱性だったもの: 公開の場 (issue・PR・この README・`known_alerts.tsv`) に書かず、GitHub Security Advisory で非公開に扱う**
+4. もう一度 `review_alerts.py` を実行し、要確認が 0 になったことを確かめます。スキャンし直す必要はありません
+   (今の `options.properties` と `known_alerts.tsv` で判定し直します)。足したフィルターを ZAP 自体が外すことは、
+   そのターゲットを CI で流し直して確かめます (`zap-<target>-report` の `zap.log` の `High risk alert count`)。
+
 ## 仕組み
 
 - 1 つのターゲットは、画面操作を記録した Zest スクリプト `scripts/<target>.zst` です。
@@ -193,16 +266,20 @@ High と Medium は、ZAP の判定によらず、レーンで攻撃を送り直
 |---|---|
 | `policy` | `Sequence` または `Smoke` |
 | `targets` | 実行するターゲットの正規表現 (target 名全体に一致させる)。例: `admin_tax\|mypage_order` |
+| `patches` | 当てるスキャン用のパッチ (`zap/patches/` のファイル名から `.patch` を除いたものを空白区切り)。`all` (既定) ですべて、空なら当てない |
+| `database` | `pgsql` (既定) または `mysql`。`mysql` ではインストーラ (`install`) を外す |
 
-ターゲットごとのレポート (`zap-<target>-report`: HTML レポート・実行ログ・生成したプラン) と、
+ジョブは、イメージのビルド (`build`) → ターゲットごとのスキャン (`scan`、`targets.json` から作る matrix で並列) → アラートの結合 (`merge`) の順です。
+ターゲットごとのレポート (`zap-<target>-report`: HTML レポート・実行ログ・生成したプラン・`alerts.json` など、ローカルの出力と同じもの) と、
 全ターゲットのアラートをまとめた `all_alerts` をアーティファクトとして保存します。
+CLI からは `gh workflow run zaproxy.yml -f database=mysql -f targets='admin_tax'` のように起動できます。
 
 ## ローカルで実行する
 
 レーン (`LANE=<n>`) ごとに EC-CUBE・PostgreSQL・ZAP を独立して起動するため、複数のターゲットを並列に実行できます。
 1 レーンあたりメモリを 0.7GB 程度使います (10 レーンのスキャン中に計測)。レーンはホストへポートを公開しません。
 
-必要なもの: Docker (Compose v2。override の `!reset` を使います)、bash、jq、git、flock
+必要なもの: Docker (Compose v2。override の `!reset` を使います)、bash、jq、git、flock、python3 (結果のまとめ)
 
 ```bash
 # EC-CUBE のイメージをビルドする (作業ツリーのコードで実行するため)
@@ -218,6 +295,11 @@ LANE=1 zap/local/run.sh admin_tax
 # 全ターゲットを 4 レーンで実行する (正規表現で絞り込める)
 zap/local/batch.sh -p Smoke -l "1 2 3 4"
 zap/local/batch.sh -l "1 2 3 4" 'admin_product_.*'
+
+# MySQL でも実行する。レーンは PostgreSQL のレーンと別に作られ (同じ番号で共存できる)、インストーラは自動で外れる。
+# 出力先は既定では PostgreSQL と同じになるため、ZAP_OUT で分ける
+ZAP_DB=mysql zap/local/setup.sh 1 2
+ZAP_DB=mysql ZAP_OUT=zap/local/out/mysql zap/local/batch.sh -l "1 2"
 ```
 
 - 結果は `zap/local/out/<policy>/<target>/` に出力します (`ZAP-Report-<target>.html`・`zap.log`・`plan.yml`・`alerts.json`・`access.log`・`attacks.tsv`・`params.tsv`・`param_counts.tsv`・`forms.tsv`)。
