@@ -30,9 +30,9 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "ace-builds": "^1.44.0",
+    "ace-builds": "^1.45.2",
     "bootstrap": "^5.3.8",
-    "chart.js": "^4.5.1",
+    "chart.js": "^4.6.1",
     "filepond": "^4.32.12",
     "filepond-plugin-file-validate-size": "^2.2.8",
     "filepond-plugin-file-validate-type": "^1.2.9",
