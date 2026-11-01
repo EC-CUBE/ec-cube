@@ -48,7 +48,7 @@ jobs:
           PGPASSWORD=password psql -h 127.0.0.1 -U postgres -c 'SELECT VERSION()'
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962  # v2
         with:
           php-version: ${{ matrix.php }}
           extensions: redis
@@ -101,14 +101,14 @@ jobs:
       # - fork からの PR ではアクション内部でスキップされる (GITHUB_TOKEN が read-only のため)。
       - name: Upload coverage to GitHub
         if: steps.phpunit.outcome == 'success'
-        uses: actions/upload-code-coverage@d8e329117199404bba6fc81efe8093dc7c015e34  # v1.4.2
+        uses: actions/upload-code-coverage@2b21a77928be8d5168c2b9581a67f2adbebacc52  # v1.4.4
         with:
           file: coverage1.xml
           language: PHP
           label: Unit
       - name: Upload report
         if: success()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7
         with:
           name: phpunit-reports
           path: coverage1.xml
@@ -122,7 +122,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
         with:
           persist-credentials: false
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8
         with:
           path: reports
       - name: Upload unit test coverage
