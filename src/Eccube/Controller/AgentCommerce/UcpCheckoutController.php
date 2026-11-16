@@ -98,6 +98,7 @@ class UcpCheckoutController extends AbstractController
                     ->setProtocol($this->agentProtocolRepository->find(AgentProtocol::UCP))
                     ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE))
                     ->setCurrencyCode($checkoutRequest->currencyCode)
+                    ->setAgentId($checkoutRequest->agentId)
                     ->setMetadata(['line_items' => $this->lineItemsMetadata($checkoutRequest)]);
 
                 return ['status' => 201, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
@@ -108,10 +109,10 @@ class UcpCheckoutController extends AbstractController
     }
 
     #[Route(path: '/ucp/checkout-sessions/{sessionId}', name: 'ucp_checkout_get', methods: ['GET'])]
-    public function get(string $sessionId): JsonResponse
+    public function get(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         $order = $session->getOrder();
         if ($order !== null) {
@@ -125,7 +126,7 @@ class UcpCheckoutController extends AbstractController
     public function update(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             try {
@@ -146,7 +147,7 @@ class UcpCheckoutController extends AbstractController
     public function complete(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             $order = $session->getOrder();
@@ -192,7 +193,7 @@ class UcpCheckoutController extends AbstractController
     public function cancel(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($session): array {
             if ($session->getStatus()?->getId() === CheckoutSessionStatus::COMPLETED) {
@@ -374,11 +375,14 @@ class UcpCheckoutController extends AbstractController
         }
     }
 
-    private function findSession(string $sessionId): CheckoutSession
+    private function findSession(Request $request, string $sessionId): CheckoutSession
     {
         $session = $this->checkoutSessionRepository->findOneBySessionId($sessionId);
-        if ($session === null || $session->getProtocol()?->getId() !== AgentProtocol::UCP) {
-            // 他プロトコル/他マーチャントのセッションへの越境アクセスを遮断する。
+        if ($session === null
+            || $session->getProtocol()?->getId() !== AgentProtocol::UCP
+            || $session->getAgentId() !== $this->resolveAgentId($request)
+        ) {
+            // 他プロトコル/他マーチャント/他エージェントのセッションへの越境アクセスを遮断する。
             throw new NotFoundHttpException(sprintf('Checkout session "%s" was not found.', $sessionId));
         }
 
