@@ -4,8 +4,8 @@
 }
 
 /*!
- * Bootstrap  v5.3.8 (https://getbootstrap.com/)
- * Copyright 2011-2025 The Bootstrap Authors
+ * Bootstrap  v5.3.9 (https://getbootstrap.com/)
+ * Copyright 2011-2026 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root,
@@ -506,7 +506,7 @@ legend + * {
 
 ::-webkit-datetime-edit-fields-wrapper,
 ::-webkit-datetime-edit-text,
-::-webkit-datetime-edit-minute,
+::-webkit-datetime-edit-minute-field,
 ::-webkit-datetime-edit-hour-field,
 ::-webkit-datetime-edit-day-field,
 ::-webkit-datetime-edit-month-field,
@@ -9389,7 +9389,8 @@ Styleguide 12.7
     border-left-width: var(--bs-list-group-border-width);
   }
   .modal-lg,
-  .modal-xl {
+  .modal-xl,
+  .modal-xxl {
     --bs-modal-width: 800px;
   }
   .offcanvas-lg {
@@ -10262,7 +10263,8 @@ Styleguide 12.7
     margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
   }
-  .modal-xl {
+  .modal-xl,
+  .modal-xxl {
     --bs-modal-width: 1140px;
   }
   .offcanvas-xl {
@@ -11113,6 +11115,9 @@ Styleguide 12.7
   .list-group-horizontal-xxl > .list-group-item + .list-group-item.active {
     margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
+  }
+  .modal-xxl {
+    --bs-modal-width: 1320px;
   }
   .offcanvas-xxl {
     --bs-offcanvas-height: auto;
@@ -12184,6 +12189,12 @@ Styleguide 12.7
   }
   .offcanvas {
     transition: none;
+  }
+  .placeholder-glow .placeholder {
+    animation: none;
+  }
+  .placeholder-wave {
+    animation: none;
   }
   .icon-link > .bi {
     transition: none;
