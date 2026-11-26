@@ -164,10 +164,14 @@ function runCheckout(HttpClientInterface $client, string $token, int $itemId, bo
     // 1. create (POST /acp/checkout_sessions)
     $createBody = [
         'line_items' => [['id' => (string) $itemId, 'quantity' => 1]],
+        // ACP 2026-04-17 の FulfillmentDetails (additionalProperties: false): name は文字列 ("First Last")、
+        // phone_number / email は直下に置く。氏名・連絡先が欠けると住所検証で not_ready_for_payment になる。
         'fulfillment_details' => [
-            'name' => ['first_name' => '太郎', 'last_name' => '山田'],
-            'contact' => ['email' => 'agent-e2e@example.com', 'phone' => '0312345678'],
+            'name' => '太郎 山田',
+            'phone_number' => '0312345678',
+            'email' => 'agent-e2e@example.com',
             'address' => [
+                'name' => '太郎 山田',
                 'line_one' => '1-1-1',
                 'city' => '千代田区',
                 'state' => '東京都',
