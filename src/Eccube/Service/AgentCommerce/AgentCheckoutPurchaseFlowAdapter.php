@@ -115,6 +115,8 @@ class AgentCheckoutPurchaseFlowAdapter
      */
     public function prepare(Order $Order, ?Customer $member = null): AgentCheckoutResult
     {
+        $this->forgetStockLocks($Order);
+
         $messages = $this->runFlow(function (PurchaseContext $context) use ($Order): PurchaseFlowResult {
             $result = $this->shoppingPurchaseFlow->validate($Order, $context);
             if (!$result->hasError()) {
@@ -149,9 +151,27 @@ class AgentCheckoutPurchaseFlowAdapter
      */
     public function rollback(Order $Order, ?Customer $member = null): void
     {
+        $this->forgetStockLocks($Order);
+
         $context = new PurchaseContext(clone $Order, $member);
         $this->shoppingPurchaseFlow->rollback($Order, $context);
         $this->entityManager->flush();
+    }
+
+    /**
+     * 受注の商品在庫について「このリクエストでロック済み」の印を外す.
+     *
+     * StockReduceProcessor は在庫行をロックしたら ProductStock の非永続フィールド (productClassId) に印を残し、
+     * 印があればロックと再読込を省く。店頭の購入は 1 リクエストで 1 回しか在庫を触らないため問題にならないが、
+     * エージェントチェックアウトは 1 つの EntityManager でトランザクションを繰り返す (期限切れの一括回収等)。
+     * 印が残ったままだと、2 回目以降のトランザクションでロックせず古い在庫値を書き戻し、間に入った
+     * 別の購入の在庫の増減を上書きする。在庫を増減する前に印を外し、必ずロックと最新値の再読込をさせる。
+     */
+    private function forgetStockLocks(Order $Order): void
+    {
+        foreach ($Order->getProductOrderItems() as $item) {
+            $item->getProductClass()?->getProductStock()?->setProductClassId(null);
+        }
     }
 
     /**

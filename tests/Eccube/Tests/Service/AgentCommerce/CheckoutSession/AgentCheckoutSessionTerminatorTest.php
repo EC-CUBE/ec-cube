@@ -91,6 +91,43 @@ final class AgentCheckoutSessionTerminatorTest extends EccubeTestCase
     }
 
     /**
+     * 同じ商品を引き当てた期限切れセッションを 1 回の expireOverdue でまとめて回収しても、
+     * 各トランザクションで在庫行をロックし直して最新値から戻す (間に入った別の購入の減少を上書きしない).
+     *
+     * StockReduceProcessor は在庫をロックした印を EntityManager 上の ProductStock に残し、印があれば
+     * ロックと再読込を省く。1 つの EntityManager でトランザクションを繰り返す回収処理では、
+     * 2 件目以降が古い在庫値のまま書き戻していた。
+     */
+    public function testExpireOverdueRelocksStockPerTransaction(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $stock = $ProductClass->getProductStock();
+        foreach ([$this->createHeldSession($ProductClass, 1), $this->createHeldSession($ProductClass, 1)] as $session) {
+            $session->setExpiresAt((new \DateTime())->modify('-1 minutes'));
+        }
+        $this->entityManager->flush();
+        $this->entityManager->refresh($stock);
+        $this->assertSame(98, (int) $stock->getStock());
+
+        // 1 件目の回収 (在庫の戻し) の直後に、別の購入が同じ商品を 5 個減らした状態を DB にだけ作る。
+        $connection = $this->entityManager->getConnection();
+        $stockId = $stock->getId();
+        $handler = $this->cancellableHandler(static function () use ($connection, $stockId): void {
+            static $done = false;
+            if (!$done) {
+                $done = true;
+                $connection->executeStatement('UPDATE dtb_product_stock SET stock = stock - 5 WHERE id = :id', ['id' => $stockId]);
+            }
+        });
+
+        $count = $this->terminator($handler)->expireOverdue(new \DateTime(), 10);
+        $this->assertSame(2, $count);
+
+        $this->entityManager->refresh($stock);
+        $this->assertSame(95, (int) $stock->getStock(), '98 → 99 (1 件目) → 94 (別の購入) → 95 (2 件目)');
+    }
+
+    /**
      * prepare で在庫を引き当て、追加認証待ち (requires_action) で中断したセッションを作る.
      */
     private function createHeldSession(ProductClass $ProductClass, int $quantity): CheckoutSession
@@ -153,15 +190,25 @@ final class AgentCheckoutSessionTerminatorTest extends EccubeTestCase
         return new AgentCheckoutSessionLocker($this->entityManager);
     }
 
-    private function cancellableHandler(): CancellablePaymentHandlerInterface
+    /**
+     * @param (\Closure(): void)|null $onCancel cancel() のたびに呼ぶ処理 (在庫の戻しの直後に割り込む検証用)
+     */
+    private function cancellableHandler(?\Closure $onCancel = null): CancellablePaymentHandlerInterface
     {
-        return new class implements CancellablePaymentHandlerInterface {
+        return new class($onCancel) implements CancellablePaymentHandlerInterface {
             /** @var list<array<string, mixed>> cancel() が受け取った PSP 参照 */
             public array $cancelled = [];
+
+            public function __construct(private readonly ?\Closure $onCancel)
+            {
+            }
 
             public function cancel(Order $order, array $paymentReference): void
             {
                 $this->cancelled[] = $paymentReference;
+                if ($this->onCancel !== null) {
+                    ($this->onCancel)();
+                }
             }
 
             public function getHandlerId(): string
