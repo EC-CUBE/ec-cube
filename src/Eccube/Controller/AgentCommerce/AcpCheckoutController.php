@@ -239,7 +239,9 @@ class AcpCheckoutController extends AbstractController
     private function buildAndPersist(CheckoutSession $session, AgentCheckoutRequest $checkoutRequest): array
     {
         if ($checkoutRequest->buyer === null) {
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
             $this->entityManager->persist($session);
             $this->entityManager->flush();
 

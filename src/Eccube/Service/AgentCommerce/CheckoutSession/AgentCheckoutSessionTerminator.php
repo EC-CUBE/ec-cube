@@ -136,7 +136,12 @@ class AgentCheckoutSessionTerminator
 
         $this->purchaseFlowAdapter->rollback($order, $this->customerResolver->resolve($session));
 
-        $handler = $this->paymentHandlerRegistry->resolveForOrder($order);
+        // 取引を取り消すのは、中断したときのハンドラ (保持した PSP 参照はそのハンドラの取引)。
+        // 記録が無い場合 (記録を始める前に中断したセッション) は、支払方法から選ぶ。
+        $heldHandlerId = $session->getMetadata()[AgentCheckoutCompletionService::PAYMENT_HANDLER_METADATA_KEY] ?? null;
+        $handler = is_string($heldHandlerId) && $heldHandlerId !== ''
+            ? $this->paymentHandlerRegistry->resolveByHandlerId($heldHandlerId)
+            : $this->paymentHandlerRegistry->resolveForOrder($order);
         if (!$handler instanceof CancellablePaymentHandlerInterface) {
             return;
         }

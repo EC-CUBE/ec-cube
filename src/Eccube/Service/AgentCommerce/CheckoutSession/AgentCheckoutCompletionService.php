@@ -85,6 +85,9 @@ class AgentCheckoutCompletionService
     /** 与信失敗の回数を数える metadata のキー. */
     public const PAYMENT_FAILURES_METADATA_KEY = 'payment_failures';
 
+    /** 中断 (requires_action / in_progress) したときの決済ハンドラの handler_id を記録する metadata のキー. */
+    public const PAYMENT_HANDLER_METADATA_KEY = 'payment_handler_id';
+
     /**
      * @param int $maxPaymentAttempts 1 セッションで許す与信失敗の回数。超えたセッションは canceled にする
      *                                (同一セッションで支払データを差し替えながら与信を繰り返す試行を止める)
@@ -172,15 +175,54 @@ class AgentCheckoutCompletionService
             throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, 'The checkout session has no order to complete.');
         }
 
-        // エージェントが選んだ決済ハンドラに対応する支払方法を、ロック後の Order に割り当てる。
-        // ロック前に割り当てると、並行する update が差し替えた Order では既定の支払方法のまま確定してしまう。
-        if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
+        $handler = $this->resolveHandler($session, $order, $handlerId, $isResume);
+        $member = $this->customerResolver->resolve($session);
+
+        return $this->runStateMachine($session, $order, $member, $paymentData, $isResume, $handler);
+    }
+
+    /**
+     * 状態機械で実行する決済ハンドラを決める (ロック内で呼ぶ).
+     *
+     * - 中断からの再開: 中断したときのハンドラで続ける。保持した PSP 参照 (transaction_id 等) はそのハンドラの
+     *   取引であり、別のハンドラでは再開できないため、別の handler_id による切り替えは拒否する。
+     * - handler_id の指定あり: 対応する支払方法をロック後の Order に割り当て、**そのハンドラ**を使う。
+     *   同じ支払方法を扱うハンドラが複数あるとき、支払方法から選び直すと指定と別のハンドラになり得る。
+     *   ロック前に割り当てると、並行する update が差し替えた Order では既定の支払方法のまま確定してしまう。
+     * - 指定なし: Order の支払方法を扱うハンドラ (無ければ null)。
+     *
+     * @throws AgentCheckoutException 指定の handler_id に対応する支払方法が無い、または再開時にハンドラを切り替えようとした
+     */
+    private function resolveHandler(CheckoutSession $session, Order $order, ?string $handlerId, bool $isResume): ?AgentCheckoutPaymentHandlerInterface
+    {
+        $heldHandlerId = $isResume ? $this->heldHandlerId($session) : null;
+        if ($heldHandlerId !== null) {
+            if ($handlerId !== null && $handlerId !== $heldHandlerId) {
+                throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, sprintf('The checkout session is waiting for the payment handler "%s" and cannot be resumed with another handler.', $heldHandlerId));
+            }
+
+            return $this->paymentHandlerRegistry->resolveByHandlerId($heldHandlerId);
+        }
+
+        if ($handlerId === null) {
+            return $this->paymentHandlerRegistry->resolveForOrder($order);
+        }
+
+        if ($this->paymentMethodResolver->resolve($order, $handlerId) === null) {
             throw new AgentCheckoutException(AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND, sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId));
         }
 
-        $member = $this->customerResolver->resolve($session);
+        return $this->paymentHandlerRegistry->resolveByHandlerId($handlerId);
+    }
 
-        return $this->runStateMachine($session, $order, $member, $paymentData, $isResume);
+    /**
+     * 中断したときの決済ハンドラ (holdForAction が記録). 記録が無ければ null.
+     */
+    private function heldHandlerId(CheckoutSession $session): ?string
+    {
+        $handlerId = $session->getMetadata()[self::PAYMENT_HANDLER_METADATA_KEY] ?? null;
+
+        return is_string($handlerId) && $handlerId !== '' ? $handlerId : null;
     }
 
     /**
@@ -188,10 +230,8 @@ class AgentCheckoutCompletionService
      *
      * @param array<string, mixed> $paymentData
      */
-    private function runStateMachine(CheckoutSession $session, Order $order, ?Customer $member, array $paymentData, bool $isResume): AgentCheckoutCompletionResult
+    private function runStateMachine(CheckoutSession $session, Order $order, ?Customer $member, array $paymentData, bool $isResume, ?AgentCheckoutPaymentHandlerInterface $handler): AgentCheckoutCompletionResult
     {
-        $handler = $this->paymentHandlerRegistry->resolveForOrder($order);
-
         // 決済ハンドラが無い支払方法で確定してよいのは、決済処理を伴わないもの (本体の Cash) と 0 円の受注だけ。
         // Web 専用の決済プラグイン (クレジットカード等) もハンドラを持たないため、無条件に確定すると
         // プラグインの決済処理を通らないまま新規受付になる。在庫引当の前に判定し、副作用を残さない。
@@ -256,10 +296,10 @@ class AgentCheckoutCompletionService
                 return $this->commitOrder($session, $order, $member);
 
             case PaymentOutcomeStatus::REQUIRES_ACTION:
-                return $this->holdForAction($session, $outcome, CheckoutSessionStatus::REQUIRES_ACTION);
+                return $this->holdForAction($session, $handler, $outcome, CheckoutSessionStatus::REQUIRES_ACTION);
 
             case PaymentOutcomeStatus::PENDING:
-                return $this->holdForAction($session, $outcome, CheckoutSessionStatus::IN_PROGRESS);
+                return $this->holdForAction($session, $handler, $outcome, CheckoutSessionStatus::IN_PROGRESS);
 
             case PaymentOutcomeStatus::FAILED:
             default:
@@ -351,15 +391,17 @@ class AgentCheckoutCompletionService
      * 追加対応待ち (REQUIRES_ACTION) / 非同期確定待ち (IN_PROGRESS) として在庫を引当のまま保持する.
      *
      * 在庫は rollback せず、payment_data と actionData を永続化してリクエスト跨ぎで再開可能にする。
+     * 中断したハンドラも記録し、再開・取消を同じハンドラで行う (保持した PSP 参照はそのハンドラの取引のため)。
      */
-    private function holdForAction(CheckoutSession $session, PaymentOutcome $outcome, int $statusId): AgentCheckoutCompletionResult
+    private function holdForAction(CheckoutSession $session, AgentCheckoutPaymentHandlerInterface $handler, PaymentOutcome $outcome, int $statusId): AgentCheckoutCompletionResult
     {
         $this->mergePaymentData($session, $this->paymentReference($outcome));
+        $metadata = $session->getMetadata() ?? [];
+        $metadata[self::PAYMENT_HANDLER_METADATA_KEY] = $handler->getHandlerId();
         if ($outcome->actionData !== []) {
-            $metadata = $session->getMetadata() ?? [];
             $metadata['payment_action'] = $outcome->actionData;
-            $session->setMetadata($metadata);
         }
+        $session->setMetadata($metadata);
         $this->extendExpiry($session);
         $session->setStatus($this->requireStatus($statusId));
 

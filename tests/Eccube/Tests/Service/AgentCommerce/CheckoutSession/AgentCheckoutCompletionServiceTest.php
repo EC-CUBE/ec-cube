@@ -564,6 +564,57 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     }
 
     /**
+     * 同じ支払方法を扱うハンドラが複数あっても、handler_id で指定したハンドラで与信する.
+     */
+    public function testRequestedHandlerIsUsedEvenIfAnotherHandlerSupportsThePayment(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $first = $this->stubHandler([PaymentOutcome::authorized('auth_a')], PaymentOutcome::completed('cap_a'), 'handler_a');
+        $requested = $this->stubHandler([PaymentOutcome::authorized('auth_b')], PaymentOutcome::completed('cap_b'), 'handler_b');
+
+        $result = $this->service($first, $requested)->complete($session, [], 'handler_b');
+
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId());
+        $this->assertSame(0, $first->authorizeCount, '先に登録されたハンドラへ選び直さない');
+        $this->assertSame(1, $requested->authorizeCount, '指定したハンドラで与信する');
+    }
+
+    /**
+     * 中断したセッションは、中断したときのハンドラで再開する. 別のハンドラへの切り替えは拒否する.
+     *
+     * 保持した PSP 参照は中断したハンドラの取引であり、別のハンドラでは再開できない。
+     */
+    public function testResumeKeepsTheHeldHandler(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $held = $this->stubHandler([PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds']), PaymentOutcome::authorized('auth_2')], PaymentOutcome::completed('cap_1'), 'handler_a');
+        $other = $this->stubHandler([PaymentOutcome::authorized('auth_other')], PaymentOutcome::completed('cap_other'), 'handler_b');
+        $service = $this->service($held, $other);
+
+        $service->complete($session, [], 'handler_a');
+        $this->assertSame(CheckoutSessionStatus::REQUIRES_ACTION, $session->getStatus()?->getId());
+        $this->assertSame('handler_a', $session->getMetadata()[AgentCheckoutCompletionService::PAYMENT_HANDLER_METADATA_KEY] ?? null, '中断したハンドラを記録する');
+
+        try {
+            $service->complete($session, [], 'handler_b');
+            $this->fail('再開時に別のハンドラへ切り替えることはできない');
+        } catch (AgentCheckoutException $e) {
+            $this->assertSame(AgentCheckoutErrorCode::INVALID_SESSION_STATE, $e->getErrorCode());
+        }
+        $this->assertSame(0, $other->authorizeCount);
+
+        // handler_id を省略した再開も、中断したハンドラで続ける。
+        $result = $service->complete($session, ['authentication_result' => ['outcome' => 'authenticated']]);
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId());
+        $this->assertSame(2, $held->authorizeCount);
+        $this->assertSame(0, $other->authorizeCount);
+    }
+
+    /**
      * ロック取得時に、セッションだけでなく関連する Order も DB の値で読み直す.
      *
      * 並行リクエストが Order (支払方法等) を変えていても、ロック後の値で判定する。
@@ -712,9 +763,9 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
      * @param array<int, PaymentOutcome|\Throwable> $authorizeOutcomes authorize の戻り値 (呼び出し順に消費・末尾を反復)。
      *                                                                 Throwable を混ぜると authorize がそれを投げる
      */
-    private function stubHandler(array $authorizeOutcomes, PaymentOutcome|\Throwable|null $captureOutcome = null): AgentCheckoutPaymentHandlerInterface
+    private function stubHandler(array $authorizeOutcomes, PaymentOutcome|\Throwable|null $captureOutcome = null, string $handlerId = 'test_handler'): AgentCheckoutPaymentHandlerInterface
     {
-        return new class($authorizeOutcomes, $captureOutcome) implements AgentCheckoutPaymentHandlerInterface {
+        return new class($authorizeOutcomes, $captureOutcome, $handlerId) implements AgentCheckoutPaymentHandlerInterface {
             public int $authorizeCount = 0;
 
             public int $captureCount = 0;
@@ -731,6 +782,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
             public function __construct(
                 private array $authorizeOutcomes,
                 private readonly PaymentOutcome|\Throwable|null $captureOutcome,
+                private readonly string $handlerId,
             ) {
             }
 
@@ -766,7 +818,7 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
 
             public function getHandlerId(): string
             {
-                return 'test_handler';
+                return $this->handlerId;
             }
         };
     }

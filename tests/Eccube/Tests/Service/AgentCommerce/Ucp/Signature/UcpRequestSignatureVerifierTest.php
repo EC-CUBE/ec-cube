@@ -186,6 +186,31 @@ final class UcpRequestSignatureVerifierTest extends TestCase
     }
 
     /**
+     * 署名パラメータの解析 (引用文字列の除去) に失敗したら、期限の検査を飛ばさず署名を拒否する.
+     */
+    public function testRejectsWhenSignatureParamsCannotBeParsed(): void
+    {
+        $verifier = $this->verifierWithKey($this->privateKey->getPublicKey());
+        // 期限切れの expires を付けた signature-params。引用文字列の除去に失敗しても期限の検査を飛ばさないこと。
+        $params = sprintf('("@method");keyid="%s";tag="%s";expires=%d', self::KID, str_repeat('a', 1000), time() - 60);
+        $assertTimestamps = (new \ReflectionMethod($verifier, 'assertSignatureTimestamps'))->getClosure($verifier);
+
+        // PCRE の上限を下げ、引用文字列を取り除く置換を失敗させる。
+        $backtrackLimit = ini_get('pcre.backtrack_limit');
+        $jit = ini_get('pcre.jit');
+        ini_set('pcre.jit', '0');
+        ini_set('pcre.backtrack_limit', '10');
+        try {
+            $this->expectException(UcpSignatureException::class);
+            $this->expectExceptionMessage('could not be parsed');
+            $assertTimestamps($params);
+        } finally {
+            ini_set('pcre.backtrack_limit', (string) $backtrackLimit);
+            ini_set('pcre.jit', (string) $jit);
+        }
+    }
+
+    /**
      * @query は受信したクエリの順序のまま signature base に入れる (並べ替えると署名者の base と一致しない).
      */
     public function testQueryComponentKeepsReceivedOrder(): void

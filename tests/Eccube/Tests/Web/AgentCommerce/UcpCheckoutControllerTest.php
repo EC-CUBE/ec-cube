@@ -309,6 +309,25 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $this->assertSame([(string) $second->getId()], array_column($got['line_items'], 'id'), 'GET も update 後の明細を返す');
     }
 
+    /**
+     * ready のセッションを別商品・住所なしで update した場合も、以前の見積の Order を残さない.
+     */
+    public function testUpdateWithoutAddressDetachesPreviousOrder(): void
+    {
+        $first = $this->createPurchasableProductClass('100');
+        $second = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $first->getId()));
+        $this->assertSame('ready_for_complete', $created['status']);
+
+        $updated = $this->postJson('/ucp/checkout-sessions/'.$created['id'], $this->createPayload((int) $second->getId(), withAddress: false), 'PUT');
+        $this->assertSame('incomplete', $updated['status']);
+
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$created['id']);
+        $got = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertSame('incomplete', $got['status']);
+        $this->assertSame([(string) $second->getId()], array_column($got['line_items'], 'id'), 'GET も update 後の明細を返す');
+    }
+
     public function testMissingBuyerEmailIsIncomplete(): void
     {
         $ProductClass = $this->createPurchasableProductClass('100');

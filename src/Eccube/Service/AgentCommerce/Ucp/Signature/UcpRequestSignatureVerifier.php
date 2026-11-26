@@ -177,7 +177,11 @@ class UcpRequestSignatureVerifier
         $now = time();
 
         // 引用文字列 (keyid="k;expires=..." 等) の中身をパラメータとして読まないよう、先に取り除く。
-        $topLevel = (string) preg_replace('/"(?:[^"\\\\]|\\\\.)*"/', '""', $signatureParams);
+        // 置換に失敗した (PCRE の上限に達した等) ときは、時刻を検査できないため署名を受け付けない (fail-closed)。
+        $topLevel = preg_replace('/"(?:[^"\\\\]|\\\\.)*"/', '""', $signatureParams);
+        if ($topLevel === null) {
+            throw new UcpSignatureException('Signature-Input parameters could not be parsed.');
+        }
 
         if (preg_match('/;\s*expires=(\d+)/', $topLevel, $matches) && (int) $matches[1] < $now) {
             throw new UcpSignatureException('The signature has expired.');

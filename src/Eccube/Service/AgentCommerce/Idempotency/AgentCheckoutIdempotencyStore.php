@@ -104,7 +104,7 @@ class AgentCheckoutIdempotencyStore
         try {
             $result = $compute();
         } catch (\Throwable $e) {
-            $this->deleteReservation($key, $subjectKey);
+            $this->deleteReservation((int) $reservation->getId());
 
             throw $e;
         }
@@ -195,11 +195,13 @@ class AgentCheckoutIdempotencyStore
     /**
      * 予約行を削除する (compute 失敗時の再試行を可能にするため。EM 状態に依存しない DBAL 経由).
      */
-    private function deleteReservation(string $key, string $subject): void
+    private function deleteReservation(int $id): void
     {
+        // このリクエストが作った予約だけを消す。処理が長引いて予約が放棄扱いになり、同じ内容の再送が
+        // 取り直して応答まで保存していた場合に、その予約 (と応答) を消さないため。
         $this->entityManager->getConnection()->delete(
             'dtb_agent_checkout_idempotency',
-            ['idempotency_key' => $key, 'subject' => $subject],
+            ['id' => $id],
         );
     }
 }
