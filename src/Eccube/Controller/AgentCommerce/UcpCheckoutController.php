@@ -38,7 +38,6 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
-use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -82,7 +81,6 @@ class UcpCheckoutController extends AbstractController
         private readonly AgentCheckoutPaymentHandlerRegistry $paymentHandlerRegistry,
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
-        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
         private readonly AgentCheckoutSessionLocker $locker,
         private readonly AgentCheckoutSessionTerminator $terminator,
         private readonly AgentCheckoutAddressValidator $addressValidator,
@@ -181,12 +179,9 @@ class UcpCheckoutController extends AbstractController
 
             try {
                 $payload = $this->decodeBody($request);
-                // エージェントが選んだ決済ハンドラ (payment.instruments[].handler_id) に対応する Payment を
-                // 割り当て、状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
+                // エージェントが選んだ決済ハンドラ (payment.instruments[].handler_id)。対応する Payment の割り当ては、
+                // 状態機械がセッションのロック後の Order に対して行う (sort_no 非依存。ロック前の Order には割り当てない)。
                 $handlerId = $this->extractHandlerId($payload);
-                if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
-                    return $this->protocolError(422, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s" (payment.instruments[0].handler_id).', $handlerId));
-                }
                 // UCP は payment.instruments[].handler_id で決済ハンドラを解決し、クレデンシャルを
                 // ゲートウェイトークンへ交換する。交換後の中立データを状態機械へ渡す。
                 $paymentData = $this->resolvePaymentData($payload);
@@ -200,7 +195,7 @@ class UcpCheckoutController extends AbstractController
                 // complete は「中断→再開」状態機械 (#6777)。追加認証 (3DS/escalation) は
                 // エラーでなく requires_action 等の中間状態として返る。在庫引当の保持/回収・
                 // トランザクション境界・与信→売上→確定の順序は CompletionService が担う。
-                $result = $this->completionService->complete($session, $paymentData);
+                $result = $this->completionService->complete($session, $paymentData, $handlerId);
             } catch (AgentCheckoutException $e) {
                 return $this->protocolError(422, $e->getErrorCode()->value, $e->getMessage());
             }
@@ -208,7 +203,10 @@ class UcpCheckoutController extends AbstractController
             $ucpMessages = $this->messageMapper->toUcpMessages($result->messages);
             $continueUrl = $this->continueUrlFor($session, $result);
 
-            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $ucpMessages, $continueUrl)];
+            // 応答はロック内で確定した Order から作る (ロック前に読んだ Order は並行する update で古くなり得る)。
+            $lockedOrder = $result->order ?? $session->getOrder() ?? $order;
+
+            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $lockedOrder, $ucpMessages, $continueUrl)];
         });
     }
 
@@ -266,7 +264,9 @@ class UcpCheckoutController extends AbstractController
         $buyer = $this->addressValidator->normalize($checkoutRequest->buyer);
         $addressErrors = $this->addressValidator->validate($buyer);
         if ($addressErrors !== []) {
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
             $this->entityManager->persist($session);
             $this->entityManager->flush();
 

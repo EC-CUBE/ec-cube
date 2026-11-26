@@ -18,6 +18,8 @@ namespace Eccube\Tests\Web\Admin\AgentCommerce;
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
+use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache;
+use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogSearcher;
 use Eccube\Tests\Web\Admin\AbstractAdminWebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,6 +54,30 @@ final class AgentCommerceControllerTest extends AbstractAdminWebTestCase
         $this->entityManager->refresh($fresh);
         $this->assertSame(CheckoutSessionStatus::EXPIRED, $overdue->getStatus()?->getId(), '期限切れは expired');
         $this->assertSame(CheckoutSessionStatus::REQUIRES_ACTION, $fresh->getStatus()?->getId(), '期限内は据え置き');
+    }
+
+    /**
+     * 事前生成した本文は、同じキーの search が返す本文と一致する (次ページ情報を含む).
+     */
+    public function testWarmupStoresSameBodyAsSearch(): void
+    {
+        // 既定のページサイズ (10 件) を超える公開商品を用意し、次ページがある状態にする。
+        for ($i = 0; $i < UcpCatalogSearcher::DEFAULT_LIMIT + 1; ++$i) {
+            $this->createProduct('事前生成テスト商品'.$i, 1);
+        }
+        $cache = static::getContainer()->get(UcpCatalogCache::class);
+        $cache->clear();
+
+        $this->client->request(Request::METHOD_POST, $this->generateUrl('admin_content_agent_commerce_ucp_catalog_cache_warmup'), [
+            '_token' => 'dummy',
+        ]);
+        $this->assertTrue($this->client->getResponse()->isRedirect($this->generateUrl('admin_content_agent_commerce')));
+
+        $warmed = $cache->get($cache->buildKey('search', UcpCatalogCache::searchParams(null, UcpCatalogSearcher::DEFAULT_LIMIT, 0)));
+        $this->assertNotNull($warmed, '既定の search と同じキーへ格納する');
+        $expected = static::getContainer()->get(UcpCatalogSearcher::class)->searchBody(null, UcpCatalogSearcher::DEFAULT_LIMIT, 0);
+        $this->assertSame($expected, $warmed, 'search と同じ本文');
+        $this->assertTrue(json_decode($warmed, true)['pagination']['has_next_page'], '次ページ情報を失わない');
     }
 
     public function testExpireRejectsGet(): void

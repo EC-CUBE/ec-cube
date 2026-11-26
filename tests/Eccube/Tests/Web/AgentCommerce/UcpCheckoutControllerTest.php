@@ -286,6 +286,29 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), 'incomplete は確定できない');
     }
 
+    /**
+     * ready のセッションを別商品・不備のある住所で update したら、以前の見積の Order を残さない.
+     *
+     * 残すと、update の応答 (新しい商品の暫定見積) と GET の応答 (以前の商品・合計) が食い違う。
+     */
+    public function testInvalidAddressUpdateDetachesPreviousOrder(): void
+    {
+        $first = $this->createPurchasableProductClass('100');
+        $second = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $first->getId()));
+        $this->assertSame('ready_for_complete', $created['status']);
+
+        $payload = $this->createPayload((int) $second->getId());
+        $payload['fulfillment']['destinations'][0]['address_region'] = 'Osaka';
+        $updated = $this->postJson('/ucp/checkout-sessions/'.$created['id'], $payload, 'PUT');
+        $this->assertSame('incomplete', $updated['status']);
+
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$created['id']);
+        $got = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertSame('incomplete', $got['status']);
+        $this->assertSame([(string) $second->getId()], array_column($got['line_items'], 'id'), 'GET も update 後の明細を返す');
+    }
+
     public function testMissingBuyerEmailIsIncomplete(): void
     {
         $ProductClass = $this->createPurchasableProductClass('100');

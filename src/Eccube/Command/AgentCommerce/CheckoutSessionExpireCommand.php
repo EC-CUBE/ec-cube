@@ -13,6 +13,7 @@
 
 namespace Eccube\Command\AgentCommerce;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -37,6 +38,7 @@ class CheckoutSessionExpireCommand extends Command
 
     public function __construct(
         private readonly AgentCheckoutSessionTerminator $terminator,
+        private readonly EntityManagerInterface $entityManager,
     ) {
         parent::__construct();
     }
@@ -60,6 +62,9 @@ class CheckoutSessionExpireCommand extends Command
             $batch = $limit === 0 ? self::BATCH_SIZE : min(self::BATCH_SIZE, $limit - $total);
             $expired = $this->terminator->expireOverdue($now, $batch);
             $total += $expired;
+            // 各セッションはコミット済み。処理済みのセッション・受注を管理対象から外し、件数が多くても
+            // メモリを使い切らないようにする。
+            $this->entityManager->clear();
             // 1 件も遷移しなかったバッチ (並行する complete が先に確定させた等) で打ち切り、無限ループを避ける。
         } while ($expired > 0 && ($limit === 0 || $total < $limit));
 

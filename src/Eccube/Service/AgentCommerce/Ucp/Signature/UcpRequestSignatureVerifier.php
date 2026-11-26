@@ -176,11 +176,14 @@ class UcpRequestSignatureVerifier
     {
         $now = time();
 
-        if (preg_match('/;\s*expires=(\d+)/', $signatureParams, $matches) && (int) $matches[1] < $now) {
+        // 引用文字列 (keyid="k;expires=..." 等) の中身をパラメータとして読まないよう、先に取り除く。
+        $topLevel = (string) preg_replace('/"(?:[^"\\\\]|\\\\.)*"/', '""', $signatureParams);
+
+        if (preg_match('/;\s*expires=(\d+)/', $topLevel, $matches) && (int) $matches[1] < $now) {
             throw new UcpSignatureException('The signature has expired.');
         }
 
-        if (preg_match('/;\s*created=(\d+)/', $signatureParams, $matches) && (int) $matches[1] > $now + self::CLOCK_SKEW_SECONDS) {
+        if (preg_match('/;\s*created=(\d+)/', $topLevel, $matches) && (int) $matches[1] > $now + self::CLOCK_SKEW_SECONDS) {
             throw new UcpSignatureException('The signature creation time is in the future.');
         }
     }

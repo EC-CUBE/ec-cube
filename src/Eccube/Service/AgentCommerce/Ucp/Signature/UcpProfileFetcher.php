@@ -122,12 +122,6 @@ class UcpProfileFetcher
                 // (timeout=接続/アイドル, max_duration=総時間)。
                 'timeout' => 5,
                 'max_duration' => 10,
-                // 巨大な応答でメモリを消費させないよう、上限を超えた時点で受信を打ち切る。
-                'on_progress' => static function (int $downloaded, int $total): void {
-                    if ($downloaded > self::MAX_PROFILE_BYTES || $total > self::MAX_PROFILE_BYTES) {
-                        throw new UcpSignatureException('Agent profile is too large.');
-                    }
-                },
             ]);
 
             if ($response->getStatusCode() !== 200) {
@@ -135,13 +129,25 @@ class UcpProfileFetcher
                 throw new UcpSignatureException('Agent profile fetch did not return a successful response.');
             }
 
-            $content = $response->getContent(false);
-            if (strlen($content) > self::MAX_PROFILE_BYTES) {
-                throw new UcpSignatureException('Agent profile is too large.');
+            // 巨大な応答でメモリを消費させないよう、受信しながら上限を超えた時点で打ち切る。
+            // 数えるのは展開後のバイト数 (HTTP クライアントは gzip を自動で要求・展開する。進捗コールバックや
+            // Content-Length が示すのは圧縮後のサイズのため、それでは展開後の巨大な本文を止められない)。
+            $content = '';
+            foreach ($this->httpClient->stream($response) as $chunk) {
+                $content .= $chunk->getContent();
+                if (strlen($content) > self::MAX_PROFILE_BYTES) {
+                    $response->cancel();
+
+                    throw new UcpSignatureException('Agent profile is too large.');
+                }
             }
 
+            $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            if (!is_array($decoded)) {
+                throw new UcpSignatureException('Agent profile is not a JSON object.');
+            }
             /** @var array<string, mixed> $document */
-            $document = $response->toArray(false);
+            $document = $decoded;
         } catch (UcpSignatureException $e) {
             throw $e;
         } catch (HttpClientExceptionInterface|\JsonException $e) {

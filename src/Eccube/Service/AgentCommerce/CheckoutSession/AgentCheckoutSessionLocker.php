@@ -38,7 +38,7 @@ class AgentCheckoutSessionLocker
      * セッション行をロックしたトランザクション内で $callback を実行し、結果を返す.
      *
      * $callback の後に flush してからコミットする。例外は巻き戻してそのまま伝播させる。
-     * ロック取得時にセッションは DB の値で読み直されるため、呼び出し前のセッションへの
+     * ロック取得時にセッションと関連する Order は DB の値で読み直されるため、呼び出し前の
      * 未 flush の変更は失われる (呼び出し側はロック後に変更すること)。
      *
      * @template T
@@ -53,6 +53,12 @@ class AgentCheckoutSessionLocker
         $connection->beginTransaction();
         try {
             $this->entityManager->refresh($session, LockMode::PESSIMISTIC_WRITE);
+            // セッションの読み直しは関連 (Order) を読み直さない (cascade refresh が無い)。並行リクエストが
+            // 支払方法等を変えていれば、手元の Order は古いまま。ロック後の値で判定するため Order も読み直す。
+            $order = $session->getOrder();
+            if ($order !== null) {
+                $this->entityManager->refresh($order);
+            }
             $result = $callback($session);
             $this->entityManager->flush();
             $connection->commit();

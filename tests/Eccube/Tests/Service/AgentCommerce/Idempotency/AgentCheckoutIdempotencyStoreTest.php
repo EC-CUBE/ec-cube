@@ -185,4 +185,37 @@ final class AgentCheckoutIdempotencyStoreTest extends EccubeTestCase
         $this->assertFalse($result['replayed']);
         $this->assertSame(201, $result['status']);
     }
+
+    /**
+     * 放棄された予約でも、異なる内容でのキーの再利用は取り直さず競合として拒否する.
+     */
+    public function testAbandonedReservationWithDifferentRequestIsConflict(): void
+    {
+        $key = 'idem-'.bin2hex(random_bytes(6));
+
+        $reservation = (new AgentCheckoutIdempotency())
+            ->setIdempotencyKey($key)
+            ->setSubject('')
+            ->setRequestHash($this->store->hashRequest(['a' => 1]));
+        $this->entityManager->persist($reservation);
+        $this->entityManager->flush();
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE dtb_agent_checkout_idempotency SET create_date = :date WHERE id = :id',
+            [
+                'date' => new \DateTime('-'.(AgentCheckoutIdempotencyStore::ABANDONED_RESERVATION_SECONDS + 60).' seconds'),
+                'id' => $reservation->getId(),
+            ],
+            ['date' => Types::DATETIMETZ_MUTABLE],
+        );
+        $this->entityManager->clear();
+
+        $calls = 0;
+        try {
+            $this->store->execute($key, $this->store->hashRequest(['a' => 2]), $this->countingCompute($calls));
+            $this->fail('異なる内容でのキーの再利用は競合');
+        } catch (IdempotencyConflictException $e) {
+            $this->assertFalse($e->isInFlight(), '処理中ではなく内容の不一致として拒否する');
+        }
+        $this->assertSame(0, $calls);
+    }
 }

@@ -22,7 +22,9 @@ use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Entity\ProductStock;
 use Eccube\Repository\CheckoutSessionRepository;
+use Eccube\Repository\DeliveryRepository;
 use Eccube\Repository\Master\CheckoutSessionStatusRepository;
+use Eccube\Repository\PaymentRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
@@ -31,9 +33,11 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionLocker;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
+use Eccube\Service\AgentCommerce\Payment\DefaultAgentPaymentMethodResolver;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Service\Payment\Method\Cash;
 use Eccube\Service\Payment\Method\CreditCard;
@@ -536,6 +540,53 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     }
 
     /**
+     * handler_id に対応する支払方法が無ければ、在庫引当・与信の前にプロトコル系エラーにする (ロック内で判定).
+     */
+    public function testUnknownHandlerIdIsRejectedBeforeSideEffects(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler([PaymentOutcome::authorized('auth_1')], PaymentOutcome::completed('cap_1'));
+
+        try {
+            $this->service($handler)->complete($session, [], 'unknown_handler');
+            $this->fail('未登録の handler_id は拒否される');
+        } catch (AgentCheckoutException $e) {
+            $this->assertSame(AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND, $e->getErrorCode());
+        }
+
+        $this->assertSame(0, $handler->authorizeCount, '与信しない');
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(100, (int) $stock->getStock(), '在庫を引き当てない');
+    }
+
+    /**
+     * ロック取得時に、セッションだけでなく関連する Order も DB の値で読み直す.
+     *
+     * 並行リクエストが Order (支払方法等) を変えていても、ロック後の値で判定する。
+     */
+    public function testLockerRefreshesRelatedOrder(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+        $order = $session->getOrder();
+        $this->assertInstanceOf(Order::class, $order);
+
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE dtb_order SET payment_method = :method WHERE id = :id',
+            ['method' => 'changed-by-another-request', 'id' => $order->getId()],
+        );
+
+        $seen = (new AgentCheckoutSessionLocker($this->entityManager))
+            ->transactional($session, static fn (CheckoutSession $locked): ?string => $locked->getOrder()?->getPaymentMethod());
+
+        $this->assertSame('changed-by-another-request', $seen);
+    }
+
+    /**
      * 在庫確保期限を過ぎた中断中のセッションは、complete で在庫を戻して expired にする.
      */
     public function testOverdueHeldSessionIsExpiredAndReleasesStock(): void
@@ -646,6 +697,11 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
                 self::getContainer()->get(GuestCustomerResolver::class),
                 $locker,
                 new NullLogger(),
+            ),
+            new DefaultAgentPaymentMethodResolver(
+                self::getContainer()->get(PaymentRepository::class),
+                self::getContainer()->get(DeliveryRepository::class),
+                $registry,
             ),
         );
     }

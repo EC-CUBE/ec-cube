@@ -71,10 +71,11 @@ class AgentCheckoutIdempotencyStore
 
         // 既存記録があればリプレイ / 競合 / 処理中を判定する (逐次再送はここで完結)。
         $existing = $this->repository->findOneByKeyAndSubject($key, $subjectKey);
-        if ($existing !== null && $this->isAbandoned($existing)) {
+        if ($existing !== null && $existing->getRequestHash() === $requestHash && $this->isAbandoned($existing)) {
             // 処理中にプロセスが落ちる (タイムアウト・メモリ不足等) と、予約行が応答なしのまま残り、
             // 同じキーは以後ずっと処理中 (409) になる。一定時間を過ぎた予約は放棄されたものとして消し、
             // このリクエストで予約を取り直す。並行して取り直した場合は一意制約でどちらか一方に寄る。
+            // 取り直すのは同じ内容の再送だけ。異なる内容でのキーの再利用は、従来どおり競合として拒否する。
             $this->entityManager->getConnection()->executeStatement(
                 'DELETE FROM dtb_agent_checkout_idempotency WHERE id = :id AND response_status IS NULL',
                 ['id' => $existing->getId()],

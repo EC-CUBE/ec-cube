@@ -24,6 +24,7 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
+use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
 use Eccube\Service\Payment\Method\Cash;
@@ -98,6 +99,7 @@ class AgentCheckoutCompletionService
         private readonly int $escalationExpireMinutes,
         private readonly AgentCheckoutSessionLocker $locker,
         private readonly AgentCheckoutSessionTerminator $terminator,
+        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
         private readonly int $maxPaymentAttempts = 5,
     ) {
     }
@@ -109,12 +111,13 @@ class AgentCheckoutCompletionService
      * 先行のコミットを待ち、確定済みなら冪等に既存 Order を返す (在庫引当・与信を二重に実行しない)。
      *
      * @param array<string, mixed> $paymentData 決済の中立表現 (再開時は authentication_result 等を含む)
+     * @param string|null          $handlerId   エージェントが選んだ決済ハンドラ (指定時はロック後の Order に支払方法を割り当てる)
      *
-     * @throws AgentCheckoutException 確定不能な状態 (終端・期限切れ・未確定・Order 未生成等)
+     * @throws AgentCheckoutException 確定不能な状態 (終端・期限切れ・未確定・Order 未生成・決済ハンドラ不一致等)
      */
-    public function complete(CheckoutSession $session, array $paymentData): AgentCheckoutCompletionResult
+    public function complete(CheckoutSession $session, array $paymentData, ?string $handlerId = null): AgentCheckoutCompletionResult
     {
-        $result = $this->locker->transactional($session, function (CheckoutSession $session) use ($paymentData): ?AgentCheckoutCompletionResult {
+        $result = $this->locker->transactional($session, function (CheckoutSession $session) use ($paymentData, $handlerId): ?AgentCheckoutCompletionResult {
             if ($this->terminator->isOverdue($session)) {
                 // 期限切れの回収 (在庫の解放と expired への遷移) はコミットさせ、その後でエラーを返す。
                 $this->terminator->expire($session);
@@ -122,7 +125,7 @@ class AgentCheckoutCompletionService
                 return null;
             }
 
-            return $this->completeLocked($session, $paymentData);
+            return $this->completeLocked($session, $paymentData, $handlerId);
         });
 
         if ($result === null) {
@@ -137,7 +140,7 @@ class AgentCheckoutCompletionService
      *
      * @param array<string, mixed> $paymentData
      */
-    private function completeLocked(CheckoutSession $session, array $paymentData): AgentCheckoutCompletionResult
+    private function completeLocked(CheckoutSession $session, array $paymentData, ?string $handlerId): AgentCheckoutCompletionResult
     {
         $statusId = $session->getStatus()?->getId();
 
@@ -167,6 +170,12 @@ class AgentCheckoutCompletionService
         $order = $session->getOrder();
         if ($order === null) {
             throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, 'The checkout session has no order to complete.');
+        }
+
+        // エージェントが選んだ決済ハンドラに対応する支払方法を、ロック後の Order に割り当てる。
+        // ロック前に割り当てると、並行する update が差し替えた Order では既定の支払方法のまま確定してしまう。
+        if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
+            throw new AgentCheckoutException(AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND, sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId));
         }
 
         $member = $this->customerResolver->resolve($session);
@@ -209,6 +218,16 @@ class AgentCheckoutCompletionService
 
         // 代引・銀行振込等 (本体の Cash) と 0 円の受注は与信不要のためそのまま確定する。
         if ($handler === null) {
+            // prepare は見積を再計算する (送料・手数料の変更等)。0 円だった受注が有償になっていれば、
+            // 決済処理を通さずに確定しないよう引当を戻して止める。
+            if (!$this->isSettledWithoutHandler($order)) {
+                $this->purchaseFlowAdapter->rollback($order, $member);
+
+                return new AgentCheckoutCompletionResult($this->requireCurrentStatus($session), null, [
+                    new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'The payment method assigned to this checkout cannot be processed by an agent. Specify a supported payment handler.'),
+                ]);
+            }
+
             return $this->commitOrder($session, $order, $member);
         }
 

@@ -121,9 +121,9 @@ final class UcpRequestSignatureVerifierTest extends TestCase
      *
      * @param list<string> $allowedDomains
      */
-    private function verifierWithKey(PublicKey $advertisedKey, array $allowedDomains = []): UcpRequestSignatureVerifier
+    private function verifierWithKey(PublicKey $advertisedKey, array $allowedDomains = [], string $kid = self::KID): UcpRequestSignatureVerifier
     {
-        $profile = ['signing_keys' => [$this->toJwk($advertisedKey, self::KID)]];
+        $profile = ['signing_keys' => [$this->toJwk($advertisedKey, $kid)]];
         $httpClient = new MockHttpClient(new MockResponse((string) json_encode($profile), ['http_code' => 200]));
         // テストの profile ホスト (agent.example) は実解決できないため、公開 IP へ解決するスタブを注入する。
         $fetcher = new UcpProfileFetcher($httpClient, static fn (string $host): array => ['93.184.216.34']);
@@ -168,6 +168,36 @@ final class UcpRequestSignatureVerifierTest extends TestCase
         $verifier->verify($request);
     }
 
+    /**
+     * 引用文字列 (keyid) の中の expires を期限として扱わない (本来の expires が期限切れなら拒否する).
+     */
+    public function testExpiresInsideQuotedKeyIdIsIgnored(): void
+    {
+        $request = $this->signedRequest(
+            $this->privateKey->getPublicKey(),
+            extraParams: sprintf(';expires=%d', time() - 60),
+            keyId: sprintf('k;expires=%d', time() + 3600),
+        );
+        $verifier = $this->verifierWithKey($this->privateKey->getPublicKey(), kid: sprintf('k;expires=%d', time() + 3600));
+
+        $this->expectException(UcpSignatureException::class);
+        $this->expectExceptionMessage('expired');
+        $verifier->verify($request);
+    }
+
+    /**
+     * @query は受信したクエリの順序のまま signature base に入れる (並べ替えると署名者の base と一致しない).
+     */
+    public function testQueryComponentKeepsReceivedOrder(): void
+    {
+        $request = Request::create('https://shop.example/ucp/checkout-sessions/cs_1?b=2&a=1', Request::METHOD_GET);
+        $request->server->set('QUERY_STRING', 'b=2&a=1');
+
+        $base = $this->baseBuilder->build($request, ['@query'], '("@query")');
+
+        $this->assertStringStartsWith('"@query": ?b=2&a=1'."\n", $base);
+    }
+
     public function testAcceptsSignatureWithinValidityWindow(): void
     {
         $now = time();
@@ -193,7 +223,7 @@ final class UcpRequestSignatureVerifierTest extends TestCase
      *
      * @param list<string>|null $components 署名対象 (null は UCP signatures.md の必須一式)
      */
-    private function signedRequest(PublicKey $publicKey, bool $tamperSignature = false, ?array $components = null, string $extraParams = ''): Request
+    private function signedRequest(PublicKey $publicKey, bool $tamperSignature = false, ?array $components = null, string $extraParams = '', string $keyId = self::KID): Request
     {
         $body = '{"line_items":[{"item":{"id":"1"},"quantity":1}]}';
         $request = Request::create('https://shop.example/ucp/checkout-sessions', Request::METHOD_POST, [], [], [], [], $body);
@@ -203,7 +233,7 @@ final class UcpRequestSignatureVerifierTest extends TestCase
         $request->headers->set('Content-Digest', 'sha-256=:'.base64_encode(hash('sha256', $body, true)).':');
 
         $components ??= ['@method', '@authority', '@path', 'ucp-agent', 'idempotency-key', 'content-digest', 'content-type'];
-        $params = sprintf('(%s);keyid="%s";alg="ecdsa-p256-sha256"%s', implode(' ', array_map(static fn (string $c): string => '"'.$c.'"', $components)), self::KID, $extraParams);
+        $params = sprintf('(%s);keyid="%s";alg="ecdsa-p256-sha256"%s', implode(' ', array_map(static fn (string $c): string => '"'.$c.'"', $components)), $keyId, $extraParams);
 
         $base = $this->baseBuilder->build($request, $components, $params);
         $raw = $this->privateKey->withSignatureFormat('IEEE')->withHash('sha256')->sign($base);

@@ -45,4 +45,7 @@ enum AgentCheckoutErrorCode: string
 
     /** 店舗の通貨 (ECCUBE_CURRENCY) 以外の通貨が指定された. */
     case UNSUPPORTED_CURRENCY = 'unsupported_currency';
+
+    /** 指定された決済ハンドラ (handler_id) に対応する有効な支払方法が無い. */
+    case PAYMENT_HANDLER_NOT_FOUND = 'payment_handler_not_found';
 }

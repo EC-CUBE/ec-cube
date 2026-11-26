@@ -38,7 +38,6 @@ use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
-use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -82,7 +81,6 @@ class AcpCheckoutController extends AbstractController
         private readonly AgentCheckoutIdempotencyStore $idempotencyStore,
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
-        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
         private readonly AgentCheckoutSessionLocker $locker,
         private readonly AgentCheckoutSessionTerminator $terminator,
         private readonly AgentCheckoutAddressValidator $addressValidator,
@@ -186,22 +184,24 @@ class AcpCheckoutController extends AbstractController
                     return $this->protocolError(400, 'requires_3ds', 'This checkout session requires issuer authentication. The request must include "authentication_result".', '$.authentication_result');
                 }
 
-                // エージェントが選んだ決済ハンドラ (payment_data.handler_id) に対応する Payment を割り当て、
-                // 状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
+                // エージェントが選んだ決済ハンドラ (payment_data.handler_id)。対応する Payment の割り当ては、
+                // 状態機械がセッションのロック後の Order に対して行う (sort_no 非依存。ロック前の Order には割り当てない)。
                 $handlerId = is_string($paymentData['handler_id'] ?? null) ? $paymentData['handler_id'] : null;
-                if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
-                    return $this->protocolError(400, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId), '$.payment_data.handler_id');
-                }
 
                 // complete は状態機械 (#6777)。3DS/escalation はエラーでなく requires_action 等の中間状態として返る。
-                $result = $this->completionService->complete($session, $paymentData);
+                $result = $this->completionService->complete($session, $paymentData, $handlerId);
             } catch (AgentCheckoutException $e) {
-                return $this->protocolError(400, $e->getErrorCode()->value, $e->getMessage());
+                $param = $e->getErrorCode() === AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND ? '$.payment_data.handler_id' : null;
+
+                return $this->protocolError(400, $e->getErrorCode()->value, $e->getMessage(), $param);
             }
 
             $acpMessages = $this->messageMapper->toAcpMessages($result->messages);
 
-            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $acpMessages, $result->actionData)];
+            // 応答はロック内で確定した Order から作る (ロック前に読んだ Order は並行する update で古くなり得る)。
+            $lockedOrder = $result->order ?? $session->getOrder() ?? $order;
+
+            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $lockedOrder, $acpMessages, $result->actionData)];
         });
     }
 
@@ -258,7 +258,9 @@ class AcpCheckoutController extends AbstractController
         $buyer = $this->addressValidator->normalize($checkoutRequest->buyer);
         $addressErrors = $this->addressValidator->validate($buyer);
         if ($addressErrors !== []) {
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
             $this->entityManager->persist($session);
             $this->entityManager->flush();
 
