@@ -37,6 +37,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class UcpRequestSignatureVerifier
 {
+    /** 署名の `created` が現在時刻より未来にずれてよい上限 (秒). 時計のずれを許容する. */
+    private const CLOCK_SKEW_SECONDS = 300;
+
+    /** 状態を変更するメソッド (UCP signatures.md: idempotency-key の署名が必須). */
+    private const STATE_CHANGING_METHODS = ['POST', 'PUT', 'DELETE', 'PATCH'];
+
     /**
      * @var list<string> 許可するエージェント profile ドメイン (空なら HTTPS である限り制限しない)
      */
@@ -45,14 +51,18 @@ class UcpRequestSignatureVerifier
     /**
      * @param UcpProfileFetcher          $profileFetcher    エージェント公開鍵の取得元
      * @param Rfc9421SignatureBaseBuilder $signatureBaseBuilder signature base 構築
-     * @param list<string>               $allowedDomains    許可ドメインのホスト名リスト
+     * @param list<string>               $allowedDomains    許可ドメインのホスト名リスト (環境変数 csv 由来の空要素を含み得る)
      */
     public function __construct(
         private readonly UcpProfileFetcher $profileFetcher,
         private readonly Rfc9421SignatureBaseBuilder $signatureBaseBuilder,
         array $allowedDomains = [],
     ) {
-        $this->allowedDomains = array_map(strtolower(...), $allowedDomains);
+        // 環境変数 (csv) 由来の空要素・前後の空白を除く。空要素が残ると「許可リストあり」と誤判定する。
+        $this->allowedDomains = array_values(array_filter(
+            array_map(static fn (string $domain): string => strtolower(trim($domain)), $allowedDomains),
+            static fn (string $domain): bool => $domain !== '',
+        ));
     }
 
     /**
@@ -92,6 +102,8 @@ class UcpRequestSignatureVerifier
         $this->verifyContentDigest($request);
 
         [$components, $signatureParams, $keyId] = $this->parseSignatureInput((string) $request->headers->get('Signature-Input'));
+        $this->assertRequiredComponents($request, $components);
+        $this->assertSignatureTimestamps($signatureParams);
         $rawSignature = $this->parseSignature((string) $request->headers->get('Signature'));
 
         try {
@@ -116,6 +128,67 @@ class UcpRequestSignatureVerifier
 
         if (!in_array($host, $this->allowedDomains, true)) {
             throw new UcpSignatureException(sprintf('Agent domain "%s" is not allowed.', $host));
+        }
+    }
+
+    /**
+     * UCP signatures.md の「REST Request Signing」が必須とする covered component を満たすか確認する.
+     *
+     * 署名が何を覆うかは署名者が Signature-Input で宣言するため、検証側が要求しないと
+     * `("@method")` だけの署名でも通ってしまう。そうなると、正規の署名を別のパス・ボディ・
+     * Idempotency-Key に付け替えて再送できる (ボディは Content-Digest と照合しても、
+     * Content-Digest 自体が署名されていなければ差し替えられる)。
+     *
+     * - 常に必須: `@method` / `@authority` / `@path` / `ucp-agent` (UCP-Agent は全リクエストで必須)
+     * - クエリがある: `@query`
+     * - 状態変更 (POST/PUT/DELETE/PATCH): `idempotency-key` (リプレイ防止は業務層の冪等キーで行う)
+     * - ボディがある: `content-digest` / `content-type`
+     *
+     * @param list<string> $components
+     */
+    private function assertRequiredComponents(Request $request, array $components): void
+    {
+        $required = ['@method', '@authority', '@path', 'ucp-agent'];
+        if ($request->getQueryString() !== null) {
+            $required[] = '@query';
+        }
+        if (in_array(strtoupper($request->getMethod()), self::STATE_CHANGING_METHODS, true)) {
+            $required[] = 'idempotency-key';
+        }
+        if ($request->getContent() !== '') {
+            $required[] = 'content-digest';
+            $required[] = 'content-type';
+        }
+
+        $missing = array_diff($required, array_map(strtolower(...), $components));
+        if ($missing !== []) {
+            throw new UcpSignatureException(sprintf('The signature must cover the components: %s.', implode(', ', $missing)));
+        }
+    }
+
+    /**
+     * signature-params の `expires` / `created` を検証する (いずれも付いている場合のみ).
+     *
+     * UCP では `created` は OPTIONAL (リプレイ防止は冪等キーで行う) のため必須にはしない。
+     * 付いている場合は、期限切れの署名と未来の時刻の署名を拒否する。
+     */
+    private function assertSignatureTimestamps(string $signatureParams): void
+    {
+        $now = time();
+
+        // 引用文字列 (keyid="k;expires=..." 等) の中身をパラメータとして読まないよう、先に取り除く。
+        // 置換に失敗した (PCRE の上限に達した等) ときは、時刻を検査できないため署名を受け付けない (fail-closed)。
+        $topLevel = preg_replace('/"(?:[^"\\\\]|\\\\.)*"/', '""', $signatureParams);
+        if ($topLevel === null) {
+            throw new UcpSignatureException('Signature-Input parameters could not be parsed.');
+        }
+
+        if (preg_match('/;\s*expires=(\d+)/', $topLevel, $matches) && (int) $matches[1] < $now) {
+            throw new UcpSignatureException('The signature has expired.');
+        }
+
+        if (preg_match('/;\s*created=(\d+)/', $topLevel, $matches) && (int) $matches[1] > $now + self::CLOCK_SKEW_SECONDS) {
+            throw new UcpSignatureException('The signature creation time is in the future.');
         }
     }
 

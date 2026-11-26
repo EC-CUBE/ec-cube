@@ -105,9 +105,11 @@ parameters:
     eccube_customer_reset_expire: 10
     # エージェントチェックアウトの追加対応 (3DS/escalation) / 非同期決済の待機中に在庫を確保する期限 (分).
     # この間 prepare で引き当てた在庫は他購入者に対し確保されたまま保持される。超過すると
-    # 期限切れ回収 (CheckoutSessionRepository::findExpired) で rollback され在庫が戻る。
-    # EMV-3DS のタイムアウト (10 分) より大きい値とすること。
+    # 期限切れ回収 (cron の eccube:agent-commerce:checkout-session:expire、または管理画面の
+    # コンテンツ管理 > Agent Commerce) で rollback され在庫が戻る。EMV-3DS のタイムアウト (10 分) より大きい値とすること。
     eccube_agent_checkout_escalation_expire: 15
+    # エージェントチェックアウトの 1 セッションで許す与信失敗の回数. 超えたセッションは canceled にする.
+    eccube_agent_checkout_max_payment_attempts: 5
     # CSVの区切り文字(タブ区切りにしたい場合は'\t'ではなく'    'で設定する
     eccube_csv_export_separator: ,
     # 出力エンコーディング

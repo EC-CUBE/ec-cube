@@ -59,7 +59,9 @@ class Rfc9421SignatureBaseBuilder
             '@method' => strtoupper($request->getMethod()),
             '@authority' => strtolower($request->getHttpHost()),
             '@path' => $this->path($request),
-            '@query' => '?'.($request->getQueryString() ?? ''),
+            // RFC 9421 §2.2.7: 受信したクエリの順序・エンコードのまま使う。Request::getQueryString() は
+            // パラメータを並べ替えて正規化するため、署名者の signature base と一致しなくなる。
+            '@query' => '?'.$request->server->get('QUERY_STRING', ''),
             '@scheme' => strtolower($request->getScheme()),
             '@target-uri' => $request->getUri(),
             default => $this->resolveHeader($request, $component),

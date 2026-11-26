@@ -1267,6 +1267,10 @@ admin.content.agent_commerce.ucp.cache_warmup: Warm up cache
 admin.content.agent_commerce.ucp.cache_clear: Clear cache
 admin.content.agent_commerce.ucp.cache_warmup_success: The catalog cache has been warmed up.
 admin.content.agent_commerce.ucp.cache_clear_success: The catalog cache has been cleared.
+admin.content.agent_commerce.checkout_session.title: Checkout sessions
+admin.content.agent_commerce.checkout_session.description: Expire sessions whose stock reservation period has passed while waiting for additional authentication or asynchronous payment, and release the reserved stock. Normally, run bin/console eccube:agent-commerce:checkout-session:expire periodically with cron. Use this button where the CLI is not available.
+admin.content.agent_commerce.checkout_session.expire: Expire overdue sessions
+admin.content.agent_commerce.checkout_session.expire_success: "%count% overdue session(s) have been expired."
 
 #------------------------------------------------------------------------------------
 # Settings : Store Settings : General

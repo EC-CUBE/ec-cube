@@ -15,12 +15,15 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Web\AgentCommerce;
 
+use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Order;
 use Eccube\Entity\ProductClass;
 use Eccube\Repository\BaseInfoRepository;
+use Eccube\Repository\CheckoutSessionRepository;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Service\AgentCommerce\Payment\UcpPaymentHandlerInterface;
+use Eccube\Service\Payment\Method\CreditCard;
 use Eccube\Tests\EccubeTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,7 +74,7 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $response = $this->client->getResponse();
 
         /** @var array<string, mixed> $decoded */
-        $decoded = json_decode((string) $response->getContent(), true);
+        $decoded = json_decode((string) $response->getContent(), true) ?? [];
 
         return $decoded;
     }
@@ -172,6 +175,56 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
     }
 
     /**
+     * 注文に使えない handler_id は、クレデンシャルを交換する前に拒否する (ワンショットのトークンを消費しない).
+     */
+    public function testUnusableHandlerIdIsRejectedBeforeTokenExchange(): void
+    {
+        $this->client->disableReboot();
+        $handler = new class implements UcpPaymentHandlerInterface {
+            public int $exchangeCount = 0;
+
+            public function getHandlerId(): string
+            {
+                return 'unsupported_handler';
+            }
+
+            public function exchangePaymentToken(array $credential): array
+            {
+                ++$this->exchangeCount;
+
+                return ['token' => 'tok_exchanged'];
+            }
+
+            public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
+            {
+                return PaymentOutcome::completed('should_not_be_reached');
+            }
+
+            public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
+            {
+                return PaymentOutcome::completed('should_not_be_reached');
+            }
+
+            public function supports(Order $order): bool
+            {
+                return false;
+            }
+        };
+        self::getContainer()->set(AgentCheckoutPaymentHandlerRegistry::class, new AgentCheckoutPaymentHandlerRegistry([$handler]));
+
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+
+        $completed = $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', [
+            'payment' => ['instruments' => [['handler_id' => 'unsupported_handler', 'credential' => ['token' => 'tok_one_shot']]]],
+        ]);
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertSame('payment_handler_not_found', $completed['code'] ?? $completed['messages'][0]['code'] ?? null);
+        $this->assertSame(0, $handler->exchangeCount, 'クレデンシャルを交換しない');
+    }
+
+    /**
      * exchangePaymentToken() で例外を投げる UCP 決済ハンドラ (契約違反のシミュレート).
      */
     private function throwingUcpHandler(): UcpPaymentHandlerInterface
@@ -242,6 +295,184 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
         $canceled = $this->postJson('/ucp/checkout-sessions/'.$sessionId.'/cancel', []);
         $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
         $this->assertSame('canceled', $canceled['status'], 'cancel 後は canceled');
+    }
+
+    /**
+     * 報告の再現手順: ハンドラの無いカード決済が割り当たったセッションへ、署名なし・本文 {} で complete しても確定しない.
+     */
+    public function testHandlerlessCardPaymentIsNotCompletedWithoutHandlerId(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+        $this->assertSame('ready_for_complete', $created['status']);
+
+        // 決済プラグインのクレジットカード決済 (CreditCard 継承・エージェント決済ハンドラ無し) が割り当たった状態にする。
+        $order = $this->findOrderOfSession($created['id']);
+        $order->getPayment()?->setMethodClass(CreditCard::class);
+        $this->entityManager->flush();
+
+        $completed = $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', []);
+
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertNotSame('completed', $completed['status'], '決済処理を通らないまま確定しない');
+        $this->assertArrayNotHasKey('order', $completed);
+        $this->assertSame('error', $completed['messages'][0]['type'] ?? null);
+    }
+
+    /**
+     * 都道府県名として解決できない region では送料を計算できないため、ready にせず確定もさせない.
+     */
+    public function testUnresolvableRegionIsIncompleteAndCannotBeCompleted(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $payload['fulfillment']['destinations'][0]['address_region'] = 'Osaka';
+
+        $created = $this->postJson('/ucp/checkout-sessions', $payload);
+        $this->assertSame('incomplete', $created['status'], '都道府県を解決できない住所は incomplete');
+        $this->assertNotEmpty($created['messages']);
+
+        $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', []);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), 'incomplete は確定できない');
+    }
+
+    /**
+     * ready のセッションを別商品・不備のある住所で update したら、以前の見積の Order を残さない.
+     *
+     * 残すと、update の応答 (新しい商品の暫定見積) と GET の応答 (以前の商品・合計) が食い違う。
+     */
+    public function testInvalidAddressUpdateDetachesPreviousOrder(): void
+    {
+        $first = $this->createPurchasableProductClass('100');
+        $second = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $first->getId()));
+        $this->assertSame('ready_for_complete', $created['status']);
+
+        $payload = $this->createPayload((int) $second->getId());
+        $payload['fulfillment']['destinations'][0]['address_region'] = 'Osaka';
+        $updated = $this->postJson('/ucp/checkout-sessions/'.$created['id'], $payload, 'PUT');
+        $this->assertSame('incomplete', $updated['status']);
+
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$created['id']);
+        $got = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertSame('incomplete', $got['status']);
+        $this->assertSame([(string) $second->getId()], array_column($got['line_items'], 'id'), 'GET も update 後の明細を返す');
+    }
+
+    /**
+     * ready のセッションを別商品・住所なしで update した場合も、以前の見積の Order を残さない.
+     */
+    public function testUpdateWithoutAddressDetachesPreviousOrder(): void
+    {
+        $first = $this->createPurchasableProductClass('100');
+        $second = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $first->getId()));
+        $this->assertSame('ready_for_complete', $created['status']);
+
+        $updated = $this->postJson('/ucp/checkout-sessions/'.$created['id'], $this->createPayload((int) $second->getId(), withAddress: false), 'PUT');
+        $this->assertSame('incomplete', $updated['status']);
+
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$created['id']);
+        $got = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertSame('incomplete', $got['status']);
+        $this->assertSame([(string) $second->getId()], array_column($got['line_items'], 'id'), 'GET も update 後の明細を返す');
+    }
+
+    public function testMissingBuyerEmailIsIncomplete(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        unset($payload['buyer']['email']);
+
+        $created = $this->postJson('/ucp/checkout-sessions', $payload);
+        $this->assertSame('incomplete', $created['status'], 'メールアドレスの無い購入者は incomplete');
+    }
+
+    public function testHyphenatedPostalCodeIsNormalized(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $payload['fulfillment']['destinations'][0]['postal_code'] = '530-0001';
+
+        $created = $this->postJson('/ucp/checkout-sessions', $payload);
+        $this->assertSame('ready_for_complete', $created['status'], 'ハイフン付きの郵便番号は店頭と同様に吸収する');
+    }
+
+    public function testUnsupportedCurrencyIsRejected(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $payload['currency'] = 'USD';
+
+        $error = $this->postJson('/ucp/checkout-sessions', $payload);
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), '店舗の通貨以外は受け付けない');
+        $this->assertSame('unsupported_currency', $error['code']);
+    }
+
+    /**
+     * 確定済みのセッションは update で見積を作り直せない (確定済み受注との紐付けが外れるため).
+     */
+    public function testCompletedSessionCannotBeUpdated(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $created = $this->postJson('/ucp/checkout-sessions', $payload);
+        $completed = $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', []);
+        $this->assertSame('completed', $completed['status']);
+
+        $this->postJson('/ucp/checkout-sessions/'.$created['id'], $payload, 'PUT');
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$created['id']);
+        $after = json_decode((string) $this->client->getResponse()->getContent(), true);
+        $this->assertSame('completed', $after['status'], 'completed のまま');
+        $this->assertArrayHasKey('order', $after);
+    }
+
+    /**
+     * 署名付きで作成された (エージェントに束縛された) セッションは、未署名のリクエストからは見えない.
+     */
+    public function testAgentBoundSessionIsHiddenFromUnsignedRequests(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+
+        // 署名を検証できたエージェントが作成したセッション相当にする。
+        $session = self::getContainer()->get(CheckoutSessionRepository::class)->findOneBySessionId($created['id']);
+        $this->assertInstanceOf(CheckoutSession::class, $session);
+        $session->setAgentId('https://agent.example/.well-known/ucp');
+        $this->entityManager->flush();
+
+        $this->client->request(Request::METHOD_GET, '/ucp/checkout-sessions/'.$created['id'], [], [], [
+            'HTTP_UCP_AGENT' => 'profile="https://agent.example/.well-known/ucp"',
+        ]);
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), '未署名の UCP-Agent ヘッダでは名乗れない (購入者情報を返さない)');
+
+        $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', []);
+        $this->assertSame(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode(), 'complete も遮断する');
+    }
+
+    /**
+     * 未署名の UCP-Agent ヘッダ値は受注の agent_id に記録しない (誰でも名乗れるため).
+     */
+    public function testUnsignedAgentHeaderIsNotRecordedOnOrder(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()), 'POST', [
+            'HTTP_UCP_AGENT' => 'profile="https://spoofed.example/.well-known/ucp"',
+        ]);
+
+        $this->assertNull($this->findOrderOfSession($created['id'])->getAgentId());
+    }
+
+    private function findOrderOfSession(string $sessionId): Order
+    {
+        $session = self::getContainer()->get(CheckoutSessionRepository::class)->findOneBySessionId($sessionId);
+        $this->assertInstanceOf(CheckoutSession::class, $session);
+        $order = $session->getOrder();
+        $this->assertInstanceOf(Order::class, $order);
+
+        return $order;
     }
 
     public function testDisabledFlagReturns404(): void

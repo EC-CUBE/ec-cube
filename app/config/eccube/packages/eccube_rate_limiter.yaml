@@ -16,3 +16,42 @@ eccube:
             route: ~
             limit: 1024
             interval: '30 minutes'
+        # エージェントチェックアウト (UCP / ACP)。エージェント基盤は少数の IP から多数の購入者分の
+        # リクエストを送るため、上限は高めにとる。同一セッションでの与信の繰り返しは
+        # eccube_agent_checkout_max_payment_attempts で別途止める。
+        ucp_checkout_create_ip:
+            route: ucp_checkout_create
+            method: [ 'POST' ]
+            type: ip
+            limit: 1200
+            interval: '10 minutes'
+        ucp_checkout_update_ip:
+            route: ucp_checkout_update
+            method: [ 'PUT' ]
+            type: ip
+            limit: 1200
+            interval: '10 minutes'
+        ucp_checkout_complete_ip:
+            route: ucp_checkout_complete
+            method: [ 'POST' ]
+            type: ip
+            limit: 300
+            interval: '10 minutes'
+        acp_checkout_create_ip:
+            route: acp_checkout_create
+            method: [ 'POST' ]
+            type: ip
+            limit: 1200
+            interval: '10 minutes'
+        acp_checkout_update_ip:
+            route: acp_checkout_update
+            method: [ 'POST' ]
+            type: ip
+            limit: 1200
+            interval: '10 minutes'
+        acp_checkout_complete_ip:
+            route: acp_checkout_complete
+            method: [ 'POST' ]
+            type: ip
+            limit: 300
+            interval: '10 minutes'

@@ -23,19 +23,21 @@ use Eccube\Repository\Master\AgentProtocolRepository;
 use Eccube\Repository\Master\CheckoutSessionStatusRepository;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddressValidator;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionResult;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionLocker;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
-use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Eccube\Service\AgentCommerce\Ucp\UcpCheckoutSessionMapper;
 use Eccube\Service\AgentCommerce\Ucp\UcpMessageMapper;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -79,7 +81,9 @@ class UcpCheckoutController extends AbstractController
         private readonly AgentCheckoutPaymentHandlerRegistry $paymentHandlerRegistry,
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
-        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
+        private readonly AgentCheckoutSessionLocker $locker,
+        private readonly AgentCheckoutSessionTerminator $terminator,
+        private readonly AgentCheckoutAddressValidator $addressValidator,
     ) {
     }
 
@@ -91,13 +95,16 @@ class UcpCheckoutController extends AbstractController
         return $this->withIdempotency($request, function () use ($request): array {
             try {
                 $payload = $this->decodeBody($request);
-                $checkoutRequest = $this->mapper->toCheckoutRequest($payload, $this->resolveAgentId($request));
+                $checkoutRequest = $this->mapper->toCheckoutRequest($payload, $this->verifiedAgent($request));
 
+                // 署名を検証できたエージェントにセッションを束縛し、以降の操作を同じエージェントに限る
+                // (未署名で作成したセッションは束縛しない。session_id が唯一の秘密になる)。
                 $session = (new CheckoutSession())
                     ->setSessionId($this->generateSessionId())
                     ->setProtocol($this->agentProtocolRepository->find(AgentProtocol::UCP))
                     ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE))
                     ->setCurrencyCode($checkoutRequest->currencyCode)
+                    ->setAgentId($checkoutRequest->agentId)
                     ->setMetadata(['line_items' => $this->lineItemsMetadata($checkoutRequest)]);
 
                 return ['status' => 201, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
@@ -108,10 +115,10 @@ class UcpCheckoutController extends AbstractController
     }
 
     #[Route(path: '/ucp/checkout-sessions/{sessionId}', name: 'ucp_checkout_get', methods: ['GET'])]
-    public function get(string $sessionId): JsonResponse
+    public function get(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         $order = $session->getOrder();
         if ($order !== null) {
@@ -125,17 +132,32 @@ class UcpCheckoutController extends AbstractController
     public function update(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             try {
                 $payload = $this->decodeBody($request);
-                $checkoutRequest = $this->mapper->toCheckoutRequest($payload, $this->resolveAgentId($request));
+                $checkoutRequest = $this->mapper->toCheckoutRequest($payload, $this->verifiedAgent($request));
 
-                // 全置換セマンティクス: 明細スナップショットを差し替える。
-                $session->setMetadata(array_merge($session->getMetadata() ?? [], ['line_items' => $this->lineItemsMetadata($checkoutRequest)]));
+                return $this->locker->transactional($session, function (CheckoutSession $session) use ($checkoutRequest): array {
+                    if ($this->terminator->isOverdue($session)) {
+                        // 期限切れの回収はコミットさせる (在庫を戻す)。
+                        $this->terminator->expire($session);
 
-                return ['status' => 200, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
+                        return $this->protocolError(422, 'invalid_session_state', 'The checkout session has expired.');
+                    }
+
+                    // 見積を差し替えられるのは確定前の 2 状態だけ。中断中 (在庫引当済み) や終端のセッションで
+                    // Order を作り直すと、引き当てた在庫が孤立し、確定済み受注との紐付けも外れる。
+                    if (!in_array($session->getStatus()?->getId(), [CheckoutSessionStatus::INCOMPLETE, CheckoutSessionStatus::READY], true)) {
+                        return $this->protocolError(422, 'invalid_session_state', 'The checkout session can no longer be updated.');
+                    }
+
+                    // 全置換セマンティクス: 明細スナップショットを差し替える。
+                    $session->setMetadata(array_merge($session->getMetadata() ?? [], ['line_items' => $this->lineItemsMetadata($checkoutRequest)]));
+
+                    return ['status' => 200, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
+                });
             } catch (AgentCheckoutException $e) {
                 return $this->protocolError(422, $e->getErrorCode()->value, $e->getMessage());
             }
@@ -146,7 +168,7 @@ class UcpCheckoutController extends AbstractController
     public function complete(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
         return $this->withIdempotency($request, function () use ($request, $session): array {
             $order = $session->getOrder();
@@ -157,12 +179,12 @@ class UcpCheckoutController extends AbstractController
 
             try {
                 $payload = $this->decodeBody($request);
-                // エージェントが選んだ決済ハンドラ (payment.instruments[].handler_id) に対応する Payment を
-                // 割り当て、状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
+                // エージェントが選んだ決済ハンドラ (payment.instruments[].handler_id)。対応する Payment の割り当ては、
+                // 状態機械がセッションのロック後の Order に対して行う (sort_no 非依存。ロック前の Order には割り当てない)。
                 $handlerId = $this->extractHandlerId($payload);
-                if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
-                    return $this->protocolError(422, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s" (payment.instruments[0].handler_id).', $handlerId));
-                }
+                // クレデンシャルの交換は巻き戻らない (ワンショットのトークンは再償還できない)。使えない handler_id は
+                // 交換の前に拒否する。ロック前の判定なので、ロック後の判定 (complete 内) が引き続き権威を持つ。
+                $this->completionService->assertHandlerSelectable($session, $handlerId);
                 // UCP は payment.instruments[].handler_id で決済ハンドラを解決し、クレデンシャルを
                 // ゲートウェイトークンへ交換する。交換後の中立データを状態機械へ渡す。
                 $paymentData = $this->resolvePaymentData($payload);
@@ -176,7 +198,7 @@ class UcpCheckoutController extends AbstractController
                 // complete は「中断→再開」状態機械 (#6777)。追加認証 (3DS/escalation) は
                 // エラーでなく requires_action 等の中間状態として返る。在庫引当の保持/回収・
                 // トランザクション境界・与信→売上→確定の順序は CompletionService が担う。
-                $result = $this->completionService->complete($session, $paymentData);
+                $result = $this->completionService->complete($session, $paymentData, $handlerId);
             } catch (AgentCheckoutException $e) {
                 return $this->protocolError(422, $e->getErrorCode()->value, $e->getMessage());
             }
@@ -184,23 +206,28 @@ class UcpCheckoutController extends AbstractController
             $ucpMessages = $this->messageMapper->toUcpMessages($result->messages);
             $continueUrl = $this->continueUrlFor($session, $result);
 
-            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $ucpMessages, $continueUrl)];
-        });
+            // 応答はロック内で確定した Order から作る (ロック前に読んだ Order は並行する update で古くなり得る)。
+            $lockedOrder = $result->order ?? $session->getOrder() ?? $order;
+
+            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $lockedOrder, $ucpMessages, $continueUrl)];
+        }, reclaimAbandoned: true);
     }
 
     #[Route(path: '/ucp/checkout-sessions/{sessionId}/cancel', name: 'ucp_checkout_cancel', methods: ['POST'])]
     public function cancel(Request $request, string $sessionId): JsonResponse
     {
         $this->assertEnabled();
-        $session = $this->findSession($sessionId);
+        $session = $this->findSession($request, $sessionId);
 
-        return $this->withIdempotency($request, function () use ($session): array {
+        return $this->withIdempotency($request, fn (): array => $this->locker->transactional($session, function (CheckoutSession $session): array {
             if ($session->getStatus()?->getId() === CheckoutSessionStatus::COMPLETED) {
                 return $this->protocolError(422, 'invalid_session_state', 'A completed checkout session cannot be canceled.');
             }
 
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::CANCELED));
-            $this->entityManager->flush();
+            // 中断中 (在庫引当済み) なら在庫を回収してから canceled にする。取消・期限切れ済みは据え置く。
+            if (!$this->terminator->isTerminal($session)) {
+                $this->terminator->cancel($session);
+            }
 
             $order = $session->getOrder();
             $body = $order !== null
@@ -208,7 +235,7 @@ class UcpCheckoutController extends AbstractController
                 : $this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []);
 
             return ['status' => 200, 'body' => $body];
-        });
+        }), reclaimAbandoned: true);
     }
 
     /**
@@ -221,7 +248,9 @@ class UcpCheckoutController extends AbstractController
     private function buildAndPersist(CheckoutSession $session, AgentCheckoutRequest $checkoutRequest): array
     {
         if ($checkoutRequest->buyer === null) {
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
             $this->entityManager->persist($session);
             $this->entityManager->flush();
 
@@ -234,6 +263,21 @@ class UcpCheckoutController extends AbstractController
 
             return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $messages);
         }
+
+        // 住所は店頭のフォームと同じ基準で検証する。都道府県を解決できない住所のまま見積ると送料が
+        // 0 円で計算され、ready のまま確定できてしまう。
+        $buyer = $this->addressValidator->normalize($checkoutRequest->buyer);
+        $addressErrors = $this->addressValidator->validate($buyer);
+        if ($addressErrors !== []) {
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            $this->entityManager->persist($session);
+            $this->entityManager->flush();
+
+            return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $this->messageMapper->toUcpMessages($addressErrors));
+        }
+        $checkoutRequest = $checkoutRequest->withBuyer($buyer);
 
         $result = $this->purchaseFlowAdapter->buildOrder($checkoutRequest, $this->customerResolver->resolve($session));
         $order = $result->order;
@@ -335,8 +379,9 @@ class UcpCheckoutController extends AbstractController
      * Idempotency-Key を考慮してハンドラを実行し JsonResponse を返す.
      *
      * @param callable(): array{status: int, body: array<string, mixed>} $handler
+     * @param bool $reclaimAbandoned 放棄された予約を取り直して再実行するか (complete / cancel のみ。{@link AgentCheckoutIdempotencyStore::execute()} を参照)
      */
-    private function withIdempotency(Request $request, callable $handler): JsonResponse
+    private function withIdempotency(Request $request, callable $handler, bool $reclaimAbandoned = false): JsonResponse
     {
         $key = $request->headers->get('Idempotency-Key');
         // 認証済みエージェント (UcpSignatureSubscriber が検証時に設定) を主体として名前空間化し、
@@ -351,7 +396,7 @@ class UcpCheckoutController extends AbstractController
         ]);
 
         try {
-            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject);
+            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject, $reclaimAbandoned);
         } catch (IdempotencyConflictException $e) {
             return new JsonResponse(['code' => 'idempotency_conflict', 'content' => $e->getMessage()], Response::HTTP_CONFLICT);
         }
@@ -374,11 +419,15 @@ class UcpCheckoutController extends AbstractController
         }
     }
 
-    private function findSession(string $sessionId): CheckoutSession
+    private function findSession(Request $request, string $sessionId): CheckoutSession
     {
         $session = $this->checkoutSessionRepository->findOneBySessionId($sessionId);
-        if ($session === null || $session->getProtocol()?->getId() !== AgentProtocol::UCP) {
-            // 他プロトコル/他マーチャントのセッションへの越境アクセスを遮断する。
+        if ($session === null
+            || $session->getProtocol()?->getId() !== AgentProtocol::UCP
+            || ($session->getAgentId() !== null && $session->getAgentId() !== $this->verifiedAgent($request))
+        ) {
+            // 他プロトコル/他マーチャントのセッション、および署名付きで作成された他エージェントのセッションへの
+            // 越境アクセスを遮断する (GET も含む。購入者の氏名・連絡先を返すため)。主体不一致は存在を秘匿して 404。
             throw new NotFoundHttpException(sprintf('Checkout session "%s" was not found.', $sessionId));
         }
 
@@ -427,12 +476,16 @@ class UcpCheckoutController extends AbstractController
         return 'ucp_cs_'.bin2hex(random_bytes(16));
     }
 
-    private function resolveAgentId(Request $request): ?string
+    /**
+     * 署名検証済みのエージェント profile URL (UcpSignatureSubscriber が設定). 未署名なら null.
+     *
+     * 未署名の `UCP-Agent` ヘッダは誰でも名乗れるため、agent_id (セッションの束縛・受注の記録) には使わない。
+     */
+    private function verifiedAgent(Request $request): ?string
     {
-        // 署名検証済みのエージェント profile URL があれば agent_id として用いる。
         $verified = $request->attributes->get('ucp_agent_profile');
 
-        return is_string($verified) ? $verified : $request->headers->get('UCP-Agent');
+        return is_string($verified) ? $verified : null;
     }
 
     /**

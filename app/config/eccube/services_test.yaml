@@ -142,6 +142,20 @@ services:
     Eccube\Service\AgentCommerce\Ucp\Signature\UcpProfileFetcher:
         autowire: true
         public: true
+        # 明示定義により services.yaml の束縛が外れるため、 ここで再束縛する。
+        arguments:
+            $httpClient: '@eccube.agent_commerce.ucp_profile_http_client'
+            $cache: '@cache.app'
+    # complete / update / cancel の状態遷移 (行ロック・終端遷移・住所検証)。単体テストが直接取得するため public 化。
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionLocker:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator:
+        autowire: true
+        public: true
+    Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddressValidator:
+        autowire: true
+        public: true
     Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:
         autowire: true
         public: true

@@ -78,9 +78,11 @@ class StockReduceProcessor extends AbstractPurchaseProcessor
                 /** @var ProductStock $productStock */
                 $productStock = $item->getProductClass()->getProductStock();
                 if ($productStock->getProductClassId() === null) {
-                    // 在庫に対してロックを実行
-                    $this->entityManager->lock($productStock, LockMode::PESSIMISTIC_WRITE);
-                    $this->entityManager->refresh($productStock);
+                    // 在庫行をロック付きで読み直す (SELECT ... FOR UPDATE)。lock() は値を読まず、続く通常の
+                    // refresh() は REPEATABLE READ (MySQL の既定) ではトランザクション内の最初の読み取り時点の
+                    // スナップショットを返すため、その後にコミットされた他の購入の在庫の増減を読み落とす。
+                    // ロック付きの読み取りはコミット済みの最新値を返す。
+                    $this->entityManager->refresh($productStock, LockMode::PESSIMISTIC_WRITE);
                     $productStock->setProductClassId($item->getProductClass()->getId());
                 }
                 $ProductClass = $item->getProductClass();

@@ -14,7 +14,6 @@
 namespace Eccube\Controller\AgentCommerce;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Entity\Master\ProductStatus;
 use Eccube\Entity\Product;
 use Eccube\Repository\ProductRepository;
 use Eccube\Service\AgentCommerce\Catalog\AgentCatalogItemDto;
@@ -22,6 +21,7 @@ use Eccube\Service\AgentCommerce\Catalog\CatalogMapper;
 use Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolverInterface;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogResponseBuilder;
+use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogSearcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,24 +46,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class UcpCatalogController extends AbstractController
 {
     /**
-     * search のデフォルトページサイズ.
-     */
-    private const DEFAULT_LIMIT = 10;
-
-    /**
-     * search のページサイズ上限 (実装側でクランプ).
-     */
-    private const MAX_LIMIT = 100;
-
-    /**
      * lookup で 1 リクエストに受け付ける ids[] の上限 (公開エンドポイントの負荷耐性).
      */
     private const MAX_LOOKUP_IDS = 100;
 
     /**
-     * cursor offset の上限 (大 offset による高コストなページングを抑止).
+     * search のフリーテキストの最大文字数 (これを超える部分は捨てる).
      */
-    private const MAX_OFFSET = 10000;
+    private const MAX_QUERY_LENGTH = 255;
 
     public function __construct(
         private readonly ProductRepository $productRepository,
@@ -71,6 +61,7 @@ class UcpCatalogController extends AbstractController
         private readonly CatalogMapper $catalogMapper,
         private readonly UcpCatalogResponseBuilder $responseBuilder,
         private readonly UcpCatalogCache $cache,
+        private readonly UcpCatalogSearcher $searcher,
     ) {
     }
 
@@ -84,32 +75,16 @@ class UcpCatalogController extends AbstractController
         // TODO: ucp_catalog_requires_auth=true の場合 ucp:catalog scope での OAuth2 認証を要求する
         //       (ec-cube/api42 導入後に AgentCommerceOAuth2Authenticator 経由で検証)。現状は public read。
 
-        $rawBody = $request->getContent();
-        $payload = $this->decodeBody($rawBody);
-        $key = $this->cache->buildKey('search', $rawBody);
+        $payload = $this->decodeBody($request->getContent());
+        $query = isset($payload['query']) && is_string($payload['query']) && trim($payload['query']) !== ''
+            ? mb_substr(trim($payload['query']), 0, self::MAX_QUERY_LENGTH)
+            : null;
+        [$limit, $offset] = $this->resolvePagination($payload);
+        // キャッシュキーは解釈済みのパラメータから作る (生ボディの表記ゆれでキーを増やさせない)。
+        $key = $this->cache->buildKey('search', UcpCatalogCache::searchParams($query, $limit, $offset));
 
-        $body = $this->cache->getOrCompute($key, function () use ($payload): string {
-            $query = isset($payload['query']) && is_string($payload['query']) ? $payload['query'] : null;
-            [$limit, $offset] = $this->resolvePagination($payload);
-
-            // 1 件多く取得して次ページ有無を判定する
-            $products = $this->findDisplayProducts($query, $offset, $limit + 1);
-            $hasNext = count($products) > $limit;
-            if ($hasNext) {
-                $products = array_slice($products, 0, $limit);
-            }
-
-            $items = $this->mapProducts($products);
-
-            $pagination = ['has_next_page' => $hasNext];
-            if ($hasNext) {
-                $pagination['cursor'] = $this->encodeCursor($offset + $limit);
-            }
-
-            return $this->encodeJson(
-                $this->responseBuilder->buildSearchResponse($items, $pagination)
-            );
-        });
+        // 本文はキャッシュの事前生成 (管理画面・CLI) と同じ UcpCatalogSearcher で作る (同じキーを共有するため)。
+        $body = $this->cache->getOrCompute($key, fn (): string => $this->searcher->searchBody($query, $limit, $offset));
 
         return $this->respond($request, $body);
     }
@@ -120,23 +95,21 @@ class UcpCatalogController extends AbstractController
     #[Route(path: '/catalog/lookup', name: 'agent_ucp_catalog_lookup', methods: ['POST'])]
     public function lookup(Request $request): Response
     {
-        $rawBody = $request->getContent();
-        $payload = $this->decodeBody($rawBody);
-        $key = $this->cache->buildKey('lookup', $rawBody);
+        $payload = $this->decodeBody($request->getContent());
+        $ids = isset($payload['ids']) && is_array($payload['ids']) ? $payload['ids'] : [];
 
-        $body = $this->cache->getOrCompute($key, function () use ($payload): string {
-            $ids = isset($payload['ids']) && is_array($payload['ids']) ? $payload['ids'] : [];
-
-            // 入力 id を文字列へ正規化し重複排除した上で件数上限へクランプする (解決処理/DB アクセスの増大を抑止)。
-            $normalizedIds = [];
-            foreach ($ids as $id) {
-                if (!is_string($id) && !is_int($id)) {
-                    continue;
-                }
-                $normalizedIds[(string) $id] = true;
+        // 入力 id を文字列へ正規化し重複排除した上で件数上限へクランプする (解決処理/DB アクセスの増大を抑止)。
+        $normalizedIds = [];
+        foreach ($ids as $id) {
+            if (!is_string($id) && !is_int($id)) {
+                continue;
             }
-            $normalizedIds = array_slice(array_keys($normalizedIds), 0, self::MAX_LOOKUP_IDS);
+            $normalizedIds[(string) $id] = true;
+        }
+        $normalizedIds = array_map(strval(...), array_slice(array_keys($normalizedIds), 0, self::MAX_LOOKUP_IDS));
+        $key = $this->cache->buildKey('lookup', ['ids' => $normalizedIds]);
 
+        $body = $this->cache->getOrCompute($key, function () use ($normalizedIds): string {
             $products = [];
             $seen = [];
             foreach ($normalizedIds as $id) {
@@ -172,8 +145,7 @@ class UcpCatalogController extends AbstractController
     #[Route(path: '/catalog/product', name: 'agent_ucp_catalog_product', methods: ['POST'])]
     public function product(Request $request): Response
     {
-        $rawBody = $request->getContent();
-        $payload = $this->decodeBody($rawBody);
+        $payload = $this->decodeBody($request->getContent());
 
         $id = isset($payload['id']) && (is_string($payload['id']) || is_int($payload['id']))
             ? (string) $payload['id']
@@ -182,7 +154,7 @@ class UcpCatalogController extends AbstractController
             throw new NotFoundHttpException('product not found');
         }
 
-        $key = $this->cache->buildKey('product', $rawBody);
+        $key = $this->cache->buildKey('product', ['id' => $id]);
 
         // 解決不能は 404 とするためキャッシュ前に存在判定する
         $product = $this->resolveProductByIdentifier($id);
@@ -233,60 +205,17 @@ class UcpCatalogController extends AbstractController
             ? $payload['pagination']
             : [];
 
-        $limit = self::DEFAULT_LIMIT;
+        $limit = UcpCatalogSearcher::DEFAULT_LIMIT;
         if (isset($pagination['limit']) && is_int($pagination['limit']) && $pagination['limit'] >= 1) {
-            $limit = min($pagination['limit'], self::MAX_LIMIT);
+            $limit = UcpCatalogSearcher::clampLimit($pagination['limit']);
         }
 
         $offset = 0;
         if (isset($pagination['cursor']) && is_string($pagination['cursor']) && $pagination['cursor'] !== '') {
-            $offset = $this->decodeCursor($pagination['cursor']);
+            $offset = UcpCatalogSearcher::decodeCursor($pagination['cursor']);
         }
 
         return [$limit, $offset];
-    }
-
-    private function encodeCursor(int $offset): string
-    {
-        return base64_encode('offset:'.$offset);
-    }
-
-    private function decodeCursor(string $cursor): int
-    {
-        $decoded = base64_decode($cursor, true);
-        if ($decoded === false || !str_starts_with($decoded, 'offset:')) {
-            return 0;
-        }
-
-        $offset = max(0, (int) substr($decoded, strlen('offset:')));
-
-        return min($offset, self::MAX_OFFSET);
-    }
-
-    /**
-     * 公開商品をフリーテキスト (name LIKE) で検索し、id 昇順でページング取得する.
-     *
-     * @return Product[]
-     */
-    private function findDisplayProducts(?string $query, int $offset, int $limit): array
-    {
-        $qb = $this->productRepository->createQueryBuilder('p')
-            ->where('p.Status = :status')
-            ->setParameter('status', ProductStatus::DISPLAY_SHOW)
-            ->orderBy('p.id', 'ASC')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        if ($query !== null && trim($query) !== '') {
-            $escaped = str_replace(['%', '_'], ['\\%', '\\_'], trim($query));
-            $qb->andWhere('p.name LIKE :keyword')
-                ->setParameter('keyword', '%'.$escaped.'%');
-        }
-
-        /** @var Product[] $result */
-        $result = $qb->getQuery()->getResult();
-
-        return $result;
     }
 
     /**

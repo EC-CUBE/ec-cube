@@ -13,11 +13,8 @@
 
 namespace Eccube\Command\AgentCommerce;
 
-use Eccube\Service\AgentCommerce\Catalog\AgentCatalogItemDto;
-use Eccube\Service\AgentCommerce\Catalog\CatalogMapper;
-use Eccube\Service\AgentCommerce\Catalog\CatalogProviderInterface;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache;
-use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogResponseBuilder;
+use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogSearcher;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,24 +25,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * UCP Catalog キャッシュを事前生成する開発者向けコマンド.
  *
- * UCP Catalog はリクエストボディ hash でキャッシュするため、本コマンドは最も頻度が高い
- * 既定の "search" (空ボディ = フィルタ無しの先頭ページ) を生成する。--limit で件数を指定できる。
+ * UCP Catalog は正規化したリクエストパラメータとオリジンでキャッシュするため、本コマンドは最も頻度が高い
+ * フィルタ無しの先頭ページの "search" を生成する。--limit で件数 (= pagination.limit) を指定できる。
+ * 本文は search エンドポイントと同じ {@link UcpCatalogSearcher} で作る (同じキーを共有するため)。
  *
  * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/schemas/shopping/catalog_search.json
  */
 #[AsCommand(name: 'eccube:ucp-catalog:cache:warmup', description: 'Warm up the UCP catalog cache for the default search response')]
 class UcpCatalogCacheWarmupCommand extends Command
 {
-    /**
-     * 生成する search のデフォルト件数.
-     */
-    private const DEFAULT_LIMIT = 10;
-
     public function __construct(
         private readonly UcpCatalogCache $cache,
-        private readonly CatalogProviderInterface $catalogProvider,
-        private readonly CatalogMapper $catalogMapper,
-        private readonly UcpCatalogResponseBuilder $responseBuilder,
+        private readonly UcpCatalogSearcher $searcher,
     ) {
         parent::__construct();
     }
@@ -54,7 +45,7 @@ class UcpCatalogCacheWarmupCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('limit', null, InputOption::VALUE_REQUIRED, 'Number of products to include in the warmed default search page', (string) self::DEFAULT_LIMIT);
+            ->addOption('limit', null, InputOption::VALUE_REQUIRED, sprintf('Number of products to include in the warmed default search page (1-%d)', UcpCatalogSearcher::MAX_LIMIT), (string) UcpCatalogSearcher::DEFAULT_LIMIT);
     }
 
     #[\Override]
@@ -63,42 +54,18 @@ class UcpCatalogCacheWarmupCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $io->title('UCP Catalog Cache Warmup');
 
-        $limit = max(1, (int) $input->getOption('limit'));
+        // search と同じ上限に収める (上限を超えた limit のキーは search から参照されない)。
+        $limit = UcpCatalogSearcher::clampLimit((int) $input->getOption('limit'));
 
         $io->text(sprintf('Generating the default search response (first %d display product(s))...', $limit));
 
-        $body = $this->buildDefaultSearchBody($limit);
-
-        // コントローラの decodeBody は空ボディ / "{}" のいずれも空 payload として同一の
-        // 既定 search を返すため、両ボディのキャッシュキーを生成する。
-        foreach (['', '{}'] as $rawBody) {
-            $key = $this->cache->buildKey('search', $rawBody);
-            $this->cache->warmup($key, fn (): string => $body);
-        }
+        // search のキャッシュキーは正規化済みパラメータとオリジンから作られる。CLI のオリジンは
+        // router.request_context (framework.router.default_uri) で決まるため、公開 URL と一致させておくこと。
+        $key = $this->cache->buildKey('search', UcpCatalogCache::searchParams(null, $limit, 0));
+        $this->cache->warmup($key, fn (): string => $this->searcher->searchBody(null, $limit, 0));
 
         $io->success('UCP catalog cache warmed up for the default search response.');
 
         return Command::SUCCESS;
-    }
-
-    /**
-     * フィルタ無し先頭ページの search レスポンス本文 (JSON) を生成する.
-     */
-    private function buildDefaultSearchBody(int $limit): string
-    {
-        $items = [];
-        foreach ($this->catalogProvider->provideDisplayProducts() as $product) {
-            $item = $this->catalogMapper->mapProduct($product);
-            if ($item instanceof AgentCatalogItemDto) {
-                $items[] = $item;
-            }
-            if (\count($items) >= $limit) {
-                break;
-            }
-        }
-
-        $response = $this->responseBuilder->buildSearchResponse($items, ['has_next_page' => false]);
-
-        return json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
     }
 }

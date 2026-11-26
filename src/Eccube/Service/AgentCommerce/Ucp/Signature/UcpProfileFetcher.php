@@ -14,6 +14,8 @@
 namespace Eccube\Service\AgentCommerce\Ucp\Signature;
 
 use Eccube\Service\AgentCommerce\Exception\UcpSignatureException;
+use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -28,18 +30,30 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 class UcpProfileFetcher
 {
+    /** profile 応答の最大バイト数. 署名鍵の配布には十分で、巨大な応答でメモリを消費させない. */
+    public const MAX_PROFILE_BYTES = 65536;
+
+    /** 取得した signing_keys をキャッシュする秒数. 鍵のローテーションはこの時間だけ遅れて反映される. */
+    public const CACHE_TTL_SECONDS = 300;
+
     /**
      * @var \Closure(string): (list<string>|false) ホスト名 -> 解決 IP 群を返すリゾルバ
      */
     private readonly \Closure $hostResolver;
 
     /**
+     * 本番の $httpClient は DI で `NoPrivateNetworkHttpClient` に包んで渡す (services.yaml)。
+     * 接続時点の宛先 IP を検査するため、本クラスの名前解決と HTTP クライアントの名前解決の間で
+     * 応答を変える DNS rebinding も遮断できる。本クラスの事前検査は、その手前で弾く多層防御。
+     *
      * @param HttpClientInterface          $httpClient   profile 取得クライアント
      * @param (callable(string): (list<string>|false))|null $hostResolver A レコード解決器 (既定は gethostbynamel、テストで差し替え可)
+     * @param CacheItemPoolInterface|null  $cache        signing_keys のキャッシュ (null ならキャッシュしない)
      */
     public function __construct(
         private readonly HttpClientInterface $httpClient,
         ?callable $hostResolver = null,
+        private readonly ?CacheItemPoolInterface $cache = null,
     ) {
         $this->hostResolver = $hostResolver !== null
             ? \Closure::fromCallable($hostResolver)
@@ -60,14 +74,45 @@ class UcpProfileFetcher
         }
 
         // SSRF 対策: profile URL は UCP-Agent ヘッダ由来 (エージェント供給) のため、
-        // 内部アドレスへの到達を HTTP リクエスト前に遮断する。許可ドメインリスト
-        // (UcpRequestSignatureVerifier 側) と併用する多層防御。
+        // 内部アドレスへの到達を HTTP リクエスト前に遮断する。接続時点の検査
+        // (NoPrivateNetworkHttpClient) と許可ドメインリスト (UcpRequestSignatureVerifier 側) を併用する多層防御。
         $host = parse_url($profileUrl, PHP_URL_HOST);
         if (!is_string($host) || $host === '') {
             throw new UcpSignatureException('Agent profile URL has no host.');
         }
         $this->assertPublicHost($host);
 
+        $cache = $this->cache;
+        if ($cache === null) {
+            return $this->fetchFromProfile($profileUrl);
+        }
+
+        $cacheItem = $cache->getItem('ucp_profile_signing_keys_'.hash('sha256', $profileUrl));
+        if ($cacheItem->isHit()) {
+            $cached = $cacheItem->get();
+            if (is_array($cached) && $cached !== []) {
+                /** @var list<array<string, mixed>> $cached */
+                return $cached;
+            }
+        }
+
+        $keys = $this->fetchFromProfile($profileUrl);
+
+        // 取得に成功した鍵だけをキャッシュする (失敗はキャッシュせず、次のリクエストで取り直す)。
+        $cacheItem->set($keys);
+        $cacheItem->expiresAfter(self::CACHE_TTL_SECONDS);
+        $cache->save($cacheItem);
+
+        return $keys;
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     *
+     * @throws UcpSignatureException
+     */
+    private function fetchFromProfile(string $profileUrl): array
+    {
         try {
             $response = $this->httpClient->request('GET', $profileUrl, [
                 // 鍵探索ではリダイレクトを追従しない (なりすまし防止)。
@@ -84,8 +129,25 @@ class UcpProfileFetcher
                 throw new UcpSignatureException('Agent profile fetch did not return a successful response.');
             }
 
+            // 巨大な応答でメモリを消費させないよう、受信しながら上限を超えた時点で打ち切る。
+            // 数えるのは展開後のバイト数 (HTTP クライアントは gzip を自動で要求・展開する。進捗コールバックや
+            // Content-Length が示すのは圧縮後のサイズのため、それでは展開後の巨大な本文を止められない)。
+            $content = '';
+            foreach ($this->httpClient->stream($response) as $chunk) {
+                $content .= $chunk->getContent();
+                if (strlen($content) > self::MAX_PROFILE_BYTES) {
+                    $response->cancel();
+
+                    throw new UcpSignatureException('Agent profile is too large.');
+                }
+            }
+
+            $decoded = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+            if (!is_array($decoded)) {
+                throw new UcpSignatureException('Agent profile is not a JSON object.');
+            }
             /** @var array<string, mixed> $document */
-            $document = $response->toArray(false);
+            $document = $decoded;
         } catch (UcpSignatureException $e) {
             throw $e;
         } catch (HttpClientExceptionInterface|\JsonException $e) {
@@ -98,10 +160,11 @@ class UcpProfileFetcher
     /**
      * ホストが公開アドレスへ解決されることを確認する (loopback/RFC1918/link-local/reserved を拒否).
      *
-     * SSRF 対策の中核。IP リテラルはそのまま、ドメインは A レコード解決後の全 IP を検査する。
-     * 注: 解決と HttpClient の名前解決の間の DNS rebinding は残存リスクであり、厳格な運用では
-     * UcpRequestSignatureVerifier のドメイン許可リスト併用を推奨する。IPv6 のみのホストは
-     * gethostbynamel() が解決できず fail-closed (拒否) となる。
+     * IP リテラルはそのまま、ドメインは A レコード解決後の全 IP を検査する。PHP のフィルタが通す
+     * CGNAT (100.64.0.0/10) やベンチマーク用 (198.18.0.0/15) 等も {@link IpUtils::PRIVATE_SUBNETS} で拒否する
+     * (クラウドのメタデータ サービスがこの帯域にある環境がある)。接続時点の検査 (DNS rebinding 対策) は
+     * DI で包む `NoPrivateNetworkHttpClient` が担う。IPv6 のみのホストは gethostbynamel() が解決できず
+     * fail-closed (拒否) となる。
      */
     private function assertPublicHost(string $host): void
     {
@@ -112,7 +175,9 @@ class UcpProfileFetcher
         }
 
         foreach ($ips as $ip) {
-            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false
+                || IpUtils::isPrivateIp($ip)
+            ) {
                 throw new UcpSignatureException('Agent profile host resolves to a non-public address.');
             }
         }

@@ -15,12 +15,10 @@ namespace Eccube\Controller\Admin\AgentCommerce;
 
 use Eccube\Controller\AbstractController;
 use Eccube\Service\AgentCommerce\Catalog\Acp\AcpFeedClientInterface;
-use Eccube\Service\AgentCommerce\Catalog\AgentCatalogItemDto;
-use Eccube\Service\AgentCommerce\Catalog\CatalogMapper;
-use Eccube\Service\AgentCommerce\Catalog\CatalogProviderInterface;
 use Eccube\Service\AgentCommerce\Catalog\Exception\AcpFeedException;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache;
-use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogResponseBuilder;
+use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogSearcher;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,16 +35,15 @@ use Symfony\Component\Routing\Attribute\Route;
 class AgentCommerceController extends AbstractController
 {
     /**
-     * 生成する search のデフォルト件数.
+     * 「期限切れセッションを回収」1 回で処理する最大件数.
      */
-    private const WARMUP_LIMIT = 10;
+    private const EXPIRE_LIMIT = 500;
 
     public function __construct(
         private readonly AcpFeedClientInterface $acpFeedClient,
         private readonly UcpCatalogCache $ucpCatalogCache,
-        private readonly CatalogProviderInterface $catalogProvider,
-        private readonly CatalogMapper $catalogMapper,
-        private readonly UcpCatalogResponseBuilder $responseBuilder,
+        private readonly UcpCatalogSearcher $ucpCatalogSearcher,
+        private readonly AgentCheckoutSessionTerminator $checkoutSessionTerminator,
     ) {
     }
 
@@ -159,11 +156,12 @@ class AgentCommerceController extends AbstractController
         }
 
         try {
-            $body = $this->buildDefaultSearchBody(self::WARMUP_LIMIT);
-            foreach (['', '{}'] as $rawBody) {
-                $key = $this->ucpCatalogCache->buildKey('search', $rawBody);
-                $this->ucpCatalogCache->warmup($key, fn (): string => $body);
-            }
+            // フィルタ無し先頭ページ (空ボディ / {} の search) と同じキーへ、search と同じ本文
+            // (次ページ情報を含む) を格納する。キーはリクエストのオリジンを含むため、管理画面と同じホストで
+            // 公開している場合に有効になる。
+            $limit = UcpCatalogSearcher::DEFAULT_LIMIT;
+            $key = $this->ucpCatalogCache->buildKey('search', UcpCatalogCache::searchParams(null, $limit, 0));
+            $this->ucpCatalogCache->warmup($key, fn (): string => $this->ucpCatalogSearcher->searchBody(null, $limit, 0));
             $this->addSuccess('admin.content.agent_commerce.ucp.cache_warmup_success', 'admin');
         } catch (\JsonException $e) {
             // JSON_THROW_ON_ERROR による失敗時は 500 にせず管理画面のエラーメッセージへ変換する。
@@ -175,23 +173,22 @@ class AgentCommerceController extends AbstractController
     }
 
     /**
-     * フィルタ無し先頭ページの search レスポンス本文 (JSON) を生成する.
+     * チェックアウトセッション「期限切れセッションを回収」.
+     *
+     * cron (eccube:agent-commerce:checkout-session:expire) を設定できない環境向けの代替導線。
+     * フロント (エージェント) のリクエストからは回収しない (負荷と、外部から回収処理を誘発できる問題を避ける)。
+     * 1 回の操作で処理する件数に上限を設け、管理画面のリクエストが長引かないようにする。
      */
-    private function buildDefaultSearchBody(int $limit): string
+    #[Route(path: '/%eccube_admin_route%/content/agent_commerce/checkout_session/expire', name: 'admin_content_agent_commerce_checkout_session_expire', methods: ['POST'])]
+    public function checkoutSessionExpire(): RedirectResponse
     {
-        $items = [];
-        foreach ($this->catalogProvider->provideDisplayProducts() as $product) {
-            $item = $this->catalogMapper->mapProduct($product);
-            if ($item instanceof AgentCatalogItemDto) {
-                $items[] = $item;
-            }
-            if (\count($items) >= $limit) {
-                break;
-            }
+        if (!$this->isTokenValid()) {
+            throw new BadRequestHttpException();
         }
 
-        $response = $this->responseBuilder->buildSearchResponse($items, ['has_next_page' => false]);
+        $count = $this->checkoutSessionTerminator->expireOverdue(new \DateTime(), self::EXPIRE_LIMIT);
+        $this->addSuccess(trans('admin.content.agent_commerce.checkout_session.expire_success', ['%count%' => $count]), 'admin');
 
-        return json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        return $this->redirectToRoute('admin_content_agent_commerce');
     }
 }

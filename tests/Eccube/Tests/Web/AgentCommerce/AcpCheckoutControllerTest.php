@@ -166,6 +166,52 @@ final class AcpCheckoutControllerTest extends EccubeTestCase
         $this->assertNotEmpty($created['messages'], '住所要求のメッセージを含む');
     }
 
+    /**
+     * 都道府県名として解決できない state では送料を計算できないため、ready_for_payment にせず確定もさせない.
+     */
+    public function testUnresolvableStateIsNotReadyAndCannotBeCompleted(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $payload['fulfillment_details']['address']['state'] = 'JP-27';
+
+        $created = $this->postJson('/acp/checkout_sessions', $payload);
+        $this->assertSame('not_ready_for_payment', $created['status'], '都道府県を解決できない住所は not_ready_for_payment');
+
+        $this->postJson('/acp/checkout_sessions/'.$created['id'].'/complete', []);
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), '未確定のセッションは確定できない');
+    }
+
+    public function testUnsupportedCurrencyIsRejected(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $payload['currency'] = 'usd';
+
+        $error = $this->postJson('/acp/checkout_sessions', $payload);
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), '店舗の通貨以外は受け付けない');
+        $this->assertSame('unsupported_currency', $error['code']);
+    }
+
+    /**
+     * 確定済みのセッションは update で見積を作り直せない (確定済み受注との紐付けが外れるため).
+     */
+    public function testCompletedSessionCannotBeUpdated(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $payload = $this->createPayload((int) $ProductClass->getId());
+        $created = $this->postJson('/acp/checkout_sessions', $payload);
+        $completed = $this->postJson('/acp/checkout_sessions/'.$created['id'].'/complete', []);
+        $this->assertSame('completed', $completed['status']);
+
+        $error = $this->postJson('/acp/checkout_sessions/'.$created['id'], $payload);
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertSame('invalid_session_state', $error['code']);
+
+        $after = $this->getJson('/acp/checkout_sessions/'.$created['id']);
+        $this->assertSame('completed', $after['status'], 'completed のまま');
+    }
+
     public function testGetUnknownSessionReturns404(): void
     {
         $this->getJson('/acp/checkout_sessions/acp_cs_does_not_exist');

@@ -25,17 +25,19 @@ use Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper;
 use Eccube\Service\AgentCommerce\Acp\AcpMessageMapper;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddressValidator;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionLocker;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
 use Eccube\Service\AgentCommerce\Idempotency\AgentCheckoutIdempotencyStore;
-use Eccube\Service\AgentCommerce\Payment\AgentPaymentMethodResolverInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,7 +81,9 @@ class AcpCheckoutController extends AbstractController
         private readonly AgentCheckoutIdempotencyStore $idempotencyStore,
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
-        private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
+        private readonly AgentCheckoutSessionLocker $locker,
+        private readonly AgentCheckoutSessionTerminator $terminator,
+        private readonly AgentCheckoutAddressValidator $addressValidator,
     ) {
     }
 
@@ -119,9 +123,24 @@ class AcpCheckoutController extends AbstractController
                 $payload = $this->decodeBody($request);
                 $checkoutRequest = $this->mapper->toCheckoutRequest($payload, $this->resolveAgentId($request));
 
-                $session->setMetadata(array_merge($session->getMetadata() ?? [], ['line_items' => $this->lineItemsMetadata($checkoutRequest)]));
+                return $this->locker->transactional($session, function (CheckoutSession $session) use ($checkoutRequest): array {
+                    if ($this->terminator->isOverdue($session)) {
+                        // 期限切れの回収はコミットさせる (在庫を戻す)。
+                        $this->terminator->expire($session);
 
-                return ['status' => 200, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
+                        return $this->protocolError(400, 'invalid_session_state', 'The checkout session has expired.');
+                    }
+
+                    // 見積を差し替えられるのは確定前の 2 状態だけ。中断中 (在庫引当済み) や終端のセッションで
+                    // Order を作り直すと、引き当てた在庫が孤立し、確定済み受注との紐付けも外れる。
+                    if (!in_array($session->getStatus()?->getId(), [CheckoutSessionStatus::INCOMPLETE, CheckoutSessionStatus::READY], true)) {
+                        return $this->protocolError(400, 'invalid_session_state', 'The checkout session can no longer be updated.');
+                    }
+
+                    $session->setMetadata(array_merge($session->getMetadata() ?? [], ['line_items' => $this->lineItemsMetadata($checkoutRequest)]));
+
+                    return ['status' => 200, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
+                });
             } catch (AgentCheckoutException $e) {
                 return $this->protocolError(400, $e->getErrorCode()->value, $e->getMessage());
             }
@@ -165,23 +184,25 @@ class AcpCheckoutController extends AbstractController
                     return $this->protocolError(400, 'requires_3ds', 'This checkout session requires issuer authentication. The request must include "authentication_result".', '$.authentication_result');
                 }
 
-                // エージェントが選んだ決済ハンドラ (payment_data.handler_id) に対応する Payment を割り当て、
-                // 状態機械の resolveForOrder が同一ハンドラへ解決することを保証する (sort_no 非依存)。
+                // エージェントが選んだ決済ハンドラ (payment_data.handler_id)。対応する Payment の割り当ては、
+                // 状態機械がセッションのロック後の Order に対して行う (sort_no 非依存。ロック前の Order には割り当てない)。
                 $handlerId = is_string($paymentData['handler_id'] ?? null) ? $paymentData['handler_id'] : null;
-                if ($handlerId !== null && $this->paymentMethodResolver->resolve($order, $handlerId) === null) {
-                    return $this->protocolError(400, 'payment_handler_not_found', sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId), '$.payment_data.handler_id');
-                }
 
                 // complete は状態機械 (#6777)。3DS/escalation はエラーでなく requires_action 等の中間状態として返る。
-                $result = $this->completionService->complete($session, $paymentData);
+                $result = $this->completionService->complete($session, $paymentData, $handlerId);
             } catch (AgentCheckoutException $e) {
-                return $this->protocolError(400, $e->getErrorCode()->value, $e->getMessage());
+                $param = $e->getErrorCode() === AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND ? '$.payment_data.handler_id' : null;
+
+                return $this->protocolError(400, $e->getErrorCode()->value, $e->getMessage(), $param);
             }
 
             $acpMessages = $this->messageMapper->toAcpMessages($result->messages);
 
-            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $order, $acpMessages, $result->actionData)];
-        });
+            // 応答はロック内で確定した Order から作る (ロック前に読んだ Order は並行する update で古くなり得る)。
+            $lockedOrder = $result->order ?? $session->getOrder() ?? $order;
+
+            return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $lockedOrder, $acpMessages, $result->actionData)];
+        }, reclaimAbandoned: true);
     }
 
     #[Route(path: '/acp/checkout_sessions/{sessionId}/cancel', name: 'acp_checkout_cancel', methods: ['POST'])]
@@ -190,15 +211,14 @@ class AcpCheckoutController extends AbstractController
         $this->assertEnabled();
         $session = $this->findSession($request, $sessionId);
 
-        return $this->withIdempotency($request, function () use ($session): array {
-            $statusId = $session->getStatus()?->getId();
-            if (in_array($statusId, [CheckoutSessionStatus::COMPLETED, CheckoutSessionStatus::CANCELED], true)) {
-                // 既に完了/取消済のセッションは取消不可 (ACP: 405 Not Allowed)。
+        return $this->withIdempotency($request, fn (): array => $this->locker->transactional($session, function (CheckoutSession $session): array {
+            if ($this->terminator->isTerminal($session)) {
+                // 既に完了/取消/期限切れのセッションは取消不可 (ACP: 405 Not Allowed)。
                 return $this->protocolError(405, 'not_allowed', 'A completed or canceled checkout session cannot be canceled.');
             }
 
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::CANCELED));
-            $this->entityManager->flush();
+            // 中断中 (在庫引当済み) なら在庫を回収してから canceled にする。
+            $this->terminator->cancel($session);
 
             $order = $session->getOrder();
             $body = $order !== null
@@ -206,7 +226,7 @@ class AcpCheckoutController extends AbstractController
                 : $this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []);
 
             return ['status' => 200, 'body' => $body];
-        });
+        }), reclaimAbandoned: true);
     }
 
     /**
@@ -219,7 +239,9 @@ class AcpCheckoutController extends AbstractController
     private function buildAndPersist(CheckoutSession $session, AgentCheckoutRequest $checkoutRequest): array
     {
         if ($checkoutRequest->buyer === null) {
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
             $this->entityManager->persist($session);
             $this->entityManager->flush();
 
@@ -232,6 +254,21 @@ class AcpCheckoutController extends AbstractController
 
             return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $messages);
         }
+
+        // 住所は店頭のフォームと同じ基準で検証する。都道府県を解決できない住所のまま見積ると送料が
+        // 0 円で計算され、ready のまま確定できてしまう。
+        $buyer = $this->addressValidator->normalize($checkoutRequest->buyer);
+        $addressErrors = $this->addressValidator->validate($buyer);
+        if ($addressErrors !== []) {
+            // 以前の見積の Order を外す (残すと、GET が更新前の明細・合計を返す)。明細は metadata から暫定表示する。
+            $session->setOrder()
+                ->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            $this->entityManager->persist($session);
+            $this->entityManager->flush();
+
+            return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $this->messageMapper->toAcpMessages($addressErrors));
+        }
+        $checkoutRequest = $checkoutRequest->withBuyer($buyer);
 
         $result = $this->purchaseFlowAdapter->buildOrder($checkoutRequest, $this->customerResolver->resolve($session));
         $order = $result->order;
@@ -252,8 +289,9 @@ class AcpCheckoutController extends AbstractController
      * ACP は全 POST で Idempotency-Key が必須 (欠落=400)。同一キーの異内容=422、処理中=409。
      *
      * @param callable(): array{status: int, body: array<string, mixed>} $handler
+     * @param bool $reclaimAbandoned 放棄された予約を取り直して再実行するか (complete / cancel のみ。{@link AgentCheckoutIdempotencyStore::execute()} を参照)
      */
-    private function withIdempotency(Request $request, callable $handler): JsonResponse
+    private function withIdempotency(Request $request, callable $handler, bool $reclaimAbandoned = false): JsonResponse
     {
         $key = $request->headers->get('Idempotency-Key');
         if ($key === null || $key === '') {
@@ -274,7 +312,7 @@ class AcpCheckoutController extends AbstractController
         ]);
 
         try {
-            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject);
+            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject, $reclaimAbandoned);
         } catch (IdempotencyConflictException $e) {
             if ($e->isInFlight()) {
                 return new JsonResponse(
