@@ -54,12 +54,15 @@ class AgentCheckoutIdempotencyStore
      * @param string                                                      $requestHash リクエスト内容のハッシュ (異パラメータ再利用検知用)
      * @param callable(): array{status: int, body: array<string, mixed>} $compute     初回に実行するハンドラ
      * @param string|null                                                 $subject     認証済み主体 (UCP-Agent profile 等)。未認証は null
+     * @param bool                                                        $reclaimAbandoned 放棄された予約 (応答なしで一定時間を過ぎたもの) を取り直して再実行するか。
+     *                                                                                      再実行しても状態機械が副作用の二重実行を止める操作 (complete / cancel) だけで true にする。
+     *                                                                                      create は重複したセッションを作り、update は後続の更新を古い内容で上書きし得るため false
      *
      * @return array{status: int, body: array<string, mixed>, replayed: bool}
      *
      * @throws IdempotencyConflictException 同一キーの異パラメータ再利用、または処理中の並行リクエスト
      */
-    public function execute(?string $key, string $requestHash, callable $compute, ?string $subject = null): array
+    public function execute(?string $key, string $requestHash, callable $compute, ?string $subject = null, bool $reclaimAbandoned = false): array
     {
         if ($key === null || $key === '') {
             $result = $compute();
@@ -71,11 +74,13 @@ class AgentCheckoutIdempotencyStore
 
         // 既存記録があればリプレイ / 競合 / 処理中を判定する (逐次再送はここで完結)。
         $existing = $this->repository->findOneByKeyAndSubject($key, $subjectKey);
-        if ($existing !== null && $existing->getRequestHash() === $requestHash && $this->isAbandoned($existing)) {
+        if ($reclaimAbandoned && $existing !== null && $existing->getRequestHash() === $requestHash && $this->isAbandoned($existing)) {
             // 処理中にプロセスが落ちる (タイムアウト・メモリ不足等) と、予約行が応答なしのまま残り、
             // 同じキーは以後ずっと処理中 (409) になる。一定時間を過ぎた予約は放棄されたものとして消し、
             // このリクエストで予約を取り直す。並行して取り直した場合は一意制約でどちらか一方に寄る。
             // 取り直すのは同じ内容の再送だけ。異なる内容でのキーの再利用は、従来どおり競合として拒否する。
+            // 業務の更新と応答の保存は別々にコミットするため、落ちたのが応答の保存前でも処理は適用済みであり得る。
+            // 取り直しは、再実行しても状態機械が二重実行を止める操作だけに限る ($reclaimAbandoned)。
             $this->entityManager->getConnection()->executeStatement(
                 'DELETE FROM dtb_agent_checkout_idempotency WHERE id = :id AND response_status IS NULL',
                 ['id' => $existing->getId()],

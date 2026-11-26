@@ -202,7 +202,7 @@ class AcpCheckoutController extends AbstractController
             $lockedOrder = $result->order ?? $session->getOrder() ?? $order;
 
             return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $lockedOrder, $acpMessages, $result->actionData)];
-        });
+        }, reclaimAbandoned: true);
     }
 
     #[Route(path: '/acp/checkout_sessions/{sessionId}/cancel', name: 'acp_checkout_cancel', methods: ['POST'])]
@@ -226,7 +226,7 @@ class AcpCheckoutController extends AbstractController
                 : $this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []);
 
             return ['status' => 200, 'body' => $body];
-        }));
+        }), reclaimAbandoned: true);
     }
 
     /**
@@ -289,8 +289,9 @@ class AcpCheckoutController extends AbstractController
      * ACP は全 POST で Idempotency-Key が必須 (欠落=400)。同一キーの異内容=422、処理中=409。
      *
      * @param callable(): array{status: int, body: array<string, mixed>} $handler
+     * @param bool $reclaimAbandoned 放棄された予約を取り直して再実行するか (complete / cancel のみ。{@link AgentCheckoutIdempotencyStore::execute()} を参照)
      */
-    private function withIdempotency(Request $request, callable $handler): JsonResponse
+    private function withIdempotency(Request $request, callable $handler, bool $reclaimAbandoned = false): JsonResponse
     {
         $key = $request->headers->get('Idempotency-Key');
         if ($key === null || $key === '') {
@@ -311,7 +312,7 @@ class AcpCheckoutController extends AbstractController
         ]);
 
         try {
-            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject);
+            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject, $reclaimAbandoned);
         } catch (IdempotencyConflictException $e) {
             if ($e->isInFlight()) {
                 return new JsonResponse(

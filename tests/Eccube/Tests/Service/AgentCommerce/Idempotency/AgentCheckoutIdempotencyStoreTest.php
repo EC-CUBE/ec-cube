@@ -179,11 +179,52 @@ final class AgentCheckoutIdempotencyStoreTest extends EccubeTestCase
         $this->entityManager->clear();
 
         $calls = 0;
-        $result = $this->store->execute($key, $hash, $this->countingCompute($calls));
+        $result = $this->store->execute($key, $hash, $this->countingCompute($calls), reclaimAbandoned: true);
 
         $this->assertSame(1, $calls, '放棄された予約は取り直して実行する');
         $this->assertFalse($result['replayed']);
         $this->assertSame(201, $result['status']);
+    }
+
+    /**
+     * 取り直しを許さない操作 (create / update) では、放棄された予約も処理中 (409) のまま再実行しない.
+     *
+     * 業務の更新と応答の保存は別々にコミットするため、応答が無くても処理は適用済みであり得る。
+     * 再実行すると create はセッションを重複して作り、update は後続の更新を古い内容で上書きする。
+     */
+    public function testAbandonedReservationIsNotTakenOverByDefault(): void
+    {
+        $key = 'idem-'.bin2hex(random_bytes(6));
+        $hash = $this->store->hashRequest(['a' => 1]);
+        $this->createAbandonedReservation($key, $hash);
+
+        $calls = 0;
+        try {
+            $this->store->execute($key, $hash, $this->countingCompute($calls));
+            $this->fail('取り直さずに処理中として拒否する');
+        } catch (IdempotencyConflictException $e) {
+            $this->assertTrue($e->isInFlight());
+        }
+        $this->assertSame(0, $calls, '再実行しない');
+    }
+
+    private function createAbandonedReservation(string $key, string $hash): void
+    {
+        $reservation = (new AgentCheckoutIdempotency())
+            ->setIdempotencyKey($key)
+            ->setSubject('')
+            ->setRequestHash($hash);
+        $this->entityManager->persist($reservation);
+        $this->entityManager->flush();
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE dtb_agent_checkout_idempotency SET create_date = :date WHERE id = :id',
+            [
+                'date' => new \DateTime('-'.(AgentCheckoutIdempotencyStore::ABANDONED_RESERVATION_SECONDS + 60).' seconds'),
+                'id' => $reservation->getId(),
+            ],
+            ['date' => Types::DATETIMETZ_MUTABLE],
+        );
+        $this->entityManager->clear();
     }
 
     /**
@@ -219,7 +260,7 @@ final class AgentCheckoutIdempotencyStoreTest extends EccubeTestCase
 
         $this->entityManager->clear();
         $calls = 0;
-        $replay = $this->store->execute($key, $hash, $this->countingCompute($calls));
+        $replay = $this->store->execute($key, $hash, $this->countingCompute($calls), reclaimAbandoned: true);
         $this->assertSame(0, $calls, '再送側の応答が残っており、処理を再実行しない');
         $this->assertTrue($replay['replayed']);
         $this->assertSame(['order' => 'by-retry'], $replay['body']);
@@ -250,7 +291,7 @@ final class AgentCheckoutIdempotencyStoreTest extends EccubeTestCase
 
         $calls = 0;
         try {
-            $this->store->execute($key, $this->store->hashRequest(['a' => 2]), $this->countingCompute($calls));
+            $this->store->execute($key, $this->store->hashRequest(['a' => 2]), $this->countingCompute($calls), reclaimAbandoned: true);
             $this->fail('異なる内容でのキーの再利用は競合');
         } catch (IdempotencyConflictException $e) {
             $this->assertFalse($e->isInFlight(), '処理中ではなく内容の不一致として拒否する');

@@ -210,7 +210,7 @@ class UcpCheckoutController extends AbstractController
             $lockedOrder = $result->order ?? $session->getOrder() ?? $order;
 
             return ['status' => 200, 'body' => $this->mapper->buildResponseFromOrder($session, $lockedOrder, $ucpMessages, $continueUrl)];
-        });
+        }, reclaimAbandoned: true);
     }
 
     #[Route(path: '/ucp/checkout-sessions/{sessionId}/cancel', name: 'ucp_checkout_cancel', methods: ['POST'])]
@@ -235,7 +235,7 @@ class UcpCheckoutController extends AbstractController
                 : $this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []);
 
             return ['status' => 200, 'body' => $body];
-        }));
+        }), reclaimAbandoned: true);
     }
 
     /**
@@ -379,8 +379,9 @@ class UcpCheckoutController extends AbstractController
      * Idempotency-Key を考慮してハンドラを実行し JsonResponse を返す.
      *
      * @param callable(): array{status: int, body: array<string, mixed>} $handler
+     * @param bool $reclaimAbandoned 放棄された予約を取り直して再実行するか (complete / cancel のみ。{@link AgentCheckoutIdempotencyStore::execute()} を参照)
      */
-    private function withIdempotency(Request $request, callable $handler): JsonResponse
+    private function withIdempotency(Request $request, callable $handler, bool $reclaimAbandoned = false): JsonResponse
     {
         $key = $request->headers->get('Idempotency-Key');
         // 認証済みエージェント (UcpSignatureSubscriber が検証時に設定) を主体として名前空間化し、
@@ -395,7 +396,7 @@ class UcpCheckoutController extends AbstractController
         ]);
 
         try {
-            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject);
+            $result = $this->idempotencyStore->execute($key, $requestHash, $handler, $subject, $reclaimAbandoned);
         } catch (IdempotencyConflictException $e) {
             return new JsonResponse(['code' => 'idempotency_conflict', 'content' => $e->getMessage()], Response::HTTP_CONFLICT);
         }
