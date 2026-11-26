@@ -147,7 +147,7 @@ class AgentCheckoutSessionTerminator
         }
 
         try {
-            $handler->cancel($order, $session->getPaymentData() ?? []);
+            $handler->cancel($order, AgentCheckoutCompletionService::heldPaymentReference($session));
         } catch (\Throwable $e) {
             // 在庫の回収とステータス遷移は取消の成否に関わらず行う。取引は PSP 側の照会で解放する。
             $this->logger->error('The agent payment handler threw during cancel.', ['exception' => $e, 'order_no' => $order->getOrderNo()]);

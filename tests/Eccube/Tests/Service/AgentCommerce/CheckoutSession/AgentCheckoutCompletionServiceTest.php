@@ -615,6 +615,75 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     }
 
     /**
+     * 与信に失敗した試行の PSP 参照を、別の試行の中断の再開へ渡さない.
+     *
+     * handler_a の失敗 (transaction_id=a_failed) の後に handler_b で再試行し、handler_b が transaction_id を
+     * 返さずに中断した場合、再開で handler_b に渡すのは handler_b の試行の参照だけ。失敗の記録は payment_data に残る。
+     */
+    public function testResumeDoesNotHandOverReferenceOfFailedAttempt(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $failing = $this->stubHandler([PaymentOutcome::failed('card_declined', 'Declined.', true, 'a_failed')], null, 'handler_a');
+        $holding = $this->stubHandler(
+            [PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'], ['attempt' => 'b']), PaymentOutcome::authorized('b_auth')],
+            PaymentOutcome::completed('b_auth'),
+            'handler_b',
+        );
+        $service = $this->service($failing, $holding);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $service->complete($session, [], 'handler_a')->status->getId());
+        $service->complete($session, [], 'handler_b');
+        $this->assertSame(CheckoutSessionStatus::REQUIRES_ACTION, $session->getStatus()?->getId());
+
+        $result = $service->complete($session, ['authentication_result' => ['outcome' => 'authenticated']]);
+
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId());
+        $this->assertSame(['attempt' => 'b'], $holding->receivedPaymentReferences[1], '再開には handler_b の試行の参照だけを渡す');
+        $this->assertSame('b_auth', $session->getPaymentData()['transaction_id'] ?? null);
+    }
+
+    /**
+     * ロック前の事前確認: 使えない handler_id と、中断中のハンドラの切り替えを拒否する. Order の支払方法は変えない.
+     */
+    public function testAssertHandlerSelectableRejectsUnusableHandlerWithoutTouchingOrder(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+        $order = $session->getOrder();
+        $this->assertInstanceOf(Order::class, $order);
+        $payment = $order->getPayment();
+
+        $held = $this->stubHandler([PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds'])], null, 'handler_a');
+        $other = $this->stubHandler([PaymentOutcome::authorized('auth_other')], null, 'handler_b');
+        $service = $this->service($held, $other);
+
+        $service->assertHandlerSelectable($session, null);
+        $service->assertHandlerSelectable($session, 'handler_b');
+        $this->assertSame($payment, $order->getPayment(), '確かめるだけで支払方法を書き換えない');
+
+        try {
+            $service->assertHandlerSelectable($session, 'unknown_handler');
+            $this->fail('未登録の handler_id は拒否される');
+        } catch (AgentCheckoutException $e) {
+            $this->assertSame(AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND, $e->getErrorCode());
+        }
+
+        $service->complete($session, [], 'handler_a');
+        $this->assertSame(CheckoutSessionStatus::REQUIRES_ACTION, $session->getStatus()?->getId());
+        $service->assertHandlerSelectable($session, 'handler_a');
+
+        try {
+            $service->assertHandlerSelectable($session, 'handler_b');
+            $this->fail('中断中のセッションで別のハンドラへ切り替えることはできない');
+        } catch (AgentCheckoutException $e) {
+            $this->assertSame(AgentCheckoutErrorCode::INVALID_SESSION_STATE, $e->getErrorCode());
+        }
+        $this->assertSame(0, $other->authorizeCount);
+    }
+
+    /**
      * ロック取得時に、セッションだけでなく関連する Order も DB の値で読み直す.
      *
      * 並行リクエストが Order (支払方法等) を変えていても、ロック後の値で判定する。

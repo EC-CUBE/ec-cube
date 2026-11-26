@@ -182,6 +182,9 @@ class UcpCheckoutController extends AbstractController
                 // エージェントが選んだ決済ハンドラ (payment.instruments[].handler_id)。対応する Payment の割り当ては、
                 // 状態機械がセッションのロック後の Order に対して行う (sort_no 非依存。ロック前の Order には割り当てない)。
                 $handlerId = $this->extractHandlerId($payload);
+                // クレデンシャルの交換は巻き戻らない (ワンショットのトークンは再償還できない)。使えない handler_id は
+                // 交換の前に拒否する。ロック前の判定なので、ロック後の判定 (complete 内) が引き続き権威を持つ。
+                $this->completionService->assertHandlerSelectable($session, $handlerId);
                 // UCP は payment.instruments[].handler_id で決済ハンドラを解決し、クレデンシャルを
                 // ゲートウェイトークンへ交換する。交換後の中立データを状態機械へ渡す。
                 $paymentData = $this->resolvePaymentData($payload);

@@ -175,6 +175,56 @@ final class UcpCheckoutControllerTest extends EccubeTestCase
     }
 
     /**
+     * 注文に使えない handler_id は、クレデンシャルを交換する前に拒否する (ワンショットのトークンを消費しない).
+     */
+    public function testUnusableHandlerIdIsRejectedBeforeTokenExchange(): void
+    {
+        $this->client->disableReboot();
+        $handler = new class implements UcpPaymentHandlerInterface {
+            public int $exchangeCount = 0;
+
+            public function getHandlerId(): string
+            {
+                return 'unsupported_handler';
+            }
+
+            public function exchangePaymentToken(array $credential): array
+            {
+                ++$this->exchangeCount;
+
+                return ['token' => 'tok_exchanged'];
+            }
+
+            public function authorize(Order $order, array $paymentData, array $paymentReference = []): PaymentOutcome
+            {
+                return PaymentOutcome::completed('should_not_be_reached');
+            }
+
+            public function capture(Order $order, array $paymentData, PaymentOutcome $authorization): PaymentOutcome
+            {
+                return PaymentOutcome::completed('should_not_be_reached');
+            }
+
+            public function supports(Order $order): bool
+            {
+                return false;
+            }
+        };
+        self::getContainer()->set(AgentCheckoutPaymentHandlerRegistry::class, new AgentCheckoutPaymentHandlerRegistry([$handler]));
+
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $created = $this->postJson('/ucp/checkout-sessions', $this->createPayload((int) $ProductClass->getId()));
+
+        $completed = $this->postJson('/ucp/checkout-sessions/'.$created['id'].'/complete', [
+            'payment' => ['instruments' => [['handler_id' => 'unsupported_handler', 'credential' => ['token' => 'tok_one_shot']]]],
+        ]);
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+        $this->assertSame('payment_handler_not_found', $completed['code'] ?? $completed['messages'][0]['code'] ?? null);
+        $this->assertSame(0, $handler->exchangeCount, 'クレデンシャルを交換しない');
+    }
+
+    /**
      * exchangePaymentToken() で例外を投げる UCP 決済ハンドラ (契約違反のシミュレート).
      */
     private function throwingUcpHandler(): UcpPaymentHandlerInterface

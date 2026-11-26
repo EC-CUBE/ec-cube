@@ -88,6 +88,9 @@ class AgentCheckoutCompletionService
     /** 中断 (requires_action / in_progress) したときの決済ハンドラの handler_id を記録する metadata のキー. */
     public const PAYMENT_HANDLER_METADATA_KEY = 'payment_handler_id';
 
+    /** 中断したときの取引の PSP 参照 (その試行の transaction_id 等) を記録する metadata のキー. */
+    public const PAYMENT_REFERENCE_METADATA_KEY = 'payment_reference';
+
     /**
      * @param int $maxPaymentAttempts 1 セッションで許す与信失敗の回数。超えたセッションは canceled にする
      *                                (同一セッションで支払データを差し替えながら与信を繰り返す試行を止める)
@@ -136,6 +139,69 @@ class AgentCheckoutCompletionService
         }
 
         return $result;
+    }
+
+    /**
+     * 指定の handler_id でこのセッションを確定できるかを、ロックを取る前に確かめる.
+     *
+     * ワンショットのクレデンシャルをゲートウェイトークンへ交換する前に、使えない handler_id を拒否するための
+     * 事前確認 (交換の結果はトランザクションの外にあり巻き戻らない)。判定に使う Order と状態はロック前に
+     * 読んだものなので、並行する update で変わり得る。権威ある判定は {@link complete()} がロック後に行う。
+     * Order の支払方法は書き換えない (確かめるだけ)。
+     *
+     * @throws AgentCheckoutException 指定の handler_id に対応する支払方法が無い、または再開時にハンドラを切り替えようとした
+     */
+    public function assertHandlerSelectable(CheckoutSession $session, ?string $handlerId): void
+    {
+        if ($handlerId === null) {
+            return;
+        }
+
+        $isResume = in_array($session->getStatus()?->getId(), AgentCheckoutSessionTerminator::HELD_STATUSES, true);
+        $heldHandlerId = $isResume ? $this->heldHandlerId($session) : null;
+        if ($heldHandlerId !== null) {
+            if ($handlerId !== $heldHandlerId) {
+                throw $this->handlerSwitchRejected($heldHandlerId);
+            }
+
+            return;
+        }
+
+        $order = $session->getOrder();
+        if ($order === null) {
+            return;
+        }
+
+        $payment = $order->getPayment();
+        $paymentMethod = $order->getPaymentMethod();
+        try {
+            $resolved = $this->paymentMethodResolver->resolve($order, $handlerId);
+        } finally {
+            $order->setPayment($payment);
+            $order->setPaymentMethod($paymentMethod);
+        }
+
+        if ($resolved === null) {
+            throw $this->handlerNotFound($handlerId);
+        }
+    }
+
+    /**
+     * 中断したときに保持した、その取引の PSP 参照 (再開・取消でハンドラへ渡す).
+     *
+     * payment_data は失敗した試行の参照も残す監査用の記録で、別の試行の取引が混ざり得るため使わない。
+     * 記録が無い (記録を始める前に中断した) セッションは payment_data を返す。
+     *
+     * @return array<string, mixed>
+     */
+    public static function heldPaymentReference(CheckoutSession $session): array
+    {
+        $reference = $session->getMetadata()[self::PAYMENT_REFERENCE_METADATA_KEY] ?? null;
+        if (is_array($reference)) {
+            return $reference;
+        }
+
+        return $session->getPaymentData() ?? [];
     }
 
     /**
@@ -198,7 +264,7 @@ class AgentCheckoutCompletionService
         $heldHandlerId = $isResume ? $this->heldHandlerId($session) : null;
         if ($heldHandlerId !== null) {
             if ($handlerId !== null && $handlerId !== $heldHandlerId) {
-                throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, sprintf('The checkout session is waiting for the payment handler "%s" and cannot be resumed with another handler.', $heldHandlerId));
+                throw $this->handlerSwitchRejected($heldHandlerId);
             }
 
             return $this->paymentHandlerRegistry->resolveByHandlerId($heldHandlerId);
@@ -209,10 +275,20 @@ class AgentCheckoutCompletionService
         }
 
         if ($this->paymentMethodResolver->resolve($order, $handlerId) === null) {
-            throw new AgentCheckoutException(AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND, sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId));
+            throw $this->handlerNotFound($handlerId);
         }
 
         return $this->paymentHandlerRegistry->resolveByHandlerId($handlerId);
+    }
+
+    private function handlerSwitchRejected(string $heldHandlerId): AgentCheckoutException
+    {
+        return new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, sprintf('The checkout session is waiting for the payment handler "%s" and cannot be resumed with another handler.', $heldHandlerId));
+    }
+
+    private function handlerNotFound(string $handlerId): AgentCheckoutException
+    {
+        return new AgentCheckoutException(AgentCheckoutErrorCode::PAYMENT_HANDLER_NOT_FOUND, sprintf('No enabled payment method supports the requested payment handler "%s".', $handlerId));
     }
 
     /**
@@ -274,7 +350,7 @@ class AgentCheckoutCompletionService
         // 再開 complete (REQUIRES_ACTION / IN_PROGRESS) でのみ、中断時に保持した PSP 参照を渡す。
         // エージェントの入力ではなくサーバ側の記録なので、ワンショットトークンを再償還せず同じ取引を
         // 続行できる。ready からの再試行では渡さない (クラス docblock の表を参照)。
-        $outcome = $this->authorize($handler, $order, $paymentData, $isResume ? ($session->getPaymentData() ?? []) : []);
+        $outcome = $this->authorize($handler, $order, $paymentData, $isResume ? self::heldPaymentReference($session) : []);
 
         switch ($outcome->status) {
             case PaymentOutcomeStatus::AUTHORIZED:
@@ -296,10 +372,10 @@ class AgentCheckoutCompletionService
                 return $this->commitOrder($session, $order, $member);
 
             case PaymentOutcomeStatus::REQUIRES_ACTION:
-                return $this->holdForAction($session, $handler, $outcome, CheckoutSessionStatus::REQUIRES_ACTION);
+                return $this->holdForAction($session, $handler, $outcome, CheckoutSessionStatus::REQUIRES_ACTION, $isResume);
 
             case PaymentOutcomeStatus::PENDING:
-                return $this->holdForAction($session, $handler, $outcome, CheckoutSessionStatus::IN_PROGRESS);
+                return $this->holdForAction($session, $handler, $outcome, CheckoutSessionStatus::IN_PROGRESS, $isResume);
 
             case PaymentOutcomeStatus::FAILED:
             default:
@@ -393,11 +469,16 @@ class AgentCheckoutCompletionService
      * 在庫は rollback せず、payment_data と actionData を永続化してリクエスト跨ぎで再開可能にする。
      * 中断したハンドラも記録し、再開・取消を同じハンドラで行う (保持した PSP 参照はそのハンドラの取引のため)。
      */
-    private function holdForAction(CheckoutSession $session, AgentCheckoutPaymentHandlerInterface $handler, PaymentOutcome $outcome, int $statusId): AgentCheckoutCompletionResult
+    private function holdForAction(CheckoutSession $session, AgentCheckoutPaymentHandlerInterface $handler, PaymentOutcome $outcome, int $statusId, bool $isResume): AgentCheckoutCompletionResult
     {
-        $this->mergePaymentData($session, $this->paymentReference($outcome));
+        $reference = $this->paymentReference($outcome);
+        $this->mergePaymentData($session, $reference);
+        // 再開・取消に渡す参照は、この取引のものだけにする。再開の続きなら同じ取引なので前回の参照に重ね、
+        // ready からの新しい試行なら置き換える (失敗した試行の transaction_id を別の取引として渡さない)。
+        $heldReference = $isResume ? array_merge(self::heldPaymentReference($session), $reference) : $reference;
         $metadata = $session->getMetadata() ?? [];
         $metadata[self::PAYMENT_HANDLER_METADATA_KEY] = $handler->getHandlerId();
+        $metadata[self::PAYMENT_REFERENCE_METADATA_KEY] = $heldReference;
         if ($outcome->actionData !== []) {
             $metadata['payment_action'] = $outcome->actionData;
         }
