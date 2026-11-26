@@ -17,12 +17,13 @@ use Psr\Cache\CacheItemInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Routing\RequestContext;
 
 /**
  * UCP Catalog レスポンスのファイルシステムキャッシュ.
  *
- * UCP Catalog は POST RPC のため ETag は使えず、リクエストボディの hash をキャッシュキー
- * とする。共有レンサバ前提のため symfony/cache の FilesystemAdapter を既定とする
+ * UCP Catalog は POST RPC のため ETag は使えず、正規化したリクエストパラメータとオリジンの hash を
+ * キャッシュキーとする ({@link buildKey()})。共有レンサバ前提のため symfony/cache の FilesystemAdapter を既定とする
  * (var/runtime/<env>/agent-commerce/catalog 配下)。
  *
  * キャッシュミス時の再生成スタンピードを防ぐため symfony/lock の LockFactory で
@@ -45,6 +46,7 @@ class UcpCatalogCache
     public function __construct(
         private readonly LockFactory $lockFactory,
         private readonly LoggerInterface $logger,
+        private readonly RequestContext $requestContext,
         string $cacheDir,
         private readonly int $defaultLifetime = 3600,
     ) {
@@ -56,14 +58,40 @@ class UcpCatalogCache
     }
 
     /**
-     * リクエストボディから安定したキャッシュキーを生成する.
+     * 正規化したリクエストパラメータと、応答の URL を決めるオリジンから安定したキャッシュキーを生成する.
      *
-     * @param string $operation search / lookup / product 等のオペレーション識別子
-     * @param string $rawBody   リクエストボディ (生 JSON)
+     * 生ボディをそのままキーにすると、意味の同じリクエストでも空白やキーの並びを変えるだけで別のキーになり、
+     * キャッシュファイルとロックファイルを際限なく増やせる。呼び出し側は解釈済みのパラメータだけを渡す。
+     *
+     * 応答に含む商品・画像の URL はリクエストの Host / scheme / baseUrl (RequestContext) から生成されるため、
+     * オリジンもキーに含める。含めないと、偽の Host ヘッダで生成した URL がキャッシュされ、
+     * 同じリクエストを送った全員へ配られる (trusted_hosts を設定していない環境)。
+     *
+     * @param string               $operation search / lookup / product 等のオペレーション識別子
+     * @param array<string, mixed> $params    正規化済みのリクエストパラメータ
      */
-    public function buildKey(string $operation, string $rawBody): string
+    public function buildKey(string $operation, array $params): string
     {
-        return $operation.'_'.hash('sha256', $rawBody);
+        $context = $this->requestContext;
+        $origin = $context->getScheme().'://'.$context->getHost().':'
+            .($context->getScheme() === 'https' ? $context->getHttpsPort() : $context->getHttpPort())
+            .$context->getBaseUrl();
+
+        ksort($params);
+
+        return $operation.'_'.hash('sha256', $origin."\n".json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+    }
+
+    /**
+     * search のキャッシュキーに使う正規化済みパラメータ.
+     *
+     * Catalog の search と、管理画面・CLI の事前生成で同じキーになるよう、組み立てをここに集める。
+     *
+     * @return array<string, mixed>
+     */
+    public static function searchParams(?string $query, int $limit, int $offset): array
+    {
+        return ['query' => $query, 'limit' => $limit, 'offset' => $offset];
     }
 
     /**

@@ -160,10 +160,10 @@ class AgentCommerceController extends AbstractController
 
         try {
             $body = $this->buildDefaultSearchBody(self::WARMUP_LIMIT);
-            foreach (['', '{}'] as $rawBody) {
-                $key = $this->ucpCatalogCache->buildKey('search', $rawBody);
-                $this->ucpCatalogCache->warmup($key, fn (): string => $body);
-            }
+            // フィルタ無し先頭ページ (空ボディ / {} の search) と同じキーへ格納する。
+            // キーはリクエストのオリジンを含むため、管理画面と同じホストで公開している場合に有効になる。
+            $key = $this->ucpCatalogCache->buildKey('search', UcpCatalogCache::searchParams(null, self::WARMUP_LIMIT, 0));
+            $this->ucpCatalogCache->warmup($key, fn (): string => $body);
             $this->addSuccess('admin.content.agent_commerce.ucp.cache_warmup_success', 'admin');
         } catch (\JsonException $e) {
             // JSON_THROW_ON_ERROR による失敗時は 500 にせず管理画面のエラーメッセージへ変換する。

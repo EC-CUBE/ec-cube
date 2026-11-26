@@ -102,6 +102,39 @@ final class UcpCatalogControllerTest extends AbstractWebTestCase
         $this->assertNotEmpty($data['products'], 'default fixtures should yield at least one display product');
     }
 
+    /**
+     * 偽の Host ヘッダで生成した商品 URL を、別のオリジンのリクエストへキャッシュから配らない.
+     */
+    public function testCachedSearchIsNotSharedAcrossHosts(): void
+    {
+        $search = function (string $host): string {
+            $this->client->request(Request::METHOD_POST, '/catalog/search', [], [], [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_HOST' => $host,
+            ], '{}');
+            $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+            return (string) $this->client->getResponse()->getContent();
+        };
+
+        $this->assertStringContainsString('evil.example', $search('evil.example'), '前提: 商品 URL は Host ヘッダから生成される');
+        $this->assertStringNotContainsString('evil.example', $search('localhost'), '別のオリジンには偽ホストの URL を配らない');
+    }
+
+    /**
+     * 意味の同じリクエストは、JSON の表記 (空白・キー順) が違っても同じキャッシュを使う.
+     */
+    public function testEquivalentSearchBodiesShareCacheKey(): void
+    {
+        $cache = static::getContainer()->get(UcpCatalogCache::class);
+        $key = $cache->buildKey('search', UcpCatalogCache::searchParams(null, 10, 0));
+
+        $this->client->request(Request::METHOD_POST, '/catalog/search', [], [], ['CONTENT_TYPE' => 'application/json'], '{ "pagination" : { "limit" : 10 } }');
+        $this->assertSame(Response::HTTP_OK, $this->client->getResponse()->getStatusCode(), (string) $this->client->getResponse()->getContent());
+
+        $this->assertNotNull($cache->get($key), '空ボディと同じ正規化キーへ格納される');
+    }
+
     public function testSearchProductShapeHasRequiredFields(): void
     {
         $this->client->request(

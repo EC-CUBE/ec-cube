@@ -28,10 +28,15 @@ use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionLocker;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Eccube\Service\AgentCommerce\CheckoutSession\GuestCustomerResolver;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
+use Eccube\Service\Payment\Method\Cash;
+use Eccube\Service\Payment\Method\CreditCard;
 use Eccube\Tests\EccubeTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\NullLogger;
@@ -445,6 +450,145 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     }
 
     /**
+     * 決済ハンドラの無い Web 専用決済 (クレジットカード等) の支払方法では確定しない.
+     *
+     * 決済プラグインの checkout() を通らないまま新規受付になるのを防ぐ。在庫も引き当てない。
+     */
+    public function testHandlerlessNonCashPaymentIsNotCompleted(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 1);
+        $session->getOrder()?->getPayment()?->setMethodClass(CreditCard::class);
+        $this->entityManager->flush();
+
+        $result = $this->service()->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), 'ハンドラの無い決済は確定せず ready のまま');
+        $this->assertNotInstanceOf(Order::class, $result->order);
+        $this->assertNotEmpty($result->messages, 'ビジネス系エラーとして理由を返す');
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(100, (int) $stock->getStock(), '在庫を引き当てない');
+    }
+
+    /**
+     * 本体の Cash (代引・銀行振込等) の支払方法は決済ハンドラ無しで確定できる (従来どおり).
+     */
+    public function testHandlerlessCashPaymentIsCompleted(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+        $session->getOrder()?->getPayment()?->setMethodClass(Cash::class);
+        $this->entityManager->flush();
+
+        $result = $this->service()->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId());
+    }
+
+    /**
+     * incomplete (住所未確定・見積エラーあり) のセッションは確定させない.
+     */
+    public function testIncompleteSessionIsRejected(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+        $session->setStatus($this->statusMaster(CheckoutSessionStatus::INCOMPLETE));
+        $this->entityManager->flush();
+
+        $handler = $this->stubHandler([PaymentOutcome::authorized('auth_1')], PaymentOutcome::completed('cap_1'));
+
+        try {
+            $this->service($handler)->complete($session, []);
+            $this->fail('incomplete のセッションの complete は拒否される');
+        } catch (AgentCheckoutException) {
+        }
+        $this->assertSame(0, $handler->authorizeCount, '与信しない');
+    }
+
+    /**
+     * 並行する complete が先に確定させたセッションに対し、手元の古い状態のまま二重に確定しない.
+     *
+     * 2 つ目のリクエストは冒頭で ready を読んでいても、ロック取得時に読み直した completed を見て冪等に返す。
+     */
+    public function testStaleReadySessionIsNotCompletedTwice(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 1);
+
+        // 別リクエストが先に確定させた状態を DB にだけ反映する (手元のエンティティは ready のまま)。
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE dtb_checkout_session SET checkout_session_status_id = :status WHERE id = :id',
+            ['status' => CheckoutSessionStatus::COMPLETED, 'id' => $session->getId()],
+        );
+        $this->assertSame(CheckoutSessionStatus::READY, $session->getStatus()?->getId());
+
+        $handler = $this->stubHandler([PaymentOutcome::authorized('auth_1')], PaymentOutcome::completed('cap_1'));
+        $result = $this->service($handler)->complete($session, []);
+
+        $this->assertSame(CheckoutSessionStatus::COMPLETED, $result->status->getId(), '確定済みとして冪等に返す');
+        $this->assertSame(0, $handler->authorizeCount, '二重に与信しない');
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(100, (int) $stock->getStock(), '二重に在庫を引き当てない');
+    }
+
+    /**
+     * 在庫確保期限を過ぎた中断中のセッションは、complete で在庫を戻して expired にする.
+     */
+    public function testOverdueHeldSessionIsExpiredAndReleasesStock(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $stock = $ProductClass->getProductStock();
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler([PaymentOutcome::requiresAction(['continue_url' => 'https://example.com/3ds']), PaymentOutcome::authorized('auth_2')]);
+        $service = $this->service($handler);
+        $service->complete($session, []);
+        $this->entityManager->refresh($stock);
+        $this->assertInstanceOf(ProductStock::class, $stock);
+        $this->assertSame(99, (int) $stock->getStock(), '中断中は在庫を引き当てたまま');
+
+        $session->setExpiresAt((new \DateTime())->modify('-1 minutes'));
+        $this->entityManager->flush();
+
+        try {
+            $service->complete($session, ['authentication_result' => ['outcome' => 'authenticated']]);
+            $this->fail('期限切れのセッションは確定できない');
+        } catch (AgentCheckoutException) {
+        }
+
+        $this->entityManager->refresh($session);
+        $this->assertSame(CheckoutSessionStatus::EXPIRED, $session->getStatus()?->getId(), 'expired へ遷移する');
+        $this->entityManager->refresh($stock);
+        $this->assertSame(100, (int) $stock->getStock(), '引き当てた在庫が戻る');
+        $this->assertSame(1, $handler->authorizeCount, '期限切れ後は与信しない');
+    }
+
+    /**
+     * 同一セッションでの与信失敗が上限に達したら、再試行を許さず canceled にする.
+     */
+    public function testRepeatedDeclinesCancelSession(): void
+    {
+        $ProductClass = $this->createPurchasableProductClass('100');
+        $session = $this->createReadySession($ProductClass, 1);
+
+        $handler = $this->stubHandler([PaymentOutcome::failed('card_declined', 'Declined.', true)]);
+        $service = $this->service($handler);
+
+        for ($i = 1; $i < 5; ++$i) {
+            $result = $service->complete($session, []);
+            $this->assertSame(CheckoutSessionStatus::READY, $result->status->getId(), sprintf('%d 回目の失敗までは ready に戻る', $i));
+        }
+
+        $result = $service->complete($session, []);
+        $this->assertSame(CheckoutSessionStatus::CANCELED, $result->status->getId(), '上限 (5 回) に達したら canceled');
+        $this->assertCount(2, $result->messages, '上限に達した旨を併せて返す');
+    }
+
+    /**
      * Order を構築済みの ready なセッションを作る.
      */
     private function createReadySession(ProductClass $ProductClass, int $quantity): CheckoutSession
@@ -480,15 +624,29 @@ final class AgentCheckoutCompletionServiceTest extends EccubeTestCase
     {
         /** @var CheckoutSessionStatusRepository $statusRepository */
         $statusRepository = $this->entityManager->getRepository(CheckoutSessionStatus::class);
+        /** @var CheckoutSessionRepository $sessionRepository */
+        $sessionRepository = $this->entityManager->getRepository(CheckoutSession::class);
+        $registry = new AgentCheckoutPaymentHandlerRegistry($handlers);
+        $locker = new AgentCheckoutSessionLocker($this->entityManager);
 
         return new AgentCheckoutCompletionService(
             $this->entityManager,
             self::getContainer()->get(AgentCheckoutPurchaseFlowAdapter::class),
-            new AgentCheckoutPaymentHandlerRegistry($handlers),
+            $registry,
             $statusRepository,
             self::getContainer()->get(GuestCustomerResolver::class),
             new NullLogger(),
             15,
+            $locker,
+            new AgentCheckoutSessionTerminator(
+                self::getContainer()->get(AgentCheckoutPurchaseFlowAdapter::class),
+                $registry,
+                $statusRepository,
+                $sessionRepository,
+                self::getContainer()->get(GuestCustomerResolver::class),
+                $locker,
+                new NullLogger(),
+            ),
         );
     }
 

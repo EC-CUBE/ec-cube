@@ -15,6 +15,7 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce\Idempotency;
 
+use Doctrine\DBAL\Types\Types;
 use Eccube\Entity\AgentCheckoutIdempotency;
 use Eccube\Repository\AgentCheckoutIdempotencyRepository;
 use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
@@ -149,5 +150,39 @@ final class AgentCheckoutIdempotencyStoreTest extends EccubeTestCase
         } finally {
             $this->assertSame(0, $calls, '処理中の並行リクエストは compute を実行しない');
         }
+    }
+
+    /**
+     * 処理中にプロセスが落ちて応答なしのまま残った予約は、一定時間後に次のリクエストが引き継ぐ.
+     *
+     * 引き継がないと、そのキーは以後ずっと処理中 (409) のまま再試行できない。
+     */
+    public function testAbandonedReservationIsTakenOver(): void
+    {
+        $key = 'idem-'.bin2hex(random_bytes(6));
+        $hash = $this->store->hashRequest(['a' => 1]);
+
+        $reservation = (new AgentCheckoutIdempotency())
+            ->setIdempotencyKey($key)
+            ->setSubject('')
+            ->setRequestHash($hash);
+        $this->entityManager->persist($reservation);
+        $this->entityManager->flush();
+        $this->entityManager->getConnection()->executeStatement(
+            'UPDATE dtb_agent_checkout_idempotency SET create_date = :date WHERE id = :id',
+            [
+                'date' => new \DateTime('-'.(AgentCheckoutIdempotencyStore::ABANDONED_RESERVATION_SECONDS + 60).' seconds'),
+                'id' => $reservation->getId(),
+            ],
+            ['date' => Types::DATETIMETZ_MUTABLE],
+        );
+        $this->entityManager->clear();
+
+        $calls = 0;
+        $result = $this->store->execute($key, $hash, $this->countingCompute($calls));
+
+        $this->assertSame(1, $calls, '放棄された予約は取り直して実行する');
+        $this->assertFalse($result['replayed']);
+        $this->assertSame(201, $result['status']);
     }
 }

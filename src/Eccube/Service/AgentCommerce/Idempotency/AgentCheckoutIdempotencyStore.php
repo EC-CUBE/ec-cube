@@ -34,6 +34,13 @@ use Eccube\Service\AgentCommerce\Exception\IdempotencyConflictException;
  */
 class AgentCheckoutIdempotencyStore
 {
+    /**
+     * 応答の無い予約行を「放棄された」とみなすまでの秒数.
+     *
+     * complete の処理時間 (PSP 通信のタイムアウトを含む) より十分長くとる。
+     */
+    public const ABANDONED_RESERVATION_SECONDS = 600;
+
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly AgentCheckoutIdempotencyRepository $repository,
@@ -64,6 +71,17 @@ class AgentCheckoutIdempotencyStore
 
         // 既存記録があればリプレイ / 競合 / 処理中を判定する (逐次再送はここで完結)。
         $existing = $this->repository->findOneByKeyAndSubject($key, $subjectKey);
+        if ($existing !== null && $this->isAbandoned($existing)) {
+            // 処理中にプロセスが落ちる (タイムアウト・メモリ不足等) と、予約行が応答なしのまま残り、
+            // 同じキーは以後ずっと処理中 (409) になる。一定時間を過ぎた予約は放棄されたものとして消し、
+            // このリクエストで予約を取り直す。並行して取り直した場合は一意制約でどちらか一方に寄る。
+            $this->entityManager->getConnection()->executeStatement(
+                'DELETE FROM dtb_agent_checkout_idempotency WHERE id = :id AND response_status IS NULL',
+                ['id' => $existing->getId()],
+            );
+            $this->entityManager->detach($existing);
+            $existing = null;
+        }
         if ($existing !== null) {
             return $this->replay($existing->getRequestHash(), $existing->hasResponse(), (int) $existing->getResponseStatus(), $existing->getResponseBody() ?? [], $requestHash);
         }
@@ -154,6 +172,23 @@ class AgentCheckoutIdempotencyStore
             is_array($decoded) ? $decoded : [],
             $requestHash,
         );
+    }
+
+    /**
+     * 応答が保存されないまま一定時間を過ぎた予約行か.
+     */
+    private function isAbandoned(AgentCheckoutIdempotency $record): bool
+    {
+        if ($record->hasResponse()) {
+            return false;
+        }
+
+        $created = $record->getCreateDate();
+        if ($created === null) {
+            return false;
+        }
+
+        return $created->getTimestamp() < time() - self::ABANDONED_RESERVATION_SECONDS;
     }
 
     /**

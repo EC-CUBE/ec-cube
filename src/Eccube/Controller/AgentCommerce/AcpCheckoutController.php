@@ -25,11 +25,14 @@ use Eccube\Service\AgentCommerce\Acp\AcpCheckoutSessionMapper;
 use Eccube\Service\AgentCommerce\Acp\AcpMessageMapper;
 use Eccube\Service\AgentCommerce\AgentCheckoutPurchaseFlowAdapter;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddressValidator;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessage;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutMessageLevel;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionLocker;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Eccube\Service\AgentCommerce\CheckoutSession\CustomerResolverInterface;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
 use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
@@ -80,6 +83,9 @@ class AcpCheckoutController extends AbstractController
         private readonly CustomerResolverInterface $customerResolver,
         private readonly AgentCheckoutCompletionService $completionService,
         private readonly AgentPaymentMethodResolverInterface $paymentMethodResolver,
+        private readonly AgentCheckoutSessionLocker $locker,
+        private readonly AgentCheckoutSessionTerminator $terminator,
+        private readonly AgentCheckoutAddressValidator $addressValidator,
     ) {
     }
 
@@ -87,6 +93,7 @@ class AcpCheckoutController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $this->assertEnabled();
+        $this->sweepExpiredSessions();
 
         return $this->withIdempotency($request, function () use ($request): array {
             try {
@@ -119,9 +126,24 @@ class AcpCheckoutController extends AbstractController
                 $payload = $this->decodeBody($request);
                 $checkoutRequest = $this->mapper->toCheckoutRequest($payload, $this->resolveAgentId($request));
 
-                $session->setMetadata(array_merge($session->getMetadata() ?? [], ['line_items' => $this->lineItemsMetadata($checkoutRequest)]));
+                return $this->locker->transactional($session, function (CheckoutSession $session) use ($checkoutRequest): array {
+                    if ($this->terminator->isOverdue($session)) {
+                        // 期限切れの回収はコミットさせる (在庫を戻す)。
+                        $this->terminator->expire($session);
 
-                return ['status' => 200, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
+                        return $this->protocolError(400, 'invalid_session_state', 'The checkout session has expired.');
+                    }
+
+                    // 見積を差し替えられるのは確定前の 2 状態だけ。中断中 (在庫引当済み) や終端のセッションで
+                    // Order を作り直すと、引き当てた在庫が孤立し、確定済み受注との紐付けも外れる。
+                    if (!in_array($session->getStatus()?->getId(), [CheckoutSessionStatus::INCOMPLETE, CheckoutSessionStatus::READY], true)) {
+                        return $this->protocolError(400, 'invalid_session_state', 'The checkout session can no longer be updated.');
+                    }
+
+                    $session->setMetadata(array_merge($session->getMetadata() ?? [], ['line_items' => $this->lineItemsMetadata($checkoutRequest)]));
+
+                    return ['status' => 200, 'body' => $this->buildAndPersist($session, $checkoutRequest)];
+                });
             } catch (AgentCheckoutException $e) {
                 return $this->protocolError(400, $e->getErrorCode()->value, $e->getMessage());
             }
@@ -190,15 +212,14 @@ class AcpCheckoutController extends AbstractController
         $this->assertEnabled();
         $session = $this->findSession($request, $sessionId);
 
-        return $this->withIdempotency($request, function () use ($session): array {
-            $statusId = $session->getStatus()?->getId();
-            if (in_array($statusId, [CheckoutSessionStatus::COMPLETED, CheckoutSessionStatus::CANCELED], true)) {
-                // 既に完了/取消済のセッションは取消不可 (ACP: 405 Not Allowed)。
+        return $this->withIdempotency($request, fn (): array => $this->locker->transactional($session, function (CheckoutSession $session): array {
+            if ($this->terminator->isTerminal($session)) {
+                // 既に完了/取消/期限切れのセッションは取消不可 (ACP: 405 Not Allowed)。
                 return $this->protocolError(405, 'not_allowed', 'A completed or canceled checkout session cannot be canceled.');
             }
 
-            $session->setStatus($this->findStatus(CheckoutSessionStatus::CANCELED));
-            $this->entityManager->flush();
+            // 中断中 (在庫引当済み) なら在庫を回収してから canceled にする。
+            $this->terminator->cancel($session);
 
             $order = $session->getOrder();
             $body = $order !== null
@@ -206,7 +227,7 @@ class AcpCheckoutController extends AbstractController
                 : $this->mapper->buildProvisionalResponse($session, $this->provisionalRequestFromSession($session), []);
 
             return ['status' => 200, 'body' => $body];
-        });
+        }));
     }
 
     /**
@@ -232,6 +253,19 @@ class AcpCheckoutController extends AbstractController
 
             return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $messages);
         }
+
+        // 住所は店頭のフォームと同じ基準で検証する。都道府県を解決できない住所のまま見積ると送料が
+        // 0 円で計算され、ready のまま確定できてしまう。
+        $buyer = $this->addressValidator->normalize($checkoutRequest->buyer);
+        $addressErrors = $this->addressValidator->validate($buyer);
+        if ($addressErrors !== []) {
+            $session->setStatus($this->findStatus(CheckoutSessionStatus::INCOMPLETE));
+            $this->entityManager->persist($session);
+            $this->entityManager->flush();
+
+            return $this->mapper->buildProvisionalResponse($session, $checkoutRequest, $this->messageMapper->toAcpMessages($addressErrors));
+        }
+        $checkoutRequest = $checkoutRequest->withBuyer($buyer);
 
         $result = $this->purchaseFlowAdapter->buildOrder($checkoutRequest, $this->customerResolver->resolve($session));
         $order = $result->order;
@@ -333,6 +367,26 @@ class AcpCheckoutController extends AbstractController
         }
 
         return $session;
+    }
+
+    /**
+     * checkout の create 時に、期限を過ぎたセッションを少数だけ回収する.
+     *
+     * 本来は cron (eccube:agent-commerce:checkout-session:expire) で回収するが、CLI を使えない環境でも
+     * 中断中に引き当てた在庫が戻るようにする。回収の失敗で create を失敗させない。
+     */
+    private function sweepExpiredSessions(): void
+    {
+        $limit = (int) $this->eccubeConfig['eccube_agent_checkout_expire_sweep_limit'];
+        if ($limit <= 0) {
+            return;
+        }
+
+        try {
+            $this->terminator->expireOverdue(new \DateTime(), $limit);
+        } catch (\Throwable $e) {
+            log_error('Failed to expire overdue agent checkout sessions.', ['exception' => $e]);
+        }
     }
 
     private function findStatus(int $id): CheckoutSessionStatus

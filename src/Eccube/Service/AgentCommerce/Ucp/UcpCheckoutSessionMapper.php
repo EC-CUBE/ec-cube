@@ -13,6 +13,7 @@
 
 namespace Eccube\Service\AgentCommerce\Ucp;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
@@ -22,6 +23,8 @@ use Eccube\Service\AgentCommerce\AddressMappingService;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutAddress;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutLineItem;
 use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutRequest;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutErrorCode;
+use Eccube\Service\AgentCommerce\Exception\AgentCheckoutException;
 use Eccube\Service\AgentCommerce\MinorUnitConverter;
 use Eccube\Service\AgentCommerce\StorefrontUrlResolver;
 
@@ -47,6 +50,7 @@ class UcpCheckoutSessionMapper
         private readonly UcpStatusMapper $statusMapper,
         private readonly AddressMappingService $addressMappingService,
         private readonly ProductClassRepository $productClassRepository,
+        private readonly EccubeConfig $eccubeConfig,
     ) {
     }
 
@@ -74,7 +78,12 @@ class UcpCheckoutSessionMapper
             }
         }
 
-        $currency = is_string($payload['currency'] ?? null) ? $payload['currency'] : 'JPY';
+        // 受注金額は店舗の通貨で計算されるため、それ以外の通貨は受け付けない (金額の単位がずれる)。
+        $storeCurrency = strtoupper((string) $this->eccubeConfig['currency']);
+        $currency = is_string($payload['currency'] ?? null) ? strtoupper($payload['currency']) : $storeCurrency;
+        if ($currency !== $storeCurrency) {
+            throw new AgentCheckoutException(AgentCheckoutErrorCode::UNSUPPORTED_CURRENCY, sprintf('Only the store currency "%s" is supported.', $storeCurrency));
+        }
 
         return new AgentCheckoutRequest(
             $lineItems,

@@ -33,4 +33,12 @@ final readonly class AgentCheckoutRequest
         public ?string $agentId = null,
     ) {
     }
+
+    /**
+     * 購入者/配送先住所だけを差し替えた複製を返す (正規化後の住所で見積るため).
+     */
+    public function withBuyer(?AgentCheckoutAddress $buyer): self
+    {
+        return new self($this->lineItems, $buyer, $this->currencyCode, $this->protocolId, $this->agentId);
+    }
 }

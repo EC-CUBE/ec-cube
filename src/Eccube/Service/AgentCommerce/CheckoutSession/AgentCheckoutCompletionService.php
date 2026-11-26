@@ -26,6 +26,7 @@ use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerInterface;
 use Eccube\Service\AgentCommerce\Payment\AgentCheckoutPaymentHandlerRegistry;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcome;
 use Eccube\Service\AgentCommerce\Payment\PaymentOutcomeStatus;
+use Eccube\Service\Payment\Method\Cash;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -42,16 +43,17 @@ use Psr\Log\LoggerInterface;
  * - PSP 参照 (`transaction_id` と metadata) の保持と、再開 complete でのハンドラへの引き渡し
  * - CheckoutSession の正規化ステータス遷移
  * - トランザクション境界 (各 complete 呼び出しを 1 トランザクションで確定。StockReduceProcessor の
- *   悲観ロックに対応するため明示トランザクションで囲む)
+ *   悲観ロックに対応するため明示トランザクションで囲み、セッション行をロックして並行 complete を直列化する)
+ * - 期限切れの回収 (在庫確保期限を過ぎたセッションは在庫を戻して expired にする)
  *
  * ## 入口ステータスと再開の扱い
  *
- * complete に再入できる非終端ステータスは 4 つある。**保持した PSP 参照をハンドラへ渡すのは
+ * complete に入れる非終端ステータスは 3 つある (`INCOMPLETE` は住所未確定・見積エラーありのため
+ * プロトコル系エラーで拒否する)。**保持した PSP 参照をハンドラへ渡すのは
  * 「在庫を引当てたまま中断した」2 状態からの再開時だけ**である。
  *
  * | 入口                | prepare | 保持済み参照 | 意味                                       |
  * |---------------------|---------|--------------|--------------------------------------------|
- * | `INCOMPLETE`        | 実行    | 渡さない     | 初回 complete                              |
  * | `READY`             | 実行    | 渡さない     | 初回、または**失敗後の再試行** (新規与信)  |
  * | `REQUIRES_ACTION`   | skip    | 渡す         | 追加認証 (3DS) からの再開                  |
  * | `IN_PROGRESS`       | skip    | 渡す         | 非同期確定からの再開                       |
@@ -79,6 +81,13 @@ use Psr\Log\LoggerInterface;
  */
 class AgentCheckoutCompletionService
 {
+    /** 与信失敗の回数を数える metadata のキー. */
+    public const PAYMENT_FAILURES_METADATA_KEY = 'payment_failures';
+
+    /**
+     * @param int $maxPaymentAttempts 1 セッションで許す与信失敗の回数。超えたセッションは canceled にする
+     *                                (同一セッションで支払データを差し替えながら与信を繰り返す試行を止める)
+     */
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly AgentCheckoutPurchaseFlowAdapter $purchaseFlowAdapter,
@@ -87,28 +96,72 @@ class AgentCheckoutCompletionService
         private readonly CustomerResolverInterface $customerResolver,
         private readonly LoggerInterface $logger,
         private readonly int $escalationExpireMinutes,
+        private readonly AgentCheckoutSessionLocker $locker,
+        private readonly AgentCheckoutSessionTerminator $terminator,
+        private readonly int $maxPaymentAttempts = 5,
     ) {
     }
 
     /**
      * セッションを確定する (状態機械の単一エントリ。初回 complete・再開 complete の双方を処理).
      *
+     * セッション行をロックしてからステータスを判定する。同じセッションへの並行 complete は
+     * 先行のコミットを待ち、確定済みなら冪等に既存 Order を返す (在庫引当・与信を二重に実行しない)。
+     *
      * @param array<string, mixed> $paymentData 決済の中立表現 (再開時は authentication_result 等を含む)
      *
-     * @throws AgentCheckoutException 確定不能な状態 (終端・Order 未生成等)
+     * @throws AgentCheckoutException 確定不能な状態 (終端・期限切れ・未確定・Order 未生成等)
      */
     public function complete(CheckoutSession $session, array $paymentData): AgentCheckoutCompletionResult
+    {
+        $result = $this->locker->transactional($session, function (CheckoutSession $session) use ($paymentData): ?AgentCheckoutCompletionResult {
+            if ($this->terminator->isOverdue($session)) {
+                // 期限切れの回収 (在庫の解放と expired への遷移) はコミットさせ、その後でエラーを返す。
+                $this->terminator->expire($session);
+
+                return null;
+            }
+
+            return $this->completeLocked($session, $paymentData);
+        });
+
+        if ($result === null) {
+            throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, 'The checkout session has expired.');
+        }
+
+        return $result;
+    }
+
+    /**
+     * ロック取得後の complete 本体.
+     *
+     * @param array<string, mixed> $paymentData
+     */
+    private function completeLocked(CheckoutSession $session, array $paymentData): AgentCheckoutCompletionResult
     {
         $statusId = $session->getStatus()?->getId();
 
         // 冪等性: 既に完了済なら副作用を再実行せず既存 Order を返す。
         if ($statusId === CheckoutSessionStatus::COMPLETED) {
-            return new AgentCheckoutCompletionResult($this->requireStatus(CheckoutSessionStatus::COMPLETED), $session->getOrder());
+            $completedOrder = $session->getOrder();
+            if ($completedOrder !== null) {
+                // 並行リクエストが先に確定させた場合、手元の Order は確定前 (受注番号なし) の状態のまま。
+                $this->entityManager->refresh($completedOrder);
+            }
+
+            return new AgentCheckoutCompletionResult($this->requireStatus(CheckoutSessionStatus::COMPLETED), $completedOrder);
         }
 
         // 終端ステータスは確定不能 (プロトコル系エラー)。
         if (in_array($statusId, [CheckoutSessionStatus::CANCELED, CheckoutSessionStatus::EXPIRED], true)) {
             throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, 'The checkout session is in a terminal state and cannot be completed.');
+        }
+
+        // 確定できるのは ready と、在庫を引き当てたまま中断した 2 状態からの再開だけ。
+        // incomplete (住所未確定・見積エラーあり) のまま確定させない。
+        $isResume = in_array($statusId, AgentCheckoutSessionTerminator::HELD_STATUSES, true);
+        if (!$isResume && $statusId !== CheckoutSessionStatus::READY) {
+            throw new AgentCheckoutException(AgentCheckoutErrorCode::INVALID_SESSION_STATE, 'The checkout session is not ready for completion. Resolve the errors in messages[] with an update first.');
         }
 
         $order = $session->getOrder();
@@ -117,21 +170,8 @@ class AgentCheckoutCompletionService
         }
 
         $member = $this->customerResolver->resolve($session);
-        $isResume = in_array($statusId, [CheckoutSessionStatus::REQUIRES_ACTION, CheckoutSessionStatus::IN_PROGRESS], true);
 
-        $connection = $this->entityManager->getConnection();
-        $connection->beginTransaction();
-        try {
-            $result = $this->runStateMachine($session, $order, $member, $paymentData, $isResume);
-            $this->entityManager->flush();
-            $connection->commit();
-
-            return $result;
-        } catch (\Throwable $e) {
-            $connection->rollBack();
-
-            throw $e;
-        }
+        return $this->runStateMachine($session, $order, $member, $paymentData, $isResume);
     }
 
     /**
@@ -141,6 +181,22 @@ class AgentCheckoutCompletionService
      */
     private function runStateMachine(CheckoutSession $session, Order $order, ?Customer $member, array $paymentData, bool $isResume): AgentCheckoutCompletionResult
     {
+        $handler = $this->paymentHandlerRegistry->resolveForOrder($order);
+
+        // 決済ハンドラが無い支払方法で確定してよいのは、決済処理を伴わないもの (本体の Cash) と 0 円の受注だけ。
+        // Web 専用の決済プラグイン (クレジットカード等) もハンドラを持たないため、無条件に確定すると
+        // プラグインの決済処理を通らないまま新規受付になる。在庫引当の前に判定し、副作用を残さない。
+        if ($handler === null && !$this->isSettledWithoutHandler($order)) {
+            $this->logger->warning('The payment method of the agent order has no agent payment handler.', [
+                'order_id' => $order->getId(),
+                'method_class' => $order->getPayment()?->getMethodClass(),
+            ]);
+
+            return new AgentCheckoutCompletionResult($this->requireCurrentStatus($session), null, [
+                new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'The payment method assigned to this checkout cannot be processed by an agent. Specify a supported payment handler.'),
+            ]);
+        }
+
         // 初回 complete: 在庫引当・受注番号採番 (PROCESSING のまま)。
         // 再開 complete: 引当は初回で済んでいるため再 prepare しない。
         if (!$isResume) {
@@ -151,9 +207,7 @@ class AgentCheckoutCompletionService
             }
         }
 
-        $handler = $this->paymentHandlerRegistry->resolveForOrder($order);
-
-        // 決済ハンドラ未登録 (代引・無償等) は与信不要のためそのまま確定する。
+        // 代引・銀行振込等 (本体の Cash) と 0 円の受注は与信不要のためそのまま確定する。
         if ($handler === null) {
             return $this->commitOrder($session, $order, $member);
         }
@@ -306,12 +360,54 @@ class AgentCheckoutCompletionService
         // (ready からの再試行でハンドラへ渡すと、死んだ取引の続行になる)。
         $this->mergePaymentData($session, $this->paymentReference($outcome));
 
-        $statusId = $outcome->retryable ? CheckoutSessionStatus::READY : CheckoutSessionStatus::CANCELED;
+        $failures = $this->countPaymentFailure($session);
+        $exhausted = $failures >= $this->maxPaymentAttempts;
+        if ($exhausted) {
+            $this->logger->warning('The agent checkout session reached the maximum number of payment attempts.', [
+                'session_id' => $session->getSessionId(),
+                'failures' => $failures,
+            ]);
+        }
+
+        $statusId = $outcome->retryable && !$exhausted ? CheckoutSessionStatus::READY : CheckoutSessionStatus::CANCELED;
         $session->setStatus($this->requireStatus($statusId));
+        // 在庫は回収済みのため、中断時に設定した在庫確保期限は外す (ready のまま期限切れ回収の対象にしない)。
+        $session->setExpiresAt();
 
-        $message = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, $this->errorMessageFor($outcome));
+        $messages = [new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, $this->errorMessageFor($outcome))];
+        if ($exhausted && $outcome->retryable) {
+            $messages[] = new AgentCheckoutMessage(AgentCheckoutMessageLevel::ERROR, 'The maximum number of payment attempts for this checkout session has been reached. Start a new checkout session.');
+        }
 
-        return new AgentCheckoutCompletionResult($session->getStatus() ?? $this->requireStatus($statusId), null, [$message]);
+        return new AgentCheckoutCompletionResult($session->getStatus() ?? $this->requireStatus($statusId), null, $messages);
+    }
+
+    /**
+     * 与信失敗の回数を metadata に記録し、記録後の回数を返す.
+     */
+    private function countPaymentFailure(CheckoutSession $session): int
+    {
+        $metadata = $session->getMetadata() ?? [];
+        $failures = (int) ($metadata[self::PAYMENT_FAILURES_METADATA_KEY] ?? 0) + 1;
+        $metadata[self::PAYMENT_FAILURES_METADATA_KEY] = $failures;
+        $session->setMetadata($metadata);
+
+        return $failures;
+    }
+
+    /**
+     * 決済ハンドラ無しで確定してよい受注か (本体の Cash の支払方法、または支払総額 0 円).
+     *
+     * Cash を継承したプラグインの支払方法は対象にしない。継承先が決済処理を持たない保証が無いため
+     * (fail-closed)。エージェント経路で扱う場合は、その支払方法に対応する決済ハンドラを登録する。
+     */
+    private function isSettledWithoutHandler(Order $order): bool
+    {
+        if ($order->getPayment()?->getMethodClass() === Cash::class) {
+            return true;
+        }
+
+        return bccomp($order->getPaymentTotal(), '0', 2) === 0;
     }
 
     /**

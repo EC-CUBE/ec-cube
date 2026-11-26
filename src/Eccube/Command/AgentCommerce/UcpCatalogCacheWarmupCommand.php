@@ -28,8 +28,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * UCP Catalog キャッシュを事前生成する開発者向けコマンド.
  *
- * UCP Catalog はリクエストボディ hash でキャッシュするため、本コマンドは最も頻度が高い
- * 既定の "search" (空ボディ = フィルタ無しの先頭ページ) を生成する。--limit で件数を指定できる。
+ * UCP Catalog は正規化したリクエストパラメータとオリジンでキャッシュするため、本コマンドは最も頻度が高い
+ * フィルタ無しの先頭ページの "search" を生成する。--limit で件数 (= pagination.limit) を指定できる。
  *
  * @see https://github.com/Universal-Commerce-Protocol/ucp/blob/main/schemas/shopping/catalog_search.json
  */
@@ -69,12 +69,10 @@ class UcpCatalogCacheWarmupCommand extends Command
 
         $body = $this->buildDefaultSearchBody($limit);
 
-        // コントローラの decodeBody は空ボディ / "{}" のいずれも空 payload として同一の
-        // 既定 search を返すため、両ボディのキャッシュキーを生成する。
-        foreach (['', '{}'] as $rawBody) {
-            $key = $this->cache->buildKey('search', $rawBody);
-            $this->cache->warmup($key, fn (): string => $body);
-        }
+        // search のキャッシュキーは正規化済みパラメータとオリジンから作られる。CLI のオリジンは
+        // router.request_context (framework.router.default_uri) で決まるため、公開 URL と一致させておくこと。
+        $key = $this->cache->buildKey('search', UcpCatalogCache::searchParams(null, $limit, 0));
+        $this->cache->warmup($key, fn (): string => $body);
 
         $io->success('UCP catalog cache warmed up for the default search response.');
 

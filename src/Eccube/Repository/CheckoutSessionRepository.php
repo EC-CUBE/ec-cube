@@ -40,16 +40,23 @@ class CheckoutSessionRepository extends AbstractRepository
     /**
      * 指定時刻より前に有効期限が切れた未完了セッションを取得する.
      *
-     * クリーンアップコマンド (派生 issue) から利用する想定。
+     * 期限切れ回収 ({@link \Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator::expireOverdue()})
+     * から利用する。期限の古い順に返す。
+     *
+     * @param int|null $limit 取得する最大件数 (null は無制限)
      *
      * @return array<int, CheckoutSession>
      */
-    public function findExpired(\DateTime $now): array
+    public function findExpired(\DateTime $now, ?int $limit = null): array
     {
         $qb = $this->createQueryBuilder('cs');
+        if ($limit !== null) {
+            $qb->setMaxResults($limit);
+        }
 
         /** @var array<int, CheckoutSession> $result */
         $result = $qb
+            ->orderBy('cs.expires_at', 'ASC')
             ->where('cs.expires_at IS NOT NULL')
             ->andWhere('cs.expires_at < :now')
             ->andWhere($qb->expr()->orX(

@@ -65,6 +65,11 @@ class UcpCatalogController extends AbstractController
      */
     private const MAX_OFFSET = 10000;
 
+    /**
+     * search のフリーテキストの最大文字数 (これを超える部分は捨てる).
+     */
+    private const MAX_QUERY_LENGTH = 255;
+
     public function __construct(
         private readonly ProductRepository $productRepository,
         private readonly ProductReferenceResolverInterface $referenceResolver,
@@ -84,14 +89,15 @@ class UcpCatalogController extends AbstractController
         // TODO: ucp_catalog_requires_auth=true の場合 ucp:catalog scope での OAuth2 認証を要求する
         //       (ec-cube/api42 導入後に AgentCommerceOAuth2Authenticator 経由で検証)。現状は public read。
 
-        $rawBody = $request->getContent();
-        $payload = $this->decodeBody($rawBody);
-        $key = $this->cache->buildKey('search', $rawBody);
+        $payload = $this->decodeBody($request->getContent());
+        $query = isset($payload['query']) && is_string($payload['query']) && trim($payload['query']) !== ''
+            ? mb_substr(trim($payload['query']), 0, self::MAX_QUERY_LENGTH)
+            : null;
+        [$limit, $offset] = $this->resolvePagination($payload);
+        // キャッシュキーは解釈済みのパラメータから作る (生ボディの表記ゆれでキーを増やさせない)。
+        $key = $this->cache->buildKey('search', UcpCatalogCache::searchParams($query, $limit, $offset));
 
-        $body = $this->cache->getOrCompute($key, function () use ($payload): string {
-            $query = isset($payload['query']) && is_string($payload['query']) ? $payload['query'] : null;
-            [$limit, $offset] = $this->resolvePagination($payload);
-
+        $body = $this->cache->getOrCompute($key, function () use ($query, $limit, $offset): string {
             // 1 件多く取得して次ページ有無を判定する
             $products = $this->findDisplayProducts($query, $offset, $limit + 1);
             $hasNext = count($products) > $limit;
@@ -120,23 +126,21 @@ class UcpCatalogController extends AbstractController
     #[Route(path: '/catalog/lookup', name: 'agent_ucp_catalog_lookup', methods: ['POST'])]
     public function lookup(Request $request): Response
     {
-        $rawBody = $request->getContent();
-        $payload = $this->decodeBody($rawBody);
-        $key = $this->cache->buildKey('lookup', $rawBody);
+        $payload = $this->decodeBody($request->getContent());
+        $ids = isset($payload['ids']) && is_array($payload['ids']) ? $payload['ids'] : [];
 
-        $body = $this->cache->getOrCompute($key, function () use ($payload): string {
-            $ids = isset($payload['ids']) && is_array($payload['ids']) ? $payload['ids'] : [];
-
-            // 入力 id を文字列へ正規化し重複排除した上で件数上限へクランプする (解決処理/DB アクセスの増大を抑止)。
-            $normalizedIds = [];
-            foreach ($ids as $id) {
-                if (!is_string($id) && !is_int($id)) {
-                    continue;
-                }
-                $normalizedIds[(string) $id] = true;
+        // 入力 id を文字列へ正規化し重複排除した上で件数上限へクランプする (解決処理/DB アクセスの増大を抑止)。
+        $normalizedIds = [];
+        foreach ($ids as $id) {
+            if (!is_string($id) && !is_int($id)) {
+                continue;
             }
-            $normalizedIds = array_slice(array_keys($normalizedIds), 0, self::MAX_LOOKUP_IDS);
+            $normalizedIds[(string) $id] = true;
+        }
+        $normalizedIds = array_map(strval(...), array_slice(array_keys($normalizedIds), 0, self::MAX_LOOKUP_IDS));
+        $key = $this->cache->buildKey('lookup', ['ids' => $normalizedIds]);
 
+        $body = $this->cache->getOrCompute($key, function () use ($normalizedIds): string {
             $products = [];
             $seen = [];
             foreach ($normalizedIds as $id) {
@@ -172,8 +176,7 @@ class UcpCatalogController extends AbstractController
     #[Route(path: '/catalog/product', name: 'agent_ucp_catalog_product', methods: ['POST'])]
     public function product(Request $request): Response
     {
-        $rawBody = $request->getContent();
-        $payload = $this->decodeBody($rawBody);
+        $payload = $this->decodeBody($request->getContent());
 
         $id = isset($payload['id']) && (is_string($payload['id']) || is_int($payload['id']))
             ? (string) $payload['id']
@@ -182,7 +185,7 @@ class UcpCatalogController extends AbstractController
             throw new NotFoundHttpException('product not found');
         }
 
-        $key = $this->cache->buildKey('product', $rawBody);
+        $key = $this->cache->buildKey('product', ['id' => $id]);
 
         // 解決不能は 404 とするためキャッシュ前に存在判定する
         $product = $this->resolveProductByIdentifier($id);

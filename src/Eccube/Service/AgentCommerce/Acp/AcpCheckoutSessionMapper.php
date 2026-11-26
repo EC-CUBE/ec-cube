@@ -13,6 +13,7 @@
 
 namespace Eccube\Service\AgentCommerce\Acp;
 
+use Eccube\Common\EccubeConfig;
 use Eccube\Entity\CheckoutSession;
 use Eccube\Entity\Master\AgentProtocol;
 use Eccube\Entity\Master\CheckoutSessionStatus;
@@ -52,6 +53,7 @@ class AcpCheckoutSessionMapper
         private readonly AcpStatusMapper $statusMapper,
         private readonly AddressMappingService $addressMappingService,
         private readonly ProductClassRepository $productClassRepository,
+        private readonly EccubeConfig $eccubeConfig,
     ) {
     }
 
@@ -83,7 +85,12 @@ class AcpCheckoutSessionMapper
         }
 
         // ACP の currency は小文字 ISO 4217 (例: "usd")。EC-CUBE 内部は大文字で扱う。
-        $currency = is_string($payload['currency'] ?? null) ? strtoupper($payload['currency']) : 'JPY';
+        // 受注金額は店舗の通貨で計算されるため、それ以外の通貨は受け付けない (金額の単位がずれる)。
+        $storeCurrency = strtoupper((string) $this->eccubeConfig['currency']);
+        $currency = is_string($payload['currency'] ?? null) ? strtoupper($payload['currency']) : $storeCurrency;
+        if ($currency !== $storeCurrency) {
+            throw new AgentCheckoutException(AgentCheckoutErrorCode::UNSUPPORTED_CURRENCY, sprintf('Only the store currency "%s" is supported.', strtolower($storeCurrency)));
+        }
 
         return new AgentCheckoutRequest(
             $lineItems,

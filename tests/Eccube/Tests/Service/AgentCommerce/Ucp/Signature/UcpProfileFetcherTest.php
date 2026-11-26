@@ -15,10 +15,14 @@ declare(strict_types=1);
 
 namespace Eccube\Tests\Service\AgentCommerce\Ucp\Signature;
 
+use Eccube\Kernel;
 use Eccube\Service\AgentCommerce\Exception\UcpSignatureException;
 use Eccube\Service\AgentCommerce\Ucp\Signature\UcpProfileFetcher;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\NoPrivateNetworkHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
 /**
@@ -95,5 +99,72 @@ final class UcpProfileFetcherTest extends TestCase
         $this->expectException(UcpSignatureException::class);
         $this->expectExceptionMessage('could not be resolved');
         $fetcher->fetchSigningKeys('https://nx.example/.well-known/ucp');
+    }
+
+    /**
+     * PHP の FILTER_FLAG_NO_PRIV_RANGE / NO_RES_RANGE が通す内部向け帯域も拒否する.
+     *
+     * @return iterable<string, array{string}>
+     */
+    public static function internalRangesNotCoveredByFilterVarProvider(): iterable
+    {
+        yield 'CGNAT (クラウドのメタデータ サービスがある環境)' => ['100.100.100.200'];
+        yield 'ベンチマーク用 (RFC 2544)' => ['198.18.0.1'];
+    }
+
+    #[DataProvider(methodName: 'internalRangesNotCoveredByFilterVarProvider')]
+    public function testRejectsInternalRangesNotCoveredByFilterVar(string $ip): void
+    {
+        $fetcher = new UcpProfileFetcher($this->failingClient(), static fn (string $host): array => [$ip]);
+
+        $this->expectException(UcpSignatureException::class);
+        $this->expectExceptionMessage('non-public address');
+        $fetcher->fetchSigningKeys('https://agent.example/.well-known/ucp');
+    }
+
+    public function testRejectsOversizedProfile(): void
+    {
+        $profile = (string) json_encode([
+            'signing_keys' => [['kid' => 'k1', 'kty' => 'EC', 'crv' => 'P-256', 'x' => 'AA', 'y' => 'BB']],
+            'padding' => str_repeat('x', UcpProfileFetcher::MAX_PROFILE_BYTES),
+        ]);
+        $client = new MockHttpClient(new MockResponse($profile, ['http_code' => 200]));
+        $fetcher = new UcpProfileFetcher($client, static fn (string $host): array => ['93.184.216.34']);
+
+        $this->expectException(UcpSignatureException::class);
+        $fetcher->fetchSigningKeys('https://agent.example/.well-known/ucp');
+    }
+
+    public function testCachesSigningKeysPerProfileUrl(): void
+    {
+        $profile = ['signing_keys' => [['kid' => 'k1', 'kty' => 'EC', 'crv' => 'P-256', 'x' => 'AA', 'y' => 'BB']]];
+        $requests = 0;
+        $client = new MockHttpClient(static function () use (&$requests, $profile): MockResponse {
+            ++$requests;
+
+            return new MockResponse((string) json_encode($profile), ['http_code' => 200]);
+        });
+        $fetcher = new UcpProfileFetcher($client, static fn (string $host): array => ['93.184.216.34'], new ArrayAdapter());
+
+        $fetcher->fetchSigningKeys('https://agent.example/.well-known/ucp');
+        $keys = $fetcher->fetchSigningKeys('https://agent.example/.well-known/ucp');
+
+        $this->assertSame('k1', $keys[0]['kid']);
+        $this->assertSame(1, $requests, '同じ profile への 2 回目の検証では取得しない');
+    }
+
+    /**
+     * 本番の DI では、接続時点で宛先を検査する NoPrivateNetworkHttpClient を通して取得する.
+     */
+    public function testContainerWrapsProfileHttpClientWithPrivateNetworkGuard(): void
+    {
+        $kernel = new Kernel('test', false);
+        $kernel->boot();
+        try {
+            $client = $kernel->getContainer()->get('test.service_container')->get('eccube.agent_commerce.ucp_profile_http_client');
+            $this->assertInstanceOf(NoPrivateNetworkHttpClient::class, $client);
+        } finally {
+            $kernel->shutdown();
+        }
     }
 }

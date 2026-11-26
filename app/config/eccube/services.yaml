@@ -21,6 +21,12 @@ parameters:
     env(ECCUBE_AGENT_COMMERCE_UCP_SIGNING_KEY): ''
     env(ECCUBE_AGENT_COMMERCE_ACP_FEED_BASE_URL): ''
     env(ECCUBE_AGENT_COMMERCE_ACP_FEED_API_KEY): ''
+    # UCP checkout の状態変更 (GET 以外) に RFC 9421 署名を必須とするか。 UCP では署名は MAY のため既定は任意。
+    # 必須にしない場合も、 署名付きで作成したセッションは同じエージェントの署名がなければ操作できない。
+    env(ECCUBE_AGENT_COMMERCE_UCP_REQUIRE_SIGNATURE): '0'
+    # 署名を受け付けるエージェント profile のホスト名 (カンマ区切り)。 空なら HTTPS である限り制限しない。
+    # 署名を必須にする場合は、 誰でも用意できる自前ドメインの鍵で署名されないよう併せて設定する。
+    env(ECCUBE_AGENT_COMMERCE_UCP_ALLOWED_DOMAINS): ''
     # 鍵を所有者専用 (0700 / 0600) で作成するか。 既定は Web サーバーからも読める 0755 / 0644。
     # 厳格化すると、 Web サーバーと CLI を別ユーザーに分けた構成では鍵を読めなくなるため、
     # 読み取りを許す手当て (chgrp 等) を運用側で行う必要がある。
@@ -414,17 +420,30 @@ services:
     Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutCompletionService:
         arguments:
             $escalationExpireMinutes: '%eccube_agent_checkout_escalation_expire%'
+            $maxPaymentAttempts: '%eccube_agent_checkout_max_payment_attempts%'
 
     # 冪等性記録は DB 一意制約 (dtb_agent_checkout_idempotency) で管理する (EM/Repository は autowire)。
 
-    # UCP インバウンド署名検証 (RFC 9421・api4 非依存)。許可ドメイン/必須化は運用で設定する。
+    # UCP インバウンド署名検証 (RFC 9421・api4 非依存)。許可ドメイン/必須化は環境変数で設定する。
     Eccube\Service\AgentCommerce\Ucp\Signature\UcpRequestSignatureVerifier:
         arguments:
-            $allowedDomains: []
+            $allowedDomains: '%env(csv:ECCUBE_AGENT_COMMERCE_UCP_ALLOWED_DOMAINS)%'
 
     Eccube\Service\AgentCommerce\Ucp\Signature\UcpSignatureSubscriber:
         arguments:
-            $requireSignature: false
+            $requireSignature: '%env(bool:ECCUBE_AGENT_COMMERCE_UCP_REQUIRE_SIGNATURE)%'
+
+    # エージェント profile の取得 (URL は UCP-Agent ヘッダ由来)。接続時点で宛先 IP を検査し、
+    # 内部ネットワークへの到達 (DNS rebinding を含む) を遮断する。
+    eccube.agent_commerce.ucp_profile_http_client:
+        class: Symfony\Component\HttpClient\NoPrivateNetworkHttpClient
+        arguments:
+            - '@http_client'
+
+    Eccube\Service\AgentCommerce\Ucp\Signature\UcpProfileFetcher:
+        arguments:
+            $httpClient: '@eccube.agent_commerce.ucp_profile_http_client'
+            $cache: '@cache.app'
 
     # Agent Commerce: Product Feed / Catalog 共通基盤 (#6794)
     Eccube\Service\AgentCommerce\Catalog\ProductReferenceResolverInterface:
