@@ -21,6 +21,7 @@ use Eccube\Service\AgentCommerce\Catalog\CatalogProviderInterface;
 use Eccube\Service\AgentCommerce\Catalog\Exception\AcpFeedException;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogCache;
 use Eccube\Service\AgentCommerce\Catalog\Ucp\UcpCatalogResponseBuilder;
+use Eccube\Service\AgentCommerce\CheckoutSession\AgentCheckoutSessionTerminator;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,12 +42,18 @@ class AgentCommerceController extends AbstractController
      */
     private const WARMUP_LIMIT = 10;
 
+    /**
+     * 「期限切れセッションを回収」1 回で処理する最大件数.
+     */
+    private const EXPIRE_LIMIT = 500;
+
     public function __construct(
         private readonly AcpFeedClientInterface $acpFeedClient,
         private readonly UcpCatalogCache $ucpCatalogCache,
         private readonly CatalogProviderInterface $catalogProvider,
         private readonly CatalogMapper $catalogMapper,
         private readonly UcpCatalogResponseBuilder $responseBuilder,
+        private readonly AgentCheckoutSessionTerminator $checkoutSessionTerminator,
     ) {
     }
 
@@ -170,6 +177,26 @@ class AgentCommerceController extends AbstractController
             $this->addError('admin.common.system_error', 'admin');
             log_error('UCP catalog cache warmup failed.', ['message' => $e->getMessage()]);
         }
+
+        return $this->redirectToRoute('admin_content_agent_commerce');
+    }
+
+    /**
+     * チェックアウトセッション「期限切れセッションを回収」.
+     *
+     * cron (eccube:agent-commerce:checkout-session:expire) を設定できない環境向けの代替導線。
+     * フロント (エージェント) のリクエストからは回収しない (負荷と、外部から回収処理を誘発できる問題を避ける)。
+     * 1 回の操作で処理する件数に上限を設け、管理画面のリクエストが長引かないようにする。
+     */
+    #[Route(path: '/%eccube_admin_route%/content/agent_commerce/checkout_session/expire', name: 'admin_content_agent_commerce_checkout_session_expire', methods: ['POST'])]
+    public function checkoutSessionExpire(): RedirectResponse
+    {
+        if (!$this->isTokenValid()) {
+            throw new BadRequestHttpException();
+        }
+
+        $count = $this->checkoutSessionTerminator->expireOverdue(new \DateTime(), self::EXPIRE_LIMIT);
+        $this->addSuccess(trans('admin.content.agent_commerce.checkout_session.expire_success', ['%count%' => $count]), 'admin');
 
         return $this->redirectToRoute('admin_content_agent_commerce');
     }

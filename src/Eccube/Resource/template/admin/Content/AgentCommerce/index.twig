@@ -92,6 +92,25 @@ file that was distributed with this source code.
                 </div>
             </div>
 
+            {# チェックアウトセッション (期限切れの回収) #}
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <span class="card-title">{{ 'admin.content.agent_commerce.checkout_session.title'|trans }}</span>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">{{ 'admin.content.agent_commerce.checkout_session.description'|trans }}</p>
+
+                    <form method="post" class="d-inline-block"
+                          action="{{ url('admin_content_agent_commerce_checkout_session_expire') }}">
+                        <input type="hidden" name="{{ constant('Eccube\\Common\\Constant::TOKEN_NAME') }}"
+                               value="{{ csrf_token(constant('Eccube\\Common\\Constant::TOKEN_NAME')) }}">
+                        <button type="submit" class="btn btn-ec-regular">
+                            {{ 'admin.content.agent_commerce.checkout_session.expire'|trans }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
 {% endblock %}

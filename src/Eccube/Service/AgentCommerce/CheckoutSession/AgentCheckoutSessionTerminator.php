@@ -93,8 +93,12 @@ class AgentCheckoutSessionTerminator
      * 期限を過ぎたセッションを最大 $limit 件まで expired へ遷移させ、遷移させた件数を返す.
      *
      * セッションごとに行ロックを取り、ロック後に期限と状態を再判定する (並行する complete が
-     * 先に確定させていれば何もしない)。cron で動かすコマンドと、CLI を使えない環境向けに
-     * checkout の create から呼ぶ。
+     * 先に確定させていれば何もしない)。cron で動かすコマンドと、CLI を使えない環境向けの
+     * 管理画面から呼ぶ。
+     *
+     * フロント (エージェント) のリクエストからは呼ばないこと。リクエストのたびに期限切れの検索と
+     * 在庫行のロックが走り、アクセスの多いサイトでは負荷になる上、外部から回収処理を誘発できてしまう
+     * (EC-CUBE 2 系の cancelPendingOrder の教訓。EC-CUBE/ec-cube2#303)。
      */
     public function expireOverdue(\DateTime $now, int $limit): int
     {

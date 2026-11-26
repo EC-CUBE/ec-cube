@@ -25,8 +25,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * 在庫確保期限を過ぎたエージェントチェックアウトのセッションを expired にし、引き当てた在庫を戻すコマンド.
  *
  * 追加認証 (3DS) や非同期決済の待機中のセッションは在庫を引き当てたまま保持される。放置されたセッションの
- * 在庫を戻すため cron で定期実行する (例: 5 分ごと)。CLI を使えない環境では checkout の create 時にも
- * 少数ずつ回収される (eccube_agent_checkout_expire_sweep_limit)。
+ * 在庫を戻すため cron で定期実行する (例: 5 分ごと)。CLI を使えない環境では管理画面
+ * (コンテンツ管理 > Agent Commerce) から同じ回収を実行できる。多重起動しても、セッションごとの行ロックで
+ * 在庫を二重に戻さない。
  */
 #[AsCommand(name: 'eccube:agent-commerce:checkout-session:expire', description: 'Expire overdue agent checkout sessions and release reserved stock')]
 class CheckoutSessionExpireCommand extends Command

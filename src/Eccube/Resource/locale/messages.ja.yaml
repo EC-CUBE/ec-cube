@@ -1266,6 +1266,10 @@ admin.content.agent_commerce.ucp.cache_warmup: キャッシュ生成
 admin.content.agent_commerce.ucp.cache_clear: キャッシュクリア
 admin.content.agent_commerce.ucp.cache_warmup_success: カタログキャッシュを生成しました。
 admin.content.agent_commerce.ucp.cache_clear_success: カタログキャッシュをクリアしました。
+admin.content.agent_commerce.checkout_session.title: チェックアウトセッション
+admin.content.agent_commerce.checkout_session.description: 追加認証や非同期決済の待機中に在庫確保期限を過ぎたセッションを期限切れにし、引き当てた在庫を戻します。通常は cron で bin/console eccube:agent-commerce:checkout-session:expire を定期実行してください。CLI を使えない環境ではここから実行します。
+admin.content.agent_commerce.checkout_session.expire: 期限切れセッションを回収
+admin.content.agent_commerce.checkout_session.expire_success: "期限切れのセッションを %count% 件回収しました。"
 
 #------------------------------------------------------------------------------------
 # 設定：店舗設定：基本設定

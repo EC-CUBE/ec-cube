@@ -93,7 +93,6 @@ class UcpCheckoutController extends AbstractController
     public function create(Request $request): JsonResponse
     {
         $this->assertEnabled();
-        $this->sweepExpiredSessions();
 
         return $this->withIdempotency($request, function () use ($request): array {
             try {
@@ -427,26 +426,6 @@ class UcpCheckoutController extends AbstractController
         }
 
         return $session;
-    }
-
-    /**
-     * checkout の create 時に、期限を過ぎたセッションを少数だけ回収する.
-     *
-     * 本来は cron (eccube:agent-commerce:checkout-session:expire) で回収するが、CLI を使えない環境でも
-     * 中断中に引き当てた在庫が戻るようにする。回収の失敗で create を失敗させない。
-     */
-    private function sweepExpiredSessions(): void
-    {
-        $limit = (int) $this->eccubeConfig['eccube_agent_checkout_expire_sweep_limit'];
-        if ($limit <= 0) {
-            return;
-        }
-
-        try {
-            $this->terminator->expireOverdue(new \DateTime(), $limit);
-        } catch (\Throwable $e) {
-            log_error('Failed to expire overdue agent checkout sessions.', ['exception' => $e]);
-        }
     }
 
     private function findStatus(int $id): CheckoutSessionStatus
