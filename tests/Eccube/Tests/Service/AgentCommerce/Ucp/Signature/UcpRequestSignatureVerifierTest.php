@@ -201,6 +201,12 @@ final class UcpRequestSignatureVerifierTest extends TestCase
         ini_set('pcre.jit', '0');
         ini_set('pcre.backtrack_limit', '10');
         try {
+            // PCRE JIT でコンパイル済みのパターンがキャッシュにあると、実行中に上限を下げても置換は失敗しない
+            // (環境と実行順に依存する)。同じ置換が失敗する環境でだけ検証する。
+            if (preg_replace('/"(?:[^"\\\\]|\\\\.)*"/', '""', $params) !== null) {
+                $this->markTestSkipped('PCRE limits cannot be enforced in this environment (JIT-compiled pattern is cached).');
+            }
+
             $this->expectException(UcpSignatureException::class);
             $this->expectExceptionMessage('could not be parsed');
             $assertTimestamps($params);
