@@ -1,0 +1,67 @@
+name: Formal verification (Lean 4)
+
+# formal/ の Lean 4 の証明を検査し、コミット済みのテストベクタがモデルから再生成したものと一致することを確かめる。
+# PHP 実装との突き合わせ (tests/Eccube/Tests/Formal/) は unit-test.yml が全 PHP バージョンで実行する。
+# 詳細は formal/README.md。
+on:
+  push:
+    branches:
+      - '*'
+    paths:
+      - 'formal/**'
+      - 'tests/Eccube/Tests/Formal/**'
+      - '.github/workflows/formal-verification.yml'
+  pull_request:
+    paths:
+      - 'formal/**'
+      - 'tests/Eccube/Tests/Formal/**'
+      - '.github/workflows/formal-verification.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lean:
+    name: Lean 4
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v6
+        with:
+          persist-credentials: false
+
+      # formal/lean-toolchain の版を elan で入れ、lake build で証明を検査する。
+      # --wfail: sorry などの警告もエラーとして扱う
+      - name: Build and check proofs
+        uses: leanprover/lean-action@ba3fdfe5c4476c925da13bf11a005ddb47e47aee  # v1.7.1
+        with:
+          lake-package-directory: formal
+          auto-config: false
+          build: true
+          build-args: '--wfail'
+          use-mathlib-cache: false
+
+      # 証明を信頼できなくする書き方を禁じる。
+      # native_decide はコンパイラを信頼の基盤に加え、axiom は証明なしに命題を仮定する
+      - name: Forbid sorry / native_decide / axiom
+        working-directory: formal
+        run: |
+          if grep -rnE '\b(sorry|admit|native_decide)\b|^\s*axiom\s' --include='*.lean' .; then
+            echo '::error::formal/ に sorry / admit / native_decide / axiom を使わないでください'
+            exit 1
+          fi
+
+      - name: Check test vectors are up to date
+        working-directory: formal
+        run: |
+          lake env lean --run GenVectors.lean > "$RUNNER_TEMP/tax.json"
+          if ! diff -u ../tests/Eccube/Tests/Formal/vectors/tax.json "$RUNNER_TEMP/tax.json" > "$RUNNER_TEMP/vectors.diff"; then
+            head -n 50 "$RUNNER_TEMP/vectors.diff"
+            echo '::error::テストベクタが Lean のモデルと一致しません。formal/README.md の手順で再生成してください'
+            exit 1
+          fi

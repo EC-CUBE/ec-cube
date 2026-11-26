@@ -1,0 +1,6 @@
+name = "eccube-formal"
+version = "0.1.0"
+defaultTargets = ["Eccube"]
+
+[[lean_lib]]
+name = "Eccube"

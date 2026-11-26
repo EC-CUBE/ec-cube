@@ -23,6 +23,7 @@ rm -rf $WORKSPACE/e2e
 rm -rf $WORKSPACE/tests
 rm -rf $WORKSPACE/.github
 rm -rf $WORKSPACE/zap
+rm -rf $WORKSPACE/formal
 rm -rf $WORKSPACE/docker-compose.owaspzap.*
 rm -rf $WORKSPACE/package.sh
 rm -rf $WORKSPACE/app/PluginData/Api42/oauth/private.key
