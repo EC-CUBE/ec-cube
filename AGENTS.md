@@ -89,6 +89,8 @@ tests/
 e2e/                  # Playwright E2E（spec / Page Object / fixtures）
   tests/              # *.spec.ts（CI は e2e-test.yml のマトリクスで 1 ファイル = 1 シャード）
   pages/  models/  helpers/  fixtures/
+
+formal/               # Lean 4 による形式検証（税計算のモデルと証明。配布物に含めない）
 ```
 
 ## 開発コマンド
@@ -264,6 +266,18 @@ cd e2e && npm ci
 # project は front-tests / admin-tests / plugin-tests。spec ファイル名でフィルタ
 npx playwright test --project=setup --project=front-tests front-product.spec.ts
 ```
+
+形式検証（Lean 4、`formal/` 配下で実行。詳細は [`formal/README.md`](./formal/README.md)）:
+
+```bash
+cd formal
+lake build --wfail                                                              # 証明を検査
+lake env lean --run GenVectors.lean > ../tests/Eccube/Tests/Formal/vectors/tax.json   # テストベクタを再生成
+```
+
+`formal/Eccube/Tax/` が写している PHP 実装（`TaxRuleService` の税額計算、`Order::getTaxByTaxRate()`）を
+変えるときは、Lean のモデルも合わせて直し、ベクタを再生成する。`tests/Eccube/Tests/Formal/` の差分テストが
+食い違いを検出する。
 
 ### 静的解析
 

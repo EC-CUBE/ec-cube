@@ -189,10 +189,12 @@ class Order extends AbstractEntity implements PurchaseInterface, ItemHolderInter
                 continue;
             }
 
-            // totalPrice * (rate / (100 + rate))
+            // totalPrice * rate / (100 + rate)
+            // 比率 rate / (100 + rate) を先に求めると小数 6 桁で切り捨てられ, 真値より小さくなる.
+            // 真値が整数のとき (切り捨て設定で税込 110 円・税率 10% 等) に 1 円少なくなるため, 先に掛けてから割る.
+            // refs https://github.com/EC-CUBE/ec-cube/issues/7279
             $rateStr = $rate;
-            $taxRate = bcdiv($rateStr, bcadd('100', $rateStr, 6), 6);
-            $value = bcmul($totalPrice, $taxRate, 6);
+            $value = bcdiv(bcmul($totalPrice, $rateStr, 6), bcadd('100', $rateStr, 6), 6);
 
             $tax[$rate] = TaxRuleService::roundByRoundingType(
                 $value,

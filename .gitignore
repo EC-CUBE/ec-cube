@@ -74,3 +74,4 @@ screenshots/
 ###> symfony/flex ###
 /app/config/eccube/reference.php
 ###< symfony/flex ###
+/formal/.lake/
